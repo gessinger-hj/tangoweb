@@ -1,0 +1,26 @@
+.TTree {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	white-space: nowrap;
+}
+.TTree img {
+	border: 0px;
+	vertical-align: middle;
+}
+.TTree a {
+	text-decoration: none;
+	border-style: none;
+}
+.TTree a.node, .TTree a.nodeSel {
+	white-space: nowrap;
+	padding: 1px 2px 1px 2px;
+}
+.TTree a.node:hover, .TTree a.nodeSel:hover {
+	text-decoration: underline;
+}
+.TTree a.nodeSel {
+	background-color: #c0d2ec;
+}
+.TTree .clip {
+	overflow: hidden;
+}

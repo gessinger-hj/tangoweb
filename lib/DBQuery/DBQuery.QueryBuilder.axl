@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container name=X id='DBQuery.QueryBuilder' pagelet='new QueryBuilder()' >
+  <Container style='left:0px;top:0px;height:200px;right:-0;overflow:auto;bottom:-0;attach-bottom:true;background-image:url(${home}/smallest_teal_square.png);'
+  >
+    <Pagelet style='width:200px;height:200px;' title='Tables' dragable=true resizable=true pagelet='new TablesPagelet()'
+             onchange='handle:PB.Show.Columns'
+    >
+      <Table name='TABLES' style='top:0px;left:0px;right:-0;bottom:-4;attach-bottom:true;' show-header='false' ondblclick='*.showColumns()'
+      >
+        <Columns>
+          <Column name='TABLE_NAME' />
+        </Columns>
+      </Table>
+      <br/>
+      <!--
+      <PushButton text='Tables' style='bottom:4;' onclick='*.showTables("T_*,V_*")' />
+      -->
+      <PushButton text='Tables' style='bottom:4;' onclick='*.showTables("")' />
+      <PushButton name='PB.Show.Columns' disabled=true text='Columns' style='bottom:4;' onclick='*.showColumns()' />
+    </Pagelet>
+  </Container>
+  <SplitbarHorizontal/>
+  <Container style='right:-0;bottom:-0;padding:0px;margin:0px;' >
+    <Container style='right:-0;' name='ACTIONS_CONTAINER'
+                 onload='*.onloadActionsContainer()'
+    >
+      <Container style='padding:0px;left:0px;top:0px;' >
+        <PushButton img='Tango/Misc/edit' text='Edit' onclick='*.renameQuery()' />
+        <Label text='Name' /><Label name='NAME' reset='true' style='width:100px;'/>
+        <Label name='DESCRIPTION' reset='true' style='width:100px;right:-0;'/>
+        <br/>
+        <PushButton text='New' img='${home}/asterisk_yellow.gif' onclick='*.newSQL()' />
+        <PushButton text='Save' img='Tango/Misc/edit-save' onclick='*.saveSQL()' />
+        <PushButton text='Save as...' img='Tango/Misc/edit-save' onclick='*.saveAsSQL()' />
+        <PushButton text='Open' img='${home}/book_open.gif' onclick='*.openSQL()' />
+        <PushButton text='Show SQL' onclick='*.showSQL()' />
+        <PushButton text='Execute' onclick='*.executeSQL(xml)' />
+<!--
+      <PushButton text='Execute HTML' onclick='*.executeSQL(html)' />
+-->
+        <PushButton img='Tango/Misc/excel' text='Document' onclick='*.executeSQL(excel-max)' />
+        <PushButton img='${home}/XmlElement_16x16.gif' text='XML' onclick='*.executeSQL(xml-download)' />
+        <PushButton img='Tango/Misc/edit-delete' text='Delete' onclick='*.deleteSQL()' />
+        <PushButton img='Tango/Misc/edit-print' text='Print' onclick='*.printResultTable()' />
+      </Container>
+      <Container style='padding:0px;right:-0px;' name='PaginationContainer' >
+        <Checkbox2 name='USE.PAGINATION' value='true' text='Use Pagination' checked='true' onchange='*.onchangePagination()' />
+        <Label name='Label.ROW.INFORMATION' style='width:100px;right:-0px;' reset='true' />
+        <br/>
+        <Container style='padding:0px;right:-0px;' name='PaginationContainer2' >
+          <Label text='Rows per page' />
+	  				<Choice name='ROWS_PER_PAGE' onchange='*.onchangeRowsPerPage()' >
+	    				<option>2</option>
+	    				<option>10</option>
+	    				<option>100</option>
+	    				<option>200</option>
+	    				<option>300</option>
+	    				<option selected='true'>500</option>
+          </Choice>
+          <Label text='Show' />
+	  				<Choice name='OFFSET' reset='true' onchange='*.onchangeOffset()' >
+          </Choice>
+        </Container>
+      </Container>
+    </Container>
+    <br/>
+    <Container style='height:250px;width:700px;right:-0;bottom:-0;attach-right:true;padding:0px;'>
+      <DBQuery.ColumnsContainer style='height:200px;right:-0;'
+      >
+      </DBQuery.ColumnsContainer>
+      <SplitbarHorizontal/>
+      <DBQuery.FilterContainer style='height:200px;right:-0;bottom:-0;attach-bottom:true;'
+      >
+      </DBQuery.FilterContainer>
+    </Container>
+    <Container style='height:250px;width:700px;right:-0;bottom:-0;padding:0px;'>
+      <TitleLabel text='Query Result' style='left:0px;right:-0;' />
+      <br/>
+      <DisplayContainer name='RESULT_CONTAINER' style='width:300px;height:300px;bottom:-0;right:-0;overflow:hidden;'
+                       onload='*.onloadResultContainer()'
+      >
+      </DisplayContainer>
+    </Container>
+  </Container>
+</Container>
+</xml>
+

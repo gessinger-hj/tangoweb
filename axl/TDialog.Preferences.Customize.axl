@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog title='Preferences...' id="TDialog.Preferences.Customize" resizable='false' >
+  <Container name='Preferences' right=-0 bottom=-0 >
+    <Checkbox name='DialogBackgroundOpacity' text='Dialog Background Darker' default='0.0' value='0.5'
+              onchange='TGui.setDialogBackgroundOpacity(event)' />
+    <br/>
+    <Checkbox name='WindowCloseAnimationFadeOut' text='Fade out windows on close' default='false' value='true'
+    />
+    <br/>
+    <Container right='0' >
+      <PushButton img='save-16x16.gif' text='%Save%' default='true' onclick='TGui.preferencesCustomizeSave(event)' />
+      <PushButton img='Icon.RedCross.gif' text='%Cancel%' onclick='TGui.closeTopWindow(event)' />
+    </Container>
+  </Container>
+  </Dialog>
+</xml>
+

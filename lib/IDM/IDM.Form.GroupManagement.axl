@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='IDM.Form.GroupManagement' style='left:0px;top:0px;right:-0px;bottom:-0px;' reset='false' name='X'
+  label='%Groups%'
+  pagelet='new IDGroupEditor()'
+ >
+  <Toolbar style='top:0px;left:0px;' >
+    <PushButton img='${home}/kuser-new-16x16.gif' text='%NewGroup%' onclick='*.createGroup()' />
+    <PushButton text='%Overview%' onclick='*.roleOverview()' />
+  </Toolbar>
+  <br/>
+  <Container style='left:0px;padding:0px;margin:0px;right:-0;bottom:-0;'
+             onload='*.onload(event)'
+  >
+    <Container style='left:0px;bottom:-0px;' >
+      <Container style='left:0px;right:-0px;' name='SEARCH_PARAMETER' >
+        <Label text='%NameOrPartOfName%' />
+        <TextField persistent=true name='GROUP_SEARCH_PATTERN' style='width:200px;right:-0px;' default='*' action='*.search(event)'
+          resultlist='*.searchNames()'
+          resultlist-pattern-type='like'
+        />
+        <br/>
+        <PushButton img='${home}/kuser-find-16.png' text='%Search%' style='right:0px;' onclick='*.search(event)' />
+      </Container>
+      <br />
+      <Container style='left:0px;bottom:-1;right:-0px;' >
+        <Container right='-0' >
+          <Label text='%SearchResult%' style='font-weight:bold;' />
+        </Container>
+        <br/>
+        <Table name='T_IDENTITY' style='width:350px;bottom:-2;right:-0;'  reset='true'
+              click='*.edit()'
+              sortable='true'
+           >
+          <Columns>
+           <Column name='IDENTITY_NAME' title='%Name%' />
+<!--
+         <Column name='FULL_NAME' title='Name' />
+-->
+           <Column name='IDENTITY_TYPE_NAME' title='%GroupType%' />
+           <Column name='PARENT_IDENTITY_NAME' title='%Groups%' />
+           <Column name='ENABLED' title='%Enabled%'>
+      	     <Mappings>
+      		     <option value='0'>%No%</option>
+      		     <option value='1'>%Yes%</option>
+      	     </Mappings>
+      	   </Column>
+          </Columns>
+        </Table>
+      </Container>
+    </Container>
+    <Splitbar/>
+    <Container style='bottom:-0;right:-0;' >
+      <Container style='right:-0;' >
+        <Label text='%Details%' style='font-weight:bold;' />
+      </Container>
+      <br/>
+      <Multiform name='MF' style='width:400px;bottom:-1;right:-2'
+      >
+        <Container >
+        </Container>
+        <Container style='right:-0;bottom:-0;'>
+          <Container name='Edit.Data' style='padding:0px;bottom:-2;right:-0px;'
+                     onchange='handle:PB.Save'
+          >
+            <DisplayContainer style='width:400px;padding:0px;' >
+              <TitleLabel text='%Data%' style='right:-0;' />
+              <br/>
+              <Hidden name='IDENTITY_KEY' />
+              <Hidden name='LAST_MODIFIED' />
+              <ListLabel text='%Name%' />
+                <tab name='T1' x='+14' />
+                <Label name='IDENTITY_NAME' style='right:-4;' reset='true' getValue='true' />
+              <br/>
+              <ListLabel text='%GroupFirstName%' /> <tab name=T1 x='+24' /> <TextField name='FIRST_NAME' style='right:-4px;' default='null' />
+              <br/>
+              <ListLabel text='%GroupLastName%' /> <tab name='T1' x='+24' /> <TextField name='LAST_NAME' style='right:-4px;' default='null' />
+              <br/>
+              <ListLabel text='%email% 1' />
+                <tab name='T1' x='+24' />
+                <TextField name='EMAIL' type='email' style='right:-4px;'  default='null' />
+              <br/>
+              <ListLabel text='%email% 2' />
+                <tab name='T1' x='+24' />
+                <TextField name='EMAIL2' type='email' style='right:-4px;'  default='null' />
+              <br/>
+              <ListLabel text='%Phone%' /> <tab name='T1' x='+24' /> <TextField name='PHONE' style='right:-4;' default='null' />
+              <br/>
+              <ListLabel text='%Description%' /> <tab name='T1' x='+24' /> <TextField name='DESCRIPTION' style='right:-4;' default='null' />
+              <br/>
+              <ListLabel text='%GroupType%' /> <tab name='T1' x='+24' /> <Choice name='IDENTITY_TYPE_KEY' style='right:-2;' reset='false' />
+              <br/>
+              <tab name=T1 x='+24' />
+              <Checkbox2 name='ENABLED' value='1' text='%enabled%' default='0' />
+              <br/>
+              <tab name=T1 />
+  						<Label text='%ValidTo%'/><Date name='END_DATE' default='99990101'/>
+            </DisplayContainer>
+            <br/>
+            <Container style='width:400px;height:100px;bottom:-2px;padding:0px;right:-2px;attach-right:true;' >
+              <TitleLabel text='%Groups%' style='right:-0;' />
+              <br/>
+              <Table name='TABLE.AVAILABLE.GROUPS' style='bottom:-0;right:-0;' sortable='true' get-values='all'
+              >
+                <Columns>
+                  <Column name='active' title='&nbsp;' editable='check' >
+                    <Mappings>
+                      <option value='1' default='0' />
+                    </Mappings>
+                  </Column>
+                  <Column name='IDENTITY_NAME' title='%Name%' />
+                  <Column name='IDENTITY_TYPE_NAME' title='%GroupType%' />
+                  <Column name='DESCRIPTION' title='%Description%' />
+                </Columns>
+              </Table>
+            </Container>
+            <Xbr/>
+            <if property='identity_to_client' operator=eq value='true' >
+              <Container style='bottom:0px;attach-bottom:true;right:-0px;'>
+                <TitleLabel text='%Clients%' style='right:-0;' />
+                <br/>
+                <Table name='TABLE.AVAILABLE.CLIENTS' style='right:-0;height:150px;bottom:-0px;' sortable='true' get-values='all'
+                       onload='*.onloadSetVariables({ identity_to_client: true })'
+                >
+                  <Columns>
+                    <Column name='active' title='&nbsp;' editable='check' >
+                      <Mappings>
+                        <option value='1' default='0' />
+                      </Mappings>
+                    </Column>
+                    <Column name='CLIENT_NAME' title='%Name%' />
+                  </Columns>
+                </Table>
+              </Container>
+              <br/>
+            </if>
+            <if property='t_identity_to_sp' operator=eq value='true' >
+              <Container style='bottom:-2px;attach-bottom:true;right:0px;'>
+                <TitleLabel text='%Serviceprovider%' style='right:-0;' />
+                <br/>
+                <Table name='T_IDENTITY_TO_SP' style='right:-0;height:150px;bottom:-0px;' sortable='true' get-values='all'
+                       onload='*.onloadSetVariables({ t_identity_to_sp: true })'
+                >
+                  <Columns>
+                    <Column name='active' title='&nbsp;' editable='check' >
+                      <Mappings>
+                        <option value='1' default='0' />
+                      </Mappings>
+                    </Column>
+                    <Column name='SERVICEPROVIDER_NAME' title='%Name%' />
+                  </Columns>
+                </Table>
+              </Container>
+              <br/>
+            </if>
+            <Container style='padding:0px;right:4px;bottom:4px;' >
+              <PushButton text='%ChangeName%' onclick='*.changeName(event)' />
+              <PushButton name='PB.Edit.Roles' text='%Roles%' onclick='*.editRoles(event)' />
+              <PushButton name='PB.Save' text='%Save%' onclick='*.editSave(event)' />
+              <PushButton text="%Cancel%" onclick='*.editCancel(event)' />
+            </Container>
+          </Container>
+        </Container>
+      </Multiform>
+    </Container>
+  </Container>
+</Container>
+</xml>

@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window Ximg='function-2-16.png' title='Files...' id="DocumentEditor.Window" >
+    <Include src='DocumentEditor' />
+  </Window>
+</xml>

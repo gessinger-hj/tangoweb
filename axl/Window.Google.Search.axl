@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' img='${home}/resources/google-favicon.png' title='Google Search...' id="Window.Google.Search" >
+    <Container style='right:-0;bottom:-0;' name='Form' style='width:600px;height:600px;bottom:-0px;right:-0px;' >
+<iframe style='top:0px;left:0px;right:-0px;bottom:-0px;'
+src="http://www.google.de/search?client=opera&rls=en&q=cochem&sourceid=opera&ie=utf-8&oe=utf-8"
+src="http://www.google.com/webhp"
+>
+</iframe>
+    </Container>
+  </Window>
+</xml>
+

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=false resizable='true' dragable='true' title='No Title...' id="TDialog.Display" >
+      <Container >
+        <DisplayContainer style='bottom:-0;right:-0;attach-bottom:true;width:200px;height:100px;overflow:auto;' >
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+<Label text='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' />
+<br/>
+        </DisplayContainer>
+        <br />
+        <Container style='bottom:0;right:0;' >
+          <CosmosButton name="PB.APPLY" text='%Apply%' style='right:4;attach-right:true;' />
+          <CosmosButton name="PB.CANCEL" text="%Cancel%" style='right:4;' onclick='TGui.closeTopWindow(event)' />
+        </Container>
+      </Container>
+  </Window>
+</xml>

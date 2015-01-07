@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Axl>
+  </Axl>
+  <XCss>${home}/Style.css</XCss>
+  <Script><![CDATA[
+{
+  _initialize_: function()
+  {
+/**
+ *  @constructor
+ */
+DBAttributes = function ( FOREIGN_KEY, params )
+{
+  this.p = {} ;
+  this.p.TABLE = "${TABLE}" ;
+  this.p.KEY = "${KEY}" ;
+  this.p.NAME = "${NAME}" ;
+  this.p.VALUE = "${VALUE}" ;
+  this.p.SEQUENCE = "${SEQUENCE}" ;
+  this.p.FOREIGN_KEY = "${FOREIGN_KEY}" ;
+  this.p.TITLE = "${TITLE}" ;
+
+  if ( this.p.TABLE.indexOf ( "{" )       > 0 ) this.p.TABLE       = "" ;
+  if ( this.p.KEY.indexOf ( "{" )         > 0 ) this.p.KEY         = "" ;
+  if ( this.p.NAME.indexOf ( "{" )        > 0 ) this.p.NAME        = "" ;
+  if ( this.p.VALUE.indexOf ( "{" )       > 0 ) this.p.VALUE       = "" ;
+  if ( this.p.SEQUENCE.indexOf ( "{" )    > 0 ) this.p.SEQUENCE    = "" ;
+  if ( this.p.FOREIGN_KEY.indexOf ( "{" ) > 0 ) this.p.FOREIGN_KEY = "" ;
+  if ( this.p.TITLE.indexOf ( "{" )       > 0 ) this.p.TITLE       = "" ;
+
+  if ( params )
+  {
+    if ( params.TABLE ) this.p.TABLE = params.TABLE ;
+    if ( params.KEY ) this.p.KEY = params.KEY ;
+    if ( params.NAME ) this.p.NAME = params.NAME ;
+    if ( params.VALUE ) this.p.VALUE = params.VALUE ;
+    if ( params.FOREIGN_KEY ) this.p.FOREIGN_KEY = params.FOREIGN_KEY ;
+    if ( params.SEQUENCE ) this.p.SEQUENCE = params.SEQUENCE ;
+    if ( params.TITLE ) this.p.SEQUENCE = params.TITLE ;
+  }
+  else
+  {
+  }
+  this.jsClassName = "DBAttributes" ;
+  this.FOREIGN_KEY = FOREIGN_KEY ;
+} ;
+DBAttributes.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")["
+       + "\n  " + this.p.TABLE + "=" + this.p.TABLE
+       + "\n, " + this.p.FOREIGN_KEY + "=" + this.FOREIGN_KEY
+       + "]"
+ ;
+} ;
+DBAttributes.prototype.getDB = function()
+{
+  if ( this._db ) return this._db ;
+  this._db = new DatabaseClass() ;
+
+  this.nameSpace = TSys.getWebConfig().getValue ( "DBATTRIBUTES_NAMESPACE" ) ;
+  if ( ! this.nameSpace ) this.nameSpace = "" ; 
+  this.host = TSys.getWebConfig().getValue ( "DBATTRIBUTES_HOST" ) ;
+  this.port = TSys.getWebConfig().getValue ( "DBATTRIBUTES_PORT" ) ;
+
+  this._db.setNameSpace ( this.nameSpace ) ;
+  this._db.setHost ( this.host ) ;
+  this._db.setPort ( this.port ) ;
+
+  if ( this.nameSpace ) this.nameSpace = this.nameSpace + "::" ; 
+  return this._db ;
+}
+DBAttributes.prototype.getNameSpace = function()
+{
+  if ( ! this._db ) getDB() ;
+  return this.nameSpace ;
+}
+DBAttributes.prototype._createDbRequestMessage = function()
+{
+  if ( typeof ( this.nameSpace ) == 'undefined' )
+  {
+    this.nameSpace = TSys.getWebConfig().getValue ( "DBATTRIBUTES_NAMESPACE" ) ;
+    if ( ! this.nameSpace ) this.nameSpace = "" ; 
+    else this.nameSpace = this.nameSpace + "::" ; 
+    this.host = TSys.getWebConfig().getValue ( "DBATTRIBUTES_HOST" ) ;
+    this.port = TSys.getWebConfig().getValue ( "DBATTRIBUTES_PORT" ) ;
+  }
+  var msg = new CoMessage ( this.nameSpace + Calypso.get_DB_REQUEST() ) ;
+  msg.setHost ( this.host ) ;
+  msg.setPort ( this.port ) ;
+  return msg ;
+}
+DBAttributes.prototype.getAttributesForForeignKey = function()
+{
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var Q = dbv.addQuery ( this.p.TABLE
+		       , [
+		           this.p.KEY
+		         , this.p.NAME
+                         , this.p.VALUE
+                         , this.p.FOREIGN_KEY
+			 ]
+		       , this.p.FOREIGN_KEY + "=" + this.FOREIGN_KEY + " ORDER BY 2" ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  var x = dbv.getResultXml() ;
+  return x ;
+}
+DBAttributes.prototype.saveNewAttribute = function ( v )
+{
+  var KEY = "" ;
+  if ( this.p.SEQUENCE )
+  {
+    KEY = this.getDB().getNextValFromSequence ( this.p.SEQUENCE ) ;
+  }
+  else
+  {
+    var x = this.getDB().select ( "select max(" + this.p.KEY + ") as KEY from " + this.p.TABLE ) ;
+    KEY = x.getInt ( this.p.TABLE + "/row/KEY", -1 ) + 1 ;
+  }
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var I = dbv.addInsert ( this.p.TABLE ) ;
+  I.addColumn ( this.p.KEY, KEY ) ;
+  I.addColumn ( this.p.FOREIGN_KEY, this.FOREIGN_KEY ) ;
+  I.addColumn ( this.p.NAME, v.getContent ( this.p.NAME ) ) ;
+  I.addColumn ( this.p.VALUE, v.getContent ( this.p.VALUE ) ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+}
+DBAttributes.prototype.removeAttribute = function ( KEY )
+{
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var D = dbv.addDelete ( this.p.TABLE ) ;
+  D.addKeyColumn ( this.p.KEY, KEY ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+}
+DBAttributes.prototype.attributeAlreadyExists = function ( NAME )
+{
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var Q = dbv.addQuery ( this.p.TABLE
+                       , [ this.p.FOREIGN_KEY ]
+		       , this.p.NAME + "='" + NAME + "' AND " + this.p.FOREIGN_KEY + "=" + this.FOREIGN_KEY
+		       ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+  var x = dbv.getResultXml() ;
+  if ( ! x ) return false ;
+  if ( ! x.get ( this.p.TABLE ).isEmpty() ) return true ;
+  return false ;
+}
+DBAttributes.prototype.saveAll = function ( xValues )
+{
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var en = xValues.getEnum ( this.p.TABLE + "/row" ) ;
+  while ( en.hasNext() )
+  {
+    var xRow = en.nextXml() ;
+    var U = dbv.addUpdate ( this.p.TABLE ) ;
+    U.addKeyColumn ( this.p.KEY, xRow.getContent ( this.p.KEY ) ) ;
+    U.addColumn ( this.p.NAME, xRow.getContent ( this.p.NAME ) ) ;
+    U.addColumn ( this.p.VALUE, xRow.getContent ( this.p.VALUE ) ) ;
+  }
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+}
+DBAttributes.prototype.onclickTableItem = function ( ev )
+{
+  var w = ev.getWindow() ;
+  w.getComponent ( "PB.Modify" ).setEnabled ( true ) ;
+  w.getComponent ( "PB.Remove" ).setEnabled ( true ) ;
+}
+DBAttributes.prototype.onchangeTableItem = function ( ev )
+{
+}
+DBAttributes.prototype.edit = function ( fk )
+{
+  if ( fk ) this.FOREIGN_KEY = fk ;
+
+  var x = this.getAttributesForForeignKey() ;
+  var w = new TWindow ( "${home}/DBAttributes.Window.Edit", this.p ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  x.ensureXml ( this.p.FOREIGN_KEY ).setContent ( this.FOREIGN_KEY ) ;
+  w.setValues ( x ) ;
+  w.show() ;
+} ;
+DBAttributes.prototype.save = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var vals = w.getValues() ;
+  try
+  {
+    this.saveAll ( vals ) ;
+    var x = this.getAttributesForForeignKey() ;
+    w.setValues ( x ) ;
+    w.resetChanged() ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error(w) ;
+    throw exc ;
+  }
+} ;
+DBAttributes.prototype.modify = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var tab = w.getPeer ( this.p.TABLE ) ;
+  var x = tab.getSelectedUserXml() ;
+  if ( ! x )
+  {
+    var d = new TUserDialog ( "Please select an item." ) ;
+    d.error() ;
+    return ;
+  }
+  var old = x.ensureXml ( "OLD_NAME" ) ;
+  old.setContent ( x.getContent ( this.p.NAME ) ) ;
+  var ww = new TWindow ( "${home}/DBAttributes.Window.Modify", this.p ) ;
+  ww.setPagelet ( this ) ;
+  ww.create() ;
+
+  ww.setValues( x ) ;
+  ww.addAttribute ( "w", w ) ;
+  ww.show() ;
+} ;
+DBAttributes.prototype.modifySave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var NAME = v.getContent ( this.p.NAME ) ;
+  var OLD_NAME = v.getContent ( "OLD_NAME" ) ;
+  var w = ev.getWindow() ;
+  try
+  {
+    if ( OLD_NAME != NAME && this.attributeAlreadyExists ( NAME ) )
+    {
+      var str = TSys.translate ( "AlreadyExistsArg0", null, [ NAME ] ) ;
+      var d = new TUserDialog ( str ) ;
+      d.error(w) ;
+      return ;
+    }
+    this.saveModifiedAttribute ( v ) ;
+    var pw = w.getAttribute ( "w" ) ;
+    var x = this.getAttributesForForeignKey() ;
+    pw.setValues ( x ) ;
+    var tab = pw.getPeer ( this.p.TABLE ) ;
+    tab.findRow ( this.p.NAME, NAME ).setSelected ( true, true ) ;
+    w.closeImediately() ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error(w) ;
+    throw exc ;
+  }
+} ;
+DBAttributes.prototype.saveModifiedAttribute = function ( v )
+{
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var KEY = v.getContent ( this.p.KEY ) ;
+  var U = dbv.addUpdate ( this.p.TABLE, this.p.KEY + "=" + KEY ) ;
+  U.addColumn ( this.p.NAME, v.getContent ( this.p.NAME ) ) ;
+  U.addColumn ( this.p.VALUE, v.getContent ( this.p.VALUE ) ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+}
+DBAttributes.prototype.addNew = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = new TWindow ( "${home}/DBAttributes.Window.New", this.p ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  var v = ev.getValues() ;
+  w.setValues ( v ) ;
+  w.addAttribute ( "w", ev.getWindow() ) ;
+  w.show() ;
+} ;
+DBAttributes.prototype.addNewSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var NAME = v.getContent ( this.p.NAME ) ;
+  var w = ev.getWindow() ;
+  try
+  {
+    if ( this.attributeAlreadyExists ( NAME ) )
+    {
+      var str = TSys.translate ( "AlreadyExistsArg0", null, [ NAME ] ) ;
+      var d = new TUserDialog ( str ) ;
+      d.error(w) ;
+      return ;
+    }
+    this.saveNewAttribute ( v ) ;
+    var pw = w.getAttribute ( "w" ) ;
+    var x = this.getAttributesForForeignKey() ;
+    pw.setValues ( x ) ;
+    var tab = pw.getPeer ( this.p.TABLE ) ;
+    tab.findRow ( this.p.NAME, NAME ).setSelected ( true, true ) ;
+    w.closeImediately() ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error(w) ;
+    throw exc ;
+  }
+} ;
+DBAttributes.prototype.remove = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var tab = w.getPeer ( this.p.TABLE ) ;
+  var x = tab.getSelectedUserXml() ;
+  if ( ! x )
+  {
+    var d = new TUserDialog ( "Please select an item." ) ;
+    d.error() ;
+    return ;
+  }
+
+  var d = new TUserDialog ( "AreYouSureToDeleteSelectedItem" ) ;
+  var KEY = x.getContent ( this.p.KEY ) ;
+  var NAME = x.getContent ( this.p.NAME ) ;
+  d.callOnConfirmation ( this.remove2, [ w, KEY ], this )
+  d.askYesNo() ;
+} ;
+DBAttributes.prototype.remove2 = function ( w, KEY )
+{
+  this.removeAttribute ( KEY ) ;
+  var x = this.getAttributesForForeignKey() ;
+  w.setValues ( x ) ;
+  w.getComponent ( "PB.Modify" ).setEnabled ( false ) ;
+  w.getComponent ( "PB.Remove" ).setEnabled ( false ) ;
+} ;
+DBAttributes.prototype.onSetValues = function ( x )
+{
+} ;
+DBAttributes.prototype.onGetValues = function ( x )
+{
+} ;
+  }
+  }
+  ]]></Script>
+</xml>
+

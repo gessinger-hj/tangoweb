@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container style='width:600px;height:600px;right:-0;bottom:-0;' name='Form.Function.Editor'
+  pagelet='new FunctionEditor()'
+  onchange='handle:PB.Save PB.Test'
+  onload='function(ev)
+  {
+  var p = ev.getPagelet() ;
+  p.onloadFormEditor(ev) ;
+  }'
+>
+  <Toolbar style='left:0px;top:0px;right:-0;' >
+    <ToolbarButton name='PB.Save' disabled='true' img='${home}/function-save-2-32.png' img-width='32' tooltip='%Save%' onclick='*.save() ' />
+    <ToolbarButton name='PB.Test' disabled='true' img='${home}/syntaxcheck_32x32.png' img-width='32' tooltip='%Test%' onclick='*.testCompile()' />
+  </Toolbar>
+  <br/>
+  <Container style='right:-0;bottom:-0;padding:0px;' name='Form.BODY'
+    onload='*.onloadFormBODY()'
+  >
+    <Hidden name='FUNCTION_ID' />
+    <Hidden name='FUNCTION_TYPE_ID' />
+    <Hidden name='FUNCTION_NAME' />
+    <Container style='height:200px;right:-0;padding:0px;' >
+      <TitleLabel style='left:0px;top:0px;' text='%Eligibility%' />
+      <br/>
+      <TextArea name='ELIGIBILITY' style='left:0px;right:-0;bottom:-1;attach-bottom:true;' >
+      </TextArea>
+      <br/>
+      <Container name='INFO_ELIGIBILITY' style='left:0px;height:18px;right:-0;bottom:0px;color:black;background-color:white;' >
+      </Container>
+    </Container>
+    <SplitbarHorizontal/>
+    <Container style='height:550px;right:-0;bottom:-1;attach-bottom:true;' >
+      <TitleLabel text='%Function%' style='left:0px;' />
+      <br/>
+      <TextArea name='FUNCTION_BODY' style='left:0px;right:-0;bottom:-1;attach-bottom:true;' >
+      </TextArea>
+      <br/>
+      <Container name='INFO_FUNCTION_BODY' style='left:0px;height:18px;right:-0;bottom:0px;color:black;background-color:white;' >
+      </Container>
+    </Container>
+  </Container>
+</Container>
+</xml>
+

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog title='New Connection...' id="Dialog.Admin.New.Connection" >
+    <Container style='bottom:-0;right:-0;' onchange='handle:PB.Dialog.Admin.New.Connection.Save' >
+      <ListLabel text='Host or ip address' />
+        <tab name='T1' /><TextField name='host' mandatory='true' style='width:150px;right:-4;' />
+      <br/>
+      <ListLabel text='Port' />
+        <tab name='T1' /><TextField name='port' mandatory='true' style='width:150px' type=int />
+      <br/>
+      <ListLabel text='Title' />
+        <tab name='T1' /><TextField name='title' style='width:150px;right:-4;' />
+      <br/>
+      <Container style='bottom:0;right:0;' >
+        <PushButton text='Test' onclick='Admin.newConnectionTest(event)' />
+        <PushButton text='Save' onclick='Admin.newConnectionSave(event)' disabled=true id='PB.Dialog.Admin.New.Connection.Save' />
+        <PushButton text='Close' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Dialog>
+</xml>
+

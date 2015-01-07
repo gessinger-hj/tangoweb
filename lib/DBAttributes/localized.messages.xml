@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Value>
+    <en>Value</en>
+    <de>Wert</de>
+  </Value>
+  <Type>
+    <en>Type</en>
+    <de>Typ</de>
+  </Type>
+  <Remove>
+    <en>Remove</en>
+    <de>Entfernen</de>
+  </Remove>
+  <Modify>
+    <en>Modify</en>
+    <de>&Auml;ndern</de>
+  </Modify>
+  <Add>
+    <en>Add</en>
+    <de>Hinzuf&uuml;gen</de>
+  </Add>
+  <Print>
+    <en>Print</en>
+    <de>Drucken</de>
+  </Print>
+  <Edit>
+    <en>Edit</en>
+    <de>Bearbeiten</de>
+  </Edit>
+  <ID>
+    <en>ID</en>
+    <de>ID</de>
+  </ID>
+  <Name>
+    <en>Name</en>
+    <de>Name</de>
+  </Name>
+  <Save>
+    <en>Save</en>
+    <de>Sichern</de>
+  </Save>
+  <AlreadyExistsArg0>
+    <en>$0 already exists.</en>
+    <de>$0 ist schon vorhanden.</de>
+  </AlreadyExistsArg0>
+</xml>

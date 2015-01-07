@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+    <Container style='height:200px;right:-0;background-color:white;bottom:-0;attach-bottom:true;' name='FILTER_CONTAINER'
+               onload='*.onloadFilterContainer()'
+    >
+      <TitleLabel text='Filter conditions' style='left:0px;right:-0;' />
+      <br/>
+      <Table name='FILTER_TABLE' style='left:0px;right:-0;bottom:-4;attach-bottom:true;'
+             get-values='all' droptarget='true'
+      >
+        <Columns>
+          <Column name='ACTION' editable='choice' valign='middle' >
+            <Mappings>
+              <option value='AND' >AND</option>
+              <option value='OR' >OR</option>
+              <option value='AND(' >AND (</option>
+              <option value='OR(' >OR (</option>
+              <option value=')AND' >) AND</option>
+              <option value=')OR' >) OR</option>
+              <option value=')AND(' >) AND (</option>
+              <option value=')OR(' >) OR (</option>
+              <option value=')' >)</option>
+            </Mappings>
+	  </Column>
+          <Column name='LEFT_OPERAND' valign='middle' />
+          <Column name='LEFT_OPERAND_FUNCTION' editable='choice' valign='middle' />
+	  <Column name='OPERATOR' editable='choice' valign='middle' />
+          <Column name='RIGHT_OPERAND' editable='true' valign='middle' />
+          <Column name='CLEAR' title=' ' />
+        </Columns>
+      </Table>
+    </Container>
+</xml>
+
+

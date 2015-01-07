@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Axl>
+    <Define tag='PageletKachel' >
+      <Pagelet decoration-back='{src:"${home}/Kachel.png",type:"sliced"
+                                ,border:{top:13,left:13,bottom:13,right:13}
+                                ,padding:{top:6,left:6,bottom:12,right:12}}'
+      />
+    </Define>
+    <Define tag='PageletInfoBox' >
+      <Pagelet decoration-back='{src:"${home}/InfoBox.gif",type:"sliced"
+                                ,border:{top:10,left:10,bottom:10,right:10}
+                                ,padding:{top:6,left:6,bottom:10,right:10}}'
+      />
+    </Define>
+    <Define tag='PageletShadowBox' >
+      <Pagelet decoration-back='{src:"${home}/ShadowBox2.png",type:"sliced"
+                                ,border:{top:41,left:17,bottom:17,right:17}
+                                ,padding:{top:4,left:8,bottom:8,right:8}}'
+               style-title='top:12px;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletShadowBox2' >
+      <Pagelet decoration-back='{src:"${home}/ShadowBox2.png",type:"sliced"
+                                ,border:{top:41,left:17,bottom:17,right:17}
+                                ,padding:{top:4,left:8,bottom:8,right:8}}'
+               style-title='top:12px;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletShadowBoxBlue' >
+      <Pagelet decoration-back='{src:"${home}/ShadowBoxBlue.png",type:"sliced"
+                                ,border:{top:41,left:17,bottom:17,right:17}
+                                ,padding:{top:8,left:8,bottom:4,right:8}}'
+               style-title='top:12px;color:white;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletShadowBoxNavy' >
+      <Pagelet decoration-back='{src:"${home}/ShadowBoxNavy.png",type:"sliced"
+                                ,border:{top:41,left:17,bottom:17,right:17}
+                                ,padding:{top:8,left:8,bottom:4,right:8}}'
+               style-title='top:12px;color:white;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletShadowBoxOcker' >
+      <Pagelet decoration-back='{src:"${home}/ShadowBoxOcker.png",type:"sliced"
+                                ,border:{top:41,left:17,bottom:17,right:17}
+                                ,padding:{top:8,left:8,bottom:4,right:8}}'
+               style-title='top:12px;color:white;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletShadowBoxYellow' >
+      <Pagelet decoration-back='{src:"${home}/ShadowBoxYellow.png",type:"sliced"
+                                ,border:{top:41,left:17,bottom:17,right:17}
+                                ,padding:{top:4,left:4,bottom:4,right:4}}'
+               style-title='top:12px;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletLightGray'>
+      <Pagelet decoration-back='{src:"${home}/LightGray.png",type:"sliced",border:{top:24,left:5,bottom:5,right:5}}' />
+    </Define>
+    <Define tag='PageletLightBlue'>
+      <Pagelet decoration-back='{src:"${home}/LightBlue.png",type:"sliced",border:{top:24,left:5,bottom:5,right:5}}' />
+    </Define>
+    <Define tag='PageletBlueGlare' >
+      <Pagelet decoration-back='{src:"${home}/BlueGlare.png",type:"sliced"
+                                ,border:{top:26,left:9,bottom:9,right:9}
+                                ,padding:{left:4,bottom:4,right:4}}'
+      />
+    </Define>
+    <Define tag='PageletOrangeGlare' >
+      <Pagelet decoration-back='{src:"${home}/OrangeGlare.png",type:"sliced"
+                                ,border:{top:26,left:9,bottom:9,right:9}
+                                ,padding:{left:3,right:5,bottom:5}}'
+      />
+    </Define>
+    <Define tag='PageletBlackGlare' >
+      <Pagelet decoration-back='{src:"${home}/BlackGlare.png",type:"sliced"
+                                ,border:{top:26,left:9,bottom:9,right:9}
+                                ,padding:{left:3,right:5,bottom:5}}'
+               style-title='top:4px;color:white;font-weight:bold;'
+      />
+    </Define>
+    <Define tag='PageletBlueGlareWhite' >
+      <Pagelet decoration-back='{src:"${home}/BlueGlareWhite.png",type:"sliced"
+                                ,border:{top:26,left:9,bottom:9,right:9}
+                                ,padding:{left:5,right:5,bottom:5}}'
+      />
+    </Define>
+    <Define tag='PageletTagsSml' >
+      <Pagelet decoration-back='{src:"${home}/TagsSml.png",type:"sliced"
+                                ,border:{top:30,left:12,bottom:12,right:12}
+                                ,padding:{top:4,left:4,bottom:4,right:4}}'
+      />
+    </Define>
+    <Define tag='PageletDefault' >
+      <Pagelet 
+      decoration-title='{src:"${home}/Default-title.png",type:"sliced",border:{top:4,left:4,bottom:4,right:4}}'
+      decoration-body='{src:"${home}/Default-body.png",type:"sliced",border:{top:4,left:4,bottom:4,right:4},padding:{top:4,left:4,bottom:4,right:4}}'
+      />
+    </Define>
+  <Define tag='SilverBarButton' >
+      <CustomButton text='' style='top:0px;margin-right:0px;bottom:-0;'
+	      estyle='{ normal: { image: { src:"${home}/bar-button-0.png"
+                   , border: { top:1,left:1,bottom:1,right:1 }
+                   }
+                   , color: { foreground:"black" }
+              }
+	      , inside: { image: { src:"${home}/bar-button-0-lighter.png"
+                   , border: { top:1,left:1,bottom:1,right:1 }
+                   }
+                   , color: { foreground:"black" }
+              }
+	      , pressed: { image: { src:"${home}/bar-button-0-darker.png"
+                   , border: { top:1,left:1,bottom:1,right:1 }
+                   }
+                   , color: { foreground:"black" }
+              }
+          , padding:{top:1,left:1,bottom:1,right:1 }
+          }' />
+    </Define>
+    <Define tag='SilverBar' >
+      <Container style='width:400px;height:38px;'
+	      decoration='{src:"${home}/bar.png",type:"sliced",border:{top:7,left:45,bottom:10,right:9},padding:{top:0,left:45,bottom:4,right:9}}'
+      >
+      </Container>
+    </Define>
+  </Axl>
+</xml>
+

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml >
+<Dialog img='${home}/kuser-new-16x16.gif' modal='true' resizable='true' title='%CreateAGroup%' id="Dialog.CreateGroup" onclose='TGui.windowCancel(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save;javascript:
+  {
+    w:null,
+    execute: function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      if ( ! this.w )
+      {
+        this.w = ev.getWindow() ;
+      }
+      if ( this.w.getAttribute ( "ERROR" ) ) return false ;
+    }
+  }'
+  >
+    <DisplayContainer style='right:-4;bottom:-2;width:400px;attach-bottom:true;' >
+      <TextField tabx='24' label='%Name%' name='IDENTITY_NAME' style='width:200px;right:-0;'
+	      note='%TheNameMustContainMoreThan2Characters%' mandatory='true' minlength='3'
+	      onkeyup='
+	      {
+                w:null,
+                label:null,
+		timer:null,
+		tf:null,
+	        execute: function (event)
+	        {
+		  if ( ! this.tf )
+		  {
+	            var ev = new TEvent ( event ) ;
+                    this.w = ev.getWindow() ;
+		    this.pagelet = this.w.getPagelet() ;
+		    this.db = this.pagelet.getDB() ;
+                    this.label = this.w.getComponent ( "L.Status.2" ) ;
+		    this.tf = ev.getComponent() ;
+		    this.timer = new TTimer ( 500, function(t)
+		    {
+                      var sql = "select IDENTITY_NAME from T_IDENTITY where UPPER(IDENTITY_NAME)=&apos;" + t.text.toUpperCase() + "&apos;" ;
+                      var x = t.db.select ( "T_IDENTITY", sql ) ;
+                      if ( x.get ( "T_IDENTITY/row" ) )
+                      {
+                        t.w.addAttribute ( "ERROR", "true" ) ;
+                        t.label.setValue ( "<b>" + t.text + "</b> already exists." ) ;
+                        t.w.checkStatus() ;
+                      }
+                      else
+                      {
+                        t.w.addAttribute ( "ERROR", "" ) ;
+                        t.label.setValue ( "" ) ;
+                        t.w.checkStatus() ;
+                      }
+		    }) ;
+		    this.timer.setRepeats ( false ) ;
+		    this.timer.label = this.label ;
+		    this.timer.w = this.w ;
+		    this.timer.db = this.db ;
+		  }
+		  var t = this.tf.getText() ;
+		  this.timer.stop() ;
+		  if ( t.length < 3 )
+		  {
+                    this.label.setValue ( "" ) ;
+		    return ;
+		  }
+		  this.timer.text = t ;
+                  this.label.setValue ( "" ) ;
+		  this.timer.start() ;
+	        }
+	      }'
+      />
+      <br/>
+      <Label name='L.Status.2' text='' style='right:-0;color:red;' />
+      <br/>
+      <TextField label='%GroupFirstName%' name='FIRST_NAME' style='right:-0;' />
+      <br/>
+      <TextField label='%GroupLastName%' name='LAST_NAME' style='right:-0;' />
+<!--
+    <br/>
+    <TextField label='Email' name='EMAIL' width='200' right=-4 Xtooltip='mandatory' Xmandatory='The e-mail must be given.' />
+-->
+      <br/>
+      <TextField label='%Phone%' name='PHONE' style='right:-0;' />
+      <br/>
+      <ListLabel text='%GroupType%' /><tab name='T1'/>
+      <Choice name='IDENTITY_TYPE_KEY' style='right:-0;' />
+    </DisplayContainer>
+    <br />
+    <Container style='bottom:0;right:0;' >
+      <PushButton disabled='true' id='PB.Save' img='save-16x16.gif' text='%Save%' onclick='*.createGroupSave(event)' />
+      <PushButton text="%Cancel%" onclick='TGui.windowCancel(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>
+

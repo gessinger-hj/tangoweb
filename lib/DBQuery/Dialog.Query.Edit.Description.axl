@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Rename Query' id="Dialog.Query.Edit.Description" >
+    <Container style='right:-0;bottom:-0;' onchange='handle:PB.Apply' >
+      <Container name='X' style='left:0px;right:-4;bottom:-0;attach-bottom:true;' >
+        <Label text='Name:' /><tab name='T1' X='+4' />
+        <TextField name='NAME' maxlength='50' mandatory='New name of query.' style='right:-4;attach-right:true;' />
+        <br />
+        <Label text='Description:' /><tab name='T1' />
+        <TextField name='DESCRIPTION' maxlength='200' style='right:-4;attach-right:true;' />
+      </Container>
+      <br />
+      <Container style='bottom:0;right:0;' >
+        <PushButton name='PB.Apply' disabled=true img='Tango/Misc/edit-save' text="%Save%" onclick='*.renameQueryApply(event)' />
+        <PushButton text="%Cancel%" img='Icon.RedCross.gif' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

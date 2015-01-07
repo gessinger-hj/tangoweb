@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Edit Date...' id="Dialog.Query.Edit.RightOperandDate" >
+    <Container style='right:-0;bottom:-0;' >
+      <Container name='X' style='left:0px;right:-4;bottom:-0;attach-bottom:true;' >
+        <Label text='Select an exact date / time' />
+          <tab name=T1 x=+1/>
+          <Radio name='TYPE' value='T_DATE' text='Date:' />
+          <DateTime name='DATE' format-in='yyyy-MM-dd HH:mm:ss' min-year='-20' format-out='yyyy-MM-dd HH:mm:ss' />
+        <br/>
+        <br/>
+        <Label text='or select the start or end time relative to today of a:' />
+        <br/>
+        <Label text='Day:' style='right:4px;attach-right:true;' />
+          <tab name=T1 x=+1/>
+          <Radio name='TYPE' value='T_START_OF_DAY' text='Start' />
+          <TextField name='START_OF_DAY' type='sint' style='width:32px;' />
+          <Radio name='TYPE' value='T_END_OF_DAY' text='End' />
+          <TextField name='END_OF_DAY' type='sint' style='width:32px;' />
+        <br/>
+        <Label text='Week:' style='right:4px;attach-right:true;' />
+          <tab name=T1 x=+1/>
+          <Radio name='TYPE' value='T_START_OF_WEEK' text='Start' />
+          <TextField name='START_OF_WEEK' type='sint' style='width:32px;' />
+          <Radio name='TYPE' value='T_END_OF_WEEK' text='End' />
+          <TextField name='END_OF_WEEK' type='sint' style='width:32px;' />
+        <br/>
+        <Label text='Month:' style='right:4px;attach-right:true;' />
+          <tab name=T1 x=+1/>
+          <Radio name='TYPE' value='T_START_OF_MONTH' text='Start' />
+          <TextField name='START_OF_MONTH' type='sint' style='width:32px;' />
+          <Radio name='TYPE' value='T_END_OF_MONTH' text='End' />
+          <TextField name='END_OF_MONTH' type='sint' style='width:32px;' />
+          <br/>
+          <Container style='right:-0px;width:300px;'><![CDATA[
+            A positive value points to the future a negative value points to the past.
+            A value of 0 ( zero ) means the current day / week / month.
+          ]]></Container>
+      </Container>
+      <br />
+      <Container style='bottom:0;right:0;' >
+        <PushButton name='PB.Apply' img='Tango/Misc/edit-save' text="%Save%" onclick='*.editRightOperandDateApply(event)' />
+        <PushButton text="%Cancel%" img='Icon.RedCross.gif' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

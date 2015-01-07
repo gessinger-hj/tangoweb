@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window img='${home}/function-16.png' title='%EditFunction%' id="Window.Function.Editor" close-with-escape='true' onclose='TGui.cancelWindow()' >
+    <Include src='${home}/Form.Function.Editor' />
+  </Window>
+</xml>
+
+
+

@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml >
+<Dialog resizable='true' title='%AssignRoles%' id="Dialog.Edit.Roles" onclose='TGui.windowCancel(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save;'
+  >
+    <Hidden name='IDENTITY_KEY' />
+    <Table name='T_IDENTITY_TO_ROLE' style='top:0px;left:0px;bottom:-0px;right:-0px;width:300px;height:300px;'
+      get-values='changed'
+    >
+      <Columns>
+        <Column name='ACTIVE' editable='check' title='&nbsp;' >
+          <Mappings>
+            <options value='true' default='false' />
+          </Mappings>
+        </Column>
+        <Column name='ROLE_NAME' title='%Name%' />
+        <Column name='DESCRIPTION' title='%Description%' />
+      </Columns>
+    </Table>
+    <br />
+    <Container style='bottom:0;right:0;' >
+      <PushButton disabled='true' name='PB.Save' img='save-16x16.gif' text='%Save%' onclick='*.editRolesSave(event)' />
+      <PushButton text="%Cancel%" onclick='TGui.windowCancel(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>
+

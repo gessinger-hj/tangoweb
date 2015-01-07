@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Value>
+    <en>Value</en>
+    <de>Wert</de>
+  </Value>
+  <Type>
+    <en>Type</en>
+    <de>Typ</de>
+  </Type>
+  <Remove>
+    <en>Remove</en>
+    <de>Entfernen</de>
+  </Remove>
+  <Modify>
+    <en>Modify</en>
+    <de>&Auml;ndern</de>
+  </Modify>
+  <Add>
+    <en>Add</en>
+    <de>Hinzuf&uuml;gen</de>
+  </Add>
+  <Print>
+    <en>Print</en>
+    <de>Drucken</de>
+  </Print>
+  <Tariff>
+    <en>Tariff</en>
+    <de>Tarif</de>
+  </Tariff>
+  <EditTariffAttributes>
+    <en>Edit tariff attributes</en>
+    <de>Tariffattribute bearbeiten</de>
+  </EditTariffAttributes>
+  <EditTariffAttributesArgs0>
+    <en>Edit tariff attributes: $0</en>
+    <de>Tariffattribute bearbeiten: $0</de>
+  </EditTariffAttributesArgs0>
+</xml>

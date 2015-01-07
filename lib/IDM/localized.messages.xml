@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Search>
+    <en>Search</en>
+    <de>Suchen</de>
+  </Search>
+  <NewGroup>
+    <en>New Group</en>
+    <de>Neue Gruppe</de>
+  </NewGroup>
+  <NewUser>
+    <en>New User</en>
+    <de>Neuer Benutzer</de>
+  </NewUser>
+  <User>
+    <en>User</en>
+    <de>Benutzer</de>
+  </User>
+  <NameOrPartOfName>
+    <en>Name or part of name</en>
+    <de>Name oder Teil des Namens</de>
+  </NameOrPartOfName>
+  <Clients>
+    <en>Clients</en>
+    <de>Mandanten</de>
+  </Clients>
+  <CreateAGroup>
+    <en>Create a Group...</en>
+    <de>Eine neue Gruppe anlegen...</de>
+  </CreateAGroup>
+  <CreateAUser>
+    <en>Create a User...</en>
+    <de>Einen neuen Benutzer anlegen...</de>
+  </CreateAUser>
+  <TheNameMustContainMoreThan2Characters>
+    <en>The name must contain more than 2 characters.</en>
+    <de>Der Name muss mehr als 2 Buchstaben besitzen.</de>
+  </TheNameMustContainMoreThan2Characters>
+  <TheNameMustContainMoreThan6Characters>
+    <en>The name must contain more than 6 characters.</en>
+    <de>Der Name muss mehr als 6 Buchstaben besitzen.</de>
+  </TheNameMustContainMoreThan6Characters>
+  <enabled>
+    <en>enabled</en>
+    <de>aktiviert</de>
+  </enabled>
+  <Enabled>
+    <en>Enabled</en>
+    <de>Aktiviert</de>
+  </Enabled>
+  <LoginEnabled>
+    <en>Login Enabled</en>
+    <de>Anmeldung m&ouml;glich</de>
+  </LoginEnabled>
+  <TitleLoginEnabled>
+    <en>Login Enabled</en>
+    <de>Anmeldung&lt;br/> m&ouml;glich</de>
+  </TitleLoginEnabled>
+  <LoginName>
+    <en>Login Name</en>
+    <de>Anmeldenname</de>
+  </LoginName>
+  <GroupLastName>
+    <en>Last name</en>
+    <de>Nachname</de>
+  </GroupLastName>
+  <GroupFirstName>
+    <en>First name</en>
+    <de>Vorname</de>
+  </GroupFirstName>
+  <FirstName>
+    <en>First name</en>
+    <de>Vorname</de>
+  </FirstName>
+  <LastName>
+    <en>Last name</en>
+    <de>Nachname</de>
+  </LastName>
+  <Phone>
+    <en>Phone</en>
+    <de>Telefon</de>
+  </Phone>
+  <Name>
+    <en>Name</en>
+    <de>Name</de>
+  </Name>
+  <Group>
+    <en>Group</en>
+    <de>Gruppe</de>
+  </Group>
+  <Groups>
+    <en>Groups</en>
+    <de>Gruppen</de>
+  </Groups>
+  <GroupType>
+    <en>Group type</en>
+    <de>Gruppentyp</de>
+  </GroupType>
+  <Details>
+    <en>Details</en>
+    <de>Details</de>
+  </Details>
+  <SearchResult>
+    <en>Search Result</en>
+    <de>Suchresultat</de>
+  </SearchResult>
+  <Description>
+    <en>Description</en>
+    <de>Beschreibung</de>
+  </Description>
+  <email>
+    <en>email</en>
+    <de>email</de>
+  </email>
+  <Data>
+    <en>Data</en>
+    <de>Daten</de>
+  </Data>
+  <Password>
+    <en>Password</en>
+    <de>Passwort</de>
+  </Password>
+  <PasswordConfirmation>
+    <en>Password confirmation</en>
+    <de>Passwortbest&auml;tigung</de>
+  </PasswordConfirmation>
+  <PleaseSelectAGroup>
+    <en>Please select a group</en>
+    <de>Bitte w&auml;hlen Sie eine Gruppe aus</de>
+  </PleaseSelectAGroup>
+  <MustBeEqualToThePassword>
+    <en>must be equal to the password</en>
+    <de>muss mit dem Passwort &uuml;bereinstimmen</de>
+  </MustBeEqualToThePassword>
+  <alreadyExists>
+    <en>already exists</en>
+    <de>besteht bereits</de>
+  </alreadyExists>
+  <ThePasswordsDoNotMatch>
+    <en>The passwords do not match</en>
+    <de>Die Passw&ouml;rter stimmen nicht &uuml;berein.</de>
+  </ThePasswordsDoNotMatch>
+  <EditUserSPassword>
+    <en>Edit User's Password...</en>
+    <de>Passwort bearbeiten...</de>
+  </EditUserSPassword>
+  <Roles>
+    <en>Roles</en>
+    <de>Rollen</de>
+  </Roles>
+  <Rights>
+    <en>Rights</en>
+    <de>Rechte</de>
+  </Rights>
+  <AssignRoles>
+    <en>Assign Roles...</en>
+    <de>Rollen zuweisen...</de>
+  </AssignRoles>
+  <RolesToRights>
+    <en>Roles To Rights</en>
+    <de>Rollen zu Rechten</de>
+  </RolesToRights>
+  <GroupToRoles>
+    <en>Group To Roles</en>
+    <de>Gruppen zu Rollen</de>
+  </GroupToRoles>
+  <GroupToRights>
+    <en>Groupes, Roles and Rights...</en>
+    <de>Gruppen, Rollen und Rechte...</de>
+  </GroupToRights>
+  <Refresh>
+    <en>Refresh</en>
+    <de>Neu laden</de>
+  </Refresh>
+  <Overview>
+    <en>Overview</en>
+    <de>&Uuml;berblick</de>
+  </Overview>
+  <RolesAndRights>
+    <en>Roles &amp; Rights</en>
+    <de>Rollen &amp; Rechte</de>
+  </RolesAndRights>
+  <NewRole>
+    <en>New Role</en>
+    <de>Neue Rolle</de>
+  </NewRole>
+  <NewRight>
+    <en>New Right</en>
+    <de>Neues Recht</de>
+  </NewRight>
+  <AddRight>
+    <en>Add Right</en>
+    <de>Recht hinzuf&uuml;gen</de>
+  </AddRight>
+  <AddARight>
+    <en>Add a Right...</en>
+    <de>Ein Recht hinzuf&uuml;gen...</de>
+  </AddARight>
+  <CreateARole>
+    <en>Create a Role...</en>
+    <de>Eine neue Rolle anlegen...</de>
+  </CreateARole>
+  <CreateARight>
+    <en>Create a Right...</en>
+    <de>Ein neues Recht anlegen...</de>
+  </CreateARight>
+  <EditARole>
+    <en>Edit a Role...</en>
+    <de>Eine Rolle bearbeiten...</de>
+  </EditARole>
+  <EditARight>
+    <en>Edit a Right...</en>
+    <de>Ein Recht bearbeiten...</de>
+  </EditARight>
+  <EndDate>
+    <en>End-date</en>
+    <de>Endedatum</de>
+  </EndDate>
+  <ValidTo>
+    <en>Valid to:</en>
+    <de>G&uuml;ltig bis:</de>
+  </ValidTo>
+  <Collapse>
+    <en>Collapse</en>
+    <de>Reduzieren</de>
+  </Collapse>
+  <Expand>
+    <en>Expand</en>
+    <de>Erweitern</de>
+  </Expand>
+</xml>

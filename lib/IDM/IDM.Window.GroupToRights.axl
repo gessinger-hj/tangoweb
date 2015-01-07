@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Window id='IDM.Window.GroupToRights' title='%GroupToRights%' pagelet='new IDInfo()'>
+<Container style='left:0px;top:0px;right:-0px;bottom:-0px;'name='X' onload='*.onload(event)' >
+  <Container style='top:0px;left:0px;padding:0px;right:-0;bottom:-0;' >
+    <Container style='padding:0px;bottom:-1;right:-2;attach-bottom:true;' >
+      <Table name='GROUP_TO_RIGHTS' style='width:700px;height:400px;bottom:-0;right:-0;'  reset=true 
+            sortable='true'
+         >
+        <Columns>
+         <Column name='IDENTITY_NAME' title='%Name%' />
+	 <!--
+         <Column name='IDENTITY_TYPE_NAME' title='Type' />
+	 -->
+         <Column name='ROLE_NAME' title='Role' />
+         <Column name='RIGHT_NAME' title='Right' />
+         <Column name='RIGHT_VALUE' title='Value' />
+         <Column name='DESCRIPTION' title='Description' />
+        </Columns>
+      </Table>
+    </Container>
+    <br />
+    <Container style='bottom:0px;right:0;' >
+      <PushButton  img='${home}/refresh.png' text='%Refresh%' onclick='*.displayGroupToRights(event)' />
+    </Container>
+  </Container>
+</Container>
+</Window>
+</xml>

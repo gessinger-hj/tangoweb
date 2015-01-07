@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container img='Tango/Folder.16/normal' label='File Explorer' name='Form.Top' action-on-click='true'
+           style='right:-0;bottom:-0;'
+           pagelet='new TFileExplorer()'
+           onload='function(ev)
+{
+  var p = ev.getPeer() ;
+  var root = TSys.getWebConfig().getValue ( "FILE_EXPLORER_ROOT" ) ;
+  if ( ! root )
+  {
+    var d = new TUserDialog ( "Missing FILE_EXPLORER_ROOT element in web.config.xml." ) ;
+    d.error() ;
+throw "Missing <FILE_EXPLORER_ROOT> element in web.config.xml." ;
+    return ;
+  }
+  p.setRoot ( root ) ;
+}'
+>
+  <Container >
+    <PushButton onclick='*.fillTree()' text='%Refresh%...' />
+    <PushButton onclick='*.downloadSelectedFile()' text='%DownloadFile%...' />
+  </Container>
+  <br />
+  <Container name='Form.FileExplorer' reset='false' style='right:-2;bottom:-2;' >
+    <Container style='padding:0px;bottom:-0;'>
+      <Tree name='Tree' style='overflow:auto;width:300px;bottom:-0;right:-0;' reset='true'
+            onload='*.onloadTree()'
+      />
+    </Container>
+    <Splitbar id='Splitbar.4' />
+    <Container style='padding:0px;bottom:-0;'>
+      <Table name="Table" style='overflow:auto;width:400px;bottom:-0;attach-bottom:true;right:-0px;'
+             reset=true sortable=true
+             onload='*.onloadTable()'
+      >
+        <Columns>
+          <Column name="IMG" title=" " type=icon />
+          <Column name="NAME" title="%Name%" />
+          <Column name="DATE" title="%Date%" type='datetime' />
+          <Column name="KB" title="%Size%" type='int' align="right" />
+        </Columns>
+      </Table>
+    </Container>
+    <Splitbar id='Splitbar.5' />
+    <Container name='Display' reset='true' style='color:black;background-color:white;overflow:auto;right:-2;bottom:-2;'
+               onload='*.onloadDisplay()'
+    />
+  </Container>
+</Container>

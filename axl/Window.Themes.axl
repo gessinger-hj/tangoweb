@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' title='Themes...' id="Window.Themes" img='${home}/resources/script_palette.png' >
+    <Container style='left:0px;top:0px;bottom:-2;attach-bottom:true;right:-0;' >
+      <Table name='Themes' style='left:0px;top:0px;width:200px;height:200px;bottom:-0;right:-0;'
+      onclick='function(event)
+  {
+    var ev = new TEvent ( event ) ;
+    var tab = ev.getPeer() ;
+    var xud = tab.getSelectedUserData() ;
+    if ( !xud ) return ;
+    var ud = new TXml ( xud ) ;
+    var themeName = ud.getContent ( "Name" ) ;
+    TSys.setTheme ( themeName  ) ;
+  }'
+  >
+        <Columns>
+          <Column name='LongName' title="Name" />
+        </Columns>
+      </Table>
+    </Container>
+    <br/>
+    <Container style='bottom:0;right:0;' >
+      <PushButton img='img/Icon.GreenMark.gif' text='Ok' onclick='TGui.closeWindow()' default='true'/>
+    </Container>
+  </Window>
+</xml>
+

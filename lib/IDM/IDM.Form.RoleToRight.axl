@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='IDM.Form.RoleToRight' style='left:0px;top:0px;right:-0px;bottom:-0px;' reset='false' name='X1'
+  label='%RolesAndRights%'
+  pagelet='new IDRolesAndRightsEditor()'
+ >
+  <Toolbar style='top:0px;left:0px;' >
+    <PushButton img='${home}/refresh.png' text='%Refresh%' onclick='*.fillAll(event)' />
+    <PushButton text='%Overview%' onclick='*.displayRoleToRight()' />
+  </Toolbar>
+  <br/>
+  <Container style='left:0px;padding:0px;bottom:-0;right:-0px;' name='X2'
+             onload='*.onload(event)'
+  >
+    <Container style='padding:0px;left:0px;bottom:-0;' >
+      <Container style='padding:0px;left:0px;bottom:-2;attach-bottom:true;right:-0;'
+        name='CONTAINER_ROLE' onchange='handle:PB.EditRole'
+      >
+        <TitleLabel text='%Roles%' />
+        <br/>
+        <Container >
+          <PushButton img='Tango/Misc/edit-new' text='%NewRole%' onclick='*.createRole()' />
+          <PushButton name='PB.EditRole' img='Tango/Misc/edit' disabled='true' text='%Edit%' onclick='*.editRole()' />
+        </Container>
+        <br/>
+        <Table name='T_ROLE' style='width:500px;height:210px;bottom:-0;right:-0;'
+               sortable='true'
+	       onclick='*.fill_V_ROLE_TO_RIGHT()'
+           >
+          <Columns>
+           <Column name='ROLE_KEY' title='Key' type='int'/>
+           <Column name='ROLE_NAME' title='Name' />
+           <Column name='DESCRIPTION' title='Description' />
+          </Columns>
+        </Table>
+      </Container>
+      <SplitbarHorizontal />
+      <Container style='padding:0px;left:0px;bottom:-0;right:-0;'
+        name='CONTAINER_ROLE_TO_RIGHT'
+				onchange='handle:PB.RemoveRight PB.EditRoleToRight'
+      >
+        <Hidden name='ROLE_KEY' />
+        <TitleLabel name='TITLE_ROLE_TO_RIGHT' text='' />
+        <br/>
+        <Container >
+          <PushButton name='PB.AddRoleToRight' disabled='true' img='Tango/Misc/edit-add' text='%AddRight%' onclick='*.addRoleToRight()' />
+          <PushButton name='PB.RemoveRight' img='Tango/Misc/edit-remove' disabled='true' text='%Remove%' onclick='*.removeRoleToRight()' />
+          <PushButton name='PB.EditRoleToRight' img='Tango/Misc/edit' disabled='true' text='%Edit%' onclick='*.editRoleToRight()' />
+        </Container>
+        <br/>
+        <Table name='V_ROLE_TO_RIGHT' style='width:400px;height:300px;bottom:-0;right:-0;'
+               sortable='true'
+        >
+          <Columns>
+            <Column name='ROLE_NAME' title='Role' />
+            <Column name='RIGHT_NAME' title='Right' />
+<!--
+            <Column name='RIGHT_CONTEXT' title='Context' />
+-->
+            <Column name='RIGHT_VALUE' title='Value' />
+          </Columns>
+        </Table>
+      </Container>
+    </Container>
+    <Splitbar />
+    <Container style='padding:0px;bottom:-0;right:-0;' >
+      <Container style='padding:0px;left:0px;bottom:-0;right:-0px;'
+        name='CONTAINER_RIGHT'
+        onchange='handle:PB.EditRight'
+      >
+        <TitleLabel text='%Rights%' />
+        <br/>
+        <Container >
+          <PushButton img='Tango/Misc/edit-new' text='%NewRight%' onclick='*.createRight()' />
+          <PushButton name='PB.EditRight' img='Tango/Misc/edit' disabled='true' text='%Edit%' onclick='*.editRight()' />
+        </Container>
+        <br/>
+        <Table name='T_RIGHT' style='width:600px;height:300px;bottom:-0;right:-0;'
+               sortable='true'
+        >
+          <Columns>
+            <Column name='RIGHT_KEY' title='Key' type='int'/>
+            <Column name='RIGHT_NAME' title='Right' />
+            <Column name='DESCRIPTION' title='Description' />
+          </Columns>
+        </Table>
+      </Container>
+    </Container>
+  </Container>
+</Container>
+</xml>

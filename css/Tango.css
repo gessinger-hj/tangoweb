@@ -1,0 +1,737 @@
+body
+{
+	/*
+  font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+  */
+  font-family:Geneva, Arial, Helvetica, sans-serif;
+  font-size:11px;
+  margin:0px;
+  padding:0px;
+  border:0px;
+  color:#000000;
+  background-color:#F7F3F7;
+/*
+  overflow:hidden;
+*/
+  background-image: none ;
+}
+.Body, .ThemeBody, .WindowBody, .ThemeWindowBody, .ThemeWindowBodyDisabled, .ThemeMobileBody
+{
+  /*
+  font-family:Geneva, Arial, Helvetica, sans-serif;
+  */
+  font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+  font-size:11px;
+  margin:0px;
+  padding:0px;
+  border:0px;
+  color:#000000;
+  background-color:#F7F3F7;
+  background-image: none ;
+}
+td
+{
+  text-align: center ;
+}
+.Title, .ThemeTitle
+{
+  top:0px;
+  left:0px;
+  margin:0px;
+  border:0px;
+  padding: 0px;
+  height:20px;
+  color:black;
+  background-color:white;
+  text-shadow: none ;
+}
+/*
+------------ Menu ---------------------
+*/
+.Menubar, .ThemeMenubar
+{
+  padding: 4px;
+  border: 1px solid #808080;
+  top:0px;
+  left:0px;
+}
+
+.MenuButton, .MenuButtonDisabled, .ThemeMenuButton, .ThemeMenuButtonInside, .ThemeMenuButtonPressed, .ThemeMenuButtonDisabled
+{
+  padding-top:4px;
+  padding-left:4px;
+  padding-bottom:4px;
+  padding-right:4px;
+  vertical-align:middle;
+  white-space:nowrap;
+  cursor:pointer;
+  color:black;
+  text-shadow: none ;
+}
+.ThemeMenuButtonDisabled
+{
+  color:gray;
+  cursor:default;
+}
+.MenuItem, .MenuItemDisabled, .ThemeMenuItem, .ThemeMenuItemPressed, .ThemeMenuItemInside, .ThemeMenuItemDisabled
+{
+  color: #000000;
+  padding-top: 4px;
+  padding-left: 20px;
+  padding-bottom: 4px;
+  padding-right: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor:pointer;
+  text-shadow: none ;
+}
+.ThemeMenuItemDisabled
+{
+  color:gray;
+  cursor:default;
+}
+.MenuHolder, .ThemeMenuHolder
+{
+  top: 0px;
+}
+.Menu, .ThemeMenu
+{
+  border: 0px ;
+  padding-top: 3px;
+  padding-left: 4px;
+  padding-bottom: 2px;
+  padding-right: 3px;
+  text-align: left;
+  visibility: hidden;
+  left:0px;
+  top:0px;
+}
+.Toolbar, .ThemeToolbar
+{
+  top:0px;
+  left:0px;
+  margin:0px;
+  border:0px;
+  padding: 0px;
+  color: black;
+  text-shadow: none ;
+}
+.Splitbar, .ThemeSplitbar
+{
+  width:3px;
+  border:1px solid #C6C6C6;
+  background-color: transparent;
+}
+.SplitbarHorizontal, .ThemeSplitbarHorizontal
+{
+  height:5px;
+  border:1px solid #C6C6C6;
+}
+.ThemeSplitbar:hover { background-color:lightblue; }
+.ThemeSplitbarHorizontal:hover { background-color:lightblue; }
+.Main, .ThemeMain
+{
+  top:0px;
+  left:0px;
+  margin:0px;
+  border:0px;
+  padding: 0px;
+}
+div
+{
+  position:relative;
+}
+iframe
+{
+  position:relative;
+  border-width:0px;
+}
+.ListLabel, .ThemeListLabel
+{
+  background-color:#E0E0E0;
+  padding-right: 4px ;
+  text-align:right;
+  text-shadow: none ;
+}
+.ListLabelEven, .ThemeListLabelEven
+{
+  background-color:#F3F3F3 ;
+  padding-right: 4px ;
+  text-align:right;
+  text-shadow: none ;
+}
+.Label, .ThemeLabel, .ThemeLabelNormal, .ThemeLabelMandatory
+{
+  white-space:nowrap;
+  padding-right:8px;
+  text-shadow: none ;
+}
+.ThemeLabelNormal
+{
+  background-color: white ;
+}
+.ThemeLabelMandatory
+{
+  background-color:yellow;
+}
+.TitleLabel, .ThemeTitleLabel
+{
+  white-space:nowrap;
+  text-align:center;
+  padding:4px;
+  margin:0px;
+  border:0px;
+  background-color: transparent ;
+  text-shadow: none ;
+}
+.SimpleTitle
+{
+  color:black;
+  font-weight:bold;
+  text-align:center;
+  text-shadow: none ;
+}
+.TitleLabelLeft, .ThemeTitleLabelLeft
+{
+  width:8px;
+  padding:0px;
+  margin:0px;
+  border:0px;
+}
+.TitleLabelMid, .ThemeTitleLabelMid
+{
+  white-space:nowrap;
+  text-align:center;
+  padding:4px;
+  margin:0px;
+  border:0px;
+  color:black ;
+}
+.TitleLabelRight, .ThemeTitleLabelRight
+{
+  width:8px;
+  padding:0px;
+  margin:0px;
+  border:0px;
+}
+.PushButton, .PushButtonInside, .PushButtonPressed, .PushButtonDisabled,
+.ThemePushButton, .ThemePushButtonInside, .ThemePushButtonPressed, .ThemePushButtonDisabled
+,.ThemePushButtonFocused
+{
+  padding-top:4px;
+  padding-bottom:6px;
+  padding-left:6px;
+  padding-right:6px;
+  color:black;
+  text-align:center;
+  cursor:pointer;
+  text-shadow: none ;
+}
+.PushButtonAnchor, .ThemePushButtonAnchor
+{
+  text-decoration:none;
+  vertical-align:middle;
+  color:black;
+}
+/*
+a:link { text-decoration:none; color: black; }
+a:visited { text-decoration:none; color: black; }
+a:hover { text-decoration:none; color: white; }
+a:active { text-decoration:none; color: white; }
+a:focus { color: black; }
+*/
+.ThemePushButtonDisabled
+{
+  color:gray;
+}
+.ButtonImage
+{
+  position:absolute;
+}
+.ButtonText
+{
+  position:absolute;
+  white-space:nowrap;
+}
+
+.ToolbarToggle, .ToolbarToggleInside, .ToolbarTogglePressed
+,.ThemeToolbarToggle, .ThemeToolbarToggleInside, .ThemeToolbarTogglePressed
+,.ThemeToolbarToggleDisabled, .ThemeToolbarToggleChecked
+{
+  width:32px;
+  height:32px;
+  padding-top:4px;
+  padding-left:4px;
+  padding-bottom:4px;
+  padding-right:4px;
+  cursor:pointer;
+  text-shadow: none ;
+}
+.ToolbarButton, .ToolbarButtonInside, .ToolbarButtonPressed
+,.ThemeToolbarButton, .ThemeToolbarButtonInside, .ThemeToolbarButtonPressed
+,.ThemeToolbarButtonDisabled
+{
+  width:32px;
+  height:32px;
+  padding-top:4px;
+  padding-left:4px;
+  padding-bottom:4px;
+  padding-right:4px;
+  cursor:pointer;
+  text-shadow: none ;
+}
+.ThemeToolbarButtonDisabled
+{
+  color: gray ;
+}
+.ToolbarButtonSmall, .ToolbarButtonSmallInside, .ToolbarButtonSmallPressed,
+.ThemeToolbarButtonSmall, .ThemeToolbarButtonSmallInside, .ThemeToolbarButtonSmallPressed
+,.ThemeToolbarButtonSmallDisabled
+{
+  width:16px;
+  height:16px;
+  padding-top:2px;
+  padding-left:2px;
+  padding-bottom:2px;
+  padding-right:2px;
+  text-align:center;
+}
+.ToolbarButtonSmallImage
+{
+  position:relative;
+  vertical-align:middle;
+  cursor:pointer;
+}
+.TextField, .TextFieldMandatory, .ThemeTextField, .ThemeTextFieldMandatory, .ThemeTextFieldMandatoryBlur
+, .ThemeDecoratedTextField, .ThemeDecoratedTextFieldMandatory, .ThemeDecoratedTextFieldMandatoryBlur
+, .ThemeTextFieldDisabled
+{
+  color:black;
+  background-color:white;
+  border:1px solid #C4C4C4;
+}
+.TextFieldMandatory, .ThemeTextFieldMandatory, .ThemeDecoratedTextFieldMandatory
+{
+  background-color:yellow;
+}
+.ThemeTextFieldMandatoryBlur, .ThemeDecoratedTextFieldMandatoryBlur
+{
+  color: gray ;
+  background-color:yellow;
+}
+.ThemeTextField:focus { color:black ;background-color:white ; }
+.ThemeTextFieldDisabled
+{
+  border:1px solid transparent ;
+}
+.TextArea, .TextAreaMandatory, .ThemeTextArea, .ThemeTextAreaMandatory
+{
+  color:black;
+  background-color:white;
+  border:1px solid black;
+}
+.TextAreaMandatory, .ThemeTextAreaMandatory
+{
+  background-color:yellow;
+}
+.Choice, .ChoiceMandatory, .ThemeChoice, .ThemeChoiceMandatory
+{
+  color:black;
+  background-color:white;
+  border:1px solid #C4C4C4;
+}
+.ThemeChoice:focus { color:black ;background-color:white ; }
+.ChoiceMandatory, .ThemeChoiceMandatory
+{
+  background-color:yellow;
+}
+.ThemeChoiceMandatory:focus { color:black ;background-color:yellow ; }
+
+.Notebook, .ThemeNotebook
+{
+  background-image: none ;
+}
+.NotebookTop, .ThemeNotebookTop
+{
+  background-image: none ;
+}
+.NotebookButtonCloser, .ThemeNotebookButtonCloser
+{
+  cursor:pointer;
+  width:16px ;
+  height:16px ;
+}
+.NotebookBody, .ThemeNotebookBody
+{
+  border-top:1px solid #C6C6C6;
+  border-left:1px solid #C6C6C6;
+  border-bottom:1px solid black;
+  border-right:1px solid black;
+  padding:0px;
+  background-color: transparent ;
+  text-shadow: none ;
+}
+.NotebookButton, .NotebookButtonSelected, .ThemeNotebookButton, .ThemeNotebookButtonInside, .ThemeNotebookButtonSelected, .ThemeNotebookButtonDisabled
+{
+  padding-top:4px;
+  padding-left:6px;
+  padding-bottom:4px;
+  padding-right:6px;
+  color:black;
+  text-align:center;
+  vertical-align:middle;
+  cursor:pointer;
+  text-shadow: none ;
+}
+.ThemeNotebookButtonDisabled
+{
+  color:gray;
+}
+/*
+------------ Window -------------------
+*/
+.Note, .ThemeNote
+{
+  color:black;
+  background-color:transparent;
+  border:0px ;
+  padding-top: 14px ;
+  padding-left: 14px ;
+  padding-bottom: 14px ;
+  padding-right: 14px ;
+}
+.Tooltip, .ThemeTooltip
+{
+  padding-top:2px;
+  padding-left:4px;
+  padding-bottom:2px;
+  padding-right:4px;
+  color:black;
+  background-color:#F7FFA4;
+  border-top:1px solid #C6C6C6;
+  border-left:1px solid #C6C6C6;
+  border-bottom:1px solid black;
+  border-right:1px solid black;
+}
+.ThemeTooltip
+{
+}
+.WorkingPanel
+{
+  padding-top:2px;
+  padding-left:4px;
+  padding-bottom:2px;
+  padding-right:4px;
+  color:black;
+  background-color:#FFFFFF;
+  border-top:1px solid #C6C6C6;
+  border-left:1px solid #C6C6C6;
+  border-bottom:1px solid black;
+  border-right:1px solid black;
+  text-align:center;
+}
+.WindowImage, .ThemeWindowImage, .ThemeWindowMenu
+{
+  width:16px ;
+  height:16px ;
+  left:6px ;
+}
+.WindowClose, .ThemeWindowClose
+{
+  cursor:pointer;
+  width:13px ;
+  height:13px ;
+  right:4px ;
+}
+.WindowMaxRestore, .ThemeWindowMaxRestore
+{
+  cursor:pointer;
+  width:13px ;
+  height:13px ;
+  right:4px ;
+}
+
+.WindowTop, .ThemeWindowTop, .ThemeWindowTopDisabled
+{
+  text-align:center;
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+  height: 20px;
+}
+.WindowTitle, .ThemeWindowTitle
+{
+  text-align:center;
+}
+.WindowTopLeft, .ThemeWindowTopLeft, .ThemeWindowTopLeftDisabled
+{
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+  height: 20px;
+}
+.WindowTopMid, .ThemeWindowTopMid, .ThemeWindowTopMidDisabled
+{
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+  height: 20px;
+}
+.WindowTopRight, .ThemeWindowTopRight, .ThemeWindowTopRightDisabled
+{
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+  height: 20px;
+}
+
+.WindowLeft, .ThemeWindowLeft, .ThemeWindowLeftDisabled
+{
+  width:3px ;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+
+.WindowBottom, .ThemeWindowBottom, .ThemeWindowBottomDisabled
+{
+  height:3px ;
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+.WindowRight, .ThemeWindowRight, .ThemeWindowRightDisabled
+{
+  width:3px ;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
+.WindowBody, .ThemeWindowBody, .ThemeMobileWindowBody
+{
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+.Window, .ThemeWindow
+{
+  border:0px;
+  margin:0px;
+  padding-top:0px;
+  padding-left:0px;
+  padding-bottom:0px;
+  padding-right:0px;
+  color:black;
+}
+
+.TableCaptionClass, .ThemeTableCaptionClass
+{
+  border:1px solid blue;
+  background-color:white;
+  height:24px;
+}
+.TableClass, .ThemeTableClass
+{
+  background-color:#FFFFFF;
+  border: 0px ;
+}
+.TableHeadClass, .ThemeTableHeadClass, .ThemeTableHeadClassInside, .ThemeTableHeadClassPressed
+{
+  background-color:transparent;
+  color: black;
+}
+.TableBodyClass, .ThemeTableBodyClass
+{
+  background-color: transparent;
+  color: black;
+}
+.TableHeaderCellClass, .ThemeTableHeaderCellClass, .ThemeTableHeaderCellClassInside, .ThemeTableHeaderCellClassPressed
+{
+  background-color: white;
+  color: black;
+  text-align:center ;
+}
+.TableRowClass, .TableRowClassSelected, .ThemeTableRowClass, .TableRowClassAlternate, .ThemeTableRowClassHighlighted
+{
+  background-color: white;
+  color: black;
+  text-align:left ;
+  vertical-align:top ;
+}
+
+.TableRowClassAlternate, .ThemeTableRowClassAlternate
+{
+  background-color: white;
+  color: black;
+  text-align:left ;
+}
+.TableRowClassSelected, .ThemeTableRowClassSelected
+{
+  background-color:#5A60FF;
+  color:#FFFFFF;
+}
+.TableRowClassHighlighted, .ThemeTableRowClassHighlighted
+{
+  background-color:#5A60FF;
+  color:#FFFFFF;
+}
+.ThemeTableCellClass, .ThemeTableCellClassSelected
+{
+}
+.ThemeTableRowClass:hover { background-color:white; }
+.ThemeTableRowClassAlternate:hover { background-color:white; }
+td
+{
+  text-align:left ;
+  vertical-align:top ;
+}
+.Container
+{
+  border-width:0px ;
+  padding:0px ;
+  margin:0px ;
+}
+.DisplayContainer, .ThemeDisplayContainer
+{
+  color:black ;
+  background-color:white ;
+  border-top:1px solid #C6C6C6;
+  border-left:1px solid #C6C6C6;
+  border-bottom:1px solid #C6C6C6;
+  border-right:1px solid #C6C6C6;
+  overflow:hidden ;
+  background-image:none ;
+}
+.TableContainer, .ThemeTableContainer, .ThemeTableContainerFocused
+{
+  color:black ;
+  background-color:white ;
+  border-top:1px solid #C6C6C6;
+  border-left:1px solid #C6C6C6;
+  border-bottom:1px solid #C6C6C6;
+  border-right:1px solid #C6C6C6;
+  overflow:hidden ;
+  background-image:none ;
+}
+.ThemeTableContainerFocused
+{
+  border-top:1px solid #000000;
+  border-left:1px solid #000000;
+  border-bottom:1px solid #000000;
+  border-right:1px solid #000000;
+}
+.TreeContainer, .ThemeTreeContainer
+{
+  color:black ;
+  background-color:white ;
+  border-top:1px solid #C6C6C6;
+  border-left:1px solid #C6C6C6;
+  border-bottom:1px solid #C6C6C6;
+  border-right:1px solid #C6C6C6;
+  overflow:hidden ;
+  background-image:none ;
+}
+.ThemeTipBalloon
+{
+  color:black;
+  background-color:transparent;
+  border:0px ;
+  padding-top: 9px;
+  padding-left: 34px;
+  padding-bottom: 16px;
+  padding-right: 11px;
+}
+.Anchor
+{
+  text-decoration:none;
+}
+.ViewItem, .ThemeViewItem, .ThemeViewItemHighlighted, .ThemeViewItemSelected
+{
+  position:relative;
+  float:left;
+  text-align:center;
+  background-color:transparent;
+  border: 1px solid transparent;
+  margin: 2px ;
+}
+.ThemeViewItemHighlighted, .CosmosViewItemHighlighted
+{
+  border: 1px solid #808080;
+}
+.ThemeViewItemSelected
+{
+  background-color:#5A60FF;
+}
+.ItemView, .ThemeItemView
+{
+  background-color:white;
+}
+.ThemePagelet
+{
+}
+.ThemePageletTitle
+{
+  color:black;
+  text-align:center;
+/*
+  background-color:black;
+*/
+}
+.ThemePageletBody
+{
+}
+.ThemeCheckbox, .ThemeCheckboxDisabled, .ThemeCheckboxInside, .ThemeCheckboxPressed
+{
+  cursor: pointer ;
+}
+.ThemeRadio, .ThemeRadioDisabled, .ThemeRadioInside, .ThemeRadioPressed
+{
+  cursor: pointer ;
+}
+.ThemeCheckboxDisabled
+{
+  cursor: default ;
+}
+.ThemeRadioDisabled
+{
+  cursor: default ;
+}
+.CSSTextField, .CSSTextFieldMandatory, .CSSTextFieldMandatoryBlur
+{   
+    background: #fafafa; /* Fallback color for non-css3 browsers */   
+   
+    /* Gradients */   
+    background: -webkit-gradient( linear, left bottombottom, left top, color-stop(0, rgb(250,250,250)), color-stop(1, rgb(230,230,230)));   
+    background: -moz-linear-gradient( center top, rgb(250,250,250) 0%, rgb(230,230,230) 100%);   
+    background: -o-linear-gradient( center top, rgb(250,250,250) 0%, rgb(230,230,230) 100%);   
+   
+    border: 0;   
+    border-bottom: 1px solid #fff;   
+    border-right: 1px solid rgba(255,255,255,.8);   
+    /*font-size: 16px;  */ 
+    /*margin: 4px;  */ 
+    padding: 3px; 
+    padding-left: 5px; 
+    padding-right: 5px; 
+    /*width: 250px;   */
+   
+    /* Rounded Corners */   
+    -webkit-border-radius: 17px;   
+    -moz-border-radius: 17px;   
+    border-radius: 17px;   
+   
+    /* Shadows */   
+    -webkit-box-shadow: -1px -1px 2px rgba(0,0,0,.3), 0 0 1px rgba(0,0,0,.2);   
+    -moz-box-shadow: -1px -1px 2px rgba(0,0,0,.3), 0 0 1px rgba(0,0,0,.2);   
+    box-shadow: -1px -1px 2px rgba(0,0,0,.3), 0 0 1px rgba(0,0,0,.2);   
+}   
+.CSSTextField:focus, .CSSTextFieldMandatory:focus, .CSSTextFieldMandatoryBlur:focus
+{   
+    outline: none;   
+    background: #fff; /* Fallback color for non-css3 browsers */   
+   
+    /* Gradients */   
+    background: -webkit-gradient( linear, left bottombottom, left top, color-stop(0, rgb(255,255,255)), color-stop(1, rgb(235,235,235)));   
+    background: -moz-linear-gradient( center top, rgb(255,255,255) 0%, rgb(235,235,235) 100%);   
+}
+

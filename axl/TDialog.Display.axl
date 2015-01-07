@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=false resizable='true' dragable='true' title='No Title...' id="TDialog.Display" >
+    <Container right='-0' bottom='-0' style='width:400px;height:400px;' >
+      <Container right='-4' bottom='-0' name='Form.Top' style='width:400px;height:200px;'
+          bottomAttachComponent='true'
+      >
+      </Container>
+      <br />
+      <Container bottom='0' right='-0' >
+        <PushButton name="PB.APPLY" text='%Apply%' right='4' rightAttachComponent='true' />
+        <PushButton name="PB.CANCEL" text="%Cancel%" right='4' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>

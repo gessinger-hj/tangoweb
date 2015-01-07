@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container label='Overview' id='IDM.Form.IdentityTree' style='left:0px;top:0px;right:-0px;bottom:-0px;' name='X'
+>
+  <Container style='padding:0px;bottom:-0px;' >
+    <Container style='padding:0px;' >
+      <PushButton img='${home}/refresh.png' text='%Refresh%' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var idm = new IDManagement() ;
+        var xResult = idm.getGroupsAndUserTree() ;
+        ev.getContainer().setValues ( xResult ) ;
+      }
+      ' />
+      <PushButton text='%Collapse%' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        ev.getContainer().getPeer ( "TREE" ).closeAll() ;
+      }
+      ' />
+      <PushButton text='%Expand%' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        ev.getContainer().getPeer ( "TREE" ).openAll() ;
+      }'
+      />
+    </Container>
+    <br/>
+    <Tree style='width:300px;bottom:-0px;right:-0px;'
+      name="TREE"
+      plain='true'
+      get-values='true'
+      open-on-click='true'
+      preopen-level='0'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+        var node = v.getXml ( "node" ) ;
+        if ( ! node ) return ;
+        var key = node.getIntAttribute ( "key", 0 ) ;
+        if ( ! key ) return ;
+        var idm = new IDManagement() ;
+        var xRights = idm.getEffectiveRights ( key ) ;
+        var xRoles = idm.getEffectiveRoles ( key ) ;
+        var xGroups = idm.getEffectiveGroups ( key ) ;
+        var c = ev.getContainer ( "X" ) ;
+        c.setValues ( xRights ) ;
+        c.setValues ( xRoles ) ;
+        c.setValues ( xGroups ) ;
+      }'
+      onsetvalues='function ( x )
+      {
+        if ( x.isEmpty() )
+        {
+          x.addAttribute ( "icon", "${home}/user-16.png" ) ;
+        }
+        else
+        {
+          x.addAttribute ( "icon", "${home}/group-wlm-16.png" ) ;
+        }
+      }'
+    >
+    </Tree>
+  </Container>
+  <Splitbar />
+  <Container style='width:250px;height:300px;bottom:-2px;right:-2px;padding:0px;' >
+    <Container style='bottom:-0px;right:-0px;'>
+      <Container >
+        <TitleLabel text='Groups' style='left:0px;right:-0px;'/>
+        <br/>
+        <Table name='GROUPS' style='left:0px;width:250px;height:200px;right:-0px;'
+          sortable='true' selectable='false'
+        >
+          <Columns>
+            <Column name='NAME' title='Name' />
+          </Columns>
+        </Table>
+      </Container>
+      <Container style='right:-0px;'>
+        <TitleLabel text='Roles' style='left:0px;right:-0px;'/>
+        <br/>
+        <Table name='ROLES' style='left:0px;width:250px;height:200px;right:-0px;'
+          sortable='true' selectable='false'
+        >
+          <Columns>
+            <Column name='NAME' title='Name' />
+          </Columns>
+        </Table>
+      </Container>
+      <br/>
+      <Container style='bottom:-0px;right:-0px;'>
+        <TitleLabel text='Rights' style='left:0px;right:-0px;'/>
+        <br/>
+        <Table name='RIGHTS' style='left:0px;width:514px;height:300px;right:-0px;bottom:-0px;'
+          sortable='true' selectable='false'
+        >
+          <Columns>
+            <Column name='NAME' title='Name' />
+            <Column name='VALUE' title='Value' />
+            <Column name='CONTEXT' title='Context' />
+            <Column name='DESCRIPTION' title='Description' />
+          </Columns>
+        </Table>
+      </Container>
+    </Container>
+  </Container>
+</Container>
+</xml>

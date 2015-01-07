@@ -1,0 +1,2202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Axl>
+  </Axl>
+  <XCss>${home}/Style.css</XCss>
+  <Script><![CDATA[
+{
+
+  _initialize_: function()
+  {
+    DBQueryBuilderClass = function()
+    {
+      this.jsClassName = "DBQueryBuilderClass" ;
+    }
+    DBQueryBuilderClass.prototype.toString = function()
+    {
+      return "(" + this.jsClassName + ")" ;
+    }
+    DBQueryBuilderClass.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/DBQuery.QueryBuilder" ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "DBQuery.QueryBuilder", new DBQueryBuilderClass() ) ;
+    DBQueryColumnsContainerClass = function()
+    {
+      this.jsClassName = "DBQueryColumnsContainerClass" ;
+    }
+    DBQueryColumnsContainerClass.prototype.toString = function()
+    {
+      return "(" + this.jsClassName + ")" ;
+    }
+    DBQueryColumnsContainerClass.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/DBQuery.ColumnsContainer" ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "DBQuery.ColumnsContainer", new DBQueryColumnsContainerClass() ) ;
+    DBQueryFilterContainerClass = function()
+    {
+      this.jsClassName = "DBQueryFilterContainerClass" ;
+    }
+    DBQueryFilterContainerClass.prototype.toString = function()
+    {
+      return "(" + this.jsClassName + ")" ;
+    }
+    DBQueryFilterContainerClass.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/DBQuery.FilterContainer" ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "DBQuery.FilterContainer", new DBQueryFilterContainerClass() ) ;
+DBQueryClass = function()
+{
+  this.name = null ;
+  this.description = null ;
+  this.nameToOperator = [] ;
+  this.nameToOperator['lt'] = "<" ;
+  this.nameToOperator['le'] = "<=" ;
+  this.nameToOperator['eq'] = "=" ;
+  this.nameToOperator['ge'] = ">=" ;
+  this.nameToOperator['gt'] = ">" ;
+  this.nameToOperator['ne'] = "<>" ;
+
+  this.operatorIsUnique = [] ;
+  this.operatorIsUnique["is null"] = true;
+  this.operatorIsUnique["is not null"] = true;
+
+  this.context = "*" ;
+  this.currentContext = "" ;
+
+  this.dbuid = "" ;
+  this.dbpwd = "" ;
+  this.dburl = "" ;
+ 
+	/*
+  this.dbuid = "root" ;
+  this.dbpwd = "" ;
+  this.dburl = "jdbc:mysql://localhost:3306/cdcol"
+	*/
+	/*
+  this.dbuid = "isdp" ;
+  this.dbpwd = "isdp2010" ;
+  this.dburl = "jdbc:oracle:thin:@localhost:1522:TOOLSDB" ;
+	*/
+
+  this.leftOperandOptions = [] ;
+  var numberOpt = { value: [], text:[] } ;
+  numberOpt.value.push ( "" ) ;
+  numberOpt.text.push ( "" ) ;
+  var stringOpt = { value: [], text:[] } ;
+  stringOpt.value.push ( "" ) ;
+  stringOpt.text.push ( "" ) ;
+  var dateOpt = { value: [], text:[] } ;
+  dateOpt.value.push ( "" ) ;
+  dateOpt.text.push ( "" ) ;
+  this.leftOperandOptions["int"] = numberOpt ;
+  this.leftOperandOptions["float"] = numberOpt ;
+  this.leftOperandOptions["string"] = stringOpt ;
+  this.leftOperandOptions["char"] = stringOpt ;
+  this.leftOperandOptions["date"] = dateOpt ;
+  this.leftOperandOptions["datetime"] = dateOpt ;
+  stringOpt.value.push ( 'UPPER($0)' ) ; stringOpt.text.push ( 'UPPER()' ) ;
+  stringOpt.value.push ( 'LOWER($0)' ) ; stringOpt.text.push ( 'LOWER()' ) ;
+  dateOpt.value.push ( '${date_trunc(date=$0,type=day)}' ) ; dateOpt.text.push ( 'Date trunc day' ) ;
+  dateOpt.value.push ( '${date_trunc(date=$0,type=week)}' ) ; dateOpt.text.push ( 'Date trunc week' ) ;
+  dateOpt.value.push ( '${date_trunc(date=$0,type=month)}' ) ; dateOpt.text.push ( 'Date trunc month' ) ;
+  dateOpt.value.push ( '${date_trunc(date=$0,type=quarter)}' ) ; dateOpt.text.push ( 'Date trunc quarter' ) ;
+  dateOpt.value.push ( '${date_trunc(date=$0,type=year)}' ) ; dateOpt.text.push ( 'Date trunc year' ) ;
+
+  this.operatorOptions = [] ;
+  numberOpt = { value: [], text:[] } ;
+  numberOpt.value.push ( "eq" ) ;
+  numberOpt.text.push ( "=" ) ;
+  stringOpt = { value: [], text:[] } ;
+  stringOpt.value.push ( "eq" ) ;
+  stringOpt.text.push ( "=" ) ;
+  dateOpt = { value: [], text:[] } ;
+  dateOpt.value.push ( "eq" ) ;
+  dateOpt.text.push ( "=" ) ;
+  this.operatorOptions["int"] = numberOpt ;
+  this.operatorOptions["float"] = numberOpt ;
+  this.operatorOptions["string"] = stringOpt ;
+  this.operatorOptions["char"] = stringOpt ;
+  this.operatorOptions["date"] = dateOpt ;
+  this.operatorOptions["datetime"] = dateOpt ;
+  var vCommon = [ 'lt', 'le', 'eq', 'ge', 'gt', 'ne', 'is null', 'is not null' ] ;
+  var tCommon = [ '<', '<=', '=', '>=', '>', '<>', 'is null', 'is not null' ] ;
+
+  for ( var i = 0 ; i < vCommon.length ; i++ )
+  {
+    numberOpt.value.push ( vCommon[i] ) ; numberOpt.text.push ( tCommon[i] ) ;
+    dateOpt.value.push ( vCommon[i] ) ; dateOpt.text.push ( tCommon[i] ) ;
+    stringOpt.value.push ( vCommon[i] ) ; stringOpt.text.push ( tCommon[i] ) ;
+  }
+  stringOpt.value.push ( 'like' ) ; stringOpt.text.push ( 'like' ) ;
+  stringOpt.value.push ( 'not like' ) ; stringOpt.text.push ( 'not like' ) ;
+
+  this.functionOptions = [] ;
+  numberOpt = { value: [], text:[] } ;
+  numberOpt.value.push ( "" ) ;
+  numberOpt.text.push ( "" ) ;
+  stringOpt = { value: [], text:[] } ;
+  stringOpt.value.push ( "" ) ;
+  stringOpt.text.push ( "" ) ;
+  dateOpt = { value: [], text:[] } ;
+  dateOpt.value.push ( "" ) ;
+  dateOpt.text.push ( "" ) ;
+  this.functionOptions["int"] = numberOpt ;
+  this.functionOptions["float"] = numberOpt ;
+  this.functionOptions["string"] = stringOpt ;
+  this.functionOptions["char"] = stringOpt ;
+  this.functionOptions["date"] = dateOpt ;
+  this.functionOptions["datetime"] = dateOpt ;
+  vCommon = [ 'GROUP_BY', 'COUNT', 'DISTINCT', 'MIN', 'MAX' ] ;
+  tCommon = [ 'Group', 'count()', 'distinct()', 'min()', 'max()' ] ;
+
+  for ( var i = 0 ; i < vCommon.length ; i++ )
+  {
+    numberOpt.value.push ( vCommon[i] ) ; numberOpt.text.push ( tCommon[i] ) ;
+    dateOpt.value.push ( vCommon[i] ) ; dateOpt.text.push ( tCommon[i] ) ;
+    stringOpt.value.push ( vCommon[i] ) ; stringOpt.text.push ( tCommon[i] ) ;
+  }
+  vCommon = [ 'SUM', 'AVG' ] ;
+  tCommon = [ 'sum()', 'avg()' ] ;
+  numberOpt.value.push ( 'SUM' ) ; numberOpt.text.push ( 'sum()' ) ;
+  numberOpt.value.push ( 'AVG' ) ; numberOpt.text.push ( 'avg()' ) ;
+  this.alwaysIgnoreErrors = false ;
+  this._maxCount = 0 ;
+  this._resultCount = 0 ;
+  this._countRows = false ;
+  this._limit = 500 ;
+  this._offset = -1 ;
+  this._pagination = true ;
+  this._firstExecute = true ;
+  this._useShortcutNames = false ;
+}
+DBQueryClass.prototype.getMaxCount = function()
+{
+  return this._maxCount ;
+} ;
+DBQueryClass.prototype.getResultCount = function()
+{
+  return this._resultCount ;
+} ;
+DBQueryClass.prototype.onchangeRowsPerPage = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  this.resetPaginationContainer() ;
+} ;
+DBQueryClass.prototype.onchangePagination = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var pc2 = this.paginationContainer.getComponent ( 'PaginationContainer2' ) ;
+  this.resetPaginationContainer() ;
+  if ( ev.getValues().getBool ( "USE.PAGINATION", false ) )
+  {
+    pc2.setVisible ( true ) ;
+  }
+  else
+  {
+    pc2.setVisible ( false ) ;
+  }
+  this._maxCount = 0 ;
+} ;
+DBQueryClass.prototype.onchangeOffset = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var v = this.actionsContainer.getValues() ;
+  this._limit = v.getInt ( "ROWS_PER_PAGE", 500 ) ;
+  this._offset = v.getInt ( "OFFSET", 0 ) ;
+  this._executeSQL ( "xml" ) ;
+} ;
+DBQueryClass.prototype.resetPaginationContainer = function()
+{
+  this.paginationContainer.reset() ;
+  this._offset = -1 ;
+  this._firstExecute = true ;
+}
+DBQueryClass.prototype.resetActionsContainer = function()
+{
+  this.actionsContainer.reset() ;
+  this.resetPaginationContainer() ;
+}
+DBQueryClass.prototype.layout = function ( dom, externalAttributes, radioGroups, layoutContext )
+{
+  this.dom = dom ;
+  this.container = new TContainer ( this.dom ) ;
+}
+DBQueryClass.prototype.getTables = function ( tableNamePattern )
+{
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>GetTables</Operation>\n"
+                 + ( tableNamePattern ? "<TableNamePattern>" + tableNamePattern + "</TableNamePattern>\n" : "" )
+                 + "<DBUID>" + this.dbuid + "</DBUID>\n"
+                 + "<DBPWD>" + this.dbpwd + "</DBPWD>\n"
+                 + "<DBURL>" + this.dburl + "</DBURL>\n"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+  var xml = xResult.getXml ( "QUERY.RESULT/xml" ) ;
+  return xml ;
+}
+DBQueryClass.prototype.getColumns = function ( tableName )
+{
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>GetColumns</Operation>\n"
+                 + "<TABLE_NAME>" + tableName + "</TABLE_NAME>\n"
+                 + "<DBUID>" + this.dbuid + "</DBUID>\n"
+                 + "<DBPWD>" + this.dbpwd + "</DBPWD>\n"
+                 + "<DBURL>" + this.dburl + "</DBURL>\n"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+  var xml = xResult.getXml ( "QUERY.RESULT/xml" ) ;
+  return xml ;
+}
+DBQueryClass.prototype.printResultTable = function(event)
+{
+  if ( ! this.resultTable ) return ;
+  this.resultTable.print() ;
+}
+DBQueryClass.prototype.deleteSQL = function(event)
+{
+  if ( ! this.name ) return ;
+  var str = TSys.translate ( "AreYouSureToDeleteArg0", null, [ this.name ] ) ;
+  var d = new TUserDialog ( str ) ;
+  var thiz = this ;
+  d.askYesNo ( function(answer)
+  {
+    if ( ! answer.isYes() ) return ;
+    thiz._deleteSQL ( thiz.name ) ;
+  } ) ;
+}
+DBQueryClass.prototype.renameQuery = function(event)
+{
+  if ( ! this.name ) return ;
+  var d = new TWindow ( "${home}/Dialog.Query.Edit.Description" ) ;
+  d.setPagelet ( this ) ;
+  d.create() ;
+  var v = new TXml() ;
+  v.add ( "NAME", this.name ) ;
+  v.add ( "DESCRIPTION", this.description ) ;
+  d.setValues ( v ) ;
+  d.show() ;
+}
+DBQueryClass.prototype.renameQueryApply = function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var name = v.getContent ( "NAME" ) ;
+  var description = v.getContent ( "DESCRIPTION" ) ;
+  if ( name == this.name && this.description == description )
+  {
+    w.close() ;
+    return ;
+  }
+  if ( ! name ) return ;
+  if ( ! description ) description = name ;
+  if ( name != this.name )
+  {
+    if ( this._exists ( name ) )
+    {
+      var str = TSys.translate ( "AlreadyExistsArg0", "$0 xxx", [ name ] ) ;
+      var d = new TUserDialog ( str ) ;
+      d.info() ;
+      return ;
+    }
+  }
+  this._renameSQL ( name, description ) ;
+  this.name = name ;
+  this.description = description ;
+  this.actionsContainer.setValues ( v ) ;
+  w.close() ;
+}
+DBQueryClass.prototype.newSQL = function(event)
+{
+  this.name = null ;
+  this.description = null ;
+  if ( this.columnsTable ) this.columnsTable.clear() ;
+  this.filterTable.clear() ;
+  this.resetActionsContainer() ;
+  this.currentContext = this.context ;
+  this.resultContainer.setText ( "" ) ;
+}
+DBQueryClass.prototype.saveSQL = function(event)
+{
+  if ( ! this.description ) this.description = this.name ;
+  if ( this.name )
+  {
+    this._saveSQL()
+    return ;
+  }
+  this.saveAsSQL ( event ) ;
+}
+DBQueryClass.prototype.saveAsSQL = function(event)
+{
+  var d = new TWindow ( "${home}/Dialog.Query.Save.As" ) ;
+  d.setPagelet ( this ) ;
+  d.create() ;
+  var v = new TXml() ;
+  v.add ( "NAME", this.name ) ;
+  v.add ( "DESCRIPTION", this.description ) ;
+  d.setValues ( v ) ;
+  d.show() ;
+}
+DBQueryClass.prototype.saveAsSQLApply = function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var NAME = v.getContent ( "NAME" ) ;
+  var DESCRIPTION = v.getContent ( "DESCRIPTION" ) ;
+  if ( ! DESCRIPTION ) DESCRIPTION = name ;
+  if ( this._exists ( NAME ) )
+  {
+    var str = TSys.translate ( "AlreadyExistsArg0", "$0 xxx", [ NAME ] ) ;
+    var d = new TUserDialog ( str ) ;
+    d.info() ;
+    return ;
+  }
+  this.name = NAME ;
+  this.description = DESCRIPTION ;
+  if ( this.name )
+  {
+    this._saveSQL()
+    var vv = new TXml() ;
+    vv.add ( "NAME", this.name ) ;
+    vv.add ( "DESCRIPTION", this.description ) ;
+    this.actionsContainer.setValues ( vv ) ;
+  }
+  var w = ev.getWindow() ;
+  w.close() ;
+}
+DBQueryClass.prototype._deleteSQL = function ( name )
+{
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>Remove</Operation>\n"
+                 + "<NAME>" + name + "</NAME>"
+                 + "<CONTEXT>" + this.currentContext + "</CONTEXT>"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+  if ( this.name == name )
+  {
+    this.newSQL() ;
+  }
+}
+DBQueryClass.prototype._renameSQL = function ( name, description )
+{
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  var context = this.currentContext ;
+  if ( ! context ) context = this.context ;
+  if ( ! context ) context = "*" ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>Rename</Operation>\n"
+                 + "<NAME>" + this.name + "</NAME>"
+                 + "<NEWNAME>" + name + "</NEWNAME>"
+                 + "<DESCRIPTION>" + description + "</DESCRIPTION>"
+                 + "<CONTEXT>" + this.currentContext + "</CONTEXT>"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+}
+DBQueryClass.prototype._exists = function ( name )
+{
+  if ( ! this.currentContext ) this.currentContext = this.context ;
+//  var x = new TXml() ;
+//  this.columnsContainer.getValues ( x ) ;
+//  this.filterContainer.getValues ( x ) ;
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>Exists</Operation>\n"
+                 + "<NAME>" + name + "</NAME>"
+                 + "<CONTEXT>" + this.currentContext + "</CONTEXT>"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+  return xResult.getBool ( "QUERY.RESULT/EXISTS", false ) ;
+}
+DBQueryClass.prototype._saveSQL = function()
+{
+  if ( ! this.currentContext ) this.currentContext = this.context ;
+  var x = new TXml() ;
+  if ( ! this.columnsContainer )
+  {
+    x.addDuplicate ( this.xCOLUMNS_TABLE ) ;
+  }
+  else
+  {
+    this.columnsContainer.getValues ( x ) ;
+  }
+  this.filterContainer.getValues ( x ) ;
+
+  var columnsTable = x.getXml ( "COLUMNS_TABLE" ) ;
+  var en = columnsTable.getEnum ( "row" ) ;
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    r.remove ( "ACTION" ) ;
+  }
+
+  var filterTable = x.getXml ( "FILTER_TABLE" ) ;
+  var en = filterTable.getEnum ( "row" ) ;
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    r.remove ( "CLEAR" ) ;
+  }
+
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>SaveSQL</Operation>\n"
+                 + x
+                 + "<NAME>" + this.name + "</NAME>"
+                 + "<CONTEXT>" + this.currentContext + "</CONTEXT>"
+                 + "<DESCRIPTION>" + this.description + "</DESCRIPTION>"
+                 + "<DBUID>" + this.dbuid + "</DBUID>\n"
+                 + "<DBPWD>" + this.dbpwd + "</DBPWD>\n"
+                 + "<DBURL>" + this.dburl + "</DBURL>\n"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+}
+DBQueryClass.prototype.openSQL = function(event)
+{
+  var d = new TWindow ( "${home}/Dialog.Query.Search" ) ;
+  d.setPagelet ( this ) ;
+  d.create() ;
+  d.show() ;
+}
+DBQueryClass.prototype.openSQLSimple = function(event)
+{
+  var d = new TWindow ( "${home}/Dialog.Query.Search.Simple" ) ;
+  d.setPagelet ( this ) ;
+  d.create() ;
+  d.show() ;
+}
+DBQueryClass.prototype.searchSQL = function(event)
+{
+  if ( ! this.currentContext ) this.currentContext = this.context ;
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var w = ev.getWindow() ;
+  var name = v.getContent ( "name" ) ;
+  if ( ! name ) name = '%' ;
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>SearchSQL</Operation>\n"
+                 + x
+                 + "<NAME>" + name + "</NAME>"
+                 + "<CONTEXT>" + this.context + "</CONTEXT>"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+  if ( ! xResult ) return ;
+  var xml = xResult.getXml ( "QUERY.RESULT/xml" ) ;
+  w.setValues ( xml ) ;
+}
+DBQueryClass.prototype.loadSQL = function(event,context)
+{
+  this.resetActionsContainer() ;
+  var name ;
+  if ( typeof ( event ) == 'string' )
+  {
+    name = event ;
+  }
+  else
+  {
+    var ev = new TEvent ( event ) ;
+    var v = ev.getValues() ;
+    name = v.getContent ( "TABLE/row/name" ) ;
+    context = v.getContent ( "TABLE/row/context" ) ;
+    var w = ev.getWindow() ;
+    if ( w ) w.close() ;
+  }
+  if ( ! name ) return ;
+  if ( ! context ) context = this.context ;
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>LoadSQL</Operation>\n"
+                 + "<NAME>" + name + "</NAME>"
+                 + "<CONTEXT>" + context + "</CONTEXT>"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  var xResult = Calypso.getXml ( msg ) ;
+  if ( ! xResult ) return ;
+  var xml = xResult.getXml ( "QUERY.RESULT/xml/TABLE/row" ) ;
+  this.name = xml.getContent ( "NAME" ) ;
+  this.currentContext = xml.getContent ( "CONTEXT" ) ;
+  this.description = xml.getContent ( "DESCRIPTION" ) ;
+  this.dbuid = xml.getContent ( "DBUID" ) ;
+  this.dbpwd = xml.getContent ( "DBPWD" ) ;
+  this.dburl = xml.getContent ( "DBURL" ) ;
+
+  this.actionsContainer.setValues ( xml ) ;
+  var xQuery = xml.getXml ( "DEFINITION/xml" ) ;
+
+  var en1 = xQuery.getEnum ( "COLUMNS_TABLE", "row" ) ;
+  while ( en1.hasNext() )
+  {
+    var r = en1.nextXml() ;
+    r.remove ( "ACTION" ) ;
+  }
+
+  var clearString = ""
+                  + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-clear" ) + "'"
+                  + " style='border-style: none;width:16px;height:16px;'"
+                  + " onmousedown='return false;'"
+                  + " onclick='DBQuery_clearRightOperand(event)'"
+                  + " />"
+                  ;
+  var editDateString = "<img src='${home}/calendar-16x16.png'"
+                     + " style='border-style: none;width:16px;height:16px;'"
+                     + " onmousedown='return false;'"
+                     + " onclick='DBQuery_editRightOperandDate(event)'"
+                     ;
+  en1 = xQuery.getEnum ( "FILTER_TABLE", "row" ) ;
+  var n1 = 1 ;
+  var idList = [] ;
+  while ( en1.hasNext() )
+  {
+    var r = en1.nextXml() ;
+    
+    r.remove ( "CLEAR" ) ;
+    if ( n1 % 2 )
+    {
+      var colType = r.getContent ( "TYPE_NAME" ) ;
+      if ( colType == 'date' || colType == 'datetime' )
+      {
+        var id = TSys.getTempId() ;
+        idList.push ( id ) ;
+        r.add ( 'CLEAR', editDateString + " id='" + id + "' />" ) ;
+      }
+      else
+      {
+        r.add ( 'CLEAR', clearString ) ;
+      }
+    }
+    n1++ ;
+  }
+
+  if ( ! this.columnsContainer )
+  {
+    this.xCOLUMNS_TABLE = xQuery.getXml ( "COLUMNS_TABLE" ) ;
+  }
+  else
+  {
+    var actionString = ""
+                     + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-remove" ) + "'"
+                     + " style='border-style: none;width:16px;height:16px;'"
+                     + " onmousedown='return false;'"
+                     + " onclick='DBQuery_removeFromColumnsTable(event)'"
+                     + " />"
+                     + "<img src='${home}/arrow_up.gif'"
+                     + " style='border-style: none;width:16px;height:16px;'"
+                     + " onmousedown='return false;'"
+                     + " onclick='DBQuery_columnsTableUp(event)'"
+                     + " />"
+                     + "<img src='${home}/arrow_down.gif'"
+                     + " style='border-style: none;width:16px;height:16px;'"
+                     + " onmousedown='return false;'"
+                     + " onclick='DBQuery_columnsTableDown(event)'"
+                     + " />"
+                     ;
+    this.columnsContainer.setValues ( xQuery ) ;
+    var en = this.columnsTable.rows() ;
+    while ( en.hasNext() )
+    {
+      var TR = en.next() ;
+      var TD = TR.firstChild ;
+      if ( TD.firstChild ) TD.removeChild ( TD.firstChild ) ;
+      TD.innerHTML = actionString ;
+      var dw = TGui.getComputedStyleInt ( TD, "margin-left", 0 )
+             + TGui.getComputedStyleInt ( TD, "margin-right", 0 )
+             + TGui.getComputedStyleInt ( TD, "padding-left", 0 )
+             + TGui.getComputedStyleInt ( TD, "padding-right", 0 )
+             ;
+      for ( var ch = TD.nextSibling ; ch ; ch = ch.nextSibling )
+      {
+        if ( ch.xInput )
+        {
+          if ( ch.xInput.type == "select-one" )
+          {
+	    if ( ch.name == "FUNCTION" )
+            {
+	      var xml = new TXml ( TR.domRow )
+	      var TYPE_NAME = xml.getContent ( "TYPE_NAME" ) ;
+	      var x = xml.getXml ( "FUNCTION" ) ;
+	      var v = x.getContent() ;
+	      var index = x.getIntAttribute ( "index", -1 ) ;
+	      var desc = this.functionOptions[TYPE_NAME] ;
+	      if ( index < 0 ) index = desc.value.indexOf ( v ) ;
+	      if ( index < 0 ) index = 0 ;
+	      new TChoice ( ch.xInput ).setOptions ( index, desc.value, desc.text ) ;
+//              var w = ch.offsetWidth - dw ;
+//              ch.xInput.style.width = w + "px" ;
+	    }
+	  }
+        }
+      }
+    }
+  }
+  actionString = ""
+               + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-remove" ) + "'"
+               + " style='border-style: none;width:16px;height:16px;'"
+               + " onmousedown='return false;'"
+               + " onclick='DBQuery_removeFromFilterTable(event)'"
+               + " />"
+               ;
+  this.filterContainer.setValues ( xQuery ) ;
+  en = this.filterTable.rows() ;
+  var n = 1 ;
+  while ( en.hasNext() )
+  {
+    var TR = en.next() ;
+    var TD = TR.firstChild ;
+    if ( n % 2 )
+    {
+      if ( TD.firstChild ) TD.removeChild ( TD.firstChild ) ;
+      TD.innerHTML = actionString ;
+      var dw = TGui.getComputedStyleInt ( TD, "margin-left", 0 )
+             + TGui.getComputedStyleInt ( TD, "margin-right", 0 )
+             + TGui.getComputedStyleInt ( TD, "padding-left", 0 )
+             + TGui.getComputedStyleInt ( TD, "padding-right", 0 )
+             ;
+      for ( var ch = TD.nextSibling ; ch ; ch = ch.nextSibling )
+      {
+        if ( ch.xInput )
+        {
+          if ( ch.xInput.type == "select-one" )
+          {
+	    if ( ch.name == "LEFT_OPERAND_FUNCTION" )
+            {
+	      var xml = new TXml ( TR.domRow )
+	      var TYPE_NAME = xml.getContent ( "TYPE_NAME" ) ;
+	      var desc = this.leftOperandOptions[TYPE_NAME] ;
+              var index = 0 ;
+	      var x = xml.getXml ( "LEFT_OPERAND_FUNCTION" ) ;
+              if ( x )
+              {
+	        var v = x.getContent() ;
+	        index = x.getIntAttribute ( "index", -1 ) ;
+	        if ( index < 0 ) index = desc.value.indexOf ( v ) ;
+	        if ( index < 0 ) index = 0 ;
+              }
+	      new TChoice ( ch.xInput ).setOptions ( index, desc.value, desc.text ) ;
+//              var w = ch.offsetWidth - dw ;
+//              ch.xInput.style.width = w + "px" ;
+	    }
+	    else
+	    if ( ch.name == "OPERATOR" )
+            {
+	      var xml = new TXml ( TR.domRow )
+	      var TYPE_NAME = xml.getContent ( "TYPE_NAME" ) ;
+	      var desc = this.operatorOptions[TYPE_NAME] ;
+              var index = 0 ;
+	      var x = xml.getXml ( "OPERATOR" ) ;
+              if ( x )
+              {
+	        var v = x.getContent() ;
+	        index = x.getIntAttribute ( "index", -1 ) ;
+	        if ( index < 0 ) index = desc.value.indexOf ( v ) ;
+	        if ( index < 0 ) index = 0 ;
+              }
+	      new TChoice ( ch.xInput ).setOptions ( index, desc.value, desc.text ) ;
+//              var w = ch.offsetWidth - dw ;
+//              ch.xInput.style.width = w + "px" ;
+	    }
+	  }
+	  if ( ch.name == "RIGHT_OPERAND" )
+          {
+	    var xml = new TXml ( TR.domRow )
+            if ( ! RIGHT_OPERAND_TABLE )
+            var LEFT_OPERAND_TABLE = xml.getContent ( 'LEFT_OPERAND_TABLE' ) ;
+            var RIGHT_OPERAND_TABLE = xml.getContent ( 'RIGHT_OPERAND_TABLE' ) ;
+	    if ( RIGHT_OPERAND_TABLE && RIGHT_OPERAND_TABLE != LEFT_OPERAND_TABLE )
+	    {
+              var TF = ch.firstChild ;
+              TF.readOnly = true ;
+	    }
+	  }
+	}
+      }
+    }
+    else
+    {
+      for ( var ch = TD.nextSibling ; ch ; ch = ch.nextSibling )
+      {
+        if ( ch.firstChild ) ch.removeChild ( ch.firstChild ) ;
+      }
+    }
+    n++ ;
+  }
+  for ( var i = 0 ; i < idList.length ; i++ )
+  {
+    var eImg = document.getElementById ( idList[i] ) ;
+    var eTD = eImg.parentNode ;
+    eTD = eTD.previousSibling ;
+    var eTF = eTD.firstChild ;
+    eTF.readOnly = true ;
+    eTF.style.borderWidth = "0px" ;
+    eTF.style.backgroundColor = "transparent" ;
+  }
+  if ( this.columnsTable ) this.columnsTable.adjustHeader() ;
+  this.filterTable.adjustHeader() ;
+}
+DBQueryClass.prototype.onloadActionsContainer = function ( ev )
+{
+  this.actionsContainer = ev.getComponent() ;
+  this.paginationContainer = this.actionsContainer.getComponent ( "PaginationContainer" ) ;
+}
+DBQueryClass.prototype.onloadResultContainer = function ( ev )
+{
+  this.resultContainer = ev.getComponent() ;
+}
+DBQueryClass.prototype.filterTableChanged = function ( ev )
+{
+  this.resetPaginationContainer() ;
+}
+DBQueryClass.prototype.onloadFilterContainer = function ( ev )
+{
+  this.filterContainer = ev.getComponent() ;
+  this.filterTable = this.filterContainer.getPeer ( "FILTER_TABLE" ) ;
+  this.filterTable.addPropertyChangeListener ( this, this.filterTableChanged ) ;
+  this.filterTable.clear() ;
+  var thiz = this ;
+  this.filterTable.addDropTargetListener (
+  {
+    _initialize_: function ( event )
+    {
+    },
+    dragEnter: function ( evt )
+    {
+      var t = evt.getTransferable();
+      if ( t.getName() != "COLUMNS" )
+      {
+        evt.rejectDrag() ;
+        return ;
+      }
+      evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+    },
+    dragExit: function ( evt )
+    {
+      var tab = evt.getPeer() ;
+      tab.setRowHighlighted ( false ) ;
+    },
+    dragOver: function ( evt )
+    {
+      var tab = evt.getPeer() ;
+      var x = evt.getX() ;
+      var y = evt.getY() ;
+      var r = tab.getRowFromPosition ( x, y ) ;
+      var t = evt.getTransferable();
+      if ( t.getName() != "COLUMNS" )
+      {
+        evt.rejectDrag() ;
+        return ;
+      }
+    },
+    drop: function ( evt )
+    {
+      var action = evt.getDropAction() ;
+      var t = evt.getTransferable();
+      var tab = evt.getPeer() ;
+      tab.setRowHighlighted ( false ) ;
+      var x = evt.getX() ;
+      var y = evt.getY() ;
+      var r = tab.getRowFromPosition ( x, y ) ;
+      if (  t.getName() != "COLUMNS"
+         || ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
+         )
+      {
+        evt.rejectDrop() ;
+        return ;
+      }
+      evt.acceptDrop ( action) ;
+
+      var xml = t.getData ( DnDDataFlavor.XML ) ;
+      if ( r )
+      {
+        var index = tab.getColumnIndexByName ( "RIGHT_OPERAND" ) ;
+        var cindex = r.getCellIndexFromX ( x ) ;
+        if ( index == cindex )
+        {
+          thiz.setRightOperand ( r, xml ) ;
+        }
+      }
+      else
+      {
+        thiz.addToFilter ( xml ) ;
+      }
+      evt.dropComplete ( true ) ;
+    }
+  } );
+}
+DBQueryClass.prototype.columnsTableChanged = function ( ev )
+{
+  this.resetPaginationContainer() ;
+}
+DBQueryClass.prototype.onloadColumnsContainer = function ( ev )
+{
+  this.columnsContainer = ev.getComponent() ;
+  this.columnsTable = this.columnsContainer.getPeer ( "COLUMNS_TABLE" ) ;
+  this.columnsTable.addPropertyChangeListener ( this, this.columnsTableChanged ) ;
+  var thiz = this ;
+  this.columnsTable.addDropTargetListener (
+  {
+    _initialize_: function ( event )
+    {
+    },
+    dragEnter: function ( evt )
+    {
+      var t = evt.getTransferable();
+      if ( t.getName() != "COLUMNS" )
+      {
+        evt.rejectDrag() ;
+        return ;
+      }
+      evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+    },
+    dragExit: function ( evt )
+    {
+      var tab = evt.getPeer() ;
+      tab.setRowHighlighted ( false ) ;
+    },
+    dragOver: function ( evt )
+    {
+      var tab = evt.getPeer() ;
+      var x = evt.getX() ;
+      var y = evt.getY() ;
+      var r = tab.getRowFromPosition ( x, y ) ;
+      var t = evt.getTransferable();
+      if ( t.getName() != "COLUMNS" )
+      {
+        evt.rejectDrag() ;
+        return ;
+      }
+    },
+    drop: function ( evt )
+    {
+      var action = evt.getDropAction() ;
+      var t = evt.getTransferable();
+      var tab = evt.getPeer() ;
+      tab.setRowHighlighted ( false ) ;
+      var x = evt.getX() ;
+      var y = evt.getY() ;
+      if (  t.getName() != "COLUMNS"
+         || ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
+         )
+      {
+        evt.rejectDrop() ;
+        return ;
+      }
+      evt.acceptDrop ( action) ;
+
+      var xml = t.getData ( DnDDataFlavor.XML ) ;
+      thiz.addToColumns ( xml ) ;
+      evt.dropComplete ( true ) ;
+    }
+  } );
+}
+DBQueryClass.prototype.executeSQL = function ( format, event )
+{
+  var v = this.actionsContainer.getValues() ;
+  this._limit = v.getInt ( "ROWS_PER_PAGE", 500 ) ;
+  this._countRows = v.getBool ( "COUNT.ROWS", false ) ;
+  this._pagination = v.getBool ( "USE.PAGINATION", false ) ;
+  this._executeSQL ( format ) ;
+}
+DBQueryClass.prototype._executeSQL = function ( format )
+{
+  var x = this.buildSQL() ;
+  if ( ! x ) return ;
+  if ( ! format ) format = "xml" ;
+  var xQUERY = x.getXml ( "QUERY" ) ;
+  var countRows = this._countRows ;
+  var limit = this._limit ;
+  var offset = this._offset ;
+  var pagination = this._pagination ;
+  var download = false ;
+
+  var lang = TSys.getLocale().getLanguage() ;
+  if ( lang ) xQUERY.add ( "LANGUAGE", lang ) ;
+  if ( format == 'excel' )
+  {
+    xQUERY.add ( "FORMAT", "excel" ) ;
+    format = "excel" ;
+    download = true ;
+  }
+  else
+  if ( format == 'excel-max' )
+  {
+    xQUERY.add ( "FORMAT", "excel" ) ;
+    format = "excel" ;
+    //limit = 64000 ;
+    offset = 0 ;
+    pagination = false ;
+    download = true ;
+  }
+  else
+  if ( format == 'xml-download' )
+  {
+    xQUERY.add ( "FORMAT", "xml" ) ;
+    format = "excel" ;
+    limit = 64000 ;
+    offset = 0 ;
+    pagination = false ;
+    download = true ;
+  }
+  else
+  {
+    xQUERY.add ( "FORMAT", format ) ;
+  }
+  xQUERY.add ( "NAME", this.name ) ;
+  var msg = new CoMessage ( "QUERY.REQUEST" ) ;
+  msg.setXmlData ( "<QUERY.REQUEST>\n"
+                 + "<Operation>Execute</Operation>\n"
+                 + xQUERY
+                 + "<DBUID>" + this.dbuid + "</DBUID>\n"
+                 + "<DBPWD>" + this.dbpwd + "</DBPWD>\n"
+                 + "<DBURL>" + this.dburl + "</DBURL>\n"
+		 + ( this._countRows ? "<CountRows>" + this._countRows + "</CountRows>" : "" )
+		 + "<Limit>" + limit + "</Limit>"
+		 + "<Offset>" + offset + "</Offset>"
+		 + "<Pagination>" + pagination + "</Pagination>"
+		 + "<Download>" + download + "</Download>"
+                 + "</QUERY.REQUEST>\n"
+                 ) ;
+  if ( download )
+  {
+    Calypso.downloadDocument ( msg ) ;
+    return ;
+  }
+  var thiz = this ;
+  if ( TSys.isIE() )
+  {
+    TSys.executeLater ( function()
+    {
+      var xResult = Calypso.getXml ( msg ) ;
+      thiz._executeSQL2 ( xResult, format, xQUERY ) ;
+    });
+  }
+  else
+  {
+    Calypso.getXml ( msg, function(xResult)
+    {
+      thiz._executeSQL2 ( xResult, format, xQUERY ) ;
+    });
+  }
+} ;
+DBQueryClass.prototype._executeSQL2 = function ( xResult, format, xQUERY )
+{
+  var xError = xResult.getXml ( "QUERY.RESULT/Error" ) ;
+  if ( xError )
+  {
+    var str = xError.getContent() ;
+    if ( str.indexOf ( "java.sql." ) >= 0 )
+    {
+      var pos = str.indexOf ( ":" ) ;
+      if ( pos > 0 ) str = str.substring ( pos+1 ) ;
+    }
+    if ( str.indexOf ( "ORA-" ) >= 0 )
+    {
+      var pos = str.indexOf ( ":" ) ;
+      if ( pos > 0 ) str = str.substring ( pos+1 ) ;
+    }
+    if ( ! this.resultContainer )
+    {
+      var d = new TUserDialog ( str ) ;
+      d.info() ;
+    }
+    else
+    {
+      this.resultContainer.dom.style.overflow = "auto" ;
+      this.resultContainer.setText ( "<pre>" + str + "</pre>" ) ;
+    }
+    return ;
+  }
+  this.resultTable = null ;
+  if ( format == "xml" )
+  {
+    if ( this.resultContainer.isXML )
+    {
+      TGui.flushAttributes ( this.resultContainer.dom ) ;
+    }
+    this.resultContainer.setText ( "" ) ;
+    var xml = new TXml() ;
+    var xTab = xml.add ( "Table" ) ;
+    var id = TSys.getTempId() ;
+    xTab.addAttribute ( "id", id ) ;
+    xTab.addAttribute ( "name", "TABLE" ) ;
+    xTab.addAttribute ( "sortable", "true" ) ;
+    xTab.addAttribute ( "style", "bottom:-0;right:-0;top:0px;left:0px;" ) ;
+    var xColumns = xTab.add ( "Columns" ) ;
+    var en = xQUERY.getEnum ( "Columns", "Column" ) ;
+    while ( en.hasNext() )
+    {
+      var c = en.nextXml() ;
+      if ( ! c.getBoolAttribute ( "visible", true ) ) continue ;
+      var xCol = xColumns.add ( "Column" ) ;
+      xCol.addAttribute ( "name", c.getContent() ) ;
+      if ( this._useShortcutNames )
+        xCol.addAttribute ( "name", c.getAttribute ( "shortcutName" ) ) ;
+      else
+        xCol.addAttribute ( "title", c.getAttribute ( "displayName" ) ) ;
+      var type = c.getAttribute ( "type" ) ;
+      if ( type == 'date' ) type = 'datetime' ;
+      xCol.addAttribute ( "type", type ) ;
+    }
+    this.resultContainer.isHTML = false ;
+    this.resultContainer.isXML = true ;
+    this.resultContainer.setAxl ( xml ) ;
+    this.resultContainer.dom.style.overflow = "hidden" ;
+    var xQUERY_RESULT = xResult.get ( "QUERY.RESULT" ) ;
+    var n = xQUERY_RESULT.getIntAttribute ( "max_count", 0 ) ;
+    if ( n ) this._maxCount = n ;
+    var max_count = xQUERY_RESULT.getAttribute ( "max_count" ) ;
+    this._resultCount = xQUERY_RESULT.getIntAttribute ( "result_count", 0 ) ;
+    this.resultContainer.setValues ( xQUERY_RESULT ) ;
+    this.resultTable = TGui.getPeerById ( id ) ;
+    if ( this.actionsContainer )
+    {
+      if ( this._pagination )
+      {
+        var v = new TXml() ;
+        if ( this._firstExecute )
+        {
+          this._firstExecute = false ;
+          if ( this._resultCount == 0 )
+          {
+            v.add ( "Label.ROW.INFORMATION", "No items found." ) ;
+          }
+          else
+          {
+	    var numberOfPages = this._maxCount / this._limit ;
+	    var rest = this._maxCount % this._limit ;
+	    if ( rest ) numberOfPages++ ;
+	    numberOfPages = Math.floor ( numberOfPages ) ;
+	    var xRef = v.add ( "OFFSET" ) ;
+	    var n = 1 ;
+	    for ( var i = 0 ; i < this._maxCount ; i += this._limit )
+	    {
+	      var xOpt = xRef.add ( "option", "Page " + n ) ;
+	      xOpt.addAttribute ( "value", "" + i ) ;
+	      n++ ;
+	    }
+          }
+        }
+        else
+	{
+        }
+	var offset = this._offset ;
+	if ( offset <= 0 ) offset = 0 ;
+        if ( this._resultCount == 0 )
+        {
+          v.add ( "Label.ROW.INFORMATION", "No items found." ) ;
+        }
+	else
+	{
+	v.add ( "Label.ROW.INFORMATION", "Shown are row " + ( offset + 1 ) + " to " + ( offset + this._resultCount ) + " of " + this._maxCount ) ;
+	}
+        this.actionsContainer.setValues ( v ) ;
+      }
+      else
+      {
+        var v = new TXml() ;
+        if ( this._resultCount == 0 )
+        {
+          v.add ( "Label.ROW.INFORMATION", "No items found." ) ;
+        }
+        else
+        {
+          if ( max_count == '+' )
+          {
+            v.add ( "Label.ROW.INFORMATION", "Shown are only the first " + this._resultCount + " items. There are more." ) ;
+          }
+          else
+          if ( this._maxCount )
+          {
+            v.add ( "Label.ROW.INFORMATION", "Shown are the first " + this._resultCount + " items of " + this._maxCount + "." ) ;
+          }
+          else
+          {
+            if ( this._resultCount == 1 )
+              v.add ( "Label.ROW.INFORMATION", "There is only 1 item found." ) ;
+            else
+              v.add ( "Label.ROW.INFORMATION", "Shown are all " + this._resultCount + " items." ) ;
+          }
+        }
+        this.actionsContainer.setValues ( v ) ;
+      }
+    }
+  }
+  else
+  {
+    if ( this.actionsContainer )
+    {
+      var v = new TXml() ;
+      v.add ( "Label.ROW.INFORMATION", "" ) ;
+      this.actionsContainer.setValues ( v ) ;
+    }
+    this.resultContainer.isHTML = true ;
+    this.resultContainer.isXML = false ;
+    var html = xResult.getContent ( "QUERY.RESULT/Html" ) ;
+    this.resultContainer.dom.style.overflow = "auto" ;
+    this.resultContainer.setText ( html ) ;
+  }
+}
+DBQueryClass.prototype.showSQL = function()
+{
+  var x = this.buildSQL(true) ;
+  if ( ! x ) return ;
+  var xx = x.getXml ( "QUERY" ) ;
+  var SQL = xx.getContent ( "SQL" ) ;
+  var WHERE = xx.getContent ( "WHERE" ) ;
+  var GROUP_BY = xx.getContent ( "GROUP_BY" ) ;
+  var ORDER_BY = xx.getContent ( "ORDER_BY" ) ;
+
+  var str = SQL
+	  + ( WHERE ? "\n WHERE " + WHERE : "" )
+	  + ( GROUP_BY ? "\n " + GROUP_BY : "" )
+	  + ( ORDER_BY ? "\n " + ORDER_BY : "" )
+	  ;
+  if ( ! this.resultContainer )
+  {
+    log ( str ) ;
+  }
+  else
+  {
+    this.resultContainer.dom.style.overflow = "auto" ;
+    str = str.replace ( /&/g, "&amp;" )
+             .replace ( /</g, "&lt;" )
+             .replace ( />/g, "&gt;" )
+        ;
+    this.resultContainer.setText ( "<pre>" + str + "</pre>" ) ;
+  }
+}
+DBQueryClass.prototype.buildSQL = function(ignoreErrors)
+{
+  if ( this.alwaysIgnoreErrors ) ignoreErrors = true ;
+  var x = new TXml() ;
+  if ( ! this.columnsContainer )
+  {
+    x.addDuplicate ( this.xCOLUMNS_TABLE ) ;
+  }
+  else
+  {
+    this.columnsContainer.getValues ( x ) ;
+  }
+  this.filterContainer.getValues ( x ) ;
+  var COLUMNS_TABLE = x.getXml ( "COLUMNS_TABLE" ) ;
+  if ( ! COLUMNS_TABLE ) return ;
+  var hTab = [] ;
+  var lTab = [] ;
+  var lCol = [] ;
+  var lDisp = [] ;
+  var lTypeName = [] ;
+  var lFullCol = [] ;
+  var lOrderBy = [] ;
+  var lGroupBy = [] ;
+  var lVisible = [] ;
+  var lFunction = [] ;
+
+  var FILTER_TABLE = x.getXml ( "FILTER_TABLE" ) ;
+  var en1 = FILTER_TABLE.getEnum ( "row" ) ;
+  while ( en1.hasNext() )
+  {
+    var r = en1.nextXml() ;
+    var tabName = r.getContent ( "RIGHT_OPERAND_TABLE" ) ;
+    if ( tabName )
+    {
+      if ( ! hTab[tabName] )
+      {
+        hTab[tabName] = "x" ;
+        lTab.push ( tabName ) ;
+      }
+    }
+  }
+
+  if ( COLUMNS_TABLE.isEmpty() )
+  {
+    var d = new TUserDialog ( "No query defined" ) ;
+    d.info() ;
+    return ;
+  }
+  var n = 1 ;
+  var distinctCount = 0 ;
+  var en = COLUMNS_TABLE.getEnum ( "row" ) ;
+  if ( ! ignoreErrors )
+  {
+    var isAggregate = false ;
+    while ( en.hasNext() )
+    {
+      var r = en.nextXml() ;
+      var FUNCTION = r.getContent ( "FUNCTION" ) ;
+      if ( ! r.getBool ( "VISIBLE", false ) ) continue ;
+      if ( isAggregate )
+      {
+        if ( ! FUNCTION && FUNCTION != 'DISTINCT' )
+        {
+          var t = r.getContent ( "FULL_COLUMN_NAME" ) ;
+          var d = new TUserDialog ( t + " must appear in the GROUP BY clause or be used in an aggregate function" ) ;
+          d.info() ;
+          return ;
+        }
+      }
+      if ( FUNCTION && FUNCTION != 'DISTINCT' )
+      {
+        isAggregate = true ;
+      }
+      if ( FUNCTION == 'DISTINCT' )
+      {
+        if ( n > 1 )
+	{
+          var t = r.getContent ( "FULL_COLUMN_NAME" ) ;
+          var d = new TUserDialog ( "DISTINCT(" + t + ") must be the first." ) ;
+          d.info() ;
+          return ;
+        }
+        if ( distinctCount > 0 )
+	{
+          var t = r.getContent ( "FULL_COLUMN_NAME" ) ;
+          var d = new TUserDialog ( "DISTINCT() must be used only once." ) ;
+          d.info() ;
+          return ;
+        }
+        distinctCount++ ;
+      }
+      n++ ;
+    }
+  }
+  en.reset() ;
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    var tabName = r.getContent ( "TABLE_NAME" ) ;
+    if ( ! hTab[tabName] )
+    {
+      hTab[tabName] = "x" ;
+      lTab.push ( tabName ) ;
+    }
+    var FUNC = r.getContent ( "FUNCTION" ) ;
+    var fullColName = r.getContent ( "FULL_COLUMN_NAME" ) ;
+
+    if ( r.getContent ( "FUNCTION" ) == 'GROUP_BY' )
+    {
+    }
+//    else
+    {
+      lCol.push ( r.getContent ( "COLUMN_NAME" ) ) ;
+      lFullCol.push ( fullColName ) ;
+      lDisp.push ( r.getContent ( "DISPLAY_NAME", fullColName ) ) ;
+      lTypeName.push ( r.getContent ( "TYPE_NAME" ) ) ;
+
+      if ( r.getBool ( "VISIBLE", false ) ) lVisible.push ( "true" ) ;
+      else                                  lVisible.push ( "false" ) ;
+    }
+
+    var ORDER_BY = r.getContent ( "ORDER_BY" ) ;
+
+    if ( r.getContent ( "FUNCTION" ) )
+    {
+      var f = r.getContent ( "FUNCTION" ) ;
+      if ( f == 'GROUP_BY' )
+      {
+        lGroupBy.push ( fullColName ) ;
+        lFunction.push ( fullColName ) ;
+      }
+      else
+      {
+        lFunction.push ( f + "(" + fullColName + ")" ) ;
+        if ( ORDER_BY && ORDER_BY != 'NONE' ) lOrderBy.push ( f + "(" + fullColName + ")" + " " + ORDER_BY ) ;
+      }
+    }
+    else
+    {
+      if ( ORDER_BY && ORDER_BY != 'NONE' ) lOrderBy.push ( fullColName + " " + ORDER_BY ) ;
+      lFunction.push ( fullColName ) ;
+    }
+  }
+  var sql = "SELECT " + lFunction.join ( "," ) + "\n  FROM " + lTab.join ( "," ) ;
+
+  var ORDER_BY = undefined ;
+  if ( lOrderBy.length )
+  {
+    ORDER_BY = " ORDER BY " + lOrderBy.join ( "," ) ;
+  }
+  var GROUP_BY = undefined ;
+  if ( lGroupBy.length )
+  {
+    GROUP_BY = " GROUP BY " + lGroupBy.join ( "," ) ;
+  }
+  var lastChild = FILTER_TABLE.getDom().lastChild ;
+  en = FILTER_TABLE.getEnum ( "row" ) ;
+
+  var where = "" ;
+  var first = true ;
+  var x_LEFT_OPERAND_TABLE_GENERIC_TYPE_NAMES ;
+
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    var LEFT_OPERAND = r.getContent ( "LEFT_OPERAND" ) ;
+    var LEFT_OPERAND_TABLE = r.getContent ( "LEFT_OPERAND_TABLE" ) ;
+    var OPERATOR = this.nameToOperator[r.getContent ( "OPERATOR" )] ;
+    if ( ! OPERATOR ) OPERATOR = r.getContent ( "OPERATOR" ) ;
+    var RIGHT_OPERAND = r.getContent ( "RIGHT_OPERAND" ) ;
+    var RIGHT_OPERAND_TABLE = r.getContent ( "RIGHT_OPERAND_TABLE" ) ;
+    var TYPE_NAME = r.getContent ( "TYPE_NAME" ) ;
+    var ACTION = r.getContent ( "ACTION" ) ;
+    var TRUE_RIGHT_OPERAND = r.getContent ( "TRUE_RIGHT_OPERAND" ) ;
+    var LEFT_OPERAND_FUNCTION = r.getContent ( "LEFT_OPERAND_FUNCTION" ) ;
+
+    //log ( r ) ;
+    if ( ! ignoreErrors )
+    {
+      if ( this.operatorIsUnique[OPERATOR] && RIGHT_OPERAND )
+      {
+        if (  TYPE_NAME != "date" && TYPE_NAME != "datetime" ) // TODO: remove date / time entry in table
+        {
+          var d = new TUserDialog ( "Line <b>" + LEFT_OPERAND + "</b><br/>with operator <b>" + OPERATOR + "</b><br/>must not have a right operand." ) ;
+          d.info() ;
+          return ;
+        }
+      }
+      if ( LEFT_OPERAND && ! TRUE_RIGHT_OPERAND && ! RIGHT_OPERAND && ! this.operatorIsUnique[OPERATOR] )
+      {
+        var d = new TUserDialog ( "Line " + LEFT_OPERAND + " has no right operand value." ) ;
+        d.info() ;
+        return ;
+      }
+      if ( TYPE_NAME != 'string' && TYPE_NAME != 'char' )
+      {
+        if ( OPERATOR == 'like' || OPERATOR == 'not like' )
+        {
+          var d = new TUserDialog ( "Invalid operator <b>" + OPERATOR + "</b> for " + LEFT_OPERAND + " with type: <b>" + TYPE_NAME + "</b>" ) ;
+          d.info() ;
+          return ;
+        }
+        if (  LEFT_OPERAND_FUNCTION.indexOf ( "UPPER" ) == 0
+           || LEFT_OPERAND_FUNCTION.indexOf ( "LOWER" ) == 0
+           )
+        {
+          var d = new TUserDialog ( "Invalid function <b>" + LEFT_OPERAND_FUNCTION + "</b> for " + LEFT_OPERAND + " with type: <b>" + TYPE_NAME + "</b>" ) ;
+          d.info() ;
+          return ;
+        }
+      }
+      if ( TYPE_NAME.indexOf ( "date" ) < 0 )
+      {
+        if ( LEFT_OPERAND_FUNCTION.indexOf ( "date" ) >= 0 )
+        {
+          var d = new TUserDialog ( "Invalid function <b>" + LEFT_OPERAND_FUNCTION + "</b> for " + LEFT_OPERAND + " with type: <b>" + TYPE_NAME + "</b>" ) ;
+          d.info() ;
+          return ;
+        }
+      }
+      if ( TYPE_NAME == "int" || TYPE_NAME == "float" )
+      {
+        if ( ! RIGHT_OPERAND_TABLE )
+        {
+	       var d = 0 ;
+          if ( TYPE_NAME == "int" ) d = parseInt ( RIGHT_OPERAND ) ;
+          if ( TYPE_NAME == "float" ) d = parseFloat ( RIGHT_OPERAND ) ;
+	        if ( isNaN ( d ) && ! this.operatorIsUnique[OPERATOR] )
+          {
+            var d = new TUserDialog ( "Invalid value <b>" + RIGHT_OPERAND + "</b> for type: <b>" + TYPE_NAME + "</b>" ) ;
+            d.info() ;
+            return ;
+          }
+        }
+      }
+    }
+    if ( ! LEFT_OPERAND )
+    {
+      if ( r.getDom() == lastChild )
+      {
+        if ( ACTION.indexOf ( ")" ) >= 0 )
+        {
+          where += " " + ACTION ;
+        }
+      }
+      else
+      {
+        where += " " + ACTION + " " ;
+      }
+    }
+    else
+    {
+      if ( LEFT_OPERAND_FUNCTION )
+      {
+        LEFT_OPERAND = LEFT_OPERAND_FUNCTION.replace ( /\$0/g, LEFT_OPERAND ) ;
+      }
+      if (  TYPE_NAME == "string" || TYPE_NAME == "char" )
+      {
+        if ( ! this.operatorIsUnique[OPERATOR] )
+        {
+          var temp_RIGHT_OPERAND = RIGHT_OPERAND ;
+          if ( temp_RIGHT_OPERAND.charAt ( 0 ) != "'" ) temp_RIGHT_OPERAND = "'" + temp_RIGHT_OPERAND ;
+          if ( temp_RIGHT_OPERAND.charAt ( temp_RIGHT_OPERAND.length - 1 ) != "'" ) temp_RIGHT_OPERAND += "'" ;
+          where += LEFT_OPERAND + " " + OPERATOR + " " + temp_RIGHT_OPERAND ;
+        }
+        else
+          where += LEFT_OPERAND + " " + OPERATOR ;
+      }
+      else
+      if (  TYPE_NAME == "date" || TYPE_NAME == "datetime" )
+      {
+        var GENERIC_TYPE_NAME = r.getContent ( "GENERIC_TYPE_NAME" ) ;
+        if ( ! GENERIC_TYPE_NAME )
+        {
+          if ( ! x_LEFT_OPERAND_TABLE_GENERIC_TYPE_NAMES )
+          {
+            var xColumnsFromTable = this.getColumns ( LEFT_OPERAND_TABLE ) ;
+            x_LEFT_OPERAND_TABLE_GENERIC_TYPE_NAMES = [] ;
+            var en = xColumnsFromTable.getEnum ( "COLUMNS/row" ) ;
+            while ( en.hasNext() )
+            {
+              var e4 = en.nextXml() ;
+              x_LEFT_OPERAND_TABLE_GENERIC_TYPE_NAMES[e4.getContent("COLUMN_NAME")] = e4 ;
+            }
+          }
+          var cname = LEFT_OPERAND.substring ( LEFT_OPERAND.indexOf ( '.' ) + 1 ) ;
+          GENERIC_TYPE_NAME = x_LEFT_OPERAND_TABLE_GENERIC_TYPE_NAMES[cname].getContent ( "GENERIC_TYPE_NAME" ) ;
+        }
+        if ( this.operatorIsUnique[OPERATOR] )
+        {
+        }
+        else
+        {
+          if ( TRUE_RIGHT_OPERAND )
+          {
+            var str = "${to_timestamp(date='" + TRUE_RIGHT_OPERAND + "',format='YYYYMMDDhh24miss',GENERIC_TYPE_NAME="+GENERIC_TYPE_NAME+")}" ;
+            where += LEFT_OPERAND + " " + OPERATOR + " " + str ;
+          }
+          else
+          {
+            var d = DateUtils.parseDate ( RIGHT_OPERAND ) ;
+            var str = "${to_timestamp(date='" + DateUtils.formatDate ( d, "yyyyMMddHHmmss" ) + "',format='YYYYMMDDhh24miss',GENERIC_TYPE_NAME="+GENERIC_TYPE_NAME+")}" ;
+            where += LEFT_OPERAND + " " + OPERATOR + " " + str ;
+          }
+        }
+      }
+      else
+      {
+        where += LEFT_OPERAND + " " + OPERATOR + " " + RIGHT_OPERAND ;
+      }
+    }
+  }
+  var npar = 0 ;
+  for ( var i = 0 ; i < where.length ; i++ )
+  {
+    if ( where.charAt ( i ) == "(" ) npar++ ;
+    else
+    if ( where.charAt ( i ) == ")" ) npar-- ;
+  }
+  if ( npar > 0 )
+  {
+    for ( var i = 0 ; i < npar ; i++ )
+    {
+      where += ")" ;
+    }
+  }
+
+  var x = new TXml() ;
+  var xx = x.add ( "QUERY" ) ;
+  xx.addCDATA ( "SQL", sql ) ;
+  xx.addCDATA ( "WHERE", where ) ;
+  var xCols = xx.add ( "Columns" ) ;
+  for ( var i = 0 ; i < lFullCol.length ; i++ )
+  {
+//    var xc = xCols.add ( "Column", lFullCol[i] ) ;
+    var xc = xCols.add ( "Column", lFunction[i].replace ( / /g, "_" ).replace ( /\(/g, "_" ).replace ( /\)/g, "_" ) ) ;
+    xc.addAttribute ( "displayName", lDisp[i] ) ;
+    if ( this._useShortcutNames )
+      xc.addAttribute ( "shortcutName", "A" + i ) ;
+    else
+      xc.addAttribute ( "type", lTypeName[i] ) ;
+    xc.addAttribute ( "visible", lVisible[i] ) ;
+  }
+  if ( GROUP_BY )
+  {
+    xx.addCDATA ( "GROUP_BY", GROUP_BY ) ;
+  }
+  if ( ORDER_BY ) xx.addCDATA ( "ORDER_BY", ORDER_BY ) ;
+  return x ;
+}
+DBQueryClass.prototype.columnsTableUp = function (event)
+{
+  var r = this.columnsTable.getSelectedRow() ;
+  r.moveUp() ;
+}
+DBQueryClass.prototype.columnsTableDown = function (event)
+{
+  var r = this.columnsTable.getSelectedRow() ;
+  r.moveDown() ;
+}
+DBQueryClass.prototype.removeFromColumnsTable = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  this.columnsTable.removeSelectedItem() ;
+  this.resetPaginationContainer() ;
+}
+DBQueryClass.prototype.removeFromFilterTable = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var index = this.filterTable.getSelectedIndex() ;
+  this.filterTable.removeSelectedItem() ;
+  var row = this.filterTable.getRowAt ( index ) ;
+  row.remove() ;
+  this.resetPaginationContainer() ;
+}
+DBQueryClass.prototype.setRightOperand = function ( tableRow, xml )
+{
+  var x = tableRow.getXml() ;
+  var tabName = xml.getContent ( "TABLE_NAME" ) ;
+  var colName = xml.getContent ( "COLUMN_NAME" ) ;
+  var rot = x.ensureXml ( 'RIGHT_OPERAND_TABLE' ) ;
+  rot.setContent ( tabName ) ;
+  var TD = tableRow.getCellHtmlElement ( "RIGHT_OPERAND" ) ;
+  var TF = TD.firstChild ;
+  TF.value = tabName + "." + colName ;
+  TF.readOnly = true ;
+}
+DBQueryClass.prototype.clearRightOperand = function (event)
+{
+  var r = this.filterTable.getSelectedRow() ;
+  this.filterTable.firePropertyChangeEvent() ;
+  var TD = r.getCellHtmlElement ( "RIGHT_OPERAND" ) ;
+  r.getXml().remove ( "RIGHT_OPERAND_TABLE" ) ;
+  var TF = TD.firstChild ;
+  TF.value = ""  ;
+  TF.readOnly = false ;
+}
+DBQueryClass.prototype.editRightOperandDate = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var src = ev.getSource() ;
+  var r = this.filterTable.getSelectedRow() ;
+  var TD = r.getCellHtmlElement ( "RIGHT_OPERAND" ) ;
+  var userXml = r.getXml() ;
+  var TF = TD.firstChild ;
+  var d = new TWindow ( "${home}/Dialog.Query.Edit.RightOperandDate" ) ;
+  d.addAttribute ( "TF", TF ) ;
+  d.addAttribute ( "UserXml", userXml ) ;
+  d.setPagelet ( this ) ;
+  d.create() ;
+  var v = new TXml() ;
+  var TYPE = userXml.getContent ( "TRUE_RIGHT_OPERAND_TYPE", "T_DATE" ) ;
+
+  v.add ( "TYPE", TYPE ) ;
+  if ( TYPE == "T_DATE" )
+  {
+    var tfv = TF.value ;
+    if ( ! tfv )
+    {
+      tfv = DateUtils.formatDate ( DateUtils.roundDownToDay ( new Date() ), "yyyyMMddHHmmss" ) ;
+    }
+    v.add ( "DATE", tfv ) ;
+  }
+  else
+  {
+    v.add ( userXml.getContent ( "TRUE_RIGHT_OPERAND_NAME" ), userXml.getContent ( "TRUE_RIGHT_OPERAND_VALUE" ) ) ;
+  }
+  d.setValues ( v ) ;
+  d.show() ;
+}
+DBQueryClass.prototype.editRightOperandDateApply = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var d = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var TF = d.getAttribute ( "TF" ) ;
+
+  var TYPE = v.getContent ( "TYPE" ) ;
+  var userXml = d.getAttribute ( "UserXml" ) ;
+
+  userXml.remove ( "TRUE_RIGHT_OPERAND" ) ;
+  userXml.remove ( "TRUE_RIGHT_OPERAND_TYPE" ) ;
+  userXml.remove ( "TRUE_RIGHT_OPERAND_VALUE" ) ;
+  userXml.remove ( "TRUE_RIGHT_OPERAND_NAME" ) ;
+
+  userXml.add ( "TRUE_RIGHT_OPERAND_TYPE", TYPE ) ;
+  if ( TYPE == 'T_DATE' )
+  {
+    var DATE = v.getContent ( "DATE" ) ;
+    TF.value = DATE ;
+  }
+  else
+  {
+    var NAME = TYPE.substring ( 2 ) ;
+    var n = v.getInt ( NAME, 0 ) ;
+    userXml.add ( "TRUE_RIGHT_OPERAND_VALUE", n ) ;
+    userXml.add ( "TRUE_RIGHT_OPERAND_NAME", NAME ) ;
+    if ( TYPE == 'T_START_OF_DAY' )
+    {
+      userXml.add ( "TRUE_RIGHT_OPERAND", "$" + "{firstTimeOfDayOf(day=" + n + ")}" ) ;
+      if ( n == 0 ) TF.value = "Start of today" ;
+      else
+      if ( n == -1 ) TF.value = "Start of yesterday" ;
+      else TF.value = "Start of day " + n ;
+    }
+    else
+    if ( TYPE == 'T_END_OF_DAY' )
+    {
+      userXml.add ( "TRUE_RIGHT_OPERAND", "$" + "{lastTimeOfDayOf(day=" + n + ")}" ) ;
+      if ( n == 0 ) TF.value = "End of today" ;
+      else
+      if ( n == -1 ) TF.value = "End of yesterday" ;
+      else TF.value = "End of day " + n ;
+    }
+
+    if ( TYPE == 'T_START_OF_WEEK' )
+    {
+      userXml.add ( "TRUE_RIGHT_OPERAND", "$" + "{firstTimeOfWeekOf(week=" + n + ")}" ) ;
+      if ( n == 0 ) TF.value = "Start of this week" ;
+      else
+      if ( n == -1 ) TF.value = "Start of last week" ;
+      else TF.value = "Start of week " + n ;
+    }
+    else
+    if ( TYPE == 'T_END_OF_WEEK' )
+    {
+      userXml.add ( "TRUE_RIGHT_OPERAND", "$" + "{lastTimeOfWeekOf(week=" + n + ")}" ) ;
+      if ( n == 0 ) TF.value = "End of week " + n ;
+      else
+      if ( n == -1 ) TF.value = "End of last week" ;
+      else TF.value = "End of week " + n ;
+    }
+
+    if ( TYPE == 'T_START_OF_MONTH' )
+    {
+      userXml.add ( "TRUE_RIGHT_OPERAND", "$" + "{firstTimeOfMonthOf(month=" + n + ")}" ) ;
+      if ( n == 0 ) TF.value = "Start of this month" ;
+      else
+      if ( n == -1 ) TF.value = "Start of last month" ;
+      else TF.value = "Start of month " + n ;
+    }
+    else
+    if ( TYPE == 'T_END_OF_MONTH' )
+    {
+      userXml.add ( "TRUE_RIGHT_OPERAND", "$" + "{lastTimeOfMonthOf(month=" + n + ")}" ) ;
+      if ( n == 0 ) TF.value = "End of this month" ;
+      else
+      if ( n == -1 ) TF.value = "End of last month" ;
+      else TF.value = "End of month " + n ;
+    }
+  }
+  this.filterTable.firePropertyChangeEvent() ;
+  d.close() ;
+}
+DBQuery_columnsTableUp = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var elem = ev.getSource() ;
+  var p = TGui.findPageletFromElement ( elem, DBQueryClass ) ;
+  p.columnsTableUp ( event ) ;
+}
+DBQuery_columnsTableDown = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var elem = ev.getSource() ;
+  var p = TGui.findPageletFromElement ( elem, DBQueryClass ) ;
+  p.columnsTableDown ( event ) ;
+}
+DBQuery_removeFromColumnsTable = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var elem = ev.getSource() ;
+  var p = TGui.findPageletFromElement ( elem, DBQueryClass ) ;
+  p.removeFromColumnsTable ( event ) ;
+}
+DBQuery_removeFromFilterTable = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var elem = ev.getSource() ;
+  var p = TGui.findPageletFromElement ( elem, DBQueryClass ) ;
+  p.removeFromFilterTable ( event ) ;
+}
+DBQuery_clearRightOperand = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var elem = ev.getSource() ;
+  var p = TGui.findPageletFromElement ( elem, DBQueryClass ) ;
+  p.clearRightOperand ( event ) ;
+}
+DBQuery_editRightOperandDate = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var elem = ev.getSource() ;
+  var p = TGui.findPageletFromElement ( elem, DBQueryClass ) ;
+  p.editRightOperandDate ( event ) ;
+}
+DBQueryClass.prototype.addAllToColumns = function ( sourceColumnsTable )
+{
+  var en = sourceColumnsTable.rows() ;
+  var actionString = ""
+                   + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-remove" ) + "'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_removeFromColumnsTable(event)'"
+                   + " />"
+                   + "<img src='${home}/arrow_up.gif'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_columnsTableUp(event)'"
+                   + " />"
+                   + "<img src='${home}/arrow_down.gif'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_columnsTableDown(event)'"
+                   + " />"
+                   ;
+  var xml = new TXml() ;
+  var xTab = xml.add ( this.columnsTable.getName() ) ;
+  var tabName = "" ;
+  while ( en.hasNext() )
+  {
+    var TR = en.next() ;
+    var r = new TXml ( TR.domRow ) ;
+    var colName = r.getContent ( "COLUMN_NAME" ) ;
+    var colType = r.getContent ( "TYPE_NAME" ) ;
+    if ( ! tabName ) tabName = r.getContent ( "TABLE_NAME" ) ;
+    var xRow = xTab.add ( "row" ) ;
+    xRow.add ( 'ACTION', actionString ) ;
+    xRow.add ( 'FULL_COLUMN_NAME', tabName + "." + colName ) ;
+    xRow.add ( 'TABLE_NAME', tabName ) ;
+    xRow.add ( 'COLUMN_NAME', colName ) ;
+    xRow.add ( 'DISPLAY_NAME', colName ) ;
+    xRow.add ( 'TYPE_NAME', colType ) ;
+    xRow.add ( 'ORDER_BY', "" ) ;
+    xRow.add ( 'GROUP_BY', "false" ) ;
+    xRow.add ( 'FUNCTION', "" ) ;
+    xRow.add ( 'VISIBLE', "true" ) ;
+  }
+  this.columnsTable.setValues ( xml ) ;
+}
+DBQueryClass.prototype.addToColumns = function ( v )
+{
+  this.resetPaginationContainer() ;
+  var tabName = v.getContent ( "TABLE_NAME" ) ;
+  var colName = v.getContent ( "COLUMN_NAME" ) ;
+  var colType = v.getContent ( "TYPE_NAME" ) ;
+  var GENERIC_TYPE_NAME = v.getContent ( "GENERIC_TYPE_NAME" ) ;
+  var FULL_COLUMN_NAME = tabName + "." + colName ;
+  var tab = this.columnsTable ;
+  var row = tab.findRow ( "FULL_COLUMN_NAME", FULL_COLUMN_NAME ) ;
+  if ( row )
+  {
+    var d = new TUserDialog ( "Column already exists in query: " + colName ) ;
+    d.info() ;
+    return ;
+  }
+  var x = new TXml() ;
+  var r = x.add ( "row" ) ;
+  var actionString = ""
+                   + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-remove" ) + "'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_removeFromColumnsTable(event)'"
+                   + " />"
+                   + "<img src='${home}/arrow_up.gif'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_columnsTableUp(event)'"
+                   + " />"
+                   + "<img src='${home}/arrow_down.gif'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_columnsTableDown(event)'"
+                   + " />"
+                   ;
+  r.add ( 'ACTION', actionString ) ;
+  r.add ( 'FULL_COLUMN_NAME', FULL_COLUMN_NAME ) ;
+  r.add ( 'TABLE_NAME', tabName ) ;
+  r.add ( 'COLUMN_NAME', colName ) ;
+  r.add ( 'DISPLAY_NAME', colName ) ;
+  r.add ( 'TYPE_NAME', colType ) ;
+  r.add ( 'GENERIC_TYPE_NAME', GENERIC_TYPE_NAME ) ;
+  r.add ( 'ORDER_BY', "" ) ;
+  r.add ( 'GROUP_BY', "false" ) ;
+  r.add ( 'FUNCTION', "" ) ;
+  r.add ( 'VISIBLE', "true" ) ;
+  tab.addRow ( r ) ;
+  var lastRow = tab.getLastRow() ;
+
+  var TD = null ;
+  var ch = null ;
+  var desc = null ;
+
+  TD = lastRow.getCellHtmlElement ( "FUNCTION" ) ;
+  ch = new TChoice ( TD.firstChild ) ;
+  desc = this.functionOptions[colType] ;
+  if ( desc ) ch.setOptions ( 0, desc.value, desc.text ) ;
+  else ch.setOptions ( 0, [ "" ], [ "" ] ) ;
+  var w = TD.offsetWidth
+        - TGui.getComputedStyleInt ( TD, "margin-left", 0 )
+        - TGui.getComputedStyleInt ( TD, "margin-right", 0 )
+        - TGui.getComputedStyleInt ( TD, "padding-left", 0 )
+        - TGui.getComputedStyleInt ( TD, "padding-right", 0 )
+        ;
+  ch.dom.style.width = w + "px" ;
+  this.columnsTable.adjustHeader() ;
+}
+DBQueryClass.prototype.addToFilter = function ( v )
+{
+  this.resetPaginationContainer() ;
+  var tab = this.filterTable ;
+  var lastRow = tab.getLastRow() ;
+  var tabName = v.getContent ( "TABLE_NAME" ) ;
+  var colName = v.getContent ( "COLUMN_NAME" ) ;
+  var colType = v.getContent ( "TYPE_NAME" ) ;
+  var GENERIC_TYPE_NAME = v.getContent ( "GENERIC_TYPE_NAME" ) ;
+  var RIGHT_OPERAND = v.getContent ( "RIGHT_OPERAND" ) ;
+  var x = new TXml() ;
+  var r = x.add ( "row" ) ;
+  r.add ( 'LEFT_OPERAND', tabName + "." + colName ) ;
+  r.add ( 'LEFT_OPERAND_TABLE', tabName ) ;
+  r.add ( 'OPERATOR', "eq" ) ;
+  r.add ( 'TYPE_NAME', colType ) ;
+  r.add ( 'GENERIC_TYPE_NAME', GENERIC_TYPE_NAME ) ;
+  r.add ( 'RIGHT_OPERAND', RIGHT_OPERAND ) ;
+  var clearString = ""
+                  + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-clear" ) + "'"
+                  + " style='border-style: none;width:16px;height:16px;'"
+                  + " onmousedown='return false;'"
+                  + " onclick='DBQuery_clearRightOperand(event)'"
+                  + " />"
+                  ;
+  var editDateString = "<img src='${home}/calendar-16x16.png'"
+                     + " style='border-style: none;width:16px;height:16px;'"
+                     + " onmousedown='return false;'"
+                     + " onclick='DBQuery_editRightOperandDate(event)'"
+                     ;
+
+  var id = null ;
+  if ( colType == 'date' || colType == 'datetime' )
+  {
+    var id = TSys.getTempId() ;
+    r.add ( 'CLEAR', editDateString + " id='" + id + "' />" ) ;
+  }
+  else
+  {
+    r.add ( 'CLEAR', clearString ) ;
+  }
+  var rr = tab.addRow ( r ) ;
+
+  var actionString = ""
+                   + "<img src='" + TGui.buildThemeImageUrl ( "Misc", "edit-remove" ) + "'"
+                   + " style='border-style: none;width:16px;height:16px;'"
+                   + " onmousedown='return false;'"
+                   + " onclick='DBQuery_removeFromFilterTable(event)'"
+                   + " />"
+                   ;
+  lastRow = tab.getLastRow() ;
+  var TD = lastRow.getHtmlElement().firstChild ;
+  TD.innerHTML = actionString ;
+
+  x = new TXml() ;
+  r = x.add ( "row" ) ;
+  r.add ( 'ACTION', "" ) ;
+  tab.addRow ( r ) ;
+
+  if ( id )
+  {
+    var eImg = document.getElementById ( id ) ;
+    var eTD = eImg.parentNode ;
+    eTD = eTD.previousSibling ;
+    var eTF = eTD.firstChild ;
+    eTF.readOnly = true ;
+    eTF.style.borderWidth = "0px" ;
+    eTF.style.backgroundColor = "transparent" ;
+  }
+  var ch = null ;
+  var desc = null ;
+
+  TD = lastRow.getCellHtmlElement ( "LEFT_OPERAND_FUNCTION" ) ;
+  var w = TD.offsetWidth
+        - TGui.getComputedStyleInt ( TD, "margin-left", 0 )
+        - TGui.getComputedStyleInt ( TD, "margin-right", 0 )
+        - TGui.getComputedStyleInt ( TD, "padding-left", 0 )
+        - TGui.getComputedStyleInt ( TD, "padding-right", 0 )
+        ;
+
+  ch = new TChoice ( TD.firstChild ) ;
+  desc = this.leftOperandOptions[colType] ;
+  if ( desc ) ch.setOptions ( 0, desc.value, desc.text ) ;
+  else ch.setOptions ( 0, [ "" ], [ "" ] ) ;
+  ch.dom.style.width = w + "px" ;
+
+  TD = lastRow.getCellHtmlElement ( "OPERATOR" ) ;
+  ch = new TChoice ( TD.firstChild ) ;
+  desc = this.operatorOptions[colType] ;
+  if ( desc ) ch.setOptions ( 0, desc.value, desc.text ) ;
+  else ch.setOptions ( 0, [ "" ], [ "" ] ) ;
+  ch.dom.style.width = w + "px" ;
+  this.filterTable.adjustHeader() ;
+}
+QueryBuilder = function(context,xml)
+{
+  Tango.initSuper ( this, DBQueryClass );
+  this.jsClassName = "QueryBuilder" ;
+  if ( ! xml ) xml = context ;
+  else
+  {
+    this.context = context ;
+  }
+  this.table = null ;
+}
+QueryBuilder.inherits( DBQueryClass ) ;
+QueryBuilder.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")"
+       + "[context=" + this.context
+       + ( this.table ? ",table=" + this.table : "" )
+       + ( this.name ? ",name=" + this.name : "" )
+       + "]"
+  ;
+}
+QueryBuilder.prototype._addToColumns = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var x = v.getXml ( "COLUMNS/row" ) ;
+  if ( ! x ) x = v.getXml ( "row" ) ;
+  this.addToColumns ( x ) ;
+}
+QueryBuilder.prototype._addAllToColumns = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  this.addAllToColumns ( this.sourceColumnsTable ) ;
+}
+QueryBuilder.prototype._addToFilter = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var x = v.getXml ( "COLUMNS/row" ) ;
+  if ( ! x ) x = v.getXml ( "row" ) ;
+  this.addToFilter ( x ) ;
+}
+QueryBuilder.prototype.onloadSourceColumnsContainer = function ( ev )
+{
+  this.sourceColumnsContainer = ev.getComponent() ;
+  this.sourceColumnsTable = this.sourceColumnsContainer.getPeer ( "COLUMNS" ) ;
+  var xml = this.getColumns ( this.table ) ;
+  this.sourceColumnsContainer.setValues ( xml ) ;
+  this.sourceColumnsTable = this.sourceColumnsContainer.getPeer ( "COLUMNS" ) ;
+  TGui.getDragSource ( this.sourceColumnsTable.getContainer().dom ).addListener (
+  {
+    dragStart: function ( evt )
+    {
+      var tab = evt.getPeer() ;
+      if ( ! tab ) return ;
+      var x = tab.getSelectedUserXml() ;
+      if ( ! x ) return null ;
+      var src = evt.getSource() ;
+      var tr = null ;
+      if ( src.nodeName != 'TD' && src.nodeName != 'TR' )
+      {
+        return null ;
+      }
+      var t = new Transferable ( DnDDataFlavor.XML, function ( dataFlavor )
+      {
+        if ( dataFlavor == DnDDataFlavor.XML )
+        {
+          var a = tab.getSelectedUserXml() ;
+          return a ;
+        }
+      } ) ;
+      t.setName ( tab.getName() ) ;
+      return t ;
+    },
+    dragDropEnd: function ( evt )
+    {
+      if ( ! evt.getDropSuccess() ) return ;
+    }
+  } ) ;
+}
+
+TablesPagelet = function(xml)
+{
+  Tango.initSuper ( this, Pagelet, xml );
+  this.jsClassName = "TablesPagelet" ;
+  if ( ! xml ) return ;
+}
+TablesPagelet.inherits( Pagelet ) ;
+TablesPagelet.prototype.showTables = function ( tableNamePattern, event )
+{
+  var ev = new TEvent ( event ) ;
+  var p = this.getParent ( DBQueryClass ) ;
+  var xml = p.getTables(tableNamePattern) ;
+  this.setValues ( xml ) ;
+}
+TablesPagelet.prototype.showColumns = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var tn = v.getContent ( "row/TABLE_NAME" ) ;
+  if ( ! tn )
+  {
+    tn = v.getContent ( "TABLES/row/TABLE_NAME" ) ;
+  }
+  var tt = this.getChild ( tn ) ;
+  if ( tt ) return ;
+  var p = this.getParent ( DBQueryClass ) ;
+  var xml = p.getColumns ( tn ) ;
+  var tableId = TSys.getTempId() ;
+
+var str = ""
++ "<xml><Pagelet style='width:200px;height:200px;' title='" + tn + "' dragable='true' resizable='true'\n"
++ " closable='true'\n"
++ "pagelet='new ColumnsPagelet()'\n"
++ "name='" + tn + "'\n"
++ "onchange='handle:PB.Columns PB.Filter'\n"
++ ">\n"
++ "<Table name='COLUMNS' style='top:0px;left:0px;right:-0;bottom:-4;attach-bottom:true;' show-header='false' \n"
++ "ondblclick='*.addToColumns()'\n"
++ "dragsource='true'\n"
++ "id='" + tableId + "'\n"
++ ">\n"
++ "  <Columns>\n"
++ "    <Column name='COLUMN_NAME' />\n"
++ "    <Column name='TYPE_NAME' />\n"
++ "    <Column name='GENERIC_TYPE_NAME' />\n"
++ "  </Columns>\n"
++ "</Table>\n"
++ "<br/>\n"
++ "<Container style='bottom:0;right:2;' >\n"
++ "  <Label text='Add to:' />\n"
++ "  <PushButton disabled='true' name='PB.Columns' text='Columns' onclick='*.addToColumns()' />\n"
++ "  <PushButton disabled='true' name='PB.Filter' text='Filter' onclick='*.addToFilter()' />\n"
++ "</Container>\n"
++ "</Pagelet>\n"
++ "</xml>\n"
+;
+  var pdom = TSys.parseDom ( str ) ;
+  var pxml = new TXml ( pdom ) ;
+  var e = TGui.createElement ( pxml, null )
+e.style.visibility = "hidden" ;
+  var parentContainer = this.dom.parentNode ;
+  var bounds = this.getBounds() ;
+  parentContainer.appendChild ( e ) ;
+
+  var xmax = bounds.x + bounds.width ;
+  for ( var i = 0 ; i < this._children.length ; i++ )
+  {
+    var b = this._children[i].getBounds() ;
+    xmax = Math.max ( xmax, b.x + b.width ) ;
+  }
+  e.style.left = ( xmax + 2 ) + "px" ;
+  e.style.top = ( bounds.y ) + "px" ;
+  e.jsPeer.setValues ( xml ) ;
+  this.addChild ( e.jsPeer ) ;
+  e.jsPeer.setTableId ( tableId ) ;
+e.style.visibility = "inherit" ;
+}
+ColumnsPagelet = function(xml)
+{
+  Tango.initSuper ( this, Pagelet, xml );
+  this.jsClassName = "ColumnsPagelet" ;
+  if ( ! xml ) return ;
+}
+ColumnsPagelet.inherits( Pagelet ) ;
+ColumnsPagelet.prototype.addToColumns = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var p = this.getParent ( DBQueryClass ) ;
+  var x = v.getXml ( "COLUMNS/row" ) ;
+  if ( ! x ) x = v.getXml ( "row" ) ;
+  p.addToColumns ( x ) ;
+}
+ColumnsPagelet.prototype.addAllToColumns = function ( event )
+{
+//log ( event ) ;
+/*
+  var x = null ;
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var p = this.getParent ( DBQueryClass ) ;
+  var x = v.getXml ( "COLUMNS/row" ) ;
+  if ( ! x ) x = v.getXml ( "row" ) ;
+  p.addAllToColumns ( x ) ;
+*/
+}
+ColumnsPagelet.prototype.addToFilter = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var p = this.getParent ( DBQueryClass ) ;
+  var x = v.getXml ( "COLUMNS/row" ) ;
+  if ( ! x ) x = v.getXml ( "row" ) ;
+  p.addToFilter ( x ) ;
+}
+ColumnsPagelet.prototype.setTableId = function ( tableId )
+{
+  this.tableId = tableId ;
+  TGui.getDragSource ( tableId ).addListener (
+  {
+    dragStart: function ( evt )
+    {
+      var tab = evt.getPeer() ;
+      if ( ! tab ) return ;
+      var x = tab.getSelectedUserXml() ;
+      if ( ! x ) return null ;
+      var src = evt.getSource() ;
+      var tr = null ;
+      if ( src.nodeName != 'TD' && src.nodeName != 'TR' )
+      {
+        return null ;
+      }
+      var t = new Transferable ( DnDDataFlavor.XML, function ( dataFlavor )
+      {
+        if ( dataFlavor == DnDDataFlavor.XML )
+        {
+          var a = tab.getSelectedUserXml() ;
+          return a ;
+        }
+      } ) ;
+      t.setName ( tab.getName() ) ;
+      return t ;
+    },
+    dragDropEnd: function ( evt )
+    {
+      if ( ! evt.getDropSuccess() ) return ;
+/*
+      if ( evt.getDropAction() == DnDConstants.MOVE )
+      {
+        var tab = evt.getPeer() ;
+        var a = tab.getSelectedRows() ;
+        if ( a )
+        {
+          for ( var i = 0 ; i < a.length ; i++ )
+          {
+            a[i].remove() ;
+          }
+        }
+      }
+*/
+    }
+  } ) ;
+}
+  }
+}
+  ]]></Script>
+</xml>
+

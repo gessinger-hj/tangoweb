@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Admin' class='ThemeWindowBody' style='top:0px;left:0px;bottom:-0px;right:-0px;'>
+  <Toolbar id='Form.Admin.Toolbar' >
+<!-- <ToolbarButton img='${home}/resources/Users.png' img-width='32' onclick='Admin.showSessions()' /> -->
+    <Container>
+      <Label style='font-weight:bold;top:4px;' text='Current Connection' />
+      <Container style='padding:0px;' >
+        <Label text='Host:'/><tab name='T1' /><Label name='host' style='width:120px;' text='' />
+        <br/>
+        <Label text='Port:' /><tab name='T1' /><Label name='port' style='width:120px;' />
+      </Container>
+    </Container>
+    <Container>
+      <PushButton img='${home}/resources/Network_Connection_Manager-2-64.png' img-width='32'
+	          onclick='Admin.editConnections()' text='Change Connection'
+                   />
+      <PushButton img='${home}/resources/Network_Connection_Manager-2-64.png' img-width='32'
+	          onclick='Admin.setToDefaultConnection()' text='Default Connection'
+                   />
+      <PushButton img-width='32'
+	          onclick='Admin.showServletInfo()' text='Servlet Info'
+                   />
+      <PushButton name='PB.startList' text='Start list' onclick='Admin.showStartListFull()' style='visibility:hidden;'/>
+    </Container>
+    <if property='Admin.Standalone' operator=eq value=true >
+      <ToolbarButton img='${home}/resources/Vista-Shutdown-64.png' img-width='32' style='right:4;' onclick='logout()' />
+    </if>
+  </Toolbar>
+  <br/>
+<Notebook name='nb' style='bottom:-0;right:-2;' onload='Admin.onload(event)' onchange='Admin.notebookChanged()' >
+  <Container label="Subscriber" >
+    <Container name='Form.Subscriber' style='left:0px;right:-0;bottom:-0;' >
+      <Container style='padding:0px;bottom:-0;' >
+        <Table name='TABLE.SUBSCRIBER' path='SUBSCRIBER' style='width:300px;bottom:-0;right:-0'
+               onclick='Admin.showAxl(event)'
+               reset='true'
+               sortable='true'
+        >
+          <Columns>
+            <Column name='Host' />
+            <Column name='Active' title="Status" />
+            <Column name='SubscriberName' title="Name" />
+          </Columns>
+        </Table>
+      </Container>
+      <Splitbar />
+      <Container name='Form.Subscriber.Right' style='bottom:-0;right:-0;padding:0px;' >
+        <Container name='Form.Subscriber.Right.Toolbar' style='top:0px;right:-0;' >
+	  <PushButton name='PB.refreshAxl' text='Refresh' onclick='Admin.refreshAxl()' disabled='true' />
+	  <PushButton name='PB.replaceSubscriber' text='Replace' onclick='Admin.replaceSubscriber()' style='visibility:hidden;'/>
+	  <PushButton name='PB.shutdownSubscriber' text='Shutdown' onclick='Admin.shutdownSubscriber()' style='visibility:hidden;'/>
+        </Container>
+	<br/>
+        <Container name='Form.Subscriber.Display' style='left:0px;bottom:-0;right:-0;padding:0px;overflow:auto;' reset='true' >
+        </Container>
+      </Container>
+    </Container>
+  </Container>
+  <Container label="Statistics" name='Form.Statistics' >
+    <Container style='padding:0px;left:0px;right:-0px;' >
+      <ToolbarVertical style='bottom:-0;left:0px;'
+        <ToolbarButton img='Tango/Misc/edit-clear-32' img-width='32' onclick='Admin.resetStatistics()' tooltip='Reset Statistics' />
+      </ToolbarVertical>
+      <Container style='right:-4;padding:0px;' >
+        <Canvas width='400' height='200' id='ADMIN.CANVAS.1' name='ADMIN.CANVAS' style='background-color:white;'
+          title='Requests Per Second' title-style='font:larger bold;'
+          xtext='Number' xtext-style='font:10pt normal;'
+          ytic-style='font:smaller normal;'
+          ymax='3000'
+          ygrid='true'
+          ylog='true'
+          graph-color='blue'
+          fill-color='blue'
+          peer='function ( x )
+          { var c = new CanvasRequestsPerSecond ( x ) ;
+            Admin.setCanvasRequestsPerSecond ( c ) ;
+            return c ; 
+          }'
+        />
+        <Canvas width='300' height='200' id='CANVAS.2'  name='CANVAS' style='background-color:white;'
+          title='Steps Per Second' title-style='font:larger bold;'
+          xtext='Number' xtext-style='font:10pt normal;'
+          ytic-style='font:smaller normal;'
+          ymin='0'
+          ymax='300'
+          Xygrid='true'
+          ylog='true'
+          graph-color='green'
+          fill-color='green'
+          peer='function ( x )
+          { var c = new CanvasStepsPerSecond ( x ) ;
+            Admin.setCanvasStepsPerSecond ( c ) ;
+            return c ; 
+          }'
+        />
+        <Canvas width='300' height='200' id='CANVAS.3'  name='CANVAS' style='background-color:white;'
+          title='Average Task Time ( msec )' title-style='font:larger bold;'
+          xtext='Number' xtext-style='font:small normal;'
+          ytic-style='font:smaller normal;'
+          ymin='0'
+          ymax='2000'
+          Xygrid='true'
+          ylog='true'
+          graph-color='darkgreen'
+          fill-color='darkgreen'
+          peer='function ( x )
+          { var c = new CanvasAverageTaskTime ( x ) ;
+            Admin.setCanvasAverageTaskTime ( c ) ;
+            return c ; 
+          }'
+        />
+      </Container>
+    </Container>
+    <br/>
+    <Notebook style='left:0px;bottom:-0;right:-0;' >
+      <Container label="General" >
+        <DisplayContainer style='bottom:-2;' >
+          <TitleLabel text='Subscriber' style='top:0px;left:0px;right:-0;' />
+          <br/>
+          <Container name='Form.Statistic.Subscriber' style='width:500px;bottom:-0;right:-0;overflow:auto;' reset='true' >
+          </Container>
+        </DisplayContainer>
+        <Splitbar />
+        <DisplayContainer style='bottom:-2;right:-2;' >
+          <TitleLabel text='Pending Subjects' style='top:0px;left:0px;right:-0;' />
+          <br/>
+          <Container name='Form.Statistic.PendingSubjects' style='bottom:-0;right:-0;overflow:auto;' reset='true' >
+          </Container>
+        </DisplayContainer>
+      </Container>
+      <Container label="Tasks / Steps" >
+        <DisplayContainer style='bottom:-2;' >
+          <TitleLabel text='Tasks' style='top:0px;left:0px;right:-0;' />
+          <br/>
+          <Container name='Form.Statistic.Tasks' style='width:500px;bottom:-0;right:-0;overflow:auto;' reset='true' >
+          </Container>
+        </DisplayContainer>
+        <Splitbar />
+        <DisplayContainer style='bottom:-2;right:-2;' >
+          <TitleLabel text='Steps' style='top:0px;left:0px;right:-0;' />
+          <br/>
+          <Container name='Form.Statistic.Steps' style='bottom:-0;right:-0;overflow:auto;' reset='true' >
+          </Container>
+        </DisplayContainer>
+      </Container>
+    </Notebook>
+  </Container>
+  <!--Include src='Form.Admin.Messages' /-->
+  <Container label='Dispatcher' id='Tab.Dispatcher' >
+    <ToolbarButton img='${home}/resources/Sync.png' img-width='32' onclick='Admin.showDispatcherAxl()' tooltip='Refresh' />
+    <br/>
+    <Container name='Form.Dispatcher' style='bottom:-2px;right:-2px;'  reset='true'>
+    </Container>
+  </Container>
+  <Container label='Logger' id='Tab.Logger' >
+    <ToolbarButton img='${home}/resources/Sync.png' img-width='32' onclick='Admin.showLoggerAxl()' tooltip='Refresh' />
+    <br/>
+    <Container name='Form.Logger' style='bottom:-2px;right:-2px;' reset='true' >
+    </Container>
+  </Container>
+  <Container label='Live Logs' id='Tab.LiveLogs' >
+    <ToolbarVertical style='bottom:-0;left:0px;'>
+      <ToolbarButton img='Tango/Misc/edit-clear-32' img-width='32' onclick='Admin.clearLiveLogs()' tooltip='Clear' />
+    </ToolbarVertical>
+    <TextDisplay name='LogInfo' style='bottom:-0px;width:600px;overflow:auto;' />
+    <Splitbar />
+    <TextDisplay name='ActionInfo' style='bottom:-0px;right:-0px;width:400px;overflow:auto;' />
+  </Container>
+</Notebook>
+</Container>

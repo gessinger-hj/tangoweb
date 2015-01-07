@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+    <PopupMenu name='MENUBAR' trigger='left'
+>
+<!--
+onopen='function(ev)
+{
+  var m = ev.getMenu() ;
+  m.getItem ( "MENU1" ).setEnabled ( false ) ;
+  log ( ev ) ;
+}'
+-->
+      <MenuItem name='MENU0' text='Allgemein' img='5days-16x16.gif'
+ >
+        <MenuItem text='Choose Theme' img='5days-16x16.gif' onclick='TGui.chooseTheme()' />
+        <MenuItem text='Item 1' />
+      </MenuItem>
+      <MenuItem name='MENU1' text='Menu 1' img='5days-16x16.gif' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+        <MenuItem name='ITEM11' text='Enable ITEM13'
+/>
+        <MenuItem name='ITEM12' text='Enable'
+ />
+        <MenuItem name='ITEM13' text='Item 13 has function'
+        />
+      </MenuItem>
+      <MenuItem name='MENU2' text='Menu 2' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+        <MenuItem name='ITEM21' text='Item 21' />
+        <MenuItem name='ITEM22' text='Item 22' >
+          <MenuItem name='ITEM221' text='Item 221' />
+          <MenuItem name='ITEM222' text='Item 222' />
+          <MenuItem name='ITEM223' text='Item 223' />
+          <MenuItem name='ITEM224' text='Item 224' />
+          <MenuItem name='ITEM225' text='Item 225'
+               onopen='function(ev)
+               {
+                 var m = ev.getMenu() ;
+                 var mi = m.getItem ( "ITEM2251" ) ;
+                 mi.setEnabled ( ! mi.isEnabled() ) ;
+               }'
+          >
+            <MenuItem name='ITEM2251' text='Item 2251' img='5days-16x16.gif' />
+            <MenuItem name='ITEM2252' text='Item 2252' />
+            <MenuItem name='ITEM2253' text='Item 2253' />
+          </MenuItem>
+        </MenuItem>
+        <MenuItem name='ITEM23' text='Item 23' />
+      </MenuItem>
+      <MenuItem name='MENU3' text='Menu 3' img='5days-16x16.gif'>
+        <MenuItem name='ITEM31' text='Item 31 xxxxxxxxxxxxxxxxx' />
+        <MenuItem name='ITEM32' text='Item 32' />
+        <MenuItem name='ITEM33' text='Item 33' />
+        <MenuItem name='ITEM34' text='Item 34' />
+        <MenuItem name='ITEM35' text='Item 35' />
+      </MenuItem>
+    </PopupMenu>
+</xml>
+

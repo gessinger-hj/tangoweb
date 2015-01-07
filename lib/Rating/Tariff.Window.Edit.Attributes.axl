@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title='%EditTariffAttributes%...' id="Tariff.Window.Edit.Attributes" onclose='TGui.windowCancel()' >
+    <Container style='width:600px;height:300px;right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <Hidden name='TARIFF_ID' />
+      <Label text='%Tariff%:' /><tab X='+1'/> <Label class='SimpleTitle' name='TARIFF_NAME' />
+      <br/>
+      <br/>
+      <Table name='T_TARIFF_ATTRIBUTES' path='T_TARIFF_ATTRIBUTES' style='right:-0;bottom:-0;attach-bottom:true;'
+            sortable=true
+            selectable=true
+            get-values=all
+            onchange='*.onchangeTableItem(event)'
+            onclick='*.onclickTableItem(event)'
+            onsetvalues='*.onSetValues()'
+            ongetvalues='*.onGetValues()'
+      >
+        <Columns>
+          <Column name="ATTRIBUTE_NAME" title="%Name%" />
+          <Column name="ATTRIBUTE_TYPE_ID" title="%Type%" >
+	  <Mappings>
+	    <option value='2'>Number</option>
+	    <option value='3'>Date</option>
+	    <option value='1'>String</option>
+	  </Mappings>
+	  </Column>
+          <Column name="ATTRIBUTE_VALUE" title="%Value%" editable='true' width='300' />
+          <Column name="ATTRIBUTE_DESCRIPTION" title="%Description%" />
+        </Columns>
+      </Table>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton img='Tango/Misc/edit-print' text="Print" onclick='
+        {
+          execute: function ( event )
+          {
+            var ev = new TEvent ( event ) ;
+            var tab = ev.getContainer().getPeer ( "T_TARIFF_ATTRIBUTES" ) ;
+            tab.print() ;
+          }
+        }' />
+        <PushButton name='PB.Modify' disabled=true img='Tango/Misc/edit' text='%Modify%' onclick='*.modify(event)' />
+        <PushButton name='PB.Remove' disabled=true img='Tango/Misc/edit-remove' text='%Remove%' onclick='*.remove(event)' />
+        <PushButton name='PB.Add' img='Tango/Misc/edit-add' text='%Add%' onclick='*.addNew(event)' />
+        <PushButton name='PB.Save' disabled=true img='Tango/Misc/edit-save' text='%Save%' onclick='*.save(event)' />
+        <PushButton img='Tango/Misc/edit-cancel' text="%Close%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

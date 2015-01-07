@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog resizable='true' title='NoName...' id="File.Chooser.Dialog" >
+    <Container style='width:400px;height:400px;right:-0;bottom:-0;' onload='*.onload()'>
+      <Toolbar style='top:0px;left:0px;bottom:-0;attach-bottom:true;'>
+        <Container name='Breadcrumb' style='top:0px;left:0px;right:-0px;padding:0px;'>
+          <PushButton text='XXX' style='visibility:hidden;' onload='*.onloadBreadcrumb()'/>
+        </Container>
+      </Toolbar>
+      <br />
+      <!--
+      <ToolbarVertical style='bottom:-0;left:0px;'>
+        <ToolbarButton name='PB_UP' img='Tango/Folder.16/up' text="Up" style='align-center:x;' disabled='true' height=48 width=48 onclick='*.buttonUp()'/>
+        <br />
+        <ToolbarButton name='PB_HOME' img='home-32.png' text="%Home%" style='align-center:x;' height=48 width=48 onclick='*.buttonHome()'/>
+      </ToolbarVertical>
+    -->
+      <Container style='bottom:-0;right:-0;padding:0px;' name='FileList' >
+        <Table name="Files" sortable='true'
+          style='overflow:auto;width:200px;left:0px;bottom:-2;right:-4;attach-right:true;'
+          ondblclick='*.tableDblClick()'
+          onclick='*.tableClick()'
+          onload='*.onloadTable()'
+          onsetvalues='*.onSetValuesFile()'
+        >
+          <Columns>
+            <Column name="IMG" title=" " type='icon' />
+            <Column name="NAME" title="%Name%" />
+            <Column name="DATE" title="%Date%" type='datetime' />
+            <Column name="KB" title="%Size%" align="right" type='int'/>
+          </Columns>
+        </Table>
+        <br />
+        <Container bottom='0' right='-0' >
+          <Label text='%Pattern%' />
+          <TextField name='TF_Pattern' style='right:-4px;attach-right:true;'/>
+          <PushButton name="PB.APPLY" text='%Open%' style='right:4px;attach-right:true;' onclick='*.apply()'/>
+          <PushButton name="PB.CANCEL" text="%Cancel%" style='right:4px;' onclick='*.cancel()' />
+        </Container>
+      </Container>
+    </Container>
+  </Dialog>
+</xml>
+
+

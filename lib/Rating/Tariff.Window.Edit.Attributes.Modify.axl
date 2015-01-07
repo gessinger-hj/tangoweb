@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Modify Attribute' id="Tariff.Window.Edit.Attributes.Modify" onclose='TGui.windowCancel()' >
+    <Container style='right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <ListLabel text='Name' /><tab name='T1' X='+3' /><TextField name='ATTRIBUTE_NAME' style='width:200px;right:-0px;' mandatory='true' />
+      <Hidden name='OLD_ATTRIBUTE_NAME' />
+      <Hidden name='TARIFF_ID' />
+      <br />
+      <ListLabel text='Type' /><tab name='T1'/>
+        <Choice name='ATTRIBUTE_TYPE_ID' style='width:200px;right:-0px;'
+	onchange='function(ev)
+	{
+	  var ev = new TEvent ( event ) ;
+	  ev.getContainer().getComponent ( "ATTRIBUTE_VALUE_MOD" ).setText() ;
+	}'
+	>
+	  <option value='2'>Number</option>
+	  <option value='1'>String</option>
+	  <option value='3'>Date</option>
+	</Choice>
+      <br />
+      <ListLabel text='Value' /><tab name='T1'/>
+        <TextField name='ATTRIBUTE_VALUE_MOD' mandatory='true' style='width:200px;right:-0px;'
+	type='
+	{
+          ATTRIBUTE_TYPE_ID: null,
+	  execute: function ( str, src, event )
+	  {
+	    if ( ! event )
+	    {
+	      if ( ! src.value ) return false ;
+	      return true ;
+	    }
+	    if ( ! this.ATTRIBUTE_TYPE_ID )
+	    {
+	      var ev = new TEvent ( event ) ;
+	      this.ATTRIBUTE_TYPE_ID = ev.getContainer().getComponent ( "ATTRIBUTE_TYPE_ID" ) ;
+	    }
+	    if ( ! src.value ) return false ;
+            var type = this.ATTRIBUTE_TYPE_ID.getSelectedItem() ;
+	    if ( type == "1" ) return true ;
+	    if ( type == "2" )
+	    {
+	      var b = TGui.checkFloat ( str, src ) ;
+	      if ( ! b ) return false ;
+	    }
+	    else
+	    if ( type == "3" )
+	    {
+              if ( ! DateUtils.isStandardDateFormat ( str ) ) return false ;
+	    }
+	    return true ;
+	  }
+	}'
+	/>
+      <br />
+      <ListLabel text='Description' /><tab name='T1'/><TextField name='ATTRIBUTE_DESCRIPTION' mandatory='true' style='width:200px;right:-0px;'/>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton id='PB.Save' disabled=true img='Tango/Misc/edit-save' text='%Save%' onclick='*.modifySave(event)' />
+        <PushButton img='Tango/Misc/edit-cancel' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

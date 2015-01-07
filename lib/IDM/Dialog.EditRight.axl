@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml >
+<Dialog img='Tango/Misc/edit-new' title='%EditARight%' id="Dialog.EditRight" onclose='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save;javascript:
+  {
+    w:null,
+    execute: function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      if ( ! this.w )
+      {
+        this.w = ev.getWindow() ;
+      }
+      if ( this.w.getAttribute ( "ERROR" ) ) return false ;
+    }
+  }'
+  >
+    <DisplayContainer style='right:-4;bottom:-2;width:300px;attach-bottom:true;' >
+      <Hidden name='RIGHT_KEY' />
+      <Hidden name='OLD_RIGHT_NAME' />
+      <TextField tabx='24' label='%Name%' name='RIGHT_NAME' style='width:200px;right:-0;' editable='false'
+	      note='%TheNameMustContainMoreThan6Characters%' mandatory='true' minlength='8'
+	      onkeyup='
+	      {
+                w:null,
+                label:null,
+		timer:null,
+		tf:null,
+	        execute: function (event)
+	        {
+		  if ( ! this.tf )
+		  {
+	            var ev = new TEvent ( event ) ;
+		    var v = ev.getValues() ;
+		    this.oldName = v.getContent ( "OLD_RIGHT_NAME" ).toUpperCase() ;
+                    this.w = ev.getWindow() ;
+		    this.pagelet = this.w.getPagelet() ;
+		    this.db = this.pagelet.getDB() ;
+                    this.label = this.w.getComponent ( "L.Status.2" ) ;
+		    this.tf = ev.getComponent() ;
+		    this.timer = new TTimer ( 500, function(t)
+		    {
+                      var sql = "select RIGHT_NAME from T_RIGHT where UPPER(RIGHT_NAME)=&apos;" + t.text.toUpperCase() + "&apos;" ;
+		      var str = t.text.toUpperCase() ;
+                      var x = t.db.select ( sql ) ;
+		      if ( str == t.oldName )
+		      {
+                        t.w.addAttribute ( "ERROR", "x" ) ;
+                        t.label.setValue ( "" ) ;
+                        t.w.checkStatus() ;
+			return ;
+		      }
+                      if ( x.get ( "T_RIGHT/row" ) )
+                      {
+                        t.w.addAttribute ( "ERROR", "true" ) ;
+                        t.label.setValue ( "<b>" + t.text + "</b> already exists." ) ;
+                        t.w.checkStatus() ;
+                      }
+                      else
+                      {
+                        t.w.addAttribute ( "ERROR", "" ) ;
+                        t.label.setValue ( "" ) ;
+                        t.w.checkStatus() ;
+                      }
+		    }) ;
+		    this.timer.setRepeats ( false ) ;
+		    this.timer.label = this.label ;
+		    this.timer.w = this.w ;
+		    this.timer.db = this.db ;
+		    this.timer.oldName = this.oldName ;
+		  }
+		  var t = this.tf.getText() ;
+		  this.timer.stop() ;
+		  if ( t.length < 3 )
+		  {
+                    this.label.setValue ( "" ) ;
+		    return ;
+		  }
+		  this.timer.text = t ;
+                  this.label.setValue ( "" ) ;
+		  this.timer.start() ;
+	        }
+	      }'
+      />
+      <br/>
+      <Label name='L.Status.2' text='' style='right:-0;color:red;' />
+      <br/>
+      <TextField label='%Description%' name='DESCRIPTION' style='right:-0;' />
+    </DisplayContainer>
+    <br />
+    <Container style='bottom:0;right:0;' >
+      <PushButton disabled='true' id='PB.Save' img='Tango/Misc/edit-save' text='%Save%' onclick='*.editRightSave(event)' />
+      <PushButton text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>
+

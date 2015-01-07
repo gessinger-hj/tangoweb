@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+  <xml>
+    <Eligibility>
+      <en>Eligibility</en>
+      <de>Anwendbarkeit</de>
+    </Eligibility>
+    <Function>
+      <en>Function</en>
+      <de>Funktion</de>
+    </Function>
+    <Test>
+      <en>Test</en>
+      <de>Test</de>
+    </Test>
+    <EditFunction>
+      <en>Edit function: $0</en>
+      <de>Funktion bearbeiten: $0</de>
+    </EditFunction>
+    <FunctionType>
+      <en>Function Type</en>
+      <de>Funktionsart</de>
+    </FunctionType>
+    <CreateFunction>
+      <en>New Function</en>
+      <de>Neue Funktion</de>
+    </CreateFunction>
+    <Edit>
+      <en>Edit</en>
+      <de>Bearbeiten.</de>
+    </Edit>
+    <EditAttributes>
+      <en>Edit attributes</en>
+      <de>Attribute bearbeiten.</de>
+    </EditAttributes>
+    <EditFunctionAttributes>
+      <en>Edit function attributes...</en>
+      <de>Funktionsattribute bearbeiten...</de>
+    </EditFunctionAttributes>
+    <NoError>
+      <en>No error</en>
+      <de>Kein Fehler</de>
+    </NoError>
+  </xml>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Modify Attribute' id="DBAttributes.Window.Modify" onclose='TGui.windowCancel()' >
+    <Container style='right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <ListLabel text='Name' /><tab name='T1' X='+3' />
+        <TextField name='${NAME}' style='width:200px;right:-0px;' mandatory='true' />
+      <Hidden name='OLD_NAME' />
+      <Hidden name='${KEY}' />
+      <Hidden name='${FOREIGN_KEY}' />
+      <br />
+      <ListLabel text='Value' /><tab name='T1'/>
+        <TextField name='${VALUE}' mandatory='true' style='width:200px;right:-0px;'
+	/>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton id='PB.Save' default='true' disabled=true img='Tango/Misc/edit-save' text='%Save%' onclick='*.modifySave(event)' />
+        <PushButton img='Tango/Misc/edit-cancel' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

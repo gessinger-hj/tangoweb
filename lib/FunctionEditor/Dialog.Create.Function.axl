@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog resizable='false' title='%CreateFunction%' id="Dialog.Create.Function" onclose='TGui.windowCancel()' >
+    <Container style='right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <ListLabel text='%Name%' /><tab name='T1' X='+5' /><TextField name='FUNCTION_NAME' style='width:200px;right:-0px;' mandatory='true' minlength='2'/>
+      <br />
+      <ListLabel text='%FunctionType%' /><tab name='T1' X='+3' /><Choice name='FUNCTION_TYPE_ID' style='right:-0px;' />
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton id='PB.Save' disabled=true img='Tango/Misc/edit-save' text='%Save%' onclick='*.createNewFunctionSave(event)' />
+        <PushButton img='Tango/Misc/edit-cancel' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Dialog>
+</xml>
+
+
+

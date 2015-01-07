@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='No Title...' id="TDialog.Reporter" >
+    <Container right='-0' bottom='-0' style='width:400px;height:400px;' >
+      <Container right='-4' bottom='-0' name='Form.Top' style='width:400px;height:200px;'
+          bottomAttachComponent='true'
+      >
+      </Container>
+      <br />
+      <Container bottom='0'>
+        <Label text='Format' /><tab name='T1' />
+        <Choice name='FORMAT'>
+        <option value='xls'>excel</option>
+        <option value='html'>html</option>
+        <option value='csv'>csv</option>
+        <option value='pdf'>pdf</option>
+        </Choice>
+      </Container>
+      <br />
+      <Container bottom='0' right='-0' >
+        <PushButton name="PB.APPLY" text='%Apply%' right='4' rightAttachComponent='true' />
+        <PushButton name="PB.CANCEL" text="%Cancel%" right='4' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>

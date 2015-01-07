@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Axl>
+  </Axl>
+  <XCss>${home}/Style.css</XCss>
+  <Script><![CDATA[
+{
+  _initialize_: function()
+  {
+    var attr = null ;
+    this.TagFormFunctionEditor = function(attr) { this.jsClassName = "TagFormFunctionEditor" ; this.attr = attr ; }
+    this.TagFormFunctionEditor.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagFormFunctionEditor.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/Form.Function.Editor", this.attr ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "Form.Function.Editor", new this.TagFormFunctionEditor(attr) ) ;
+
+/**
+ *  @constructor
+ */
+FunctionEditorManagerClass = function ( x )
+{
+  this.jsClassName = "FunctionEditorManagerClass" ;
+  this.ltEditFunction = "%EditFunction%" ;
+} ;
+FunctionEditorManagerClass.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")" ;
+} ;
+FunctionEditorManagerClass.prototype.getDB = function()
+{
+  if ( this._db ) return this._db ;
+  this._db = new DatabaseClass() ;
+
+  this.nameSpace = TSys.getWebConfig().getValue ( "NAMESPACE-FUNCTION-EDITOR" ) ;
+  if ( ! this.nameSpace ) this.nameSpace = "" ; 
+  this.host = TSys.getWebConfig().getValue ( "HOST-FUNCTION-EDITOR" ) ;
+  this.port = TSys.getWebConfig().getValue ( "PORT-FUNCTION-EDITOR" ) ;
+
+  this._db.setNameSpace ( this.nameSpace ) ;
+  this._db.setHost ( this.host ) ;
+  this._db.setPort ( this.port ) ;
+
+  return this._db ;
+}
+FunctionEditorManagerClass.prototype.editInWindow = function ( id, name, type )
+{
+  var w = new TWindow ( "${home}/Window.Function.Editor" ) ;
+  w.create() ;
+  var fe = w.getPeer ( "Form.Function.Editor" ) ;
+  fe.edit ( id, name, type ) ;
+  w.resetChanged() ;
+  var title = TSys.replaceDollarVariables ( this.ltEditFunction, [ fe.name ] ) ;
+  w.setTitle ( title ) ;
+  w.show() ;
+}
+FunctionEditorManagerClass.prototype.createNewFunction = function ( event )
+{
+  var w = new TWindow ( "${home}/Dialog.Create.Function" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  var xRefData = this.getDB().getRefData ( "T_FUNCTION_TYPE", "FUNCTION_TYPE_NAME", "FUNCTION_TYPE_ID" ) ;
+  w.setRefData ( xRefData  ) ;
+  w.show() ;
+}
+FunctionEditorManagerClass.prototype.createNewFunctionSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var FUNCTION_NAME = v.getContent ( "FUNCTION_NAME" ) ;
+  var FUNCTION_TYPE_ID = v.getContent ( "FUNCTION_TYPE_ID" ) ;
+
+  if ( this.functionAlreadyExists ( FUNCTION_NAME ) )
+  {
+    var str = TSys.translate ( "AlreadyExistsArg0", null, [ FUNCTION_NAME ] ) ;
+    var d = new TUserDialog ( str ) ;
+    d.error(w) ;
+    return ;
+  }
+  var body = "function evaluate ( ctx, p1 )\n{\n  return 'OK' ;\n}" ;
+  var eligibility = "function evaluate ( ctx, p1 )\n{\n  return true ;\n}" ;
+  this.createFunctionScript ( FUNCTION_NAME, FUNCTION_TYPE_ID, body, eligibility ) ;
+  w.closeImediately() ;
+}
+FunctionEditorManagerClass.prototype.editAttributes = function ( id )
+{
+  var sql = "select FUNCTION_ID, FUNCTION_NAME, FUNCTION_TYPE_ID\n"
+           + "  from T_FUNCTION where FUNCTION_ID=?"
+           ;
+  var x = this.getDB().select ( sql, [ id ] ) ;
+
+  var xRefData = this.getDB().getRefData ( "T_FUNCTION_TYPE", "FUNCTION_TYPE_NAME", "FUNCTION_TYPE_ID" ) ;
+
+  var w = new TWindow ( "${home}/Dialog.Edit.Attributes" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setRefData ( xRefData ) ;
+  w.setValues ( x.get ( "T_FUNCTION/row" ) ) ;
+  w.show() ;
+}
+FunctionEditorManagerClass.prototype.editAttributesSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var FUNCTION_NAME = v.getContent ( "FUNCTION_NAME" ) ;
+  var FUNCTION_TYPE_ID = v.getContent ( "FUNCTION_TYPE_ID" ) ;
+  var FUNCTION_ID = v.getContent ( "FUNCTION_ID" ) ;
+
+  if ( this.functionAlreadyExists ( FUNCTION_NAME ) )
+  {
+    var str = TSys.translate ( "AlreadyExistsArg0", null, [ FUNCTION_NAME ] ) ;
+    var d = new TUserDialog ( str ) ;
+    d.error(w) ;
+    return ;
+  }
+  var U = this.getDB().createUpdate ( "T_FUNCTION" ) ;
+  U.addKeyColumn ( "FUNCTION_ID", FUNCTION_ID ) ;
+  U.addColumn ( "FUNCTION_NAME", FUNCTION_NAME ) ;
+  U.addColumn ( "FUNCTION_TYPE_ID", FUNCTION_TYPE_ID ) ;
+  U.execute() ;
+  w.closeImediately() ;
+}
+FunctionEditorManagerClass.prototype.exportFromDatabase = function ( event )
+{
+  var sql = "select"
+          + "  FUNCTION_ID"
+          + ", FUNCTION_NAME"
+          + ", FUNCTION_TYPE_ID"
+          + ", FUNCTION_BODY"
+          + ", START_DATE"
+          + ", END_DATE"
+          + ", ELIGIBILITY"
+          + ", POSITION"
+          + ", FUNCTION_BODY_JAVA"
+          + ", FUNCTION_CLASS_DATA"
+	  + " from T_FUNCTION"
+	  ;
+
+  this.getDB().downloadXml ( sql ) ;
+} ;
+FunctionEditorManagerClass.prototype.functionAlreadyExists = function ( FUNCTION_NAME, FUNCTION_TYPE_ID )
+{
+  var x = this.getDB().query ( "T_FUNCTION", "FUNCTION_NAME", "FUNCTION_NAME=?", FUNCTION_NAME ) ;
+  if ( ! x ) return false ;
+  if ( ! x.get ( "T_FUNCTION" ).isEmpty() ) return true ;
+  return false ;
+} ;
+FunctionEditorManagerClass.prototype.createFunctionScript = function ( FUNCTION_NAME, FUNCTION_TYPE_ID, FUNCTION_BODY, ELIGIBILITY )
+{
+  var FUNCTION_ID = this.getDB().getNextValFromSequence ( "SEQ_FUNCTION" ) ;
+
+  var I = this.getDB().createInsert ( "T_FUNCTION" ) ;
+  I.addColumn ( "FUNCTION_ID", FUNCTION_ID ) ;
+  I.addColumn ( "FUNCTION_NAME", FUNCTION_NAME ) ;
+  I.addColumn ( "FUNCTION_TYPE_ID", FUNCTION_TYPE_ID ) ;
+  I.addColumn ( "FUNCTION_BODY", FUNCTION_BODY ) ;
+  I.addColumn ( "ELIGIBILITY", ELIGIBILITY ) ;
+  I.execute() ;
+} ;
+FunctionEditorManagerClass.prototype.getFunctionScriptXml = function ( id, name, type )
+{
+  if ( ! id && ! name ) throw "FunctionEditorManager.getFunctionScriptXml: Missing parameter 'id' or 'name'" ;
+  if ( id )
+  {
+    var sql = "select FUNCTION_ID, FUNCTION_TYPE_ID, FUNCTION_NAME, FUNCTION_BODY, ELIGIBILITY from T_FUNCTION where FUNCTION_ID=?" ;
+    return this.getDB().select ( sql, [ id ] ) ;
+  }
+  else
+  if ( name )
+  {
+    var sql = "select FUNCTION_ID, FUNCTION_TYPE_ID, FUNCTION_NAME, FUNCTION_BODY, ELIGIBILITY from T_FUNCTION where FUNCTION_NAME=?" ;
+    return this.getDB().select ( sql, [ name ] ) ;
+  }
+} ;
+FunctionEditorManagerClass.prototype.saveFunctionScript = function ( id, name, body, eligibility )
+{
+  var U = this.getDB().createUpdate ( "T_FUNCTION" ) ;
+  U.addKeyColumn ( "FUNCTION_ID", String ( id ) ) ;
+  U.addColumn ( "FUNCTION_BODY", body ) ;
+  U.addColumn ( "ELIGIBILITY", eligibility ) ;
+  U.execute() ;
+} ;
+FunctionEditorManagerClass.prototype.getFunctionList = function ( pattern )
+{
+  if ( ! pattern ) pattern = '*' ;
+  pattern = pattern.replace ( /\*/g, "%" ) ;
+
+  var sql = "select FUNCTION_ID, FUNCTION_TYPE_ID, FUNCTION_NAME from T_FUNCTION where FUNCTION_NAME like ?" ;
+  return this.getDB().select ( sql, [ pattern ] ) ;
+}
+FunctionEditorManager = new FunctionEditorManagerClass() ;
+
+
+/**
+ *  @constructor
+ */
+FunctionEditor = function ( x )
+{
+  this.jsClassName = "FunctionEditor" ;
+  this.formBODY = null ;
+  this.formEditor = null ;
+} ;
+FunctionEditor.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")" ;
+} ;
+FunctionEditor.prototype.onloadFormBODY = function ( ev )
+{
+  this.formBODY = ev.getContainer() ;
+} ;
+FunctionEditor.prototype.onloadFormEditor = function ( ev )
+{
+  this.formEditor = ev.getContainer() ;
+  this.formEditor.resetChanged() ;
+} ;
+FunctionEditor.prototype.edit = function ( id, name, type )
+{
+  var xml = FunctionEditorManager.getFunctionScriptXml ( id, name, type ) ;
+  var row = xml.get ( "T_FUNCTION/row" ) ;
+  this.id = row.getContent ( "FUNCTION_ID" ) ;
+  this.name = row.getContent ( "FUNCTION_NAME" ) ;
+  this.formBODY.setValues ( row ) ;
+} ;
+FunctionEditor.prototype.save = function ( event )
+{
+  if ( ! this.testCompile() )
+  {
+    var d = new TUserDialog ( "Please correct the errors before save." ) ;
+    d.error() ;
+    return ;
+  }
+  var ev = new TEvent ( event ) ;
+  var x = this.formBODY.getValues() ;
+  var id = x.getContent ( "FUNCTION_ID" ) ;
+  var name = x.getContent ( "FUNCTION_NAME" ) ;
+  var body = x.getContent ( "FUNCTION_BODY" ) ;
+  var eligibility = x.getContent ( "ELIGIBILITY" ) ;
+  FunctionEditorManager.saveFunctionScript ( id, name, body, eligibility ) ;
+  this.formEditor.resetChanged() ;
+} ;
+FunctionEditor.prototype.testCompile = function()
+{
+  var ta = this.formBODY.getComponent ( "FUNCTION_BODY" ) ;
+  var td = this.formBODY.getComponent ( "INFO_FUNCTION_BODY" ) ;
+  var a1 = this.doit ( ta, td ) ;
+  ta = this.formBODY.getComponent ( "ELIGIBILITY" ) ;
+  td = this.formBODY.getComponent ( "INFO_ELIGIBILITY" ) ;
+  var a2 = this.doit ( ta, td ) ;
+  return a1 && a2 ;
+} ;
+FunctionEditor.prototype.doit = function ( ta, info )
+{
+  var str = ta.getText() ;
+  if ( str.length < 100 ) str = str.trim() ;
+  if ( str.length == 0 ) return true ;
+  var x = TSys.evaluateJavaScript ( str, true, false, true ) ;
+  if ( ! x )
+  {
+    var n1 = "${home}/apply-16.png" ;
+    info.dom.style.color = "green" ;
+    info.setText ( "<img src=" + n1 + "></img><span>%NoError%</span>" ) ;
+    return true ;
+  }
+  var msg = x.getContent ( "Message" ) ;
+  var pos = msg.indexOf ( "EvaluatorException:" ) ;
+  if ( pos < 0 ) pos = msg.indexOf ( "EcmaError:" ) ;
+  if ( pos > 0 ) pos = msg.indexOf ( ":", pos ) ;
+  if ( pos > 0 ) pos++ ;
+  if ( pos > 0 ) msg = msg.substring ( pos ) ;
+  msg = msg.trim() ;
+  info.dom.style.color = "red" ;
+  info.setText ( msg ) ;
+  var n2 = "${home}/error-16.png" ;
+  info.setText ( "<img src=" + n2 + "></img><span>" + msg + "</span>" ) ;
+  return msg.length == 0 ;
+} ;
+
+  }
+  }
+  ]]></Script>
+</xml>
+

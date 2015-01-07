@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml >
+<Dialog title='%EditARight%' id="Dialog.EditRoleToRight" onclose='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save'
+  >
+    <Hidden name='ROLE_KEY' />
+    <Hidden name='RIGHT_KEY' />
+    <DisplayContainer style='right:-4;bottom:-2;width:400px;attach-bottom:true;' >
+	    <ListLabel text='%Role%:' /><tab name='T1'/> <Label name='ROLE_NAME' style='right:-4px;' />
+      <br/>
+      <ListLabel text='%Right%:' /><tab name='T1'/> <Label name='RIGHT_NAME' style='right:-4px;' />
+      <br/>
+      <TitleLabel text='%Value%' />
+      <br/>
+      <TextArea tabx='24' label='%Value%' name='RIGHT_VALUE' style='width:200px;height:80px;bottom:-0px;right:-0;'
+        mandatory='true' minlength='3'
+      />
+    </DisplayContainer>
+    <br />
+    <Container style='bottom:0;right:0;' >
+      <PushButton disabled='true' id='PB.Save' img='save-16x16.gif' text='%Save%' onclick='*.editRoleToRightSave(event)' />
+      <PushButton text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>
+

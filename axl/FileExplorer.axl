@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='FileExplorer' name='X'
+           pagelet='new Finder("TREE2")'
+           img='Tango/Folder.16/normal'
+           label='File Explorer'
+           onload='*.onload()'
+           style='right:-0;bottom:-0;'
+>
+  <Properties>
+    <Title>File Explorer</Title>
+    <Favicon>/axl/resources/favicons/Blue-folder-icon-48.ico</Favicon>
+    <!-- <Favicon>/apps/TEST/MS.Folder-96.ico</Favicon> -->
+    <!-- <Favicon>/apps/TEST/folder-16.ico</Favicon> -->
+  </Properties>
+  <Toolbar style='top:0px;bottom:-0;attach-bottom:true;' >
+    <ChoiceButton style='width:100px;' name='nameSpace' onchange='*.changeNameSpace()' />
+    <Label text='Places' class='SimpleTitle' />
+    <ChoiceButton name='Places' style='text-align:left;width:120px;' onchange='*.showFileListOfPlace()' />
+    <PushButton
+      onclick='*.showFileInfo()'
+      text='FileInfo...'
+    />
+    <PushButton
+      onclick='*.editFile()'
+      text='Edit File...'
+    />
+  </Toolbar>
+  <br />
+  <Container name='Form.FileExplorer' reset='false' style='right:-2;bottom:-2;' >
+    <Container style='padding:0px;bottom:-0;'>
+      <Tree name='TREE2' style='width:300px;bottom:-0;right:-0;' reset='true'
+        onload='*.onloadTree()'
+        get-values='true'
+        always-show-chevron='true'
+        open-on-click='true'
+      />
+    </Container>
+    <Splitbar id='Splitbar.4' />
+    <Container style='padding:0px;bottom:-0;'>
+      <Table name="Files" style='width:400px;bottom:-0;attach-bottom:true;right:-0px;'
+             reset='true' sortable='true'
+             onload='*.onloadTable()'
+      >
+        <Columns>
+          <Column name="IMG" title=" " type=icon />
+          <Column name="NAME" title="%Name%" />
+          <Column name="DATE" title="%Date%" type='datetime' />
+          <Column name="KB" title="%Size%" type='int' align="right" />
+          <!--Column name="MIME_TYPE" /-->
+        </Columns>
+      </Table>
+    </Container>
+    <Splitbar id='Splitbar.5' />
+    <Container name='Display' reset='true' style='color:black;background-color:white;overflow:auto;right:-2;bottom:-2;'
+               onload='*.onloadDisplay()'
+    />
+  </Container>
+</Container>

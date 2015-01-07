@@ -1,0 +1,1316 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Axl>
+  </Axl>
+  <XCss>${home}/Style.css</XCss>
+  <Script><![CDATA[
+{
+  _initialize_: function()
+  {
+    var attr = {} ;
+    var identity_to_client = "${identity_to_client}" ;
+    if ( identity_to_client == "true" )
+    {
+      attr.identity_to_client = true ;
+    }
+    var t_identity_to_sp = "${t_identity_to_sp}" ;
+    if ( t_identity_to_sp == "true" )
+    {
+      attr.t_identity_to_sp = true ;
+    }
+    this.TagNotebookAll = function(attr) { this.jsClassName = "TagNotebookAll" ; this.attr = attr ; }
+    this.TagNotebookAll.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagNotebookAll.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Notebook.All", this.attr ) ) ;
+      var xCont = axl.getXml ( "Notebook" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Notebook.All", new this.TagNotebookAll(attr) ) ;
+
+    this.TagNotebook = function(attr) { this.jsClassName = "TagNotebook" ; this.attr = attr ; }
+    this.TagNotebook.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagNotebook.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Notebook", this.attr ) ) ;
+      var xCont = axl.getXml ( "Notebook" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Notebook", new this.TagNotebook(attr) ) ;
+
+    this.TagUserManagement = function(attr) { this.jsClassName = "TagUserManagement" ; this.attr = attr ; }
+    this.TagUserManagement.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagUserManagement.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Form.UserManagement", this.attr ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Form.UserManagement", new this.TagUserManagement(attr) ) ;
+
+    this.TagGroupManagement = function(attr) { this.jsClassName = "TagGroupManagement" ; this.attr = attr ; }
+    this.TagGroupManagement.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagGroupManagement.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Form.GroupManagement", this.attr ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Form.GroupManagement", new this.TagGroupManagement(attr) ) ;
+
+    this.TagRoleToRight = function(attr) { this.jsClassName = "TagRoleToRight" ; this.attr = attr ; }
+    this.TagRoleToRight.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagRoleToRight.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Form.RoleToRight" ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Form.RoleToRight", new this.TagRoleToRight(attr) ) ;
+
+    this.TagIdentityToRole = function(attr) { this.jsClassName = "TagIdentityToRole" ; this.attr = attr ; }
+    this.TagIdentityToRole.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagIdentityToRole.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Form.IdentityToRole" ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Form.IdentityToRole", new this.TagIdentityToRole(attr) ) ;
+
+    this.TagIdentityTree = function(attr) { this.jsClassName = "TagIdentityTree" ; this.attr = attr ; }
+    this.TagIdentityTree.prototype.toString = function() { return "(" + this.jsClassName + ")" ; }
+    this.TagIdentityTree.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml ( TSys.getAxl ( "${home}/IDM.Form.IdentityTree" ) ) ;
+      var xCont = axl.getXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    TGui.addTagDefinition ( "IDM.Form.IdentityTree", new this.TagIdentityTree(attr) ) ;
+/**
+ *  @constructor
+ */
+IDManagement = function()
+{
+  this.jsClassName = "IDManagement" ;
+  this.nameSpace = undefined ;
+}
+IDManagement.prototype.getDB = function()
+{
+  if ( ! this.db )
+  {
+    var nameSpace = TSys.getWebConfig().getValue ( "NAMESPACE-IDM" ) ;
+    var host = TSys.getWebConfig().getValue ( "HOST-IDM" ) ;
+    var port = TSys.getWebConfig().getValue ( "PORT-IDM" ) ;
+    this.db = new DatabaseClass ( nameSpace, host, port ) ;
+  }
+  return this.db ;
+}
+IDManagement.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")" ;
+}
+IDManagement.prototype._createDbExecuteMessage = function()
+{
+  if ( typeof ( this.nameSpace ) == 'undefined' )
+  {
+    this.nameSpace = TSys.getWebConfig().getValue ( "NAMESPACE-IDM" ) ;
+    if ( ! this.nameSpace ) this.nameSpace = "" ; 
+    else this.nameSpace = this.nameSpace + "::" ; 
+  }
+  var msg = new CoMessage ( this.nameSpace + Calypso.get_DB_EXECUTE_STMT() ) ;
+  return msg ;
+}
+IDManagement.prototype._createDbRequestMessage = function()
+{
+  if ( typeof ( this.nameSpace ) == 'undefined' )
+  {
+    this.nameSpace = TSys.getWebConfig().getValue ( "NAMESPACE-IDM" ) ;
+    if ( ! this.nameSpace ) this.nameSpace = "" ; 
+    else this.nameSpace = this.nameSpace + "::" ; 
+  }
+  var msg = new CoMessage ( this.nameSpace + Calypso.get_DB_REQUEST() ) ;
+  return msg ;
+}
+IDManagement.prototype.getGroupsAndUserTree = function()
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml ( "Values" ) ;
+  xValues.add ( "IDMOperation", "GetGroupsAndUserTree" ) ;
+  stmt.addElement ( xValues ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+}
+IDManagement.prototype.getEffectiveRights = function ( IDENTITY_KEY )
+{
+  return this._getEffectiveValues ( "GetEffectiveRights", IDENTITY_KEY ) ;
+}
+IDManagement.prototype.getEffectiveRightsShort = function ( IDENTITY_KEY )
+{
+  return this._getEffectiveValues ( "GetEffectiveRights", IDENTITY_KEY, true ) ;
+}
+IDManagement.prototype.getEffectiveRoles = function ( IDENTITY_KEY )
+{
+  return this._getEffectiveValues ( "GetEffectiveRoles", IDENTITY_KEY ) ;
+}
+IDManagement.prototype.getEffectiveGroups = function ( IDENTITY_KEY )
+{
+  return this._getEffectiveValues ( "GetEffectiveGroups", IDENTITY_KEY ) ;
+}
+IDManagement.prototype._getEffectiveValues = function ( operation, IDENTITY_KEY, shortForm )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml ( "Values" ) ;
+  xValues.add ( "IDMOperation", operation ) ;
+  xValues.add ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+  xValues.add ( "Short", ( shortForm ? "true" : "false" ) ) ;
+  stmt.addElement ( xValues ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+}
+IDManagement.prototype._searchUser = function ( xValues )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+//  xValues.add ( "IDMOperation", "SearchUser" ) ;
+  xValues.add ( "IDMOperation", "SearchPersons" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+}
+IDManagement.prototype._searchUserNames = function ( xValues )
+{
+  var pattern = xValues.getContent ( "USER_SEARCH_PATTERN", "%" ) ;
+  return this._searchNames ( pattern, true ) ;
+}
+IDManagement.prototype._searchGroupNames = function ( xValues )
+{
+  var pattern = xValues.getContent ( "GROUP_SEARCH_PATTERN", "%" ) ;
+  return this._searchNames ( pattern, false ) ;
+}
+IDManagement.prototype._searchNames = function ( pattern, persons )
+{
+  if ( pattern.length == 0 ) return ;
+
+  pattern = pattern.replace ( /\*/g, "%" ) ;
+  if ( pattern.indexOf ( '%' ) < 0 ) pattern = '%' + pattern + '%' ;
+  pattern = pattern.toUpperCase() ;
+  var prefix = "identity_type_key=2" ;
+  if ( ! persons ) prefix = "identity_type_key!=2" ;
+  var msg = this._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var Q = dbv.addQuery ( "T_IDENTITY", "IDENTITY_NAME", prefix + " and UPPER(IDENTITY_NAME) like '" + pattern + "'" ) ;
+  Q.setLimit ( 10 ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+  var x = dbv.getResultXml() ;
+  return x ;
+/*
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml ( "Values" ) ;
+  xValues.add ( "IDMOperation", "SearchNames" ) ;
+  xValues.add ( "Persons", "" + persons ) ;
+  xValues.add ( "Pattern", pattern ) ;
+  stmt.addElement ( xValues ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+*/
+}
+IDManagement.prototype._searchGroup = function ( xValues )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  xValues.add ( "IDMOperation", "SearchNonPersons" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+}
+IDManagement.prototype.getNonPersonsShort = function()
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml() ;
+  xValues.add ( "IDMOperation", "GetNonPersonsShort" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+}
+IDManagement.prototype.getNonPersonsAsOptions = function()
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml() ;
+  xValues.add ( "IDMOperation", "GetNonPersonsAsOptions" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+} ;
+IDManagement.prototype.getFullUserData = function ( IDENTITY_KEY )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml() ;
+  xValues.add ( "IDMOperation", "IDMGetFullUserData" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  xValues.addDom ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+  var dbv = Calypso.getDbv ( msg ) ;
+  return dbv.getResultXml() ;
+} ;
+IDManagement.prototype.createPerson = function ( xValues )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+
+  var e = xValues.get ( "IDENTITY_NAME" ) ;
+  e.setContent ( e.getContent().trim() ) ;
+
+  xValues.add ( "IDMOperation", "CreatePerson" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  Calypso.getDbv ( msg ) ;
+} ;
+IDManagement.prototype.createGroup = function ( xValues )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  
+  var e = xValues.get ( "IDENTITY_NAME" ) ;
+  e.setContent ( e.getContent().trim() ) ;
+
+  xValues.add ( "IDMOperation", "CreateGroup" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  Calypso.getDbv ( msg ) ;
+} ;
+IDManagement.prototype.saveUserData = function ( xValues )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  xValues.add ( "IDMOperation", "SaveUserData" ) ;
+  xValues.setName ( "Values" ) ;
+  stmt.addElement ( xValues ) ;
+  Calypso.getDbv ( msg ) ;
+} ;
+IDManagement.prototype.saveUserPassword = function ( IDENTITY_KEY, password )
+{
+  var msg = this._createDbExecuteMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "IdentityUtils" ) ;
+  var xValues = new TXml ( "Values" ) ;
+  xValues.add ( "IDMOperation", "SaveUserPassword" ) ;
+  xValues.addDom ( "IDENTITY_KEY", "" + IDENTITY_KEY ) ;
+  xValues.addDom ( "PWD", password ) ;
+  stmt.addElement ( xValues ) ;
+  Calypso.getDbv ( msg ) ;
+} ;
+/**
+ *  @constructor
+ */
+IDUserEditor = function()
+{
+  this.jsClassName = "IDUserEditor" ;
+  this.manager = new IDManagement() ;
+  this.externalVariables = {} ;
+};
+IDUserEditor.prototype.getDB = function()
+{
+  return this.manager.getDB() ;
+};
+IDUserEditor.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")" ;
+};
+IDUserEditor.prototype.onload = function ( event )
+{
+  var c = event.getContainer() ;
+  this.mf = c.getPeer ( "MF" ) ;
+  this.mfEmpty = this.mf.getContainer ( 0 ) ;
+  this.mfEdit = this.mf.getContainer ( 1 ) ;
+  this.cEdit = this.mfEdit.getComponent ( "Edit.Data" ) ;
+  this.cSearchParameter = c.getComponent ( "SEARCH_PARAMETER" ) ;
+  this.searchResultTable = c.getPeer ( "T_IDENTITY" ) ;
+  var x = this.getDB().getRefData ( "T_IDENTITY_TYPE"
+                              		, "IDENTITY_TYPE_NAME"
+      														, "IDENTITY_TYPE_KEY"
+			      											, "IDENTITY_TYPE_KEY"
+			      											, "IDENTITY_TYPE_NAME<>'Person'"
+		              								) ;
+  this.cEdit.setRefData ( x ) ;
+};
+IDUserEditor.prototype.onloadSetVariables = function ( attributes, event )
+{
+  for ( var key in attributes )
+  {
+    this.externalVariables[key] = attributes[key] ;
+  }
+};
+IDUserEditor.prototype.searchNames = function()
+{
+  var v = this.cSearchParameter.getValues() ;
+  var x = this.manager._searchUserNames ( v ) ;
+  var en = x.getEnum ( "T_IDENTITY/row" ) ;
+  var a = [] ;
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    a.push ( r.getContent ( "IDENTITY_NAME" ) ) ;
+  }
+  return a ;
+};
+IDUserEditor.prototype.search = function ( event )
+{
+  try
+  {
+    this._search() ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error() ;
+    throw exc ;
+  }
+};
+IDUserEditor.prototype._search = function ( IDENTITY_KEY, keepData )
+{
+  var v = this.cSearchParameter.getValues() ;
+  var xResult = this.manager._searchUser ( v ) ;
+  var x = xResult.getXml ( "T_IDENTITY" ) ;
+  this.searchResultTable.setData ( x  ) ;
+  if ( IDENTITY_KEY )
+  {
+    var r = this.searchResultTable.findRow ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+    r.setSelected ( true ) ;
+  }
+  if ( keepData ) return ;
+  this.cEdit.reset() ;
+  this.mf.select ( 0 ) ;
+} ;
+IDUserEditor.prototype.changeName = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var IDENTITY_KEY = v.getContent ( "IDENTITY_KEY" ) ;
+  var IDENTITY_NAME = v.getContent ( "IDENTITY_NAME" ) ;
+
+  var x = new TXml() ;
+  x.add ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+  x.add ( "IDENTITY_NAME", IDENTITY_NAME ) ;
+  x.add ( "OLD_IDENTITY_NAME", IDENTITY_NAME ) ;
+  var w = new TWindow ( "${home}/Dialog.ChangeName" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setValues ( x ) ;
+  w.show() ;
+} ;
+IDUserEditor.prototype.changeNameSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var w = ev.getWindow() ;
+  var r = this.getDB().createUpdate ( "T_IDENTITY" ) ;
+  r.addKeyColumn ( "IDENTITY_KEY", v.getContent ( "IDENTITY_KEY" ) ) ;
+  r.addColumn ( "IDENTITY_NAME", v.getContent ( "IDENTITY_NAME" ).trim() ) ;
+  r.execute() ;
+  this.cEdit.setValues ( v ) ;
+  this._search ( v.getInt ( "IDENTITY_KEY" ), true ) ;
+  w.closeImediately() ;
+} ;
+IDUserEditor.prototype.editRoles = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var IDENTITY_KEY = v.getContent ( "IDENTITY_KEY" ) ;
+
+  var msg = this.manager._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var sql = "select ROLE_KEY, ROLE_NAME, DESCRIPTION from t_role order by ROLE_NAME" ;
+  var S = dbv.addSelect ( sql ) ;
+  S.setTagName ( "T_IDENTITY_TO_ROLE" ) ;
+
+  sql = "select ROLE_KEY from t_identity_to_role where identity_key=?" ;
+  S = dbv.addSelect ( sql ) ;
+  S.setTagName ( "ROLE_KEY" ) ;
+  S.addHostValue ( IDENTITY_KEY ) ;
+
+  dbv = Calypso.getDbv ( msg ) ;
+  var xResult = dbv.getResultXml() ;
+  var hasRole = [] ;
+  var en = xResult.getEnum ( "ROLE_KEY/row" ) ;
+  while ( en.hasNext() )
+  {
+    var xr = en.nextXml() ;
+    var v = xr.getContent ( "ROLE_KEY" ) ;
+    hasRole[v] = v ;
+  }
+
+  var w = new TWindow ( "${home}/Dialog.Edit.Roles" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  var tab = w.getPeer ( "T_IDENTITY_TO_ROLE" ) ;
+  tab.addSetValuesListener ( function ( xRow )
+  {
+    var rk = xRow.getContent ( "ROLE_KEY" ) ;
+    if ( hasRole[rk] ) xRow.add ( "ACTIVE", "true" ) ;
+  } ) ;
+  xResult.add ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+  w.setValues ( xResult ) ;
+  w.show() ;
+} ;
+IDUserEditor.prototype.editRolesSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var IDENTITY_KEY = v.getContent ( "IDENTITY_KEY" ) ;
+  var msg = this.manager._createDbRequestMessage() ;
+  var dbv = new CoDbv ( msg ) ;
+  var en = v.getEnum ( "T_IDENTITY_TO_ROLE/row" ) ;
+  while ( en.hasNext() )
+  {
+    var xr = en.nextXml() ;
+    if ( xr.getBool ( "ACTIVE", false ) )
+    {
+      var I = dbv.addInsert ( "T_IDENTITY_TO_ROLE" ) ;
+      I.addColumn ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+      I.addColumn ( "ROLE_KEY", xr.getContent ( "ROLE_KEY" ) ) ;
+      I.addColumn ( "POSITION", "0" ) ;
+    } 
+    else
+    {
+      var D = dbv.addDelete ( "T_IDENTITY_TO_ROLE" ) ;
+      D.addKeyColumn ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+      D.addKeyColumn ( "ROLE_KEY", xr.getContent ( "ROLE_KEY" ) ) ;
+    } 
+  }
+  dbv = Calypso.getDbv ( msg ) ;
+  w.closeImediately() ;
+} ;
+IDUserEditor.prototype.edit = function ( event )
+{
+  if ( this.cEdit.hasChanged() )
+  {
+    var d = new TUserDialog ( "WindowDataAreChangedDiscard" ) ;
+    d.setUserFunction ( this.edit2, null, this ) ;
+    d.askYesNo() ;
+  }
+  else
+  {
+    this.edit2() ;
+  }
+} ;
+IDUserEditor.prototype.editCancel = function ( event )
+{
+  if ( this.cEdit.hasChanged() )
+  {
+    var d = new TUserDialog ( "WindowDataAreChangedDiscard" ) ;
+    d.setUserFunction ( this.editCancel2, null, this ) ;
+    d.askYesNo() ;
+  }
+  else
+  {
+    this.editCancel2() ;
+  }
+} ;
+IDUserEditor.prototype.editCancel2 = function ( answer )
+{
+  if ( answer && ! answer.isYes() ) return ;
+  this.cEdit.reset() ;
+  this.mf.select ( 0 ) ;
+} ;
+IDUserEditor.prototype.edit2 = function ( answer )
+{
+  if ( answer && ! answer.isYes() )
+  {
+    var v = this.cEdit.getValues() ;
+    var IDENTITY_KEY = v.getContent ( "IDENTITY_KEY" ) ;
+    var row = this.searchResultTable.findRow ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+    row.setSelected ( true ) ;
+    return ;
+  }
+  var x = this.searchResultTable.getSelectedUserXml() ;
+  if ( ! x )
+  {
+    var dUserDialog = new TUserDialog ( "PleaseFirstSelectAnEntry" ) ;
+    dUserDialog.info() ;
+    return ;
+  }
+  var IDENTITY_KEY = x.getInt ( "IDENTITY_KEY" ) ;
+  var xData = this.manager.getFullUserData ( IDENTITY_KEY ) ;
+  var pb = this.cEdit.getComponent ( 'PB.ChangePassword' ) ;
+  var ch = this.cEdit.getComponent ( 'LOGIN_ENABLED' ) ;
+  var u = TSys.getUser() ;
+  if ( u && IDENTITY_KEY == u.getIntegerUid() )
+  {
+    pb.setVisible ( false ) ;
+    ch.setVisible ( false ) ;
+  }
+  else
+  {
+    pb.setVisible ( true ) ;
+    ch.setVisible ( true ) ;
+  }
+  var xRef = this.manager.getNonPersonsShort() ;
+  var xTab = xRef.getXml ( "T_IDENTITY" ) ;
+  xTab.setName ( "TABLE.AVAILABLE.GROUPS" ) ;
+  xData = xData.getXml ( "T_IDENTITY" ) ;
+  this.cEdit.reset() ;
+
+  this.mf.select ( 1 ) ;
+  this.cEdit.setValues ( xData ) ;
+  var xPARENTS = xData.getXml ( "PARENTS" ) ;
+  var currentParents = [] ;
+  var en = xPARENTS.getEnum ( "PARENT_IDENTITY_KEY" ) ;
+  while ( en.hasNext() )
+  {
+    var xen = en.nextXml() ;
+    var pik = xen.getContent() ;
+    currentParents[pik] = pik ;
+  }
+  en = xTab.getEnum ( "row" ) ;
+  while ( en.hasNext() )
+  {
+    var xen = en.nextXml() ;
+    var xActive = xen.ensureXml ( "active" ) ;
+    var PARENT_IDENTITY_KEY = xen.getContent ( "IDENTITY_KEY" ) ;
+    if ( currentParents[PARENT_IDENTITY_KEY] )
+    {
+      xActive.setContent ( "1" ) ;
+    }
+    else
+    {
+      xActive.setContent ( "0" ) ;
+    }
+    xen.addDom ( "PARENT_IDENTITY_KEY", PARENT_IDENTITY_KEY ) ;
+    var xIDENTITY_KEY =  xen.getXml ( "IDENTITY_KEY" ) ;
+    xIDENTITY_KEY.setContent ( IDENTITY_KEY ) ;
+  }
+  this.cEdit.setValues ( xRef ) ;
+
+  /*******************************************************************************************************
+  * ---------------------------- identity to client ------------------------------------------------------
+  **/
+  if ( this.externalVariables["identity_to_client"] )
+  {
+    var msg = this.manager._createDbRequestMessage() ;
+    var dbv = new CoDbv ( msg ) ;
+    var sql = "select * from t_client c left outer join t_identity_client ic on ic.client_key = c.client_key and ic.identity_key = " + IDENTITY_KEY ;
+    var S = dbv.addSelect ( sql ) ;
+    S.setTagName ( "TABLE.AVAILABLE.CLIENTS" ) ;
+    dbv = Calypso.getDbv ( msg ) ;
+    var resultXml = dbv.getResultXml() ;
+    resultXmlRoot = resultXml.getXml ( "TABLE.AVAILABLE.CLIENTS" ) ;
+
+    var en = resultXmlRoot.getEnum ( "row" ) ;
+    while ( en.hasNext() )
+    {
+      var xr = en.nextXml() ;
+      var xActive = xr.ensureXml ( "active" ) ;
+      var CURRENT_IDENTITY_KEY = xr.getContent ( "IDENTITY_KEY" ) ;
+      if ( IDENTITY_KEY == CURRENT_IDENTITY_KEY )
+      {
+        xActive.setContent ( "1" ) ;
+      }
+      else
+      {
+        xActive.setContent ( "0" ) ;
+      }
+      xCURRENT_IDENTITY_KEY = xr.ensureXml ( "CURRENT_IDENTITY_KEY" ) ;
+      xCURRENT_IDENTITY_KEY.setContent ( CURRENT_IDENTITY_KEY ) ;
+    }
+    this.cEdit.setValues ( resultXml ) ;
+  }
+  /*******************************************************************************************************
+  * ---------------------------- identity to serviceprovider ---------------------------------------------
+  **/
+  if ( this.externalVariables["t_identity_to_sp"] )
+  {
+    var msg = this.manager._createDbRequestMessage() ;
+    var dbv = new CoDbv ( msg ) ;
+    var sql = "select * from t_serviceprovider order by serviceprovider_name" ;
+    var S = dbv.addSelect ( sql ) ;
+    S.setTagName ( "T_IDENTITY_TO_SP" ) ;
+    dbv = Calypso.getDbv ( msg ) ;
+    var xResult = dbv.getResultXml() ;
+    var xT_IDENTITY_TO_SP = xResult.getXml ( "T_IDENTITY_TO_SP" ) ;
+
+    var msg = this.manager._createDbRequestMessage() ;
+    var dbv = new CoDbv ( msg ) ;
+    var sql = "select serviceprovider_key from t_identity_to_sp where identity_key=" + IDENTITY_KEY ;
+    var S = dbv.addSelect ( sql ) ;
+    S.setTagName ( "T_IDENTITY_TO_SP" ) ;
+    dbv = Calypso.getDbv ( msg ) ;
+    var x = dbv.getResultXml() ;
+    var spKeys = [] ;
+    var en = x.getEnum ( "T_IDENTITY_TO_SP/row" ) ;
+    while ( en.hasNext() )
+    {
+      var xr = en.nextXml() ;
+      spKeys[xr.getContent ( "SERVICEPROVIDER_KEY")] = "1" ;
+    }
+    var en = xT_IDENTITY_TO_SP.getEnum ( "row" ) ;
+    while ( en.hasNext() )
+    {
+      var xr = en.nextXml() ;
+      var xActive = xr.ensureXml ( "active" ) ;
+      var xIDENTITY_KEY = xr.ensureXml ( "IDENTITY_KEY" ) ;
+      xIDENTITY_KEY.setContent ( IDENTITY_KEY ) ;
+      var SERVICEPROVIDER_KEY = xr.getContent ( "SERVICEPROVIDER_KEY" ) ;
+      if ( spKeys[SERVICEPROVIDER_KEY] )
+      {
+        xActive.setContent ( "1" ) ;
+      }
+      else
+      {
+        xActive.setContent ( "0" ) ;
+      }
+    }
+    this.cEdit.setValues ( xResult ) ;
+  }
+} ;
+IDUserEditor.prototype.editSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var IDENTITY_KEY = v.getInt ( "IDENTITY_KEY" ) ;
+  try
+  {
+    var xParents = v.getXml ( "TABLE.AVAILABLE.GROUPS" ) ;
+    if ( xParents ) xParents.setName ( "PARENTS" ) ;
+    //    this.manager.saveUserData ( v ) ;
+    /*******************************************************************************************************
+    * ---------------------------- identity to serviceprovider ---------------------------------------------
+    **/
+    if ( this.externalVariables["t_identity_to_sp"] )
+    {
+      var msg = this.manager._createDbRequestMessage() ;
+      var dbv = new CoDbv ( msg ) ;
+      var en = v.getEnum ( "T_IDENTITY_TO_SP/row" ) ;
+      var anyFound = false ;
+      if ( en.hasNext() )
+      {
+        anyFound = true ;
+        var D = dbv.addDelete ( "T_IDENTITY_TO_SP" ) ;
+				D.addKeyColumn ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+      }
+      while ( en.hasNext() )
+      {
+        var xr = en.nextXml() ;
+				if ( ! xr.getInt ( "active" ) ) continue ;
+        var I = dbv.addInsert ( "T_IDENTITY_TO_SP" ) ;
+        I.addColumn ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+        I.addColumn ( "SERVICEPROVIDER_KEY", xr.getContent ( "SERVICEPROVIDER_KEY" ) ) ;
+      }
+      if  ( anyFound ) dbv = Calypso.getDbv ( msg ) ;
+    }
+    this.mf.select ( 0 ) ;
+    this.cEdit.reset() ;
+    this._search ( v.getInt ( "IDENTITY_KEY" ) ) ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error() ;
+    throw exc ;
+  }
+  try
+  {
+  /*
+  * ---------------------------- identity to client ------------------------------------------------------
+  **/
+    if ( this.externalVariables["identity_to_client"] )
+    {
+      var msg = this.manager._createDbRequestMessage() ;
+      var dbv = new CoDbv ( msg ) ;
+      var clientTable = v.getXml ( "TABLE.AVAILABLE.CLIENTS" ) ;
+      var en = clientTable.getEnum ( "row" ) ;
+      var first = false ;
+      while ( en.hasNext() )
+      {
+        var xr = en.nextXml() ;
+        var CLIENT_KEY = xr.getContent ( "CLIENT_KEY" ) ;
+        first = true ;
+        var D = dbv.addDelete ( "t_identity_client" ) ;
+        D.addKeyColumn ( "client_key", CLIENT_KEY ) ;  
+        D.addKeyColumn ( "identity_key", v.getInt ( "IDENTITY_KEY" ) ) ;  
+      }
+      if ( first ) 
+      {
+        dbv = Calypso.getDbv ( msg ) ;
+        var resultXml = dbv.getResultXml() ;
+      }
+
+      var msg2 = this.manager._createDbRequestMessage() ;
+      var dbv2 = new CoDbv ( msg2 ) ;
+      var clientTable2 = v.getXml ( "TABLE.AVAILABLE.CLIENTS" ) ;
+      var en2 = clientTable2.getEnum ( "row" ) ;
+      var first = false ;
+      while ( en2.hasNext() )
+      {
+        var xr2 = en2.nextXml() ;
+        var CLIENT_KEY = xr2.getContent ( "CLIENT_KEY" ) ;
+        var active = xr2.getContent ( "active" ) ;
+        if ( active == 1 )
+        {
+          first = true ;
+          var I = dbv2.addInsert ( "t_identity_client" ) ;
+          I.addColumn ( "client_key", CLIENT_KEY ) ;  
+          I.addColumn ( "identity_key", v.getInt ( "IDENTITY_KEY" ) ) ;  
+        }
+      }
+      if ( first )
+      {
+        dbv2 = Calypso.getDbv ( msg2 ) ;
+        var resultXml2 = dbv2.getResultXml() ;
+      }
+    }
+
+    this.manager.saveUserData ( v ) ;
+    this.mf.select ( 0 ) ;
+    this.cEdit.reset() ;
+    this._search ( v.getInt ( "IDENTITY_KEY" ) ) ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error() ;
+    throw exc ;
+  }
+} ;
+IDUserEditor.prototype.createUser = function ( event )
+{
+  var w = new TWindow ( "${home}/Dialog.CreateUser" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  var x = this.manager.getNonPersonsAsOptions() ;
+  w.setRefData ( x ) ;
+  w.show() ;
+} ;
+IDUserEditor.prototype.createUserSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  this.manager.createPerson ( v ) ;
+  var w = ev.getWindow() ;
+  w.closeImediately() ;
+};
+IDUserEditor.prototype.createGroup = function ( event )
+{
+  var w = new TWindow ( "${home}/Dialog.CreateGroup" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  var x = this.getDB().getRefData ( "T_IDENTITY_TYPE"
+                              , "IDENTITY_TYPE_NAME"
+			      , "IDENTITY_TYPE_KEY"
+			      , "IDENTITY_TYPE_KEY"
+			      , "IDENTITY_TYPE_NAME<>'Person'"
+		              ) ;
+  w.setRefData ( x ) ;
+  w.show() ;
+} ;
+IDUserEditor.prototype.createGroupSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  this.manager.createGroup ( v ) ;
+  var w = ev.getWindow() ;
+  w.closeImediately() ;
+};
+IDUserEditor.prototype.showDialogChangePassword = function ( event )
+{
+  var ud = this.cEdit.getValues() ;
+  var w = new TWindow ( "${home}/Dialog.Edit.User.Password" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setValues ( ud ) ;
+  w.show() ;
+};
+IDUserEditor.prototype.changePasswordSave = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues () ;
+  try
+  {
+    var pwd1 = v.getContent ( "PWD" ) ;
+    var pwd2 = v.getContent ( "PWD_CONFIRM" ) ;
+    if ( ! this.checkPersonPassword ( pwd1, pwd2, w ) ) return ;
+    w.closeImediately() ;
+    this.manager.saveUserPassword ( v.getContent ( "IDENTITY_KEY" ), pwd1 ) ;
+  }
+  catch ( exc )
+  {
+    var d = new TUserDialog ( exc ) ;
+    d.error(w) ;
+  }
+};
+IDUserEditor.prototype.checkPersonPassword = function ( PWD, PWD_CONFIRM, w )
+{
+  if ( PWD != PWD_CONFIRM )
+  {
+    var d = new TUserDialog ( "TheGivenPasswordsDoNotMatch" ) ;
+    d.error(w) ;
+    return false ;
+  }
+  var pv = TSys.getPasswordValidator() ;
+  if ( ! pv.validate ( PWD ) )
+  {
+    var d = new TUserDialog ( pv.getConstraints() ) ;
+    d.error() ;
+    return false ;
+  }
+  return true ;
+} ;
+/**
+ *  @constructor
+ */
+IDGroupEditor = function()
+{
+  Tango.initSuper ( this, IDUserEditor );
+  this.jsClassName = "IDGroupEditor" ;
+};
+IDGroupEditor.inherits( IDUserEditor ) ;
+IDGroupEditor.prototype.searchNames = function()
+{
+  var v = this.cSearchParameter.getValues() ;
+  var x = this.manager._searchGroupNames ( v ) ;
+  var en = x.getEnum ( "T_IDENTITY/row" ) ;
+  var a = [] ;
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    a.push ( r.getContent ( "IDENTITY_NAME" ) ) ;
+  }
+  return a ;
+};
+IDGroupEditor.prototype._search = function ( IDENTITY_KEY, keepData )
+{
+  var v = this.cSearchParameter.getValues() ;
+  var xResult = this.manager._searchGroup ( v ) ;
+  var x = xResult.getXml ( "T_IDENTITY" ) ;
+  this.searchResultTable.setData ( x  ) ;
+  if ( IDENTITY_KEY )
+  {
+    var r = this.searchResultTable.findRow ( "IDENTITY_KEY", IDENTITY_KEY ) ;
+    r.setSelected ( true ) ;
+  }
+  if ( keepData ) return ;
+  this.cEdit.reset() ;
+  this.mf.select ( 0 ) ;
+};
+/*
+IDGroupEditor.prototype.roleOverview = function()
+{
+  var w = new TWindow ( "${home}/IDM.Window.IdentityToRole" ) ;
+  w.create() ;
+  w.getPagelet().displayGroupToRole() ;
+  w.show() ;
+} ;
+*/
+IDGroupEditor.prototype.roleOverview = function()
+{
+  var w = new TWindow ( "${home}/IDM.Window.GroupToRights" ) ;
+  w.create() ;
+  w.getPagelet().displayGroupToRights() ;
+  w.show() ;
+} ;
+
+/**
+ *  @constructor
+ */
+IDRolesAndRightsEditor = function()
+{
+  this.jsClassName = "IDRolesAndRightsEditor" ;
+  this._firstSelected = false ;
+  this.manager = new IDManagement() ;
+};
+IDRolesAndRightsEditor.prototype.getDB = function()
+{
+  return this.manager.getDB() ;
+};
+IDRolesAndRightsEditor.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")" ;
+}
+IDRolesAndRightsEditor.prototype.onload = function ( event )
+{
+  this.container = event.getContainer() ;
+  this.T_ROLE = this.container.getPeer ( "T_ROLE" ) ;
+  this.CONTAINER_ROLE_TO_RIGHT = this.container.getComponent ( "CONTAINER_ROLE_TO_RIGHT" ) ;
+  this.V_ROLE_TO_RIGHT = this.container.getPeer ( "V_ROLE_TO_RIGHT" ) ;
+  this.CONTAINER_ROLE = this.container.getComponent ( "CONTAINER_ROLE" ) ;
+  this.T_RIGHT = this.container.getPeer ( "T_RIGHT" ) ;
+  this.CONTAINER_RIGHT = this.container.getComponent ( "CONTAINER_RIGHT" ) ;
+
+  this.PB_AddRoleToRight = this.container.getComponent ( "PB.AddRoleToRight" ) ;
+
+  var parent = this.container.dom ;
+  var thiz = this ;
+  while ( parent )
+  {
+    if ( parent.jsPeer )
+    {
+      if ( ( parent.jsPeer instanceof TMultiform ) && parent.jsPeer.isNotebook )
+      {
+        this.index = parent.jsPeer.indexOf ( "IDM.Form.RoleToRight" ) ;
+        parent.jsPeer.addSelectionListener ( new TFunctionExecutor ( function ( ev )
+        {
+          if ( ! thiz._firstSelected )
+          {
+            if ( ev.getNewValue() === thiz.index )
+            {
+              thiz._firstSelected = true ;
+              thiz.fillAll() ;
+            }
+          }
+        })) ;
+        break ;
+      }
+    }
+    parent = parent.parentNode ;
+  }
+};
+IDRolesAndRightsEditor.prototype.fillAll = function (event)
+{
+  this.fill_T_ROLE (event) ;
+  this.fill_T_RIGHT (event) ;
+};
+IDRolesAndRightsEditor.prototype.fill_T_ROLE = function (event)
+{
+  var x = this.manager.getDB().select ( "select * from T_ROLE order by ROLE_NAME" ) ;
+  this.T_ROLE.setValues ( x ) ;
+  this.V_ROLE_TO_RIGHT.clear() ;
+
+  this.CONTAINER_ROLE_TO_RIGHT.resetChanged() ;
+  this.CONTAINER_ROLE.resetChanged() ;
+
+  var v = new TXml() ;
+  v.add ( "TITLE_ROLE_TO_RIGHT", "" ) ;
+  this.CONTAINER_ROLE_TO_RIGHT.setValues ( v ) ;
+  this.PB_AddRoleToRight.setEnabled ( false ) ;
+};
+IDRolesAndRightsEditor.prototype.fill_T_RIGHT = function (event)
+{
+  var x1 = this.manager.getDB().select ( "select * from T_RIGHT order by RIGHT_NAME" ) ;
+  this.T_RIGHT.setValues ( x1 ) ;
+  this.CONTAINER_RIGHT.resetChanged() ;
+};
+IDRolesAndRightsEditor.prototype.fill_V_ROLE_TO_RIGHT = function (event)
+{
+  var ud = this.T_ROLE.getSelectedUserXml() ;
+  if ( ! ud ) return ;
+
+  this.CONTAINER_ROLE_TO_RIGHT.resetChanged() ;
+
+  var v = new TXml() ;
+  v.add ( "TITLE_ROLE_TO_RIGHT", ud.getContent ( "ROLE_NAME" ) ) ;
+  v.add ( "ROLE_KEY", ud.getContent ( "ROLE_KEY" ) ) ;
+  this.CONTAINER_ROLE_TO_RIGHT.setValues ( v ) ;
+
+  var sql = "select * from V_ROLE_TO_RIGHT where ROLE_KEY=" + ud.getContent ( "ROLE_KEY" ) + " order by role_name" ;
+  var x = this.manager.getDB().select ( sql ) ;
+  this.V_ROLE_TO_RIGHT.setValues ( x ) ;
+  this.PB_AddRoleToRight.setEnabled ( true ) ;
+};
+IDRolesAndRightsEditor.prototype.displayRoleToRight = function (event)
+{
+  var w = new TWindow ( "${home}/IDM.Window.RoleToRight" ) ;
+  w.create() ;
+  w.getPagelet().displayRoleToRight() ;
+  w.show() ;
+};
+IDRolesAndRightsEditor.prototype.createRole = function (event)
+{
+  var w = new TWindow ( "${home}/Dialog.CreateRole" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.show() ;
+};
+IDRolesAndRightsEditor.prototype.createRoleSave = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var key = this.getDB().getNextValFromSequence ( "S_IDENTITY" ) ;
+  this.getDB().insert ( "T_ROLE"
+                      , [ "ROLE_KEY", "ROLE_NAME", "DESCRIPTION" ]
+                      , [ key, v.getContent ( "ROLE_NAME" ).trim(), v.getContent ( "DESCRIPTION" ) ]
+                      ) ;
+  this.fill_T_ROLE ( event ) ;
+  var r = this.T_ROLE.findRow ( "ROLE_KEY", "" + key ) ;
+  r.setSelected ( true, true ) ;
+  w.closeImediately() ;
+};
+IDRolesAndRightsEditor.prototype.createRight = function (event)
+{
+  var w = new TWindow ( "${home}/Dialog.CreateRight" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.show() ;
+};
+IDRolesAndRightsEditor.prototype.createRightSave = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var key = this.getDB().getNextValFromSequence ( "S_IDENTITY" ) ;
+  this.getDB().insert ( "T_RIGHT"
+                      , [ "RIGHT_KEY", "RIGHT_NAME", "DESCRIPTION" ]
+                      , [ key, v.getContent ( "RIGHT_NAME" ).trim(), v.getContent ( "DESCRIPTION" ) ]
+                      ) ;
+  this.fill_T_RIGHT ( event ) ;
+  var r = this.T_RIGHT.findRow ( "RIGHT_KEY", "" + key ) ;
+  r.setSelected ( true, true ) ;
+  w.closeImediately() ;
+};
+IDRolesAndRightsEditor.prototype.editRole = function (event)
+{
+  var ud = this.T_ROLE.getSelectedUserXml() ;
+  if ( ! ud ) return ;
+  ud.add ( "OLD_ROLE_NAME", ud.getContent ( "ROLE_NAME" ) ) ;
+  var w = new TWindow ( "${home}/Dialog.EditRole" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setValues ( ud ) ;
+  w.show() ;
+}
+IDRolesAndRightsEditor.prototype.editRoleSave = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var key = v.getContent ( "ROLE_KEY" ) ;
+
+  var ur = this.getDB().createUpdate ( "T_ROLE" ) ;
+  ur.addKeyColumn ( "ROLE_KEY", key ) ;
+  ur.addColumn ( "ROLE_NAME", v.getContent ( "ROLE_NAME" ).trim() ) ;
+  ur.addColumn ( "DESCRIPTION", v.getContent ( "DESCRIPTION" ) ) ;
+  ur.execute() ;
+
+  this.fill_T_ROLE ( event ) ;
+  var r = this.T_ROLE.findRow ( "ROLE_KEY", "" + key ) ;
+  r.setSelected ( true, true ) ;
+  w.closeImediately() ;
+};
+IDRolesAndRightsEditor.prototype.editRight = function (event)
+{
+  var ud = this.T_RIGHT.getSelectedUserXml() ;
+  if ( ! ud ) return ;
+  ud.add ( "OLD_RIGHT_NAME", ud.getContent ( "RIGHT_NAME" ) ) ;
+  var w = new TWindow ( "${home}/Dialog.EditRight" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setValues ( ud ) ;
+  w.show() ;
+};
+IDRolesAndRightsEditor.prototype.editRightSave = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+  var key = v.getContent ( "RIGHT_KEY" ) ;
+
+  var ur = this.getDB().createUpdate ( "T_RIGHT" ) ;
+  ur.addKeyColumn ( "RIGHT_KEY", key ) ;
+  //  ur.addColumn ( "RIGHT_NAME", v.getContent ( "RIGHT_NAME" ).trim() ) ;
+  ur.addColumn ( "DESCRIPTION", v.getContent ( "DESCRIPTION" ) ) ;
+  ur.execute() ;
+
+  this.fill_T_RIGHT ( event ) ;
+  var r = this.T_RIGHT.findRow ( "RIGHT_KEY", "" + key ) ;
+  r.setSelected ( true, true ) ;
+  w.closeImediately() ;
+};
+IDRolesAndRightsEditor.prototype.editRoleToRight = function (event)
+{
+  var ud = this.V_ROLE_TO_RIGHT.getSelectedUserXml() ;
+  if ( ! ud ) return ;
+  var w = new TWindow ( "${home}/Dialog.EditRoleToRight" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setValues ( ud ) ;
+  w.show() ;
+};
+IDRolesAndRightsEditor.prototype.editRoleToRightSave = function (event)
+{
+{
+  var ev = new TEvent ( event ) ;
+  var w = ev.getWindow() ;
+  var v = ev.getValues() ;
+
+  var ROLE_KEY = v.getContent ( "ROLE_KEY" ) ;
+  var RIGHT_KEY = v.getContent ( "RIGHT_KEY" ) ;
+  var RIGHT_VALUE = v.getContent ( "RIGHT_VALUE" ).trim() ;
+
+  var ur = this.getDB().createUpdate ( "T_ROLE_TO_RIGHT" ) ;
+  ur.addKeyColumn ( "RIGHT_KEY", RIGHT_KEY ) ;
+  ur.addKeyColumn ( "ROLE_KEY", ROLE_KEY ) ;
+  ur.addColumn ( "RIGHT_VALUE", RIGHT_VALUE ) ;
+  ur.execute() ;
+
+  this.fill_V_ROLE_TO_RIGHT ( event ) ;
+  var r = this.V_ROLE_TO_RIGHT.findRow ( "RIGHT_KEY", "" + RIGHT_KEY ) ;
+  r.setSelected ( true, true ) ;
+  w.closeImediately() ;
+};
+};
+IDRolesAndRightsEditor.prototype.removeRoleToRight = function (event)
+{
+  var ud = this.V_ROLE_TO_RIGHT.getSelectedUserXml() ;
+  if ( ! ud ) return ;
+  var ROLE_KEY = ud.getContent ( "ROLE_KEY" ) ;
+  var RIGHT_KEY = ud.getContent ( "RIGHT_KEY" ) ;
+  var d = new TUserDialog ( "AreYouSureToDeleteSelectedItem" ) ;
+  var thiz = this ;
+  d.callOnConfirmation ( function()
+  {
+    thiz.removeRoleToRight2 ( ROLE_KEY, RIGHT_KEY ) ;
+  } ) ;
+  d.askYesNo() ;
+};
+IDRolesAndRightsEditor.prototype.removeRoleToRight2 = function ( ROLE_KEY, RIGHT_KEY )
+{
+  var r = this.getDB().createDelete ( "T_ROLE_TO_RIGHT" ) ;
+  r.addKeyColumn ( "ROLE_KEY", ROLE_KEY ) ;
+  r.addKeyColumn ( "RIGHT_KEY", RIGHT_KEY ) ;
+  r.execute() ;
+  this.fill_V_ROLE_TO_RIGHT() ;
+};
+IDRolesAndRightsEditor.prototype.addRoleToRight = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var x = this.getDB().getRefData ( "T_RIGHT"
+                                  , "RIGHT_NAME"
+			          , "RIGHT_KEY"
+			          , "RIGHT_KEY"
+		                  ) ;
+  var w = new TWindow ( "${home}/Dialog.AddRoleToRight" ) ;
+  w.setPagelet ( this ) ;
+  w.create() ;
+  w.setRefData ( x ) ;
+  w.setValues ( v ) ;
+  w.show() ;
+};
+IDRolesAndRightsEditor.prototype.addRoleToRightSave = function (event)
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var w = ev.getWindow() ;
+  var ROLE_KEY = v.getContent ( "ROLE_KEY" ) ;
+  var RIGHT_KEY = v.getContent ( "RIGHT_KEY" ) ;
+  var sql = "select RIGHT_NAME, ROLE_NAME from V_ROLE_TO_RIGHT where ROLE_KEY=" + ROLE_KEY + " and RIGHT_KEY=" + RIGHT_KEY ;
+  var x = this.getDB().select ( sql ) ;
+  var xRow = x.get ( "V_ROLE_TO_RIGHT/row" ) ;
+  if ( xRow )
+  {
+    var str = TSys.translate ( "AlreadyExistsArg0", null
+                              , [ xRow.getContent ( "ROLE_NAME" ) + " / " + xRow.getContent ( "RIGHT_NAME" ) ]
+                              ) ;
+    var d = new TUserDialog ( str ) ;
+    d.error() ;
+    return ;
+  }
+  this.getDB().insert ( "T_ROLE_TO_RIGHT"
+                      , [ "ROLE_KEY", "RIGHT_KEY", "RIGHT_VALUE" ]
+                      , [ ROLE_KEY, RIGHT_KEY, v.getContent ( "RIGHT_VALUE" ) ]
+                      ) ;
+  this.fill_V_ROLE_TO_RIGHT (event) ;
+  var r = this.V_ROLE_TO_RIGHT.findRow ( "RIGHT_KEY", "" + RIGHT_KEY ) ;
+  r.setSelected ( true, true ) ;
+  w.closeImediately() ;
+} ;
+/**
+ *  @constructor
+ */
+IDInfo = function()
+{
+  this.jsClassName = "IDInfo" ;
+  this.manager = new IDManagement() ;
+};
+IDInfo.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")" ;
+}
+IDInfo.prototype.onload = function ( event )
+{
+  this.container = event.getContainer() ;
+  this.table = this.container.getPeer ( "V_ROLE_TO_RIGHT" ) ;
+};
+IDInfo.prototype.displayRoleToRight = function (event)
+{
+  var sql = "select a.*, b.DESCRIPTION from V_ROLE_TO_RIGHT a, T_RIGHT b where a.RIGHT_KEY=b.RIGHT_KEY order by role_name" ;
+  var xResult = this.manager.getDB().select ( "V_ROLE_TO_RIGHT", sql ) ;
+  this.container.reset() ;
+  this.container.setValues ( xResult ) ;
+}
+IDInfo.prototype.displayIdentityToRole = function (event)
+{
+  var sql = "select * from V_IDENTITY_TO_ROLE order by role_name" ;
+  var xResult = this.manager.getDB().select ( "V_IDENTITY_TO_ROLE", sql ) ;
+  this.container.setValues ( xResult ) ;
+}
+IDInfo.prototype.displayGroupToRole = function (event)
+{
+  var sql = "select * from V_IDENTITY_TO_ROLE where identity_type_key !=(select identity_type_key from t_identity_type where UPPER(identity_type_name)='PERSON') order by role_name" ;
+  var xResult = this.manager.getDB().select ( "V_IDENTITY_TO_ROLE", sql ) ;
+  this.container.setValues ( xResult ) ;
+}
+IDInfo.prototype.displayGroupToRights = function (event)
+{
+  var sql = ""
+          + "SELECT \n"
+          + "  T_IDENTITY.IDENTITY_NAME\n"
+          + ", T_ROLE.ROLE_NAME\n"
+          + ", T_RIGHT.RIGHT_NAME\n"
+          + ", T_ROLE_TO_RIGHT.RIGHT_VALUE\n"
+          + ", T_RIGHT.DESCRIPTION\n"
+          + "FROM \n"
+          + "  T_IDENTITY, T_ROLE, T_IDENTITY_TO_ROLE, T_ROLE_TO_RIGHT, T_RIGHT\n"
+          + "WHERE IDENTITY_TYPE_KEY!=2\n"
+          + "AND T_IDENTITY.IDENTITY_KEY = T_IDENTITY_TO_ROLE.IDENTITY_KEY \n"
+          + "AND T_IDENTITY_TO_ROLE.ROLE_KEY = T_ROLE.ROLE_KEY\n"
+          + "AND T_IDENTITY_TO_ROLE.ROLE_KEY=T_ROLE_TO_RIGHT.ROLE_KEY\n"
+          + "AND T_ROLE_TO_RIGHT.RIGHT_KEY=T_RIGHT.RIGHT_KEY\n"
+          + "order by IDENTITY_NAME\n"
+          ;
+  
+  var xResult = this.manager.getDB().select ( "GROUP_TO_RIGHTS", sql ) ;
+  this.container.setValues ( xResult ) ;
+}
+}
+  }
+  ]]></Script>
+</xml>
+

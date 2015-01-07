@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Notebook style='top:0px;left:0px;bottom:-0;right:-0;'>
+    <Include src='IDM.Form.UserManagement' />
+    <Include src='IDM.Form.GroupManagement' />
+    <Include src='IDM.Form.RoleToRight' />
+    <XInclude src='IDM.Form.IdentityToRole' />
+    <Include src='IDM.Form.IdentityTree' />
+  </Notebook>
+</xml>

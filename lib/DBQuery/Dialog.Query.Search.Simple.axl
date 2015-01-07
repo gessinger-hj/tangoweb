@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Search an existing query...' id="Dialog.Query.Search.Simple" >
+    <Container style='right:-0;bottom:-0;' onchange='handle:PB.Apply' >
+      <Container name='X' style='left:0px;right:-4;bottom:-0;attach-bottom:true;' >
+        <Label text='Name or pattern:' />
+        <TextField name='name' style='right:-4;attach-right:true;' action='*.searchSQL(event)' />
+        <PushButton img='Tango/Misc/edit-search' text="%Search%" style='right:4px;' onclick='*.searchSQL(event)' />
+        <br/>
+        <Table path='TABLE' style='width:400px;height:400px;right:-0;bottom:-0;'
+            ondblclick='*.loadSQL(event)'
+            sortable='true'
+         >
+          <Columns>
+            <Column name='NAME' title='Name' />
+            <Column name='DESCRIPTION' title='Description' />
+            <Column name='LAST_MODIFIED' title='Last Modified' type='datetime' />
+          </Columns>
+        </Table>
+      </Container>
+      <br />
+      <Container style='bottom:0;right:0;' >
+        <PushButton name='PB.Apply' disabled=true img='Tango/Misc/ok' text="%Open%" onclick='*.loadSQL(event)' />
+        <PushButton text="%Cancel%" img='Tango/Misc/edit-cancel' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

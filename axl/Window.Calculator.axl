@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='false' title='Calculator...' close-with-escape='true' id="Window.Calculator" img='${home}/resources/calculator.png'
+          css='${home}/resources/Window.Calculator.css'
+	  onopen='*.onopen()'
+	  onclose='*.onclose()'
+	  pagelet='
+	  {
+  container: null,
+  table:null,
+  tf:null,
+  _initialize_: function ( p )
+  {
+  },
+  clearHistory: function ( ev )
+  {
+    this.calculator.clearHistory() ;
+  },
+  onopen: function ( ev )
+  {
+    var w = ev.getWindow() ;
+    this.container = w.getComponent ( "DISPLAY.CONTAINER" ) ;
+    this.table = w.getPeer ( "HISTORY" ) ;
+    this.tf = w.getComponent ( "q" ) ;
+/*
+this.container.dom.isFocusable = true ;
+this.container.dom.jsPeer = this ;
+*/
+    this.calculator = new Calculator ( w ) ;
+    this.calculator.setPopupClass ( PopupMenu ) ;
+    this.calculator.setActionIcon ( "${home}/resources/wrench.png" ) ;
+    this.calculator.getData() ;
+  },
+  onclose: function ( ev )
+  {
+    this.calculator.saveData() ;
+  },
+  removeSelectedHistoryEntry: function ( event )
+  {
+    this.table.removeSelectedItem() ;
+  },
+  appendFormulaFromHistory: function ( event )
+  {
+    var v = this.table.getSelectedUserXml() ;
+    if ( ! v ) return ;
+    var str = this.tf.getText() + v.getContent ( "EXPRESSION" ) ;
+    this.tf.setText ( str ) ;
+  },
+  appendValueFromHistory: function ( event )
+  {
+    var v = this.table.getSelectedUserXml() ;
+    if ( ! v ) return ;
+    var str = this.tf.getText() + v.getContent ( "RESULT" ) ;
+    this.tf.setText ( str ) ;
+  },
+  applyFormulaFromHistory: function ( event )
+  {
+    var v = this.table.getSelectedUserXml() ;
+    if ( ! v ) return ;
+    var str = v.getContent ( "EXPRESSION" ) ;
+    this.tf.setText ( str ) ;
+  },
+  applyValueFromHistory: function ( event )
+  {
+    var v = this.table.getSelectedUserXml() ;
+    if ( ! v ) return ;
+    var str = v.getContent ( "RESULT" ) ;
+    this.tf.setText ( str ) ;
+  }
+}'
+  >
+    <Container style='padding:2px;left:0px;top:0px;bottom:-2;attach-bottom:true;right:-0;' >
+      <Container style='right:-0;padding:0px;margin:0px;background-color:white;color:black;'
+        <Container style='top:0px;left:0px;height:32px;right:-0;bottom:-0px;'
+          decoration='{src:"${home}/resources/back-2.png"
+                      , border:{top:4,left:4,bottom:4,right:4}
+                      , padding:{top:4,left:4,bottom:4,right:8}
+                      , type:"sliced"
+                      }'
+        >
+          <TextField name='q' style='width:100px;left:0px;right:-0;background-color:transparent;font-weight:bold;border-color:transparent;' />
+        </Container>
+      </Container>
+      <br/>
+      <Container style='margin:0px;padding:0px;bottom:-0;right:-0;' name='DISPLAY.CONTAINER' >
+        <Container style='padding:0px;margin:0px;margin-right:0px;' >
+          <PushButton name='CC' style='width:32px;height:30px;font-weight:bold;' text='CC' />
+          <PushButton name='CE' style='width:32px;height:30px;font-weight:bold;' text='CE' />
+          <PushButton name='(' style='width:32px;height:30px;font-weight:bold;' text='(' />
+          <PushButton name=')' style='width:32px;height:30px;font-weight:bold;' text=')' />
+          <PushButton name='+/-' style='width:32px;height:30px;font-weight:bold;' text='&plusmn;' />
+        </Container>
+        <br/>
+        <Container style='padding:0px;margin:0px;margin-right:0px;' >
+          <PushButton name='inv' style='width:32px;height:30px;font-weight:bold;' text='1/x' />
+          <br/>
+          <PushButton name='super2' style='width:32px;height:30px;font-weight:bold;' text='x&sup2;' />
+          <br/>
+          <PushButton name='super3' style='width:32px;height:30px;font-weight:bold;' text='x&sup3;' />
+          <br/>
+          <PushButton name='radic3' style='width:32px;height:30px;font-weight:bold;' text='&#x221B;x' />
+          <br/>
+          <PushButton name='PI' style='width:32px;height:30px;font-weight:bold;' text='&#x03C0;' />
+        </Container>
+        <Container style='padding:0px;margin:0px;margin-right:0px;' >
+          <PushButton name='sqrt' style='width:32px;height:30px;font-weight:bold;' text='&radic;x' />
+          <PushButton name='/' style='width:32px;height:30px;font-weight:bold;' text='&divide;' />
+          <PushButton name='*' style='width:32px;height:30px;font-weight:bold;' text='&times;' />
+          <PushButton name='-' style='width:32px;height:30px;font-weight:bold;' text='&minus;' />
+          <br/>
+          <Container style='padding:0px;margin:0px;margin-right:0px;' >
+            <PushButton name='7' style='width:32px;height:30px;font-weight:bold;' text='7' />
+            <PushButton name='8' style='width:32px;height:30px;font-weight:bold;' text='8' />
+            <PushButton name='9' style='width:32px;height:30px;font-weight:bold;' text='9' />
+            <br/>
+            <PushButton name='4' style='width:32px;height:30px;font-weight:bold;' text='4' />
+            <PushButton name='5' style='width:32px;height:30px;font-weight:bold;' text='5' />
+            <PushButton name='6' style='width:32px;height:30px;font-weight:bold;' text='6' />
+          </Container>
+          <PushButton name='+' style='width:32px;height:62px;' text='+' />
+          <br/>
+          <Container style='padding:0px;margin:0px;margin-right:0px;' >
+            <PushButton name='1' style='width:32px;height:30px;font-weight:bold;' text='1' />
+            <PushButton name='2' style='width:32px;height:30px;font-weight:bold;' text='2' />
+            <PushButton name='3' style='width:32px;height:30px;font-weight:bold;' text='3' />
+            <br/>
+            <PushButton name='0' style='width:68px;height:30px;font-weight:bold;' text='0' />
+            <PushButton name='.' style='width:32px;height:30px;font-weight:bold;' text='.' />
+          </Container>
+          <PushButton name='=' style='width:32px;height:62px;font-weight:bold;' text='=' />
+        </Container>
+      </Container>
+      <br/>
+      <Container style='right:-0;' >
+        <PushButton text='More...' arrow='down'>
+          <PopupMenu button='left' position='under' >
+            <MenuItem text='Clear History' onclick='*.clearHistory()' />
+          </PopupMenu>
+        </PushButton>
+      </Container>
+      <br/>
+      <Table name='HISTORY' style='padding:0px;left:0px;right:-0px;bottom:-0px;height:100px;'
+             show-header='false' get-values='all'
+      >
+        <Columns>
+          <Column name='ACTION' />
+          <Column name='EXPRESSION' />
+          <Column name='OP' />
+          <Column name='RESULT' />
+        </Columns>
+      </Table>
+    </Container>
+  </Window>
+</xml>
+

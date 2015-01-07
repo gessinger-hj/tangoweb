@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title='Servlet Infos...' id="Window.Admin.Servlet.Info" >
+    <Container style='bottom:-0;right:-0;padding:0px;'>
+      <Container name='INFO' style='height:400px;width:600px;bottom:-2;right:-2;attach-bottom:true;padding:0px;'
+      >
+      </Container>
+      <br/>
+      <Container style='bottom:0;right:0;' >
+        <PushButton text='GC' onclick='Admin.showServletInfoGC(event)' />
+        <PushButton text='Refresh' onclick='Admin.showServletInfo(event)' />
+        <PushButton text='Close' onclick='TGui.closeWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+

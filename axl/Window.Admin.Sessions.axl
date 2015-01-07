@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title='Current Sessions...' id="Window.Admin.Sessions" >
+    <Container style='bottom:-0;right:-0;' >
+      <Table name='WEB.SESSIONS' style='height:400px;width:600px;bottom:-2;right:-2;attach-bottom:true;'
+      >
+        <Columns>
+          <Column name='UID' title='User' />
+          <Column name='IP' title='Ip' />
+          <Column name='ORG' title='Org' />
+          <Column name='APPLICATION' title='App' />
+          <Column name='CREATION_DATE' type=datetime title='Since' />
+          <Column name='LAST_ACTION' type=datetime title='Last Action' />
+          <Column name='UserAgent' title='UA' />
+        </Columns>
+      </Table>
+      <br/>
+      <Container style='bottom:0;right:0;' >
+        <PushButton text='Refresh' onclick='Admin.showSessions(event)' />
+        <PushButton text='Close' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+

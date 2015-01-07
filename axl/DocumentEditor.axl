@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='DocumentEditor' pagelet='new DocumentEditor()' onload='*.onload()' style='left:0px;width:600px;height:400px;right:-0;bottom:-0;'>
+	<Hidden name="offset"/>
+	<Hidden name="key"/>
+  <if property='SHOW_MENU' operator='eq' value='true'>
+    <Menubar style='top:0px;'>
+      <MenuButton text='File'>
+        <MenuItem name='save' text='Save' onclick='*.save()' disabled='true' />
+        <MenuItem name='saveAs' text='Save As...' onclick='*.saveAs()' />
+        <MenuItem name='openFile' text='Open File...' onclick='*.openWithFileChooser()' />
+        <MenuItem text='Close Window' onclick='*.closeWindow()' />
+      </MenuButton>
+    </Menubar>
+    <br/>
+  </if>
+  <Toolbar style='left:0px;right:-0px;' name='X' >
+    <ToolbarButton name='TB_saveText' img-width='24' img='${home}/resources/filesave-2-32.png' onclick='*.save()' disabled='true' tooltip='Save File (Alt+S)' />
+    <ToolbarButton name='TB_saveAs' img-width='24' img='${home}/resources/filesaveas-32.png' onclick='*.saveAs()' disabled='true' tooltip='Save As... (Shft+Alt+S)' />
+    <ToolbarButton name='TB_openText' img-width='24' img='Tango/Folder.16/normal' onclick='*.openWithFileChooser()' Xdisabled='true' tooltip='Open File' />
+    <ToolbarButton name='TB_closeDocumentEditor' img-width='24' img='${home}/resources/Actions-document-close-icon-32.png' onclick='*.close()' tooltip='Close Editor (Alt+W)' />
+    <ToolbarButton img-width='24' img='${home}/resources/Apps-help-browser-icon-32.png' tooltip='Editor Help'
+     onclick='function(event)
+     {
+       TGui.createIframeWindow ( "AceDefaultKeyboardShortcuts.html", null, true ) ;
+     }'
+    />
+		<Label text='Goto Line:' /><TextField name="TF_gotoLine" type='int' action='*.gotoLine()' onkeyup='*.gotoLine()' style='width:40px;'/>
+		<Label text='find:' /><TextField name="TF_pattern" action='*.find()' onkeyup='*.find()' />
+		<ToolbarButton img-width='24' img='${home}/resources/Actions-arrow-right-icon-32.png' tooltip='find next' onclick='*.findNext()' />
+		<ToolbarButton img-width='24' img='${home}/resources/Actions-arrow-left-icon-32.png' tooltip='find previous' onclick='*.findPrevious()' />
+    <ChoiceButton onchange='*.setTheme()' text='XX' name='THEME'
+      onopen='*.onopen_THEME_ChoiceButton()'
+      onclose='*.onclose_THEME_ChoiceButton()'
+    >
+      <title value='Bright'>Bright</title>
+      <option value="chrome">Chrome</option>
+      <option value="clouds">Clouds</option>
+      <option value="crimson_editor">Crimson Editor</option>
+      <option value="dawn">Dawn</option>
+      <option value="dreamweaver">Dreamweaver</option>
+      <option value="eclipse">Eclipse</option>
+      <option value="github">GitHub</option>
+      <option value="solarized_light">Solarized Light</option>
+      <option value="textmate" selected="selected">TextMate</option>
+      <option value="tomorrow">Tomorrow</option>
+      <option value="xcode">XCode</option>
+      <title value='Dark'>Dark</title>
+      <option value="ambiance">Ambiance</option>
+      <option value="chaos">Chaos</option>
+      <option value="clouds_midnight">Clouds Midnight</option>
+      <option value="cobalt">Cobalt</option>
+      <option value="idle_fingers">idleFingers</option>
+      <option value="kr_theme">krTheme</option>
+      <option value="merbivore">Merbivore</option>
+      <option value="merbivore_soft">Merbivore Soft</option>
+      <option value="mono_industrial">Mono Industrial</option>
+      <option value="monokai">Monokai</option>
+      <option value="pastel_on_dark">Pastel on dark</option>
+      <option value="solarized_dark">Solarized Dark</option>
+      <option value="twilight">Twilight</option>
+      <option value="tomorrow_night">Tomorrow Night</option>
+      <option value="tomorrow_night_blue">Tomorrow Night Blue</option>
+      <option value="tomorrow_night_bright">Tomorrow Night Bright</option>
+      <option value="tomorrow_night_eighties">Tomorrow Night 80s</option>
+      <option value="vibrant_ink">Vibrant Ink</option>
+    </ChoiceButton>
+    <ChoiceButton onchange='*.setFontSize()' text='XX' name='FONT_SIZE' >
+      <option value="10px">10px</option>
+      <option value="11px">11px</option>
+      <option value="12px" selected="true">12px</option>
+      <option value="13px">13px</option>
+      <option value="14px">14px</option>
+      <option value="16px">16px</option>
+      <option value="18px">18px</option>
+      <option value="20px">20px</option>
+      <option value="24px">24px</option>
+    </ChoiceButton>
+    <XToolbarButton text='Test' tooltip='test' onclick='*.test()' />
+  </Toolbar>
+  <br/>
+  <if property='SHOW_FILENAME' operator='ne' value='false'>
+    <Label name='L_name' style='right:-0px;'/>
+    <br/>
+  </if>
+	<Container style='padding:0px;bottom:-0px;right:-0px;' >
+		<AceEditor name='EDITOR' style='background-color:white;left:0px;height:400px;width:400px;right:-0px;' >
+    </AceEditor>
+		<SplitbarHorizontal name='SB1'/>
+		<Table name='TABLE_ERRORS' style='width:400px;height:100px;bottom:-0px;right:-0px;'
+   				 onclick='*.gotoLineFromTable()'
+		>
+			<Columns>
+					<Column name='LINE' />
+					<Column name='COLUMN' />
+					<Column name='TEXT' />
+			</Columns>
+		</Table>
+	</Container>
+</Container>

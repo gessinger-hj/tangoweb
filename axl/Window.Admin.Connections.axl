@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title='Current Connections...' id="Window.Admin.Connections" onclose='Admin.editConnectionsSave(event)' >
+    <Container style='bottom:-0;right:-0;' onchange='handle:PB.Window.Admin.Connections.Apply PB.Window.Admin.Connections.Remove'>
+      <Table name='CONNECTIONS' style='height:400px;width:600px;bottom:-2;right:-2;attach-bottom:true;'
+             get-values=all ondblclick='Admin.editConnectionsApply(event)' sortable='true'
+      >
+        <Columns>
+          <Column name='host' title='Host' />
+          <Column name='port' title='Port' />
+          <Column name='title' title='Title' />
+        </Columns>
+      </Table>
+      <br/>
+      <Container style='bottom:0;right:0;' >
+        <PushButton text='New' onclick='Admin.newConnection(event)' />
+        <PushButton id='PB.Window.Admin.Connections.Remove' disabled=true text='Remove' onclick='Admin.editConnectionsRemove(event)' />
+        <PushButton id='PB.Window.Admin.Connections.Apply' disabled=true text='Apply' onclick='Admin.editConnectionsApply(event)' />
+        <PushButton text='Close' onclick='TGui.closeTopWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+

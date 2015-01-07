@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Container label='Current Messages...' name="Form.Admin.Messages" >
+    <Container style='bottom:-0;' >
+      <Container style='bottom:0;right:0;' >
+        <PushButton text='Clear' onclick='function(event)
+{
+  Admin.tableMSG.clear() ;
+}' />
+      </Container>
+      <br/>
+      <Table name='MSG' style='height:400px;width:600px;bottom:-2;right:-2;attach-bottom:true;'
+             reset=true
+      >
+        <Columns>
+<!--
+          <Column name='Id' />
+-->
+          <Column name='Ip' />
+          <Column name='SeverityName' title='Severity' />
+          <Column name='Date' type=datetime />
+<!--
+          <Column name='Severity' />
+-->
+          <Column name='Text' />
+        </Columns>
+      </Table>
+    </Container>
+    <Splitbar />
+    <Container style='bottom:-0;right:-0;' >
+    </Container>
+  </Container>
+</xml>
+

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<xml>
+  <Window title='File explorer' id='TFile.Explorer' >
+    <Container style='right:-2;bottom:-0'>
+      <Include src='FileExplorer' />
+    </Container>
+  </Window>
+</xml>
+
