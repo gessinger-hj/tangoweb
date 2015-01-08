@@ -263,7 +263,7 @@ tangojs.gp.WebClient.prototype._fireEvent = function ( params, callback, opts )
   else
   {
     e = new tangojs.gp.Event ( params.name, params.type ) ;
-    e.setData ( params.body ) ;
+    e.setBody ( params.body ) ;
     if ( params.user ) u = params.user ;
   }
   if ( this.user )

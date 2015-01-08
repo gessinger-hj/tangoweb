@@ -403,20 +403,20 @@ tangojs.gp.Event.prototype =
 	},
 	/**
 	 * Description
-	 * @method getData
+	 * @method getBody
 	 * @return MemberExpression
 	 */
-	getData: function()
+	getBody: function()
 	{
 		return this.body ;
 	},
 	/**
 	 * Description
-	 * @method setData
+	 * @method setBody
 	 * @param {} data
 	 * @return 
 	 */
-	setData: function ( data )
+	setBody: function ( data )
 	{
 		if ( data ) this.body = data ;
 	},
