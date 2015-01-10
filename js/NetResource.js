@@ -72,6 +72,8 @@ AuditEvent.prototype.setText = function ( text )
   {
     text = String ( text ) ;
   }
+  text = text.replace ( /<!\[CDATA\[/g, "___CDATA_" ) ;
+  text = text.replace ( /\]\]/g, "||" ) ;
   text = text.replace ( /\[/g, "|" ).replace ( /\]/g, "|" ) ;
   this.xAUDIT.addCDATA ( "text", text ) ;
 };
