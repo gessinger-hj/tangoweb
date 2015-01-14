@@ -193,7 +193,15 @@ tangojs.gp.Event.prototype =
 		this.setType ( type ) ;
 		this.user = null ;
 		this.control = { createdAt: new Date() } ;
-		if ( data && typeof data === 'object' ) this.body = data ;
+		if ( data )
+		{
+			if ( typeof data === 'object' ) this.body = data ;
+			else
+			{
+				this.body = {} ;
+				this.body.data = data ;
+			}
+		}
 		else this.body = {} ;
 	},
 	/**
@@ -221,7 +229,7 @@ tangojs.gp.Event.prototype =
 			+ "]\n"
 			+ ( this.user ? "[user=" + this.user + "]" : "" )
 			+ "[control=" + util.inspect ( this.control ) + "]\n"
-			+ "[data=" + util.inspect ( this.body ) + "]" ;
+			+ "[body=" + util.inspect ( this.body ) + "]" ;
 		}
 		else
 		{
@@ -231,7 +239,7 @@ tangojs.gp.Event.prototype =
 			+ "]\n"
 			+ ( this.user ? "[user=" + this.user + "]" : "" )
 			+ "[control=" + TSys.toFullString ( this.control ) + "]\n"
-			+ "[data=" + TSys.toFullString ( this.body ) + "]" ;
+			+ "[body=" + TSys.toFullString ( this.body ) + "]" ;
 		}
 	},
 	/**

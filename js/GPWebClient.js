@@ -2,6 +2,11 @@ if ( typeof tangojs === 'undefined' ) tangojs = {} ;
 if ( typeof tangojs.gp === 'undefined' ) tangojs.gp = {} ;
 
 tangojs.gp.counter = 0 ;
+tangojs.gp.getWebClient = function ( port )
+{
+  if ( tangojs.gp._WebClientInstance ) return tangojs.gp._WebClientInstance ;
+  return new tangojs.gp.WebClient ( port ) ;
+};
 /**
  * Description
  * @param {} port
@@ -19,6 +24,13 @@ tangojs.gp.WebClient = function ( port )
   this.url = "ws://" + document.domain + ":" + this.port ;
   this.proxyIdentifier = null ;
   this.onCallbackFunctions = new tangojs.MultiHash() ;
+  this._pendingLockList            = [] ;
+  this._ownedResources             = {} ;
+  this._aquiredSemaphores          = {} ;
+  this._ownedSemaphores            = {} ;
+  this._pendingAquireSemaphoreList = [] ;
+
+  tangojs.gp._WebClientInstance = this ;
 };
 tangojs.gp.WebClient.prototype._initialize = function()
 {
@@ -124,6 +136,42 @@ tangojs.gp.WebClient.prototype.connect = function()
             }
             continue ;
           }
+          ////////////////////////////
+          // lock resource handling //
+          ////////////////////////////
+          if ( e.getType() === "lockResourceResult" )
+          {
+            ctx = thiz._ownedResources[e.body.resourceId] ;
+            if ( ! e.body.isLockOwner )
+            {
+              delete thiz._ownedResources[e.body.resourceId] ;
+            }
+            ctx.callback.call ( thiz, null, e ) ;
+            continue ;
+          }
+          if ( e.getType() === "unlockResourceResult" )
+          {
+            delete thiz._ownedResources[e.body.resourceId] ;
+            continue ;
+          }
+          ////////////////////////
+          // semaphore handling //
+          ////////////////////////
+          if ( e.getType() === "aquireSemaphoreResult" )
+          {
+            if ( e.body.isSemaphoreOwner )
+            {
+              thiz._ownedSemaphores[e.body.resourceId] = thiz._aquiredSemaphores[e.body.resourceId] ;
+              delete thiz._aquiredSemaphores[e.body.resourceId] ;
+              ctx = thiz._ownedSemaphores[e.body.resourceId] ;
+              ctx.callback.call ( thiz, null, e ) ;
+            }
+            continue ;
+          }
+          if ( e.getType() === "releaseSemaphoreResult" )
+          {
+            continue ;
+          }
         }
         else
         {
@@ -192,6 +240,30 @@ tangojs.gp.WebClient.prototype.connect = function()
       }
       thiz.pendingEventListenerList.length = 0 ;
     }
+    if ( thiz._pendingLockList.length )
+    {
+      for ( i = 0 ; i < thiz._pendingLockList.length ; i++ )
+      {
+        var uid = thiz.createUniqueEventId() ;
+        var ctx = thiz._pendingLockList[i] ;
+        ctx.e.setUniqueId ( uid ) ;
+        thiz.socket.send ( ctx.e.serialize() ) ;
+        thiz._ownedResources[ctx.e.body.resourceId] = ctx;
+      }
+      thiz._pendingLockList.length = 0 ;
+    }
+    if ( thiz._pendingAquireSemaphoreList.length )
+    {
+      for ( i = 0 ; i < thiz._pendingAquireSemaphoreList.length ; i++ )
+      {
+        var uid = thiz.createUniqueEventId() ;
+        var ctx = thiz._pendingAquireSemaphoreList[i] ;
+        ctx.e.setUniqueId ( uid ) ;
+        thiz.socket.send ( ctx.e.serialize() ) ;
+        thiz._aquiredSemaphores[ctx.e.body.resourceId] = ctx;
+      }
+      thiz._pendingAquireSemaphoreList.length = 0 ;
+    }
   };
 };
 /**
@@ -255,21 +327,25 @@ tangojs.gp.WebClient.prototype.fireEvent = function ( params, callback )
  */
 tangojs.gp.WebClient.prototype._fireEvent = function ( params, callback, opts )
 {
-  var e = null ;
+  var e = null, user ;
   if ( params instanceof tangojs.gp.Event )
   {
     e = params ;
   }
   else
+  if ( typeof params === 'string' )
+  {
+    e = new Event ( params ) ;
+  }
+  else
+  if ( params && typeof params === 'object' )
   {
     e = new tangojs.gp.Event ( params.name, params.type ) ;
     e.setBody ( params.body ) ;
-    if ( params.user ) u = params.user ;
+    e.setUser ( params.user ) ;
   }
-  if ( this.user )
-  {
-    e.setUser ( this.user ) ;
-  }
+  if ( ! e.getUser() ) e.setUser ( this.user )
+
   var ctx = {} ;
   if ( callback )
   {
@@ -422,21 +498,6 @@ tangojs.gp.WebClient.prototype.removeEventListener = function ( eventNameOrFunct
 };
 /**
  * Description
- * @param {} message
- */
-tangojs.gp.WebClient.prototype.sendResult = function ( message )
-{
-  if ( ! message.isResultRequested() )
-  {
-    log ( "No result requested" ) ;
-    log ( message ) ;
-    return ;
-  }
-  message.setIsResult() ;
-  this.socket.send ( message.serialize() ) ;
-};
-/**
- * Description
  * @param {} str
  * @return list
  */
@@ -496,4 +557,89 @@ tangojs.gp.WebClient.prototype.splitJSONObjects = function ( str )
     list.push ( str.substring ( i0 ) ) ;
   }
 	return { list: list, lastLineIsPartial: pcounter ? true : false } ;
+};
+////////////////////////////////////////////////////////////////////////////////
+/// Unification                                                               //
+////////////////////////////////////////////////////////////////////////////////
+/**
+ * Description
+ * @param {} message
+ */
+tangojs.gp.WebClient.prototype.sendResult = function ( message )
+{
+  if ( ! message.isResultRequested() )
+  {
+    this.error ( "No result requested" ) ;
+    this.error ( message ) ;
+    return ;
+  }
+  message.setIsResult() ;
+  this.send ( message ) ;
+};
+/**
+ * Description
+ * @param {} message
+ */
+tangojs.gp.WebClient.prototype.send = function ( event )
+{
+  this.getSocket().send ( event.serialize() ) ;
+};
+/**
+ * Description
+ * @param {} what
+ */
+tangojs.gp.WebClient.prototype.error = function ( what )
+{
+  log ( what ) ;
+};
+/**
+ * Description
+ * @method lockResource
+ * @param {} resourceId
+ * @param {} callback
+ * @return 
+ */
+tangojs.gp.WebClient.prototype.lockResource = function ( resourceId, callback )
+{
+  if ( typeof resourceId !== 'string' || ! resourceId ) throw new Error ( "Client.lockResource: resourceId must be a string." ) ;
+  if ( typeof callback !== 'function' ) throw new Error ( "Client.lockResource: callback must be a function." ) ;
+  if ( this._ownedResources[resourceId] ) throw new Error ( "Client.unlockResource: already owner of resourceId=" + resourceId ) ;
+
+  var e = new tangojs.gp.Event ( "system", "lockResourceRequest" ) ;
+  e.body.resourceId = resourceId ;
+  var ctx = {} ;
+  ctx.resourceId = resourceId ;
+  ctx.callback = callback ;
+  ctx.e = e ;
+  if ( ! this.socket || this._pendingLockList.length )
+  {
+    this._pendingLockList.push ( ctx ) ;
+  }
+  var s = this.getSocket() ;
+  if ( ! this._pendingLockList.length )
+  {
+    var uid = this.createUniqueEventId() ;
+    e.setUniqueId ( uid ) ;
+    this._ownedResources[resourceId] = ctx;
+    this.send ( e ) ;
+  }
+};
+/**
+ * Description
+ * @method unlockResource
+ * @param {} resourceId
+ * @return 
+ */
+tangojs.gp.WebClient.prototype.unlockResource = function ( resourceId )
+{
+  if ( typeof resourceId !== 'string' || ! resourceId ) throw new Error ( "Client.lockResource: resourceId must be a string." ) ;
+  if ( ! this._ownedResources[resourceId] ) throw new Error ( "Client.unlockResource: not owner of resourceId=" + resourceId ) ;
+
+  var e = new tangojs.gp.Event ( "system", "unlockResourceRequest" ) ;
+  e.body.resourceId = resourceId ;
+  var s = this.getSocket() ;
+  var uid = this.createUniqueEventId() ;
+  e.setUniqueId ( uid ) ;
+  delete this._ownedResources[resourceId] ;
+  this.send ( e ) ;
 };
