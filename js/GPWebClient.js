@@ -618,8 +618,7 @@ tangojs.gp.WebClient.prototype.lockResource = function ( resourceId, callback )
   var s = this.getSocket() ;
   if ( ! this._pendingLockList.length )
   {
-    var uid = this.createUniqueEventId() ;
-    e.setUniqueId ( uid ) ;
+    e.setUniqueId ( this.createUniqueEventId() ) ;
     this._ownedResources[resourceId] = ctx;
     this.send ( e ) ;
   }
@@ -638,8 +637,66 @@ tangojs.gp.WebClient.prototype.unlockResource = function ( resourceId )
   var e = new tangojs.gp.Event ( "system", "unlockResourceRequest" ) ;
   e.body.resourceId = resourceId ;
   var s = this.getSocket() ;
-  var uid = this.createUniqueEventId() ;
-  e.setUniqueId ( uid ) ;
+  e.setUniqueId ( this.createUniqueEventId() ) ;
   delete this._ownedResources[resourceId] ;
   this.send ( e ) ;
+};
+/**
+ * Description
+ * @method aquireSemaphore
+ * @param {} resourceId
+ * @param {} callback
+ * @return 
+ */
+tangojs.gp.WebClient.prototype.aquireSemaphore = function ( resourceId, callback )
+{
+  if ( typeof resourceId !== 'string' || ! resourceId ) throw new Error ( "Client.aquireSemaphore: resourceId must be a string." ) ;
+  if ( typeof callback !== 'function' ) throw new Error ( "Client.aquireSemaphore: callback must be a function." ) ;
+  if ( this._ownedSemaphores[resourceId] ) throw new Error ( "Client.aquireSemaphore: already owner of resourceId=" + resourceId ) ;
+
+  var e = new tangojs.gp.Event ( "system", "aquireSemaphoreRequest" ) ;
+  e.body.resourceId = resourceId ;
+  var s = this.getSocket() ;
+  var ctx = {} ;
+  ctx.resourceId = resourceId ;
+  ctx.callback = callback ;
+  ctx.e = e ;
+
+  if ( this._pendingAquireSemaphoreList.length )
+  {
+    this._pendingAquireSemaphoreList.push ( ctx ) ;
+  }
+  if ( ! this._pendingAquireSemaphoreList.length )
+  {
+    e.setUniqueId ( this.createUniqueEventId() ) ;
+    this._aquiredSemaphores[resourceId] = ctx;
+    this.send ( e ) ;
+  }
+};
+/**
+ * Description
+ * @method releaseSemaphore
+ * @param {} resourceId
+ * @return 
+ */
+tangojs.gp.WebClient.prototype.releaseSemaphore = function ( resourceId )
+{
+  if ( typeof resourceId !== 'string' || ! resourceId ) throw new Error ( "Client.releaseSemaphore: resourceId must be a string." ) ;
+  delete this._aquiredSemaphores[resourceId] ;
+  if ( ! this._ownedSemaphores[resourceId] ) throw new Error ( "Client.releaseSemaphore: not owner of resourceId=" + resourceId ) ;
+
+  var e = new tangojs.gp.Event ( "system", "releaseSemaphoreRequest" ) ;
+  e.body.resourceId = resourceId ;
+  var s = this.getSocket() ;
+  this._aquiredSemaphores[resourceId] = ctx;
+  delete this._ownedSemaphores[resourceId] ;
+  this.send ( e ) ;
+};
+Client.prototype._releaseAllSemaphores = function()
+{
+  for ( var key in this._ownedSemaphores )
+  {
+    this.releaseSemaphore ( this._ownedSemaphores[key] ) ;
+  }
+  this.releaseSemaphore = {} ;
 };
