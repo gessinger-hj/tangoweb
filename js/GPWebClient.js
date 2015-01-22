@@ -144,7 +144,7 @@ tangojs.gp.WebClient.prototype.connect = function()
           {
             ctx = thiz._aquiredResources[e.body.resourceId] ;
             delete thiz._aquiredResources[e.body.resourceId] ;
-            if ( ! e.body.isLockOwner )
+            if ( e.body.isLockOwner )
             {
               thiz._ownedResources[e.body.resourceId] = ctx ;
             }
@@ -183,8 +183,8 @@ tangojs.gp.WebClient.prototype.connect = function()
           var callbackList = thiz.eventListenerFunctions.get ( e.getName() ) ;
           if ( ! callbackList )
           {
-            log ( "callbackList for " + e.getName() + " not found." ) ;
-            log ( e ) ;
+            thiz.error ( "callbackList for " + e.getName() + " not found." ) ;
+            thiz.error ( e ) ;
           }
           for  ( j = 0 ; j < callbackList.length ; j++ )
           {
@@ -595,7 +595,7 @@ tangojs.gp.WebClient.prototype.send = function ( event )
  */
 tangojs.gp.WebClient.prototype.error = function ( what )
 {
-  log ( what ) ;
+  console.log ( what ) ;
 };
 /**
  * Description
@@ -608,17 +608,17 @@ tangojs.gp.WebClient.prototype.lockResource = function ( resourceId, callback )
 {
   if ( typeof resourceId !== 'string' || ! resourceId )
   {
-    console.log ( "Client.lockResource: resourceId must be a string." ) ;
+    this.error ( "Client.lockResource: resourceId must be a string." ) ;
     return ;
   }
   if ( typeof callback !== 'function' )
   {
-    console.log ( "Client.lockResource: callback must be a function." ) ;
+    this.error ( "Client.lockResource: callback must be a function." ) ;
     return ;
   }
   if ( this._ownedResources[resourceId] || this._aquiredResources[resourceId] )
   {
-    console.log ( "Client.unlockResource: already owner of resourceId=" + resourceId ) ;
+    this.error ( "Client.lockResource: already owner of resourceId=" + resourceId ) ;
     return ;
   }
 
@@ -650,13 +650,13 @@ tangojs.gp.WebClient.prototype.unlockResource = function ( resourceId )
 {
   if ( typeof resourceId !== 'string' || ! resourceId )
   {
-    console.log ( "Client.lockResource: resourceId must be a string." ) ;
+    this.error ( "Client.unlockResource: resourceId must be a string." ) ;
     return ;
   }
   delete this._aquiredResources[resourceId] ;
   if ( ! this._ownedResources[resourceId] )
   {
-    console.log ( "Client.unlockResource: not owner of resourceId=" + resourceId ) ;
+    this.error ( "Client.unlockResource: not owner of resourceId=" + resourceId ) ;
     return ;
   }
 
@@ -678,17 +678,22 @@ tangojs.gp.WebClient.prototype.aquireSemaphore = function ( resourceId, callback
 {
   if ( typeof resourceId !== 'string' || ! resourceId )
   {
-    console.log ( "Client.aquireSemaphore: resourceId must be a string." ) ;
+    this.error ( "Client.aquireSemaphore: resourceId must be a string." ) ;
     return ;
   }
   if ( typeof callback !== 'function' )
   {
-    console.log ( "Client.aquireSemaphore: callback must be a function." ) ;
+    this.error ( "Client.aquireSemaphore: callback must be a function." ) ;
+    return ;
+  }
+  if ( this._aquiredSemaphores[resourceId] )
+  {
+    this.error ( "Client.aquireSemaphore: already waiting for resourceId=" + resourceId ) ;
     return ;
   }
   if ( this._ownedSemaphores[resourceId] )
   {
-    console.log ( "Client.aquireSemaphore: already owner of resourceId=" + resourceId ) ;
+    this.error ( "Client.aquireSemaphore: already owner of resourceId=" + resourceId ) ;
     return ;
   }
 
@@ -721,16 +726,10 @@ tangojs.gp.WebClient.prototype.releaseSemaphore = function ( resourceId )
 {
   if ( typeof resourceId !== 'string' || ! resourceId )
   {
-    console.log ( "Client.releaseSemaphore: resourceId must be a string." ) ;
+    this.error ( "Client.releaseSemaphore: resourceId must be a string." ) ;
     return ;
   }
   delete this._aquiredSemaphores[resourceId] ;
-  if ( ! this._ownedSemaphores[resourceId] )
-  {
-    console.log ( "Client.releaseSemaphore: not owner of resourceId=" + resourceId ) ;
-    return ;
-  }
-
   var e = new tangojs.gp.Event ( "system", "releaseSemaphoreRequest" ) ;
   e.body.resourceId = resourceId ;
   var s = this.getSocket() ;
