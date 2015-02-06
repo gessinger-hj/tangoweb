@@ -1506,7 +1506,7 @@ TTable.prototype.setData = function ( data )
                   TD.innerHTML = locale.formatMoneyWithCurrency ( vt ) ;
 	  						}
 	  						else
-                if ( t == 'float' && vt )
+                if ( ( t === 'float' || t === 'ufloat' ) && vt )
 	  						{
                   if ( decimalSeparator == "," ) vt = vt.replace ( /\./, "," ) ;
                   TD.innerHTML = vt ;
@@ -1526,7 +1526,7 @@ TTable.prototype.setData = function ( data )
                 TD.innerHTML = locale.formatMoneyWithCurrency ( vt ) ;
 							}
 							else
-              if ( t == 'float' )
+              if ( t === 'float' || t === 'ufloat' )
 							{
                 if ( decimalSeparator == "," ) vt = vt.replace ( /\./, "," ) ;
                 TD.innerHTML = vt ;
@@ -1536,7 +1536,7 @@ TTable.prototype.setData = function ( data )
                 TD.innerHTML = vt ;
         			}
             }
-            if ( t == "money" || t == 'float' || t == 'int' )
+            if ( t === "money" || t === 'float' || t === 'ufloat' || t === 'int' )
             {
               TD.style.textAlign = 'right' ;
             }
@@ -1565,13 +1565,13 @@ TTable.prototype.setData = function ( data )
               if ( this.mandatory[i] ) TGui.addEventListener ( eTF, "keyup", TGui.checkMandatory ) ;
             }
             else
-            if ( tempType == "float" || tempType == "money" )
+            if ( tempType === "float" || tempType === 'ufloat' || tempType === "money" )
             {
               if ( decimalSeparator == "," ) vt = vt.replace ( /\./, "," ) ;
               eTF.value = vt ;
               TD.dir = "ltr" ;
               eTF.style.textAlign = 'right' ;
-              eTF.extendedType = "float" ;
+              eTF.extendedType = tempType === 'ufloat' ? 'ufloat' : 'float' ;
               TGui.addEventListener ( eTF, "keyup", TGui.checkInput.bindAsEventListener ( TGui ) ) ;
               if ( this.mandatory[i] ) TGui.addEventListener ( eTF, "keyup", TGui.checkMandatory ) ;
             }

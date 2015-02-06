@@ -160,6 +160,13 @@ tangojs.gp.Event.prototype =
 	      }
 	      if ( typeof document === 'undefined' )
 	      {
+		      if ( o.type === 'Xml' )
+		      {
+		        var txml = require ( "Xml" ) ;
+		        var f = new txml.XmlFactory() ;
+		        obj[k] = f.create ( o.value ) ;
+		        continue ;
+		      }
 		      if ( o.type === "Buffer" && Array.isArray ( o.data ) )
 		      {
 		        obj[k] = new Buffer ( o.data ) ;
@@ -213,27 +220,45 @@ tangojs.gp.Event.prototype =
 	 */
 	toString: function()
 	{
-		if ( typeof document === 'undefined' )
-		{
-			var util = require ( "util" ) ;
-			return "(" + this.className + ")["
-			+  "name=" + this.name
-			+ ",type=" + this.type
-			+ "]\n"
-			+ ( this.user ? "[user=" + this.user + "]" : "" )
-			+ "[control=" + util.inspect ( this.control ) + "]\n"
-			+ "[body=" + util.inspect ( this.body ) + "]" ;
-		}
-		else
-		{
-			return "(" + this.className + ")["
-			+  "name=" + this.name
-			+ ",type=" + this.type
-			+ "]\n"
-			+ ( this.user ? "[user=" + this.user + "]" : "" )
-			+ "[control=" + TSys.toFullString ( this.control ) + "]\n"
-			+ "[body=" + TSys.toFullString ( this.body ) + "]" ;
-		}
+		return "(" + this.className + ")["
+		+  "name=" + this.name
+		+ ",type=" + this.type
+		+ "]\n"
+		+ ( this.user ? "[user=" + this.user + "]" : "" )
+		+ "[control=" + this.toFullString ( this.control ) + "]\n"
+		+ "[body=" + this.toFullString ( this.body ) + "]"
+		;
+	},
+	toFullString: function ( text, indent )
+	{
+	  if ( ! indent ) indent = "" ;
+	  if ( Array.isArray ( text ) || ( typeof ( text ) == 'object' && text ) )
+	  {
+	    var str = "" ;
+	    if ( text.jsClassName && typeof ( text.toString ) == 'function' )
+	    {
+	      str += indent + text + "\n" ;
+	      return ;
+	    }
+	    if ( typeof ( text.nodeType ) == 'number' && text.nodeName && typeof ( text.firstChild  ) )
+	    {
+	      str += indent + text + "\n" ;
+	      return ;
+	    }
+	    for ( var key in text )
+	    {
+	      var p = text [ key ] ;
+	      if ( typeof ( p ) == 'function' ) continue ;
+	      if ( Array.isArray ( p ) || ( typeof ( p ) == 'object' && ! ( p instanceof Date ) ) )
+	      {
+	        str += indent + "\"" + key + "\": <br/>" + this.toFullString ( p, indent + "  " ) + "\n" ;
+	        continue ;
+	      }
+	      str += indent + "\"" + key + "\": \"" + p + "\"\n" ;
+	    }
+	    return str ;
+	  }
+	  return String ( text ) ;
 	},
 	/**
 	 * Description
@@ -485,6 +510,16 @@ tangojs.gp.Event.prototype =
 	},
 	/**
 	 * Description
+	 * @method getStatus
+	 * @return MemberExpression
+	 */
+	getStatus: function()
+	{
+		if ( ! this.control ) return ;
+		return this.control.status ;
+	},
+	/**
+	 * Description
 	 * @method getStatusReason
 	 * @return MemberExpression
 	 */
@@ -506,34 +541,10 @@ else
 
 	if ( require.main === module )
 	{
-		var util = require ( "util" ) ;
-		var T = require ( "Tango" ) ;
-
-		var User = require ( "User" ) ;
-		var File = require ( "File" ) ;
-
-		// var f = new File ( "r.txt" ) ;
-		// var buf = f.toBuffer() ;
 		var ne = new tangojs.gp.Event ( 'BC', "T" ) ;
-		// ne.setUser ( new User ( "admin", 17 ) ) ;
-		// ne.body.fileContent = buf ;
-		// var tree = new tangojs.XmlTree() ;
-		// var xfile = tree.add ( "file" ) ;
-		// xfile.add ( "name", "r.txt" ) ;
-		// xfile.add ( "content", buf ) ;
-
-		// ne.xdata = tree ;
-		// T.log ( ne ) ;
-
 		var str = ne.serialize() ;
-	console.log ( "str=" + str ) ;
-		new File ( "nevent.json" ).write ( str ) ;
-		// var o = T.deserialize ( str, { "Event": tangojs.gp.Event } ) ;
+		console.log ( "str=" + str ) ;
 		var o = tangojs.gp.Event.prototype.deserialize ( str ) ;
-		T.log ( o ) ;
-
-	// 	console.log ( "o.getUser()=" + o.getUser() ) ;
-	// 	console.log ( "o.getCreatedAt()=" + o.getCreatedAt() ) ;
-	// 	console.log ( "o.getName()=" + o.getName() ) ;
+		console.log ( o ) ;
 	}
 }

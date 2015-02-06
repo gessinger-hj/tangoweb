@@ -2272,35 +2272,35 @@ DatabaseClass.prototype =
       if ( nameColumn ) opt.addAttribute ( "name", xr.getContent ( nameColumn ) ) ;
     }
     return xRef ;
+  },
+  getRefData3: function ( sql, tagName, valueColumn, textColumn, nameColumn )
+  {
+    if ( !textColumn ) textColumn = valueColumn ;
+    if ( !valueColumn ) valueColumn = textColumn ;
+    if ( !nameColumn ) nameColumn = valueColumn ;
+    var tableName = tagName ;
+    if ( sql && sql.toUpperCase().indexOf ( "FROM" ) < 0 )
+    {
+      tableName = sql ;
+      sql = null ;
+    }
+    if ( ! sql )
+    {
+      sql = "SELECT UNIQUE " + valueColumn + ", " + textColumn + ", " + nameColumn + " FROM " + tableName + " ORDER BY 1" ;
+    }
+    var x = this.select ( tagName, sql ) ;
+    var xRef = new TXml() ;
+    var xCode = xRef.add ( tagName ) ;
+    var en = x.getEnum ( tagName + "/row" ) ;
+    while ( en.hasNext() )
+    {
+      var xr = en.nextXml() ;
+      var opt = xCode.add ( "option", xr.getContent ( textColumn ) ) ;
+      opt.addAttribute ( "value", xr.getContent ( valueColumn ) ) ;
+      if ( nameColumn ) opt.addAttribute ( "name", xr.getContent ( nameColumn ) ) ;
+    }
+    return xRef ;
   }
-  // getRefData2: function ( sql, tagName, valueColumn, textColumn, nameColumn )
-  // {
-  //   if ( !textColumn ) textColumn = valueColumn ;
-  //   if ( !valueColumn ) valueColumn = textColumn ;
-  //   if ( !nameColumn ) nameColumn = valueColumn ;
-  //   var tableName = tagName ;
-  //   if ( sql && sql.toUpperCase().indexOf ( "FROM" ) < 0 )
-  //   {
-  //     tableName = sql ;
-  //     sql = null ;
-  //   }
-  //   if ( ! sql )
-  //   {
-  //     sql = "SELECT UNIQUE " + valueColumn + ", " + textColumn + ", " + nameColumn + " FROM " + tableName + " ORDER BY 1" ;
-  //   }
-  //   var x = this.select ( tagName, sql ) ;
-  //   var xRef = new TXml() ;
-  //   var xCode = xRef.add ( tagName ) ;
-  //   var en = x.getEnum ( tagName + "/row" ) ;
-  //   while ( en.hasNext() )
-  //   {
-  //     var xr = en.nextXml() ;
-  //     var opt = xCode.add ( "option", xr.getContent ( textColumn ) ) ;
-  //     opt.addAttribute ( "value", xr.getContent ( valueColumn ) ) ;
-  //     if ( nameColumn ) opt.addAttribute ( "name", xr.getContent ( nameColumn ) ) ;
-  //   }
-  //   return xRef ;
-  // }
 };
 Database = new DatabaseClass() ;
 

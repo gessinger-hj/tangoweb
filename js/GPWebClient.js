@@ -21,7 +21,15 @@ tangojs.gp.WebClient = function ( port )
   this._callbacks                  = {} ;
   this._eventListenerFunctions     = new tangojs.MultiHash() ;
   this._pendingEventListenerList   = [] ;
-  this._url                        = "ws://" + document.domain + ":" + this._port ;
+  if ( window.location.protocol == 'http:')
+  {
+    this._url = "ws://" + document.domain + ":" + this._port ;
+  }
+  else
+  {
+    this._url = "wss://" + document.domain + ":" + this._port ;
+  }
+
   this._proxyIdentifier            = null ;
   this._onCallbackFunctions        = new tangojs.MultiHash() ;
   this._pendingLockList            = [] ;
@@ -111,6 +119,20 @@ tangojs.gp.WebClient.prototype._connect = function()
         {
           var ctx = thiz._callbacks[wid] ;
           delete thiz._callbacks[wid] ;
+          if ( e.isBad() )
+          {
+            console.log ( e.getStatus() ) ;
+            if ( ctx.error )
+            {
+              ctx.error.call ( thiz, e ) ;
+            }
+            else
+            if ( ctx.result )
+            {
+              ctx.result.call ( thiz, e ) ;
+            }
+            continue ;
+          }
           var rcb = ctx.result ;
           rcb.call ( thiz, e ) ;
           continue ;
@@ -340,7 +362,7 @@ tangojs.gp.WebClient.prototype._fireEvent = function ( params, callback, opts )
   else
   if ( typeof params === 'string' )
   {
-    e = new Event ( params ) ;
+    e = new tangojs.gp.Event ( params ) ;
   }
   else
   if ( params && typeof params === 'object' )
@@ -794,7 +816,7 @@ tangojs.gp.Semaphore.prototype._aquireSemaphoreCallback = function ( err, e )
     this._aquireSemaphoreResult = e ;
     this._isSemaphoreOwner = e.body.isSemaphoreOwner ;
   }
-  this._callback.call ( this, err, this ) ;
+  this._callback.call ( this, err ) ;
 };
 /**
  * Description
@@ -854,7 +876,7 @@ tangojs.gp.Lock.prototype._lockResourceCallback = function ( err, e )
 {
   this._lockResourceResult = e ;
   this._isLockOwner = e.body.isLockOwner ;
-  this._callback.call ( null, err, this ) ;
+  this._callback.call ( this, err ) ;
 };
 /**
  * Description
