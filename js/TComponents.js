@@ -3364,6 +3364,7 @@ var MenuItem = function ( parent, axl, xClassName )
 MenuItem.inherits( MenuButton );
 MenuItem.prototype.createText = function ( axl )
 {
+  var txml, w ;
   var text = axl.getAttribute ( "text" ) ;
   if ( ! text ) text = "No Text" ;
   var p = TGui.renderShortcutText ( text, TSys.getWebConfig().menuShortcuts ) ;
@@ -3375,13 +3376,15 @@ MenuItem.prototype.createText = function ( axl )
   {
     img = TGui.translateImageName ( img ) ;
     text = "<img style='width:16px;height:16px;' class='ButtonImage' src='" + img + "' />" + text ;
+    txml = Tango.getThemeXml ( "MenuItem" ) ;
+    this.imgLeft = txml.getIntAttribute ( "img-left", 0 ) ;
   }
   if ( ! axl.isEmpty() )
   {
-    var txml = Tango.getThemeXml ( "Arrow", [ "menu.right", "right" ] ) ;
+    txml = Tango.getThemeXml ( "Arrow", [ "menu.right", "right" ] ) ;
     var arrowName = txml.getName() ;
     txml = Tango.getThemeXml ( "Arrow", arrowName ) ;
-    var w = txml.getIntAttribute ( "width", 11 ) ;
+    w = txml.getIntAttribute ( "width", 11 ) ;
     var h = txml.getIntAttribute ( "height", 11 ) ;
     this.menuRightArrowImage = TGui.buildThemeImageUrl ( "Arrow", arrowName ) ;
 
@@ -3400,7 +3403,7 @@ MenuItem.prototype.createText = function ( axl )
 MenuItem.prototype._layout = function()
 {
   var d = this.dom ;
-  TGui.layoutButtonLike ( { dom:d, imgWidth:this.imgWidth, imgHeight:this.imgHeight, closerClassName:'Arrow', imgIndent:true, alignLeft:true } ) ;
+  TGui.layoutButtonLike ( { dom:d, imgWidth:this.imgWidth, imgHeight:this.imgHeight, closerClassName:'Arrow', imgIndent:true, alignLeft:true, imgLeft:this.imgLeft } ) ;
   if ( d.disabled && d.eImg ) this.setOpacity ( d.eImg, 0.5 ) ;
 };
 MenuItem.prototype.getMenuPaneInstance = function ( )

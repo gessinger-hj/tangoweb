@@ -480,7 +480,7 @@ TSysClass.prototype =
   {
     // document.body.style.cursor = "wait" ;
     var delay = 0 ;
-    var opacity = "" ; //0.3
+    var opacity = "" ; // 0.3 ;
     var backgroundColor = "" ; //'#FFFFFF'
     if ( TSys.isIE() && Tango.ua.ieVersion <= 9 ) delay = 0 ;
     var txml = Tango.getThemeXml ( "Globals/WorkingPanel" ) ;
@@ -1784,7 +1784,7 @@ log ( exc ) ;
     this.menuShortcuts = this.webConfig.menuShortcuts ;
     Tango.ua.useGenericButtons = x.getBool ( "USE_GENERIC_BUTTONS", Tango.ua.useGenericButtons ) ;
     this.DEFAULT_MIN_YEAR_FOR_DATE = x.getInt ( "DEFAULT_MIN_YEAR_FOR_DATE", -2 ) ;
-    if ( this.DEFAULT_MIN_YEAR_FOR_DATE > 0 ) this.DEFAULT_MIN_YEAR_FOR_DATE *= -1 ;
+    if ( this.DEFAULT_MIN_YEAR_FOR_DATE > 0 && this.DEFAULT_MIN_YEAR_FOR_DATE <= 1000 ) this.DEFAULT_MIN_YEAR_FOR_DATE *= -1 ;
     this.DEFAULT_MAX_YEAR_FOR_DATE = x.getInt ( "DEFAULT_MAX_YEAR_FOR_DATE", 8 ) ;
     return this.webConfig ;
   },
@@ -8237,7 +8237,14 @@ var bb = p.dom.nodeName.toUpperCase() == "BUTTON" ;
         }
         if ( ffButton ) x -= pd_left + pd_right / 2 ;
         x = Math.round ( x ) ;
-        img.style.left = x + "px" ;
+        if ( typeof p.imgLeft === 'number' )
+        {
+          img.style.left = p.imgLeft + "px" ;
+        }
+        else
+        {
+          img.style.left = x + "px" ;
+        }
         x += img.offsetWidth + dx ;
         txt.style.left = x + "px" ;
       }
