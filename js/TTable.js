@@ -2183,6 +2183,7 @@ TTable.prototype._setSelected = function ( TR, state, fireSelectionEvent, event,
     this.selectedItem = TR ;
     if ( this.selectedBackgroundImageExists )
     {
+      TR.style.backgroundColor = "transparent" ;
       TR.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Selected", "background", TR.offsetWidth, TR.offsetHeight ) ;
     }
     if ( ! Tango.ua.firefox || isKey || ignoreBrowser )
@@ -2447,7 +2448,7 @@ TTable.prototype._setClassImagesRow = function()
     if ( this.selectedBackgroundImageExists )
     {
       TR.className = this.selectedRowClassName ;
-//        TR.style.backgroundColor = "transparent" ;
+      // TR.style.backgroundColor = "transparent" ;
       TR.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Selected", "background", TR.offsetWidth, TR.offsetHeight ) ;
     }
     else

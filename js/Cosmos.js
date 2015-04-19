@@ -1734,7 +1734,7 @@ CosmosLoginFactoryClass.prototype =
     var xImages = xx.getXml ( "Images" ) ;
     if ( xImages )
     {
-      this.backgroundMain = xImages.getContent ( "BackgroundMain" ) ;
+      this.backgroundMain = xImages.get ( "BackgroundMain" ) ;
     }
     var xCss = xx.getXml ( "Css" ) ;
     if ( xCss )
@@ -1762,8 +1762,16 @@ CosmosLoginFactoryClass.prototype =
     var m = TGui.getMain() ;
     if ( this.backgroundMain )
     {
-      var str = this.backgroundMain ;
+      var str = this.backgroundMain.getContent() ;
+      var backgroundSize = this.backgroundMain.getAttribute ( "background-size" ) ;
       m.style.backgroundImage = "url(" + str + ")" ;
+      if ( backgroundSize )
+      {
+        m.style.WebkitBackgroundSize = backgroundSize ;
+        m.style.OBackgroundSize = backgroundSize ;
+        m.style.MozBackgroundSize = backgroundSize ;
+        m.style.backgroundSize = backgroundSize ;
+      }
     }
   }
 };

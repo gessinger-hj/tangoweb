@@ -27,7 +27,7 @@ GameSailboat.prototype =
     this.img.style.left = this.x0 + "px" ;
     this.img.style.zIndex = "64100" ;
 
-    var self = this ;
+    var self = this ; 
     this.timer = new TTimer ( 50, function()
     {
       var xx = self.img.offsetLeft ;
