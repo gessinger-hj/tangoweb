@@ -348,6 +348,11 @@ NetEventHandlerClass.prototype.logout = function()
 {
   this._getTimer().stop() ;
   this.removeAllListener() ;
+  if ( this._EventWorker )
+  {
+    this._EventWorker.terminate() ;
+    this._EventWorker = null ;
+  }
 };
 
 NetEventHandlerClass.prototype._getTimer = function()
@@ -358,6 +363,7 @@ NetEventHandlerClass.prototype._getTimer = function()
   {
     thiz._pullEvents() ;
   });
+  this._timer.setInitialDelay ( 100 ) ;
   return this._timer ;
 } ;
 NetEventHandlerClass.prototype.addListener = function ( listener )
@@ -466,7 +472,46 @@ NetEventHandlerClass.prototype._removeListener = function ( eventName )
 } ;
 NetEventHandlerClass.prototype._pullEvents = function()
 {
-  var xResult = this.__pullEvents() ;
+  if ( window.Worker  )
+  {
+    if ( ! this._EventWorker )
+    {
+      this._EventWorker = new Worker ( "EventWorker.js" ) ;
+      this._EventWorker.onerror = this._pullEvents_error.bind ( this ) ;
+      this._EventWorker.onmessage = this._pullEvents_callback.bind ( this ) ;
+    }
+    var url = TSys.getDataFactoryUrl() + "&action=NetEventListenerPullEvents" ;
+    var xml = new TXml() ;
+    xml.add ( "NetEventListener" ) ;
+    var o = { cmd: "pullEvents", url: url, xml: xml.toString() } ;
+    this._EventWorker.postMessage ( JSON.stringify ( o ) ) ;
+  }
+  // this.__pullEvents ( this._pullEvents_callback.bind ( this ) ) ;
+} ;
+NetEventHandlerClass.prototype._pullEvents_error = function ( event )
+{
+  log ( "------ error -------------------" ) ;
+  log ( "event.message=" + event.message ) ;
+  log ( "event.filename=" + event.filename ) ;
+  log ( "event.lineno=" + event.lineno ) ;
+};
+NetEventHandlerClass.prototype._pullEvents_callback = function ( params )
+{
+  if ( typeof params.data === 'string' )
+  {
+    params = JSON.parse ( params.data ) ;
+  }
+  if ( params.status != 200 )
+  {
+    if ( params.status != 412 )
+    {
+      if ( params.statusText )
+      {
+        throw ( params.statusText ) ;
+      }
+    }
+  }
+  var xResult = TSys.parseXml ( params.responseText ) ;
   var thiz = this ;
   xResult.elements ( function ( e )
   {
@@ -479,21 +524,26 @@ NetEventHandlerClass.prototype._pullEvents = function()
         listenerArray[i].eventOccured ( e ) ;
       }
     }
-  })
-} ;
-NetEventHandlerClass.prototype.__pullEvents = function()
+  });
+};
+NetEventHandlerClass.prototype.__pullEvents = function ( callback )
 {
   var url = TSys.getDataFactoryUrl() + "&action=NetEventListenerPullEvents" ;
   var xml = new TXml() ;
   var xx = xml.add ( "NetEventListener" ) ;
-  xx.addAttribute ( "name", this.eventName ) ;
   var HTTP = TSys.httpPost ( url, xml.toString() ) ;
+  var p = { status: HTTP.status } ;
   if ( HTTP.status != 200 )
   {
     if ( HTTP.status != 412 )
-      TSys.throwHttpStatusException ( HTTP ) ;
+    {
+      p.statusText = TSys.createHttpStatusText ( HTTP ) ;
+      callback.call ( null, p ) ;
+      return ;
+    }
   }
-  return new TXml ( HTTP.responseXML.documentElement ) ;
+  p.responseText = HTTP.responseText ;
+  callback.call ( null, p ) ;
 } ;
 NetEventHandlerClass.prototype._peekEvents = function()
 {
@@ -575,6 +625,10 @@ NetEventListener.prototype.eventOccured = function ( xe )
 var NetResourceClass = function()
 {
 }
+NetResourceClass.prototype.emit = function ( eventName, uniqueId, selectId )
+{
+  this.fireEvent ( eventName, uniqueId, selectId ) ;
+};
 NetResourceClass.prototype.fireEvent = function ( eventName, uniqueId, selectId )
 {
   var msg = new CoMessage ( "NETRESOURCE.REQUEST" ) ;

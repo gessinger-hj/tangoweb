@@ -1656,6 +1656,11 @@ EventMulticasterTrait.removeListener = function ( obj )
   if ( ! this.__eventMulticaster ) return ;
   this.__eventMulticaster.remove ( obj ) ;
 }
+EventMulticasterTrait.emit = function ( ev, type )
+{
+  if ( ! this.__eventMulticaster ) return ;
+  return this.__eventMulticaster.fireEvent ( ev, type ) ;
+}
 EventMulticasterTrait._fireEvent = function ( ev, type )
 {
   if ( ! this.__eventMulticaster ) return ;

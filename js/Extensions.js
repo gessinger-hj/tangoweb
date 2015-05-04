@@ -1128,11 +1128,19 @@ DocumentEditor.prototype._onChangeAnnotation = function ( ev )
  *  @constructor
  *  Global singleton <b>SystemNotifications</b>
  */
-SystemNotifierClass = function()
+SystemNotifierClass = function ( p )
 {
   this.jsClassName = "SystemNotifierClass" ;
   this.me = null ;
   this.list = [] ;
+  this.width = 200 ;
+  this.showIcons = true ;
+  if ( p )
+  {
+    this.width = p.width ? p.width : 200 ;
+    this.showIcons = p.showIcons === false ? false : true ;
+  }
+  Tango.mixin ( EventMulticasterTrait, this ) ;
 };
 SystemNotifier = new SystemNotifierClass() ;
 SystemNotifierClass.prototype.progress = function ( str )
@@ -1183,16 +1191,33 @@ SystemNotifierClass.prototype.notify = function ( str )
 };
 SystemNotifierClass.prototype.click = function ( e )
 {
-  var ev = new TEvent ( e ) ;
-  var elem = ev.getSource() ;
-  for ( ; elem && elem !== this.main ; elem = elem.parentNode )
+  var ev = new TEvent() ;
+  ev.setHtmlSource ( this.dom ) ;
+  ev.setPeer ( this ) ;
+  this.emit ( ev, "click" ) ;
+
+  // var ev = new TEvent ( e ) ;
+  // var elem = ev.getSource() ;
+  // for ( ; elem && elem !== this.main ; elem = elem.parentNode )
+  // {
+  //   if ( elem.nodeType != DOM_ELEMENT_NODE ) continue ;
+  //   if ( elem.ownerIsNotifier )
+  //   {
+  //     this.remove ( null, elem ) ;
+  //   }
+  // }
+};
+SystemNotifierClass.prototype.clear = function()
+{
+  if ( ! this.dom ) return ;
+  while ( this.main.firstChild )
   {
-    if ( elem.nodeType != DOM_ELEMENT_NODE ) continue ;
-    if ( elem.ownerIsNotifier )
-    {
-      this.remove ( null, elem ) ;
-    }
+    this.main.removeChild ( this.main.firstChild ) ;
   }
+};
+SystemNotifierClass.prototype.close = function()
+{
+  this.remove() ;
 };
 SystemNotifierClass.prototype.remove = function ( id, elem )
 {
@@ -1236,17 +1261,20 @@ SystemNotifierClass.prototype.removeLastEntry = function()
 };
 SystemNotifierClass.prototype._showMessage = function ( p )
 {
-  if ( ! p.icon )
+  if ( this.showIcons )
   {
-    p.icon = "Tango/Alert/info" ;
-    p.icon_width = "16" ;
-    p.icon_height = "16" ;
-  }
-  else
-  {
-    if ( ! p.icon_width ) p.icon_width = p.icon_height ;
-    if ( ! p.icon_width ) p.icon_width = "16" ;
-    if ( ! p.icon_height ) p.icon_height = p.icon_width ;
+    if ( ! p.icon )
+    {
+      p.icon = "Tango/Alert/info" ;
+      p.icon_width = "16" ;
+      p.icon_height = "16" ;
+    }
+    else
+    {
+      if ( ! p.icon_width ) p.icon_width = p.icon_height ;
+      if ( ! p.icon_width ) p.icon_width = "16" ;
+      if ( ! p.icon_height ) p.icon_height = p.icon_width ;
+    }
   }
   if ( ! p.text ) p.text = "Notification..." ;
   if ( ! this.dom )
@@ -1271,7 +1299,7 @@ SystemNotifierClass.prototype._showMessage = function ( p )
     ;
     var axl = new TXml() ;
     var xCont = axl.add ( "Container" ) ;
-    xCont.addAttribute ( "style", "width:200px;top:0px;right:10px;") ;
+    xCont.addAttribute ( "style", "width:" + this.width + "px;top:0px;right:10px;") ;
     xCont.addCDATA ( "Html", s ) ;
     var m = TGui.getMain() ;
     this.dom = TGui.createElement ( axl, m ) ;
@@ -1288,14 +1316,17 @@ SystemNotifierClass.prototype._showMessage = function ( p )
   }
   var text = "" ;
   var imgName ;
-  if ( p.progress )
+  if ( this.showIcons )
   {
-    text = "<img src='" + TGui.translateImageName ( "Tango/Misc/throbber16" ) + "'" + " style='width:16px;height:16px;'></img>"  ;
-  }
-  else
-  {
-    imgName = TGui.translateImageName ( p.icon ) ;
-    text = "<img src='" + imgName + "'" + " style='width:" + p.icon_width + "px;height:" + p.icon_height + "px;'></img>"  ;
+    if ( p.progress )
+    {
+      text = "<img src='" + TGui.translateImageName ( "Tango/Misc/throbber16" ) + "'" + " style='width:16px;height:16px;'></img>"  ;
+    }
+    else
+    {
+      imgName = TGui.translateImageName ( p.icon ) ;
+      text = "<img src='" + imgName + "'" + " style='width:" + p.icon_width + "px;height:" + p.icon_height + "px;'></img>"  ;
+    }
   }
   text += p.text ;
   var span = document.createElement ( "span" ) ;

@@ -1812,7 +1812,7 @@ TTable.prototype.setData = function ( data )
   }
   if ( this.TBODY.firstChild && this.selectOnFill )
   {
-    this._setSelected ( this.TBODY.firstChild, true ) ;
+    this._setSelected ( this.TBODY.firstChild, true, true, null, true ) ;
   }
   if ( this.autofocus )
   {
