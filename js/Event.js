@@ -12,7 +12,7 @@ if ( !Array.isArray )
   };
 }
 var _isBrowser = true ;
-if ( typeof document !== 'undefined' && typeof module === 'undefined' ) // browser
+if ( typeof document !== 'undefined' && typeof module === 'undefined' ) // browser ?
 {
 	_isBrowser = true ;
 }

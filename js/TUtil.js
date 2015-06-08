@@ -6104,7 +6104,7 @@ TextFieldResultList = function ( textfield, callbackObject, callbackMethod )
   this.timer = null ;
   this.div = null ;
   this.currentEntry = null ;
-  this.timeoutMillis = 200 ;
+  this.timeoutMillis = 400 ; //200 ;
   this._init() ;
 };
 TextFieldResultList.prototype =

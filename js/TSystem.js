@@ -9610,10 +9610,10 @@ if ( aMaxHeight[j] ) tr.style.height = aMaxHeight[j] + "px" ;
         {
           this.addEventListener ( ch, "dblclick", this.consumeEvent.bindAsEventListener ( this ) ) ;
         }
-	if ( a["shortcutCharacter"] )
-	{
+  if ( a["shortcutCharacter"] )
+  {
           TGlobalEventHandler.addToShortCutList ( a["shortcutCharacter"], ch, ch.fExecutor ) ;
-	}
+  }
         if ( a["defaultButton"] == true )
         {
           ch.defaultButton = true ;

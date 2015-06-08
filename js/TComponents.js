@@ -2215,6 +2215,12 @@ Menubar.prototype.isEnabled = function ( name )
   if ( b ) return b.isEnabled() ;
   return true ;
 };
+Menubar.prototype.findButton = function ( name )
+{
+  var a = name.split ( "/" ) ;
+  var index = 0 ;
+  return this._findButton ( a, index ) ;
+};
 Menubar.prototype._findButton = function ( a, index )
 {
   for ( var ch = this.dom.firstChild ; ch ; ch = ch.nextSibling )
