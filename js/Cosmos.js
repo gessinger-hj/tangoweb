@@ -1080,9 +1080,12 @@ CosmosWindow.prototype.create = function()
   TWindow.prototype.create.apply ( this, arguments ) ;
   this.pbClose = this.getElementByName ( "PRIVATE.PB.CLOSE" ) ;
   var b = this.getComponentByName ( "PRIVATE.PB.RESIZE" ) ;
-  b.addEventListener ( "mousedown", this, this.wResize ) ;
-  this.pbResize = b.getDom() ;
-  this.pbResize.style.cursor = "nw-resize" ;
+  if ( b && b.getDom() )
+  {
+    b.addEventListener ( "mousedown", this, this.wResize ) ;
+    this.pbResize = b.getDom() ;
+    this.pbResize.style.cursor = "nw-resize" ;
+  }
 };
 CosmosWindow.prototype.wResize = function ( event )
 {

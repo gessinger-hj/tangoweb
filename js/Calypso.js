@@ -778,13 +778,13 @@ CalypsoClass.prototype =
       if ( typeof ( callback ) == 'function' )
       {
         try
-	{
+        {
           callback ( HTTP ) ;
-	}
-	catch ( exc )
-	{
-	  TSys.log ( exc ) ;
-	}
+        }
+        catch ( exc )
+        {
+          TSys.log ( exc ) ;
+        }
         return ;
       }
       var s = TSys.createHttpStatusText ( HTTP ) ;
@@ -886,6 +886,66 @@ CalypsoClass.prototype.getXml = function ( msg, callback, self, errorCallback )
   }
   var fe = new TFunctionExecutor ( self, callback ) ;
   TSys.httpPost ( url, msg, function ( HTTP )
+  {
+    if ( HTTP.readyState != 4 ) return ;
+    if ( HTTP.status != 200 )
+    {
+      if ( typeof ( errorCallback ) == 'function' )
+      {
+        errorCallback ( HTTP ) ;
+        return ;
+      }
+      var t = TSys.createHttpStatusText ( HTTP ) ;
+      if ( t )
+      {
+        if ( ! TSys.showNativeErrors )
+        {
+          TSys.log ( t ) ;
+          return ;
+        }
+        t = "ThisServiceIsCurrentlyNotAvailable" ;
+        var d = new TUserDialog ( t ) ;
+        d.error() ;
+      }
+      return ;
+    }
+    var rx = HTTP.responseXML ;
+    var xml = null ;
+    var xData = null ;
+    if ( rx )
+    {
+      xData = new TXml ( HTTP.responseXML.documentElement ) ;
+      xml = xData.getXml ( "xml" ) ;
+    }
+    if ( xml )
+    {
+      xml.domDoc = xData.domDoc ;
+      fe.execute ( [ xml ] ) ;
+    }
+    else
+    {
+      fe.execute ( [ xData ] ) ;
+    }
+  } ) ;
+}
+CalypsoClass.prototype.getXmlSimpleAsync = function ( msg, callback, self, errorCallback )
+{
+  if ( !msg || typeof ( msg ) != 'object' )
+  {
+    throw "Calypso::getXml(): msg is not an CoMessage\n" + String ( msg ) ;
+  }
+  if ( msg.jsClassName != 'CoMessage' )
+  {
+    throw "Calypso::getXml(): msg is not an CoMessage\n" + String ( msg ) ;
+  }
+  if ( ! callback )
+  {
+    callback = function ( xxx ) { } ;
+  }
+  var sMsg = msg.toString() ;
+  var url = this.getUrl() ;
+  var fe = new TFunctionExecutor ( self, callback ) ;
+  TSys.httpPostSimpleAsync ( url, msg, function ( HTTP )
   {
     if ( HTTP.readyState != 4 ) return ;
     if ( HTTP.status != 200 )

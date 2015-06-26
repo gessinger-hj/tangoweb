@@ -758,15 +758,29 @@ TangoClass.prototype._where = function ( str )
   catch (e)
   {
     var lines = e.stack.split ("\n") ;
-
-    var firstLine = lines[0].indexOf("@") > 0 ? lines[2] : lines[3];
+    var i = 0 ;
+    for ( i = 0 ; i < lines.length ; i++ )
+    {
+      if ( lines[i].indexOf ( "where" ) >= 0 )
+      {
+        break ;
+      }
+    }
+    for ( ; i < lines.length ; i++ )
+    {
+      if ( lines[i].indexOf ( "where" ) < 0 )
+      {
+        break ;
+      }
+    }
+    var firstLine = lines[i] ;
     firstLine = firstLine.trim() ;
     if ( firstLine.indexOf ( "at " ) === 0 ) firstLine = firstLine.substring ( 3 ) ;
     if ( firstLine.indexOf ( "<anonymous function: " ) === 0 )
     {
       firstLine = firstLine.substring ( "<anonymous function: ".length ) ;
     }
-    var p1 = firstLine.indexOf ( "http" ) ;
+    var p1 = firstLine.indexOf ( "http:" ) ;
     if ( p1 > 0 )
     {
       var p2 = firstLine.lastIndexOf ( "/" ) ;

@@ -2618,8 +2618,12 @@ TLogWindow.prototype.create = function()
   + "    <Container style='right:-0;bottom:-0;width:400px;height:400px;' >\n"
 + " <Toolbar style='left:0px;top:0px;'>\n"
   + "        <ToolbarButton img='Tango/Misc/edit-clear-32' img-width='24' tooltip='Clear' name='PB.CLEAR' />\n"
-  + "        <ToolbarButton img='Tango/Misc/bottom-32' img-width='24' name='PB.ATTACH-BOTTOM' tooltip='Attach to bottom of browser' />\n"
+  + "        <ToolbarButton img='Tango/Misc/left-32' img-width='24' name='PB.ATTACH-LEFT' tooltip='Attach to left of browser' />\n"
   + "        <ToolbarButton img='Tango/Misc/right-32' img-width='24' name='PB.ATTACH-RIGHT' tooltip='Attach to right of browser' />\n"
+  + "        <ToolbarButton img='Tango/Misc/top-32' img-width='24' name='PB.ATTACH-TOP' tooltip='Attach to top of browser' />\n"
+  + "        <ToolbarButton img='Tango/Misc/bottom-32' img-width='24' name='PB.ATTACH-BOTTOM' tooltip='Attach to bottom of browser' />\n"
+  + "        <ToolbarButton img='Tango/Misc/left-right-32' img-width='24' name='PB.MAX-HORIZONTAL' tooltip='Maximize horizontal' />\n"
+  + "        <ToolbarButton img='Tango/Misc/top-bottom-32' img-width='24' name='PB.MAX-VERTICAL' tooltip='Maximize vertical' />\n"
   + "        <ToolbarButton img='Tango/Misc/close-32' img-width='24' tooltip='Close' onclick='TGui.closeTopWindow(event)' style='right:4px;' />\n"
 + " </Toolbar >\n"
   + "      <br />\n"
@@ -2642,6 +2646,14 @@ TLogWindow.prototype.create = function()
   TGui.addEventListener ( pb, "click", this._attachToBrowserWindow.bindAsEventListener ( this, 'b' ) ) ;
   pb = this.getElementByName ( "PB.ATTACH-RIGHT" ) ;
   TGui.addEventListener ( pb, "click", this._attachToBrowserWindow.bindAsEventListener ( this, 'r' ) ) ;
+  pb = this.getElementByName ( "PB.ATTACH-TOP" ) ;
+  TGui.addEventListener ( pb, "click", this._attachToBrowserWindow.bindAsEventListener ( this, 't' ) ) ;
+  pb = this.getElementByName ( "PB.ATTACH-LEFT" ) ;
+  TGui.addEventListener ( pb, "click", this._attachToBrowserWindow.bindAsEventListener ( this, 'l' ) ) ;
+  pb = this.getElementByName ( "PB.MAX-HORIZONTAL" ) ;
+  TGui.addEventListener ( pb, "click", this._attachToBrowserWindow.bindAsEventListener ( this, 'mh' ) ) ;
+  pb = this.getElementByName ( "PB.MAX-VERTICAL" ) ;
+  TGui.addEventListener ( pb, "click", this._attachToBrowserWindow.bindAsEventListener ( this, 'mv' ) ) ;
 };
 TLogWindow.prototype.show = function()
 {
@@ -2651,17 +2663,54 @@ TLogWindow.prototype._attachToBrowserWindow = function ( event, place )
 {
   var c = this.dom.xConstraints ;
   if ( ! c ) c = new TConstraints() ;
+  var loc = this.getLocation() ;
 
-  if ( place == 'b' )
+  if ( place === 'b' )
   {
     if ( ! c.bottomAttach ) c.parseBottom ( "0" ) ;
     else                    c.bottomAttach = false ;
   }
   else
-  if ( place == 'r' )
+  if ( place === 'r' )
   {
     if ( ! c.rightAttach ) c.parseRight ( "0" ) ;
     else c.rightAttach = false ;
+  }
+  else
+  if ( place === 't' )
+  {
+    c.bottomAttach = false ;
+    c.rightAttach  = false ;
+    loc.y = 0 ;
+    this.setLocation ( loc ) ;
+  }
+  else
+  if ( place === 'l' )
+  {
+    c.bottomAttach = false ;
+    c.rightAttach  = false ;
+    loc.x = 0 ;
+    this.setLocation ( loc ) ;
+  }
+  else
+  if ( place === 'mh' )
+  {
+    if ( this.isMaximized() )
+    {
+      this.restore() ;
+      if ( this.maximizedType === 2 ) return ;
+    }
+    this.maximize ( 2 ) ;
+  }
+  else
+  if ( place === 'mv' )
+  {
+    if ( this.isMaximized() )
+    {
+      this.restore() ;
+      if ( this.maximizedType === 3 ) return ;
+    }
+    this.maximize ( 3 ) ;
   }
   this.setConstraints ( c ) ;
 /*
@@ -2704,6 +2753,15 @@ TLogWindow.prototype.getTextDisplay = function()
 {
   return this.TD ;
 };
+TLogWindow.prototype.scrollToTop = function()
+{
+  this.TD.scrollToTop() ;
+};
+TLogWindow.prototype.scrollToBottom = function()
+{
+  this.TD.scrollToBottom() ;
+};
+
 // ---------------- UserDialog: ask, info, ... ----------------
 var _TUserDialog_Initialized = false ;
 /**

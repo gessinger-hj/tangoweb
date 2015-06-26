@@ -668,7 +668,7 @@ NetResourceClass.prototype.auditlog = function ( auditEvent )
                  ) ;
   try
   {
-    Calypso.getXml ( msg, function ( HTTP ) { } ) ;
+    Calypso.getXmlSimpleAsync ( msg ) ;
   }
   catch ( exc )
   {

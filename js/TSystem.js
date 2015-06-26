@@ -577,9 +577,9 @@ TSysClass.prototype =
         HTTP.onreadystatechange = function()
         {
           if ( HTTP.readyState != 4 ) return ;
+          if ( wp ) wp.close() ; wp = null ;
           if ( p.aborted == true )
           {
-            if ( wp ) wp.close() ; wp = null ;
             document.body.style.cursor = "default" ;
             return ;
           }
@@ -591,7 +591,6 @@ TSysClass.prototype =
           {
             TSys.log ( exc ) ;
           }
-          if ( wp ) wp.close() ; wp = null ;
           document.body.style.cursor = "default" ;
         };
       }
@@ -600,9 +599,9 @@ TSysClass.prototype =
         HTTP.onload = function()
         {
           if ( HTTP.readyState != 4 ) return ;
+          if ( wp ) wp.close() ; wp = null ;
           if ( p.aborted )
           {
-            if ( wp ) wp.close() ; wp = null ;
             document.body.style.cursor = "default" ;
             return ;
           }
@@ -614,7 +613,6 @@ TSysClass.prototype =
           {
             TSys.log ( exc ) ;
           }
-          if ( wp ) wp.close() ; wp = null ;
           document.body.style.cursor = "default" ;
         };
       }
@@ -627,9 +625,9 @@ TSysClass.prototype =
         HTTP.onreadystatechange = function()
         {
           if ( HTTP.readyState != 4 ) return ;
+          if ( wp ) wp.close() ; wp = null ;
           if ( p.aborted )
           {
-            if ( wp ) wp.close() ; wp = null ;
             document.body.style.cursor = "default" ;
             return ;
           }
@@ -641,7 +639,6 @@ TSysClass.prototype =
           {
             TSys.log ( exc ) ;
           }
-          if ( wp ) wp.close() ; wp = null ;
           document.body.style.cursor = "default" ;
         };
       }
@@ -650,9 +647,9 @@ TSysClass.prototype =
         HTTP.onload = function()
         {
           if ( HTTP.readyState != 4 ) return ;
+          if ( wp ) wp.close() ; wp = null ;
           if ( p.aborted )
           {
-            if ( wp ) wp.close() ; wp = null ;
             document.body.style.cursor = "default" ;
             return ;
           }
@@ -664,7 +661,6 @@ TSysClass.prototype =
           {
             TSys.log ( exc ) ;
           }
-          if ( wp ) wp.close() ; wp = null ;
           document.body.style.cursor = "default" ;
         };
       }
@@ -11761,7 +11757,17 @@ TGlobalEventHandlerClass.prototype =
     }
     p.toString = function()
     {
-      return "text=" + this.text ;
+      var sfe = "" + fe ;
+      if ( this.fe )
+      {
+        var pos = sfe.indexOf ( ")" ) ;
+        sfe = sfe.substring ( 0, pos+1 ) ;
+      }
+      return ""
+           + ( this.text ? "text=" + this.text : "" )
+           + ( ! this.elem ? "" : this.elem.name ? ",elem.name=" + this.elem.name : this.elem.id ? ",elem.id=" + this.elem.id : "" )
+           + ( ! this.fe ? "" : ",fe=" + sfe )
+           ;
     } ;
   },
   _removeFromShortCutList: function ( p )
@@ -12101,6 +12107,15 @@ TGlobalEventHandlerClass.prototype =
           log ( "    \"" + w.getTitle() + "\"" ) ;
           log ( "    " + w.getBounds() ) ;
         }
+      }
+      log ( "---------------- shortcuts -------------" ) ;
+      log ( this.shortcutHash ) ;
+      log ( "---------------- user ------------------" ) ;
+      log ( TSys.getUser() ) ;
+      var w = TGui.getLogWindow() ;
+      if ( w )
+      {
+        w.scrollToTop() ;
       }
       return ;
     }
@@ -14213,6 +14228,7 @@ var TFunctionExecutor = function ( self, method, args )
   var strOrig = null ;
   if ( typeof ( self ) == 'string' )
   {
+    this._selfAsString = self ;
     var str2 = self.trim() ;
     if ( self.indexOf ( "{" ) >= 0 )
     {
@@ -14359,6 +14375,7 @@ var TFunctionExecutor = function ( self, method, args )
   var a = null ;
   if ( typeof ( self ) == "function" && method != null && typeof ( method ) == 'object' )
   {
+    this._selfAsString = "" + self ;
     this.self = method ;
     this.method = self ;
     if ( args )
@@ -14374,6 +14391,7 @@ var TFunctionExecutor = function ( self, method, args )
   else
   if ( self != null && typeof ( self ) == "object" && typeof ( method ) == 'function' )
   {
+    this._selfAsString = "" + method ;
     this.self = self ;
     this.method = method ;
     if ( args )
@@ -14389,6 +14407,7 @@ var TFunctionExecutor = function ( self, method, args )
   else
   if ( typeof ( self ) == "function" )
   {
+    this._selfAsString = "" + self ;
     this.self = null ;
     this.method = self ;
     if ( method )
@@ -14406,6 +14425,7 @@ var TFunctionExecutor = function ( self, method, args )
   else
   if ( typeof ( method ) == "function" )
   {
+    this._selfAsString = "" + method ;
     this.self = null ;
     this.method = method ;
     if ( args )
@@ -14424,6 +14444,10 @@ var TFunctionExecutor = function ( self, method, args )
   {
     this.argsArray = a ;
   }
+};
+TFunctionExecutor.prototype.toString = function()
+{
+  return this._selfAsString ? this._selfAsString : "" ;
 };
 TFunctionExecutor.prototype.flush = function()
 {
@@ -14829,11 +14853,15 @@ TSysClass.prototype.saveUserXml = function ( name, xml )
   var url = this.getDataFactoryUrl()+"&action=SaveUserXml&file=" + name ;
   return this.httpPost ( url, String ( xml ), function ( HTTP ) { } ) ;
 } ;
-TSysClass.prototype.downloadGeneratedDocumentFromTable = function ( str, format )
+TSysClass.prototype.downloadGeneratedDocumentFromTable = function ( str, format, fileName )
 {
   if ( format != "xls" && format != "csv" ) format = "xls" ;
   str = str.replace ( /<BR>/g, "" ).replace ( /<br>/g, "" ) ;
   var url = this.getDataFactoryUrl()+"&action=GeteneratedDocumentFromTable&format=" + format ;
+  if ( fileName )
+  {
+    url += "&fileName=" + encodeURIComponent ( fileName ) ;
+  }
   var HTTP = TSys.httpPost ( url, str ) ;
   var t = HTTP.responseText ;
   var nuUrl =  this.getDataFactoryUrl() + "&action=RetrieveCachedDocument&key=" + t ;
@@ -14913,8 +14941,21 @@ TSysClass.prototype.logStackTrace = function ( text )
 };
 TSysClass.prototype.getStackTrace = function ( e, i0 )
 {
-  if ( ! e || !e.stack ) return "" + e ;
-  var lines = e.stack.split ("\n") ;
+  if ( ! e ) return "" + e ;
+  var stack = e.stack ;
+  if ( ( e instanceof Error ) && ! e.stack )
+  {
+    try
+    {
+      throw e ;
+    }
+    catch ( exc )
+    {
+      stack = exc.stack ;
+    }
+  }
+
+  var lines = stack.split ("\n") ;
 /*
 Firefox:
 [0]=ACSSingletonClass.prototype.doChangeParameter@http://wevli077.de.corp.danet.com:17000/vgecb/ACSHandler.js:982:9
@@ -14950,7 +14991,7 @@ Chrome:
  */
   var nuLines = [] ;
   if ( ! i0 ) i0 = 0 ;
-  if ( lines[0].indexOf ( "http" ) > 0 )
+  if ( lines[0].indexOf ( "http:" ) > 0 )
   {
     nuLines.push ( "" + e ) ;
   }
@@ -14964,7 +15005,7 @@ Chrome:
       line = line.substring ( "<anonymous function: ".length ) ;
       line = line.trim() ;
     }
-    var p1 = line.indexOf ( "http" ) ;
+    var p1 = line.indexOf ( "http:" ) ;
     if ( p1 > 0 )
     {
       var p2 = line.lastIndexOf ( "/" ) ;

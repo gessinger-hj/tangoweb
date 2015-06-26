@@ -208,6 +208,7 @@ TWorkingPanel.prototype._cancel = function ( event )
 };
 TWorkingPanel.prototype.close = function ( event )
 {
+  this.closing = true ;
   if ( this.timer )
   {
     this.timer.flush() ;
@@ -240,6 +241,10 @@ TWorkingPanel.prototype.close = function ( event )
 };
 TWorkingPanel.prototype.timedout = function ( timer )
 {
+  if ( this.closing )
+  {
+    return ;
+  }
   var wSize = TGui.getBrowserWindowSize() ;
   // ------------ background panel -------------------
 
@@ -2580,6 +2585,24 @@ TTextDisplay.prototype.appendCode = function ( text, escapeEntities, style )
 {
   this._add ( text, true, escapeEntities, true, style ) ;
 };
+TTextDisplay.prototype.scrollToTop = function()
+{
+  this.dom.scrollTop = 0 ;
+};
+TTextDisplay.prototype.scrollToBottom = function()
+{
+  var h = 0 ;
+  for ( var ch = this.dom.firstChild ; ch ; ch = ch.nextSibling )
+  {
+    if ( ch.nodeType !== DOM_ELEMENT_NODE )
+    {
+      continue ;
+    }
+    h += ch.offsetHeight + ch.offsetTop ;
+  }
+  var d = h - this.dom.clientHeight ;
+  this.dom.scrollTop = d ;
+};
 TTextDisplay.prototype.clear = function()
 {
   this.first = true ;
@@ -3340,6 +3363,10 @@ DateUtilsClass.prototype =
   addMonth: function ( date, nMonth )
   {
     if ( ! this._initialized ) this._initialize() ;
+    if ( ! TSys.isDate ( date ) )
+    {
+      throw "Not a date." ;
+    }
     var day = date.getDate() ;
     var month = date.getMonth() ;
     var year = date.getFullYear() ;
@@ -6453,9 +6480,16 @@ MultiHash.prototype =
       var l = this._hash[k] ;
       if ( ! TSys.isArray ( l ) ) continue ;
       str += "\n  key=" + k + ",size=" + l.length ;
-      for ( var i = 0 ; i < l.length ; i++ )
+      if ( l.length == 1 )
       {
-        str += "\n    " + i + ":" + l[i] ;
+        str += "," + l[0] ;
+      }
+      else
+      {
+        for ( var i = 0 ; i < l.length ; i++ )
+        {
+          str += "\n    " + i + ":" + l[i] ;
+        }
       }
     }
     return str ;
