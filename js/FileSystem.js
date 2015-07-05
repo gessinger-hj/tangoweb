@@ -325,6 +325,7 @@ Finder.prototype.editFile = function ( event )
     var f = e.getItem() ;
     w.setTitle ( f.toString() ) ;
   }, "open" ) ;
+  w.on ( "close", p._saveEditorStatus.bind ( p ) ) ;
   p.addListener ( function(e)
   {
     var f = e.getItem() ;

@@ -14919,6 +14919,14 @@ TSysClass.prototype.getWebToucher = function()
   this._WebToucher.onmessage = this.msgFromWebToucher.bind ( this ) ;
   return this._WebToucher ;
 } ;
+TSysClass.prototype.trace = function ( text )
+{
+  if ( ! text )
+  {
+    text = "-------------- TRACE --------------" ;
+  }
+  log ( this.getStackTrace ( new Error ( text ), 1 ) ) ;
+} ;
 TSysClass.prototype.logStackTrace = function ( text )
 {
   if ( typeof Error === 'undefined' ) return text ;

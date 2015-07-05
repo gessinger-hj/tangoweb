@@ -2703,15 +2703,28 @@ TXml.prototype._visit = function ( visitor, dom, first, depth )
   if ( ! dom ) return true ;
   if ( dom.nodeType == DOM_DOCUMENT_NODE ) return true ;
 
-  if ( ! visitor.visit ( new TXml ( dom ), depth ) ) return false ;
-  var ch = dom.firstChild ;
-  while ( ch )
+  if ( typeof visitor.visit === 'function' )
   {
-    if ( ch.nodeType == DOM_ELEMENT_NODE )
+    if ( ! visitor.visit ( new TXml ( dom ), depth ) )
     {
-      if ( ! this._visit ( visitor, ch, false, depth + 1 ) ) return false ;
+      return false ;
     }
-    ch = ch.nextSibling ;
+  }
+  else
+  {
+    if ( ! visitor.call ( null, new TXml ( dom ), depth ) )
+    {
+      return false ;
+    }
+  }
+  var ch = dom.firstChild ;
+  for ( ; ch ; ch = ch.nextSibling )
+  {
+    if ( ch.nodeType !== DOM_ELEMENT_NODE ) continue ;
+    if ( ! this._visit ( visitor, ch, false, depth + 1 ) )
+    {
+      return false ;
+    }
   }
   return true ;
 } ;

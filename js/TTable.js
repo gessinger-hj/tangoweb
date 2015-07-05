@@ -1590,6 +1590,11 @@ TTable.prototype.setData = function ( data )
       if ( this.columnTypes[i] == "date" )
       {
         columnValues[i] = columnValues[i].trim() ;
+        if ( columnVisibleText[i] )
+        {
+          TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
+        }
+        else
         if ( ! columnValues[i] )
         {
           TD.appendChild ( document.createTextNode ( "" ) ) ;
@@ -1611,6 +1616,11 @@ TTable.prototype.setData = function ( data )
       if ( this.columnTypes[i] == "datetime" )
       {
         columnValues[i] = columnValues[i].trim() ;
+        if ( columnVisibleText[i] )
+        {
+          TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
+        }
+        else
         if ( ! columnValues[i] )
         {
           TD.appendChild ( document.createTextNode ( "" ) ) ;
@@ -3529,6 +3539,11 @@ TTable.prototype.insertRowAt = function ( row, index )
         if ( this.columnTypes[i] == "date" )
         {
           columnValues[i] = columnValues[i].trim() ;
+          if ( columnVisibleText[i] )
+          {
+            TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
+          }
+          else
           if ( ! columnValues[i] )
           {
             TD.appendChild ( document.createTextNode ( "" ) ) ;
@@ -3550,6 +3565,11 @@ TTable.prototype.insertRowAt = function ( row, index )
         if ( this.columnTypes[i] == "datetime" )
         {
           columnValues[i] = columnValues[i].trim() ;
+          if ( columnVisibleText[i] )
+          {
+            TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
+          }
+          else
           if ( ! columnValues[i] )
           {
             TD.appendChild ( document.createTextNode ( "" ) ) ;
@@ -4356,14 +4376,15 @@ TTableRow.prototype =
     var xRow = this.getXml() ;
     var locale = this.table.getLocale() ;
     var decimalSeparator = locale.getDecimalSeparator() ;
-		var c, f ;
+    var c, f ;
     for ( ch = domNew.firstChild ; ch ; ch = ch.nextSibling )
     {
       if ( ch.nodeType != DOM_ELEMENT_NODE ) continue ;
-      var x = new TXml ( ch ) ;
-      var name = x.getName() ;
-      var xOld = xRow.ensureXml ( name ) ;
-      var str = x.getContent() ;
+      var x           = new TXml ( ch ) ;
+      var visibleText = x.getAttribute ( "visibleText" ) ;
+      var name        = x.getName() ;
+      var xOld        = xRow.ensureXml ( name ) ;
+      var str         = x.getContent() ;
       xOld.setContent ( str ) ;
       var index = this.table.column2Index[name] ;
       if ( typeof ( index ) == 'undefined' ) continue ;
@@ -4374,14 +4395,20 @@ TTableRow.prototype =
         if ( i == index )
         {
           TD = td ;
-	  			break ;
-				}
-				i++ ;
+          break ;
+        }
+        i++ ;
       }
       if ( ! TD )
       {
         continue ;
       }
+      if ( visibleText )
+      {
+        TD.innerHTML = visibleText ;
+        continue ;
+      }
+
       var t = this.table.columnTypes[i] ;
       if ( ! str ) str = "" ;
       var vt = str.trim() ;
@@ -4396,26 +4423,26 @@ TTableRow.prototype =
         if ( TD.xInput.type == 'checkbox' )
         {
           c = new TCheckbox ( TD.xInput ) ;
-	  			c.setValues ( xml ) ;
+          c.setValues ( xml ) ;
         }
         else
         if ( TD.xInput.type == 'radio' )
         {
           c = new TRadio ( TD.xInput ) ;
-	  			c.setValues ( xml ) ;
+          c.setValues ( xml ) ;
         }
         else
         if ( TD.xInput.type == 'select-one' )
         {
           c = new TChoice ( TD.xInput ) ;
-	  			c.setValues ( xml ) ;
+          c.setValues ( xml ) ;
         }
         else
         {
           c = new TTextField ( TD.xInput ) ;
-	  			c.setValues ( xml ) ;
+          c.setValues ( xml ) ;
         }
-				continue ;
+        continue ;
       }
       if ( t == "money" && vt )
       {
@@ -4439,12 +4466,12 @@ TTableRow.prototype =
           if ( ! this.table.formats[i] )
           {
             TD.innerHTML = locale.formatDateShort ( vt ) ;
-	  			}
-	  			else
-	  			{
+          }
+          else
+          {
             f = locale.getDateFormat ( this.table.formats[i] ) ;
             TD.innerHTML = locale.formatDate ( vt, f ) ;
-	  			}
+          }
         }
       }
       else

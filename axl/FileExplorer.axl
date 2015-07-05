@@ -40,6 +40,7 @@
       <Table name="Files" style='width:400px;bottom:-0;attach-bottom:true;right:-0px;'
              reset='true' sortable='true'
              onload='*.onloadTable()'
+             ondblclick='*.editFile()'
       >
         <Columns>
           <Column name="IMG" title=" " type=icon />
