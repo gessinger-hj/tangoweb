@@ -1017,6 +1017,11 @@ DocumentEditor.prototype._onDocumentChange = function ( ev )
   }
   this._DocumentChanged = true ;
   var f = this.editor.getFile() ;
+  var event = null ;
+  if ( ev )
+  {
+    event = ev.getEvent() ;
+  }
   var ev = new TItemEvent ( event, f ) ;
   ev.setJsSource ( this ) ;
   this._fireEvent ( ev, "change" ) ;

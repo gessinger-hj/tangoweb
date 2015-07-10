@@ -856,7 +856,7 @@ TContainer.prototype.getDragSource = function ( idOrName )
   if ( ! e ) return null ;
   return e.dndSource ;
 };
-TContainer.prototype.setAxl = function ( nameOrXml )
+TContainer.prototype.setAxl = function ( nameOrXml, pagelet )
 {
   if ( ! this.dom ) return ;
   var x = null ;
@@ -885,7 +885,7 @@ TContainer.prototype.setAxl = function ( nameOrXml )
       x = new TXml ( nameOrXml ) ;
     }
   }
-  TGui.setAxl ( this.getDom(), x ) ;
+  TGui.setAxl ( this.getDom(), x, pagelet ) ;
 };
 TContainer.prototype.findFirstFocusableElement = function()
 {
@@ -1638,7 +1638,7 @@ TCheckbox.prototype.setClassImages = function ( dom, refresh )
   this.img.style.width = this.imgWidth + "px" ;
   this.img.style.height = this.imgWidth + "px" ;
   this._renderImage() ;
-  TGui.layoutButtonLike ( { dom:this.dom, imgWidth:this.imgWidth, useButtonMinimum:true } ) ;
+  TGui.layoutButtonLike ( { dom:this.dom, imgWidth:this.imgWidth, useButtonMinimum:true, debug:false, xAlign:"left" } ) ;
   return true ;
 };
 TCheckbox.prototype._getClassName = function()

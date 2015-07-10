@@ -8188,6 +8188,7 @@ var bb = p.dom.nodeName.toUpperCase() == "BUTTON" ;
     else
     {
       var maxTxtWidth = p.dom.offsetWidth - pd_left - pd_right ;
+
       if ( closer ) maxTxtWidth -= img.offsetWidth + dx + dx + closer.offsetWidth ;
       if ( txt.offsetWidth > maxTxtWidth )
       {
@@ -8212,7 +8213,15 @@ var bb = p.dom.nodeName.toUpperCase() == "BUTTON" ;
       y = Math.round ( y ) ;
       p.dom.xThemeStyle.txtY = y ;
       txt.style.top = y + "px" ;
-      var x = Math.round ( ( p.dom.offsetWidth - contentWidth ) / 2 ) ;
+      var x = 0 ;
+      if ( p.xAlign === "left" )
+      {
+        x = 0 ;
+      }
+      else
+      {
+        x = Math.round ( ( p.dom.offsetWidth - contentWidth ) / 2 ) ;
+      }
       if ( p.alignLeft ) x = pd_left ;
       if ( p.reverse )
       {
@@ -8712,11 +8721,11 @@ TGuiClass.prototype.isMandatoryOk = function ( xmlContainer )
   }
   return true ;
 };
-TGuiClass.prototype.setAxl = function ( targetElement, xml )
+TGuiClass.prototype.setAxl = function ( targetElement, xml, pagelet )
 {
-  return this.packAxl ( targetElement, xml ) ;
+  return this.packAxl ( targetElement, xml, pagelet ) ;
 };
-TGuiClass.prototype.packAxl = function ( targetElement, xml )
+TGuiClass.prototype.packAxl = function ( targetElement, xml, pagelet )
 {
   var dom = xml ;
   if ( xml && typeof ( xml ) == 'object' && xml.jsClassName == 'TXml' )
@@ -8733,7 +8742,8 @@ TGuiClass.prototype.packAxl = function ( targetElement, xml )
   var height = TGui.getComputedStyleInt ( targetElement, "height", 0 ) ;
 
   var layoutContext = new LayoutContext() ;
-  var pl = TGui.findPageletFromElement ( targetElement ) ;
+  var pl = pagelet ;
+  if ( ! pl ) pl = TGui.findPageletFromElement ( targetElement ) ;
   if ( pl ) layoutContext.pushPagelet ( pl ) ;
 
   TGui.layout ( targetElement, externalAttributes, null, layoutContext ) ;
@@ -15035,7 +15045,80 @@ Chrome:
   }
   return nuLines.join ( "\n" ) ;
 };
-
+TSysClass.prototype.toArray = function (iterable)
+{
+  if ( !iterable ) return []; 
+  if (iterable.toArray)
+  {
+    return iterable.toArray();
+  }
+  var results = [];
+  for ( var i = 0 ; i < iterable.length ; i++ )
+  {
+    results.push(iterable[i]);
+  }     
+  return results;
+};
+TSysClass.prototype.getCssValues = function ( selector )
+{
+  var themeName = "/" + Tango.getThemeName() + "/" ;
+  var a = {} ;
+  for ( var i = 0 ; i < document.styleSheets.length ; i++ )
+  {
+    var sheet = document.styleSheets[i];
+    if ( ! sheet.href ) continue ;
+    // if ( sheet.href.indexOf ( themeName ) < 0 ) continue ;
+    var rules = null ;
+    if ( sheet.cssRules) rules = sheet.cssRules;
+    else
+    if ( sheet.rules) rules = sheet.rules;
+    for ( var j = 0 ; j < rules.length ; j++ )
+    {
+      if ( ! rules[j].selectorText ) continue ;
+      if ( rules[j].selectorText.indexOf ( ".Theme" ) >= 0 )
+      {
+        var r = rules[j] ;
+        var selectorText = r.selectorText ;
+        var pos = selectorText.indexOf ( "," ) ;
+        if ( pos > 0 ) selectorText = selectorText.substring ( 0, pos ) ;
+        if ( selectorText.indexOf ( ".Theme" ) === 0 )
+        {
+          selectorText = selectorText.substring ( 6 ) ;
+        }
+        if ( selectorText.indexOf ( "." ) === 0 )
+        {
+          selectorText = selectorText.substring ( 1 ) ;
+        }
+        if ( selector && ! selector[selectorText] )
+        {
+          continue ;
+        }
+        var o = {} ;
+        // o.width  = r.style.width ;
+        // o.height = r.style.height ;
+        // o.right  = r.style.right ;
+        // o.left   = r.style.left ;
+        // o.top    = r.style.top ;
+        var k = 0 ;
+        if ( r.style.width ) { o.width         = TGui.parsePixel ( r.style.width ) ; k = 1 ; }
+        if ( r.style.height ) { o.height        = TGui.parsePixel ( r.style.height ) ; k = 1 ; }
+        if ( r.style.right ) { o.right         = TGui.parsePixel ( r.style.right ) ; k = 1 ; }
+        if ( r.style.left ) { o.left          = TGui.parsePixel ( r.style.left ) ; k = 1 ; }
+        if ( r.style.top ) { o.top           = TGui.parsePixel ( r.style.top ) ; k = 1 ; }
+        if ( r.style.padding ) { o.padding       = TGui.parsePixel ( r.style.padding ) ; k = 1 ; }
+        if ( r.style.paddingTop ) { o.paddingTop    = TGui.parsePixel ( r.style.paddingTop ) ; k = 1 ; }
+        if ( r.style.paddingLeft ) { o.paddingLeft   = TGui.parsePixel ( r.style.paddingLeft ) ; k = 1 ; }
+        if ( r.style.paddingBottom ) { o.paddingBottom = TGui.parsePixel ( r.style.paddingBottom ) ; k = 1 ; }
+        if ( r.style.paddingRight ) { o.paddingRight  = TGui.parsePixel ( r.style.paddingRight ) ; k = 1 ; }
+        if ( k )
+        {
+          a[selectorText] = o ;
+        }
+      }
+    }
+  }
+  return a ;
+};
 var TSys = new TSysClass() ;
 // ------------------------------------------------------------------
 
@@ -15458,17 +15541,3 @@ if ( Function.prototype.bind !== 'function' )
   };
 }
 
-TSysClass.prototype.toArray = function (iterable)
-{
-  if ( !iterable ) return []; 
-  if (iterable.toArray)
-  {
-    return iterable.toArray();
-  }
-  var results = [];
-  for ( var i = 0 ; i < iterable.length ; i++ )
-  {
-    results.push(iterable[i]);
-  }     
-  return results;
-};

@@ -75,34 +75,36 @@ var TTable = function ( xmlAttributes )
     this.autofocus = this.xmlAttributes.getAttribute ( "autofocus" ) == 'true' ;
     this.selectonfocus = this.xmlAttributes.getAttribute ( "selectonfocus" ) == 'true' ;
   }
-  this.columnTypes = [] ;
-  this.textAlign = [] ;
-  this.mappings = [] ;
-  this.mappingLists = [] ;
-  this.itemListener = [] ;
-  this.propertyChangeHandler = new PropertyChangeHandler() ;
-  this.actionListener = [] ;
-  this.selectionListener = [] ;
-  this.keyListener = [] ;
-  this.editable = [] ;
-  this.editableWidth = [] ;
-  this.mandatory = [] ;
-  this.sortableList = [] ;
-  this.anyEditable = false ;
-  this.anyMandatory = false ;
-
-  this.formats = [] ;
-
-  this._flushed = false ;
-  this.numberOfSelectedRows = 0 ;
+  this.columnTypes                                 = [] ;
+  this.textAlign                                   = [] ;
+  this.mappings                                    = [] ;
+  this.mappingLists                                = [] ;
+  this.itemListener                                = [] ;
+  this.propertyChangeHandler                       = new PropertyChangeHandler() ;
+  this.actionListener                              = [] ;
+  this.selectionListener                           = [] ;
+  this.keyListener                                 = [] ;
+  this.editable                                    = [] ;
+  this.editableWidth                               = [] ;
+  this.mandatory                                   = [] ;
+  this.sortableList                                = [] ;
+  this.anyEditable                                 = false ;
+  this.anyMandatory                                = false ;
+  
+  this.formats                                     = [] ;
+  
+  this._flushed                                    = false ;
+  this.numberOfSelectedRows                        = 0 ;
   if ( this.selectable ) this.selectedRowClassName = "ThemeTableRowClassSelected" ;
   else                   this.selectedRowClassName = "ThemeTableRowClass" ;
-  this.popupMenu = null ;
-  this.popupMenuClass = PopupMenu ;
-  this.setValuesListener = [] ;
-  this.getValuesListener = [] ;
-  this.preSortedIndex = -1 ;
-  this.preSortedDirection = 0 ;
+  this.popupMenu                                   = null ;
+  this.popupMenuClass                              = PopupMenu ;
+  this.setValuesListener                           = [] ;
+  this.getValuesListener                           = [] ;
+  this.preSortedIndex                              = -1 ;
+  this.preSortedDirection                          = 0 ;
+  this.tableHeaderMenu                             = new TableHeaderMenu ( this ) ;
+  this.tableHeaderMenuVisible                      = true ;
 };
 TTable.prototype =
 {
@@ -187,6 +189,7 @@ TTable.prototype.handleTD2Right = function ( refresh )
   {
     this.TD2Right = document.createElement ( "td" ) ;
     this.TR2.appendChild ( this.TD2Right ) ;
+    TGui.addEventListener ( this.TD2Right, "mouseup", this.mouseupOnHeader.bindAsEventListener ( this, -1 ) ) ;
   }
   if ( refresh )
   {
@@ -457,16 +460,19 @@ TTable.prototype.layout = function ( dom, externalAttributes, nix, layoutContext
       else        this.mappingLists.push ( null ) ;
       this.mappings.push ( hMap ) ;
     }
-    var preSorted = x.getAttribute ( "pre-sorted" ) ;
-    if ( preSorted )
+    if ( this.sortable || this.sortableList[colIndex] )
     {
-      if ( preSorted == 'up' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = 1 ; }
-      else
-      if ( preSorted == 'down' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = -1 ; }
-      else
-      if ( preSorted == '+' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = 1 ; }
-      else
-      if ( preSorted == '-' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = -1 ; }
+      var preSorted = x.getAttribute ( "pre-sorted" ) ;
+      if ( preSorted )
+      {
+        if ( preSorted == 'up' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = 1 ; }
+        else
+        if ( preSorted == 'down' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = -1 ; }
+        else
+        if ( preSorted == '+' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = 1 ; }
+        else
+        if ( preSorted == '-' ) { this.preSortedIndex = colIndex ; this.preSortedDirection = -1 ; }
+      }
     }
     colIndex++ ;
   }
@@ -506,7 +512,9 @@ TTable.prototype.layout = function ( dom, externalAttributes, nix, layoutContext
   this.TABLE.border = 0 ;
   this.TABLE.cellSpacing = 0 ;
   this.TABLE.cellPadding = 2 ;
-  if ( this.popupMenu ) this.TABLE.oncontextmenu = function(){return false;};
+  // if ( this.popupMenu ) this.TABLE.oncontextmenu = function(){return false;};
+  // this.TABLE.oncontextmenu = function(){return false;};
+  this.dom.oncontextmenu = function(){return false;};
   this.TBODY = document.createElement ( "tbody" ) ;
   this.TABLE.appendChild ( this.TBODY ) ;
   this.TBODY.className = "ThemeTableBodyClass" ;
@@ -739,6 +747,7 @@ TTable.prototype._setHeaderImages = function ( refresh )
     TD.style.width = widthList[i] + "px" ;
     if ( ! TD.listenerInstalled )
     {
+      TGui.addEventListener ( TD, "mouseup", this.mouseupOnHeader.bindAsEventListener ( this, i ) ) ;
       TD.listenerInstalled = true ;
       if ( this.sortableList[i] )
       {
@@ -775,6 +784,17 @@ TTable.prototype.mouseOnHeaderTooltip = function ( event, what, td, action, colu
     if ( action === "mousedown" ) TGui.tooltipClose ( event ) ;
   }
 };
+TTable.prototype.mouseupOnHeader = function ( event, columnIndex )
+{
+  var ev = new TEvent ( event ) ;
+  if ( ev.isButtonRight() )
+  {
+    if ( this.tableHeaderMenuVisible )
+    {
+      this.tableHeaderMenu.show ( event, columnIndex ) ;
+    }
+  }
+};
 TTable.prototype.mouseOnHeader = function ( event, what, td, action, columnIndex )
 {
   if ( td.tooltip )
@@ -784,6 +804,11 @@ TTable.prototype.mouseOnHeader = function ( event, what, td, action, columnIndex
     if ( action === "mouseout" ) TGui.tooltipOut ( event ) ;
     else
     if ( action === "mousedown" ) TGui.tooltipClose ( event ) ;
+  }
+  var ev = new TEvent ( event ) ;
+  if ( ev.isButtonRight() )
+  {
+    return ;
   }
   td.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "TableHeader", what, td.offsetWidth, td.offsetHeight ) ;
   if ( what == "inside" )
@@ -1590,7 +1615,7 @@ TTable.prototype.setData = function ( data )
       if ( this.columnTypes[i] == "date" )
       {
         columnValues[i] = columnValues[i].trim() ;
-        if ( columnVisibleText[i] )
+        if ( eRowChild.getAttribute ( "visibleText" ) )
         {
           TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
         }
@@ -1616,7 +1641,7 @@ TTable.prototype.setData = function ( data )
       if ( this.columnTypes[i] == "datetime" )
       {
         columnValues[i] = columnValues[i].trim() ;
-        if ( columnVisibleText[i] )
+        if ( eRowChild.getAttribute ( "visibleText" ) )
         {
           TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
         }
@@ -3539,7 +3564,7 @@ TTable.prototype.insertRowAt = function ( row, index )
         if ( this.columnTypes[i] == "date" )
         {
           columnValues[i] = columnValues[i].trim() ;
-          if ( columnVisibleText[i] )
+          if ( eRowChild.getAttribute ( "visibleText" ) )
           {
             TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
           }
@@ -4205,6 +4230,15 @@ TTable.prototype.toggleColumnVisibility = function ( indexOrName )
     this.setColumnVisible ( indexOrName, true ) ;
   }
 };
+TTable.prototype.getNumberOfVisibleColumns = function()
+{
+  var n = 0 ;
+  for ( var key in this.namesOfHiddenColumns )
+  {
+    n++ ;
+  }
+  return this.columnNames.length - n ;
+};
 TTable.prototype.isColumnVisible = function ( indexOrName )
 {
   var index = this.getColumnIndexByName ( indexOrName ) ;
@@ -4277,6 +4311,55 @@ TTable.prototype.setColumnVisible = function ( indexOrName, state )
   }
   this.adjustHeader() ;
 };
+TTable.prototype.setAllColumnsVisible = function ( state )
+{
+  var value = 'NONE' ;
+  state = true ;
+
+  var i = 0 ;
+  if ( state )
+  {
+    this.namesOfHiddenColumns = {} ;
+    value = '' ;
+  }
+  else
+  {
+    for ( i = 0 ; i < this.columnNames.length ; i++ )
+    {
+      this.namesOfHiddenColumns[this.columnNames[i]] = true ;
+    }
+  }
+
+  var TD, TR, i ;
+  for ( TR = this.TBODY.firstChild ; TR ; TR = TR.nextSibling )
+  {
+    for ( TD = TR.firstChild ; TD ; TD = TD.nextSibling )
+    {
+      TD.style.display = value ;
+    }
+  }
+  if ( this.THEAD )
+  {
+    for ( TR = this.THEAD.firstChild ; TR ; TR = TR.nextSibling )
+    {
+      for ( TD = TR.firstChild ; TD ; TD = TD.nextSibling )
+      {
+        TD.style.display = value ;
+      }
+    }
+  }
+  if ( this.THEAD2 )
+  {
+    for ( TR = this.THEAD2.firstChild ; TR ; TR = TR.nextSibling )
+    {
+      for ( TD = TR.firstChild ; TD ; TD = TD.nextSibling )
+      {
+        TD.style.display = value ;
+      }
+    }
+  }
+  this.adjustHeader() ;
+};
 TTable.prototype.setEnabled = function ( state )
 {
   if ( state )
@@ -4308,6 +4391,154 @@ TTable.prototype.setEnabled = function ( state )
     this.glassOverTable = div ;
   }
 };
+TableHeaderMenu = function ( table )
+{
+  this.tab = table ;
+}
+TableHeaderMenu.prototype.show = function ( event, columnIndex )
+{
+  if ( this.headerPopupDiv )
+  {
+    return ;
+  }
+  var ev = new TEvent ( event ) ;
+  var ctitle = ev.getComponent() ;
+  var location = ctitle.getLocationOnPage() ;
+  this.headerPopupDiv = document.createElement ( "div" ) ;
+  this.headerPopup = new TContainer ( this.headerPopupDiv ) ;
+  document.body.appendChild ( this.headerPopupDiv ) ;
+
+  this.headerPopupDiv.style.position = "absolute" ;
+  var x = event.pageX || (event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft));
+  x = ev.getX() ;
+  var y = event.pageY || ( event.clientY + (document.documentElement.scrollTop || document.body.scrollTop));
+  this.headerPopupDiv.style.top = y + "px" ; ;
+  this.headerPopupDiv.style.left = ( x + 2 ) + "px" ;
+  this.headerPopupDiv.style.zIndex = TGui.zIndexNote ;
+
+  var css = TSys.getCssValues ( { "MenuItem":true}) ;
+
+  var axl = new TXml() ;
+  var xc = axl.add ( "Container" ) ;
+  var title = xc.add ( "Label", "Visible Columns" ) ;
+  // title.addAttribute ( "class", "ThemeMenuItem" ) ;
+  title.addAttribute ( "style", "left:" + css.MenuItem.paddingLeft + "px;" ) ;
+
+  xc.add ( "br" ) ;
+
+  var xdup = null ;
+  for ( k in this.tab.column2Index )
+  {
+    if ( ! this.tab.column2Index.hasOwnProperty (k) ) continue ;
+    var index = this.tab.column2Index[k] ;
+    var xcb = xc.add ( "Checkbox2" ) ;
+    xcb.addAttribute ( "text", this.tab.columnTitles[index] ) ;
+    xcb.addAttribute ( "value", index ) ;
+    xcb.addAttribute ( "default", this.tab.column2Index[k] ) ;
+    xcb.addAttribute ( "onchange", "*.toggleColumn()" ) ;
+    xcb.addAttribute ( "className", "ThemeMenuItem" ) ;
+    if ( this.tab.isColumnVisible ( index ) ) xcb.addAttribute ( "checked", "true" ) ;
+    xc.add ( "br" ) ;
+    if ( index == columnIndex )
+    {
+      xdup = new TXml ( "Checkbox2" ) ;
+      xdup.addAttribute ( "text", "This Column" ) ;
+      xdup.addAttribute ( "value", index ) ;
+      xdup.addAttribute ( "default", this.tab.column2Index[k] ) ;
+      xdup.addAttribute ( "onchange", "*.toggleColumn()" ) ;
+      if ( this.tab.isColumnVisible ( index ) ) xdup.addAttribute ( "checked", "true" ) ;
+    }
+  }
+  if ( xdup ) xc.add ( xdup ) ;
+
+  xc.add ( "br" ) ;
+  var b = xc.add ( "PushButton" ) ;
+  b.addAttribute ( "onclick", "*.setAllColumnsVisible()" ) ;
+  b.addAttribute ( "text", "Set all Visible" ) ;
+  b.addAttribute ( "style", "left:" + css.MenuItem.paddingLeft + "px;" ) ;
+
+  this.headerPopup.setAxl ( axl, this ) ;
+  var cspan = new TContainer ( this.headerPopup.dom.firstChild ) ;
+  var cspanBounds = cspan.getBounds() ;
+  for ( var ch = this.headerPopup.dom.firstChild.firstChild ; ch ; ch = ch.nextSibling )
+  {
+    if ( ch.nodeType !== DOM_ELEMENT_NODE )
+    {
+      continue ;
+    }
+    if ( ch.nodeName === "DIV" )
+    {
+      var span = ch.firstChild.nextSibling ;
+      span.style.left = css.MenuItem.paddingLeft + "px" ;
+    }
+  }
+  this.headerPopup.setSize ( cspanBounds.width, cspanBounds.height ) ;
+  this.headerPopup.dom.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Menu", "normal", cspanBounds.width, cspanBounds.height ) ;
+  this._mouseDownAutoClose = new TFunctionExecutor ( this, this.mouseDownAutoClose ) ;
+  TGlobalEventHandler.addOnMouseDown ( this._mouseDownAutoClose ) ;
+  this._keyDownAutoClose = new TFunctionExecutor ( this, this.keyDownAutoClose ) ;
+  TGlobalEventHandler.addOnKeyDown ( this._keyDownAutoClose ) ;
+};
+
+TableHeaderMenu.prototype.mouseDownAutoClose = function ( event )
+{
+  if ( ! this.headerPopupDiv )
+  {
+    return ;
+  }
+  var ev = new TEvent ( event ) ;
+  if ( this.headerPopup.contains ( ev.getX(), ev.getY() ) )
+  {
+    return true ;
+  }
+  TGui.flushAttributes ( this.headerPopup ) ;
+  this.headerPopup.dom.parentNode.removeChild ( this.headerPopup.dom ) ;
+  TGlobalEventHandler.removeOnMouseDown ( this._mouseDownAutoClose ) ;
+  this.headerPopupDiv = null ;
+  this.headerPopup = null ;
+  return ;
+};
+TableHeaderMenu.prototype.keyDownAutoClose = function ( event )
+{
+  if ( ! this.headerPopupDiv )
+  {
+    return ;
+  }
+  var ev = new TEvent ( event ) ;
+  if ( !ev.isEscape() ) return true ;
+  TGui.flushAttributes ( this.headerPopup ) ;
+  this.headerPopup.dom.parentNode.removeChild ( this.headerPopup.dom ) ;
+  TGlobalEventHandler.removeOnKeyDown ( this._keyDownAutoClose ) ;
+  this.headerPopupDiv = null ;
+  this.headerPopup = null ;
+  return ;
+};
+TableHeaderMenu.prototype.toggleColumn = function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var cb = ev.getComponent() ;
+  var n = cb.getName() ;
+  var v = parseInt ( cb.getValue() ) ;
+  if ( cb.isChecked() ) this.tab.setColumnVisible ( v, true ) ;
+  else                  this.tab.setColumnVisible ( v, false ) ;
+  var n = this.tab.getNumberOfVisibleColumns() ;
+};
+TableHeaderMenu.prototype.setAllColumnsVisible = function ( event )
+{
+  for ( var ch = this.headerPopup.dom.firstChild.firstChild ; ch ; ch = ch.nextSibling )
+  {
+    if ( ch.nodeType !== DOM_ELEMENT_NODE )
+    {
+      continue ;
+    }
+    if ( ch.jsPeer )
+    {
+      ch.jsPeer.setChecked ( true ) ;
+    }
+  }
+  this.tab.setAllColumnsVisible ( true ) ;
+};
+
 /**
  *  @constructor
  */
