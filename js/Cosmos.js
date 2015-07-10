@@ -15,11 +15,16 @@ CosmosClass = function()
   this.dockDirectoryName = "docks" ;
   this.stringDirectoryName = "strings" ;
   this.defaultStringName = "Netbook" ;
-// this.stringName = "Air" ;
- this.stringName = "Product" ;
-//  this.stringName = "RessourcesII" ;
+  this.stringName = TSys.getWebConfig().getValue ( "StringName" ) ;
+  if ( ! this.stringName )
+  {
+    this.stringName = "Air" ;
+  }
+// this.stringName = "Netbook" ;
+ // this.stringName = "Product" ;
+ // this.stringName = "RessourcesII" ;
 //  this.stringName = "Web2.0a" ;
-//  this.stringName = "Red" ;
+ // this.stringName = "Red" ;
  // this.stringName = "Raphsody" ;
   this.defaultTooltipStyle = null ;
   this.tooltipStyle = null ;
