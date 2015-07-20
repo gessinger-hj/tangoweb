@@ -4473,7 +4473,15 @@ TableHeaderMenu.prototype.show = function ( event, columnIndex )
     }
   }
   this.headerPopup.setSize ( cspanBounds.width, cspanBounds.height ) ;
-  this.headerPopup.dom.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Menu", "normal", cspanBounds.width, cspanBounds.height ) ;
+  var pxml = Tango.getThemeXml ( "Menu" ) ;
+  if ( pxml.getBoolAttribute ( "pure-css", false ) )
+  {
+    this.headerPopup.dom.className = pxml.get ( "normal" ).getAttribute ( "class" ) ;
+  }
+  else
+  {
+    this.headerPopup.dom.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Menu", "normal", cspanBounds.width, cspanBounds.height ) ;
+  }
   this._mouseDownAutoClose = new TFunctionExecutor ( this, this.mouseDownAutoClose ) ;
   TGlobalEventHandler.addOnMouseDown ( this._mouseDownAutoClose ) ;
   this._keyDownAutoClose = new TFunctionExecutor ( this, this.keyDownAutoClose ) ;
