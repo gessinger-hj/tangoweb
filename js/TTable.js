@@ -1615,7 +1615,7 @@ TTable.prototype.setData = function ( data )
       if ( this.columnTypes[i] == "date" )
       {
         columnValues[i] = columnValues[i].trim() ;
-        if ( eRowChild.getAttribute ( "visibleText" ) )
+        if ( eRowChild && eRowChild.getAttribute ( "visibleText" ) )
         {
           TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
         }
@@ -1641,7 +1641,7 @@ TTable.prototype.setData = function ( data )
       if ( this.columnTypes[i] == "datetime" )
       {
         columnValues[i] = columnValues[i].trim() ;
-        if ( eRowChild.getAttribute ( "visibleText" ) )
+        if ( eRowChild && eRowChild.getAttribute ( "visibleText" ) )
         {
           TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
         }
@@ -4416,7 +4416,7 @@ TableHeaderMenu.prototype.show = function ( event, columnIndex )
   this.headerPopupDiv.style.left = ( x + 2 ) + "px" ;
   this.headerPopupDiv.style.zIndex = TGui.zIndexNote ;
 
-  var css = TSys.getCssValues ( { "MenuItem":true}) ;
+  var css = TSys.getCssValues ( { "MenuItem":true } ) ;
 
   var axl = new TXml() ;
   var xc = axl.add ( "Container" ) ;
@@ -4426,13 +4426,16 @@ TableHeaderMenu.prototype.show = function ( event, columnIndex )
 
   xc.add ( "br" ) ;
 
-  var xdup = null ;
+  var xdup = xc.add ( "Checkbox2" ) ;
+  var br = xc.add ( "br" ) ;
+  var br2 = xc.add ( "br" ) ;
+  var found = false ;
   for ( k in this.tab.column2Index )
   {
     if ( ! this.tab.column2Index.hasOwnProperty (k) ) continue ;
     var index = this.tab.column2Index[k] ;
     var xcb = xc.add ( "Checkbox2" ) ;
-    xcb.addAttribute ( "text", this.tab.columnTitles[index] ) ;
+    xcb.addAttribute ( "text", this.tab.columnTitles[index].replace ( /\n/g, " " ).replace ( /<br\/>/, " " ) ) ;
     xcb.addAttribute ( "value", index ) ;
     xcb.addAttribute ( "default", this.tab.column2Index[k] ) ;
     xcb.addAttribute ( "onchange", "*.toggleColumn()" ) ;
@@ -4441,15 +4444,25 @@ TableHeaderMenu.prototype.show = function ( event, columnIndex )
     xc.add ( "br" ) ;
     if ( index == columnIndex )
     {
-      xdup = new TXml ( "Checkbox2" ) ;
+      var OID1 = TSys.getTempId() ;
+      var OID2 = TSys.getTempId() ;
+      xcb.addAttribute ( "onchange", "*.toggleColumn2(event,'" + OID2 + "')" ) ;
+      xcb.addAttribute ( "id", OID1 ) ;
+      found = true ;
       xdup.addAttribute ( "text", "This Column" ) ;
       xdup.addAttribute ( "value", index ) ;
       xdup.addAttribute ( "default", this.tab.column2Index[k] ) ;
-      xdup.addAttribute ( "onchange", "*.toggleColumn()" ) ;
+      xdup.addAttribute ( "onchange", "*.toggleColumn2(event,'" + OID1 + "')" ) ;
+      xdup.addAttribute ( "id", OID2 ) ;
       if ( this.tab.isColumnVisible ( index ) ) xdup.addAttribute ( "checked", "true" ) ;
     }
   }
-  if ( xdup ) xc.add ( xdup ) ;
+  if ( ! found )
+  {
+    xdup.remove() ;
+    br.remove() ;
+    br2.remove() ;
+  }
 
   xc.add ( "br" ) ;
   var b = xc.add ( "PushButton" ) ;
@@ -4529,6 +4542,35 @@ TableHeaderMenu.prototype.toggleColumn = function ( event )
   var v = parseInt ( cb.getValue() ) ;
   if ( cb.isChecked() ) this.tab.setColumnVisible ( v, true ) ;
   else                  this.tab.setColumnVisible ( v, false ) ;
+  var n = this.tab.getNumberOfVisibleColumns() ;
+};
+TableHeaderMenu.prototype.toggleColumn2 = function ( event, OID )
+{
+  var checkboxPeer = null ;
+  if ( OID )
+  {
+    checkboxPeer = TGui.getComponent ( OID ) ;
+  }
+  var ev = new TEvent ( event ) ;
+  var cb = ev.getComponent() ;
+  var n = cb.getName() ;
+  var v = parseInt ( cb.getValue() ) ;
+  if ( cb.isChecked() )
+  {
+    this.tab.setColumnVisible ( v, true ) ;
+    if ( checkboxPeer )
+    {
+      checkboxPeer.setChecked ( true ) ;
+    }
+  }
+  else
+  {
+    this.tab.setColumnVisible ( v, false ) ;
+    if ( checkboxPeer )
+    {
+      checkboxPeer.setChecked ( false ) ;
+    }
+  }
   var n = this.tab.getNumberOfVisibleColumns() ;
 };
 TableHeaderMenu.prototype.setAllColumnsVisible = function ( event )
