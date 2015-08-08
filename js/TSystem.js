@@ -153,6 +153,7 @@ var TSysClass = function()
     	return true;
   	};
 	}
+  this._use_local_storage = true ;
 };
 TSysClass.prototype =
 {
@@ -160,6 +161,10 @@ TSysClass.prototype =
   pwd: "guest",
   applicationName: "NoName",
   passwordValidator: null,
+  setUseLocalStorage: function ( state )
+  {
+    this._use_local_storage = !!state ;
+  },
   getPasswordValidator: function()
   {
     if ( ! this.passwordValidator ) this.passwordValidator = new TPasswordValidator() ;
@@ -296,7 +301,7 @@ TSysClass.prototype =
         {
           callback ( x, xmlString ) ;
         }
-	else
+        else
         {
           TSys.log ( "Parser error in:\n" + xmlString + "\n" + x ) ;
           this.evaluateXmlParsing ( xmlString, false, true );
@@ -310,7 +315,7 @@ TSysClass.prototype =
         {
           callback ( x, xmlString ) ;
         }
-	else
+        else
         {
           TSys.log ( "Parser error in:\n" + xmlString + "\n" + x ) ;
           this.evaluateXmlParsing ( xmlString, false, true );
@@ -326,7 +331,7 @@ TSysClass.prototype =
           {
             callback ( x, xmlString ) ;
           }
-	  else
+          else
           {
             TSys.log ( "Parser error in:\n" + xmlString + "\n" + x ) ;
             this.evaluateXmlParsing ( xmlString, false, true );
@@ -1368,42 +1373,39 @@ log ( exc ) ;
     }
     var url = this.getMainUrl()+"&action=Login" ;
     var str = "<xml><uid><![CDATA[" + uid + "]]></uid><pwd><![CDATA[" + pwd + "]]></pwd>" ;
-    if ( additionalAttributes )
+    if ( this.isArray ( additionalAttributes ) || typeof ( additionalAttributes ) == 'object' )
     {
       str += "\n<AdditionalAttributes>\n" ;
-      if ( this.isArray ( additionalAttributes ) || typeof ( additionalAttributes ) == 'object' )
+      for ( var key in additionalAttributes )
       {
-        for ( var key in additionalAttributes )
+        if ( typeof ( key ) == 'number' ) continue ;
+        var val = additionalAttributes[key] ;
+        if ( this.isArray ( val ) || typeof ( val ) == 'object' )
         {
-          if ( typeof ( key ) == 'number' ) continue ;
-          var val = additionalAttributes[key] ;
-          if ( this.isArray ( val ) || typeof ( val ) == 'object' )
+          str += "<" + key + ">\n" ;
+          for ( var k in val )
           {
-            str += "<" + key + ">\n" ;
-            for ( var k in val )
+            var v = val[k] ;
+            if (  typeof ( v ) != 'string'
+               && typeof ( v ) != 'number'
+               && typeof ( v ) != 'boolean'
+               )
             {
-              var v = val[k] ;
-              if (  typeof ( v ) != 'string'
-                 && typeof ( v ) != 'number'
-                 && typeof ( v ) != 'boolean'
-                 )
-              {
-                continue ;
-              }
-              str += "<Item><![CDATA[" + v + "]]></Item>\n" ;
+              continue ;
             }
-            str += "</" + key + ">\n" ;
-            continue ;
+            str += "<Item><![CDATA[" + v + "]]></Item>\n" ;
           }
-          if (  typeof ( val ) != 'string'
-             && typeof ( val ) != 'number'
-             && typeof ( val ) != 'boolean'
-             )
-          {
-            continue ;
-          }
-          str += "<" + key + "><![CDATA[" + val + "]]></" + key + ">\n" ;
+          str += "</" + key + ">\n" ;
+          continue ;
         }
+        if (  typeof ( val ) != 'string'
+           && typeof ( val ) != 'number'
+           && typeof ( val ) != 'boolean'
+           )
+        {
+          continue ;
+        }
+        str += "<" + key + "><![CDATA[" + val + "]]></" + key + ">\n" ;
       }
       str += "</AdditionalAttributes>" ;
     }
@@ -1434,8 +1436,67 @@ log ( exc ) ;
     this.loggedIn = true ;
     if ( HTTP.responseXML && HTTP.responseXML.documentElement )
     {
-      this.personalData = new TXml ( HTTP.responseXML.documentElement ) ;
+      this.personalData   = new TXml ( HTTP.responseXML.documentElement ) ;
+      this.user           = new TUser ( this.personalData.getXml ( "User" ) ) ;
       this.preferenceData = this.personalData.ensureXml ( "PreferenceData" ) ;
+      if ( typeof additionalAttributes == 'function' )
+      {
+        additionalAttributes.call ( null, this.user ) ;
+      }
+      if ( this._use_local_storage )
+      {
+        if ( typeof localStorage !== 'undefined' )
+        {
+          var USER_PERSISTENT_DATA = localStorage.getItem ( uid.toUpperCase() + ".USER_PERSISTENT_DATA" ) ;
+          if ( USER_PERSISTENT_DATA )
+          {
+            try
+            {
+              var xUSER_PERSISTENT_DATA = TSys.parseXml ( USER_PERSISTENT_DATA ) ;
+              xUSER_PERSISTENT_DATA.remove ( "User" ) ;
+              this.preferenceData.remove() ;
+              this.personalData.remove ( "Bounds" ) ;
+              this.personalData.remove ( "PersistentData" ) ;
+              var persistentData ;
+              var bounds ;
+              if ( xUSER_PERSISTENT_DATA.get ( "PreferenceData" ) )
+              {
+                xUSER_PERSISTENT_DATA.ensureXml ( "PreferenceData" ) ;
+                this.preferenceData = xUSER_PERSISTENT_DATA.get ( "PreferenceData" ) ;
+                this.personalData.add ( this.preferenceData ) ;
+              }
+              else
+              {
+                this.preferenceData = this.personalData.add ( "PreferenceData" ) ;
+              }
+              if ( xUSER_PERSISTENT_DATA.get ( "PersistentData" ) )
+              {
+                xUSER_PERSISTENT_DATA.ensureXml ( "PersistentData" ) ;
+                persistentData = xUSER_PERSISTENT_DATA.get ( "PersistentData" ) ;
+                this.personalData.add ( persistentData ) ;
+              }
+              else
+              {
+                persistentData = this.personalData.add ( "PersistentData" ) ;
+              }
+              if ( xUSER_PERSISTENT_DATA.get ( "Bounds" ) )
+              {
+                xUSER_PERSISTENT_DATA.ensureXml ( "Bounds" ) ;
+                bounds = xUSER_PERSISTENT_DATA.get ( "Bounds" ) ;
+                this.personalData.add ( bounds ) ;
+              }
+              else
+              {
+                this.personalData.add ( "Bounds" ) ;
+              }
+            }
+            catch ( exc )
+            {
+              this.log ( exc ) ;
+            }
+          }
+        }
+      }
       var x = this.personalData.getXml ( "PersistentData" ) ;
       if ( ! x )
       {
@@ -1443,7 +1504,6 @@ log ( exc ) ;
       }
       this.persistentData = new TPersistentData ( x ) ;
 
-      this.user = new TUser ( this.personalData.getXml ( "User" ) ) ;
       var bounds = this.personalData.getDom ( "Bounds" ) ;
       if ( bounds )
       {
@@ -1617,7 +1677,7 @@ log ( exc ) ;
       }
       catch ( exc )
       {
-        TSys.log ( "" + exc ) ;
+        TSys.log ( exc ) ;
       }
       if ( this.personalData )
       {
@@ -1657,21 +1717,36 @@ log ( exc ) ;
       {
         logoutUrl = document.location ;
       }
-      this.user = null ;
       var url = this.getMainUrl() + "&action=Logout" ;
+      var pdstring = this.personalData.toString() ;
       if ( this.personalData )
       {
-        var HTTP = this.httpPost ( url, this.personalData.toString() ) ;
-        if ( HTTP.status == 200 ) logoutDone = true ;
+        if ( this._use_local_storage && typeof localStorage !== 'undefined' )
+        {
+          var UID = this.user.getUid().toUpperCase() ;
+          this.personalData.remove ( "User" ) ;
+          localStorage.setItem ( UID + ".USER_PERSISTENT_DATA", this.personalData.toString() ) ;
+          this.user = null ;
+          var HTTP = this.httpPost ( url, new TXml().toString() ) ;
+          if ( HTTP.status == 200 ) logoutDone = true ;
+        }
+        else
+        {
+          this.user = null ;
+          var HTTP = this.httpPost ( url, pdstring ) ;
+          if ( HTTP.status == 200 ) logoutDone = true ;
+        }
       }
       else
       {
+        this.user = null ;
         var HTTP = this.httpPost ( url ) ;
         if ( HTTP.status == 200 ) logoutDone = true ;
       }
     }
     catch ( exc )
     {
+      // TSys.log ( exc ) ;
     }
     if ( logoutUrl )
     {
@@ -1831,6 +1906,10 @@ window.onbeforeunload = function(e)
 
 TSysClass.prototype.addLogoutListener = function ( fe )
 {
+  if ( typeof fe === 'function' )
+  {
+    fe = new TFunctionExecutor ( fe ) ;
+  }
   this._logoutListener.push ( fe ) ;
 } ;
 TSysClass.prototype._fireLogoutEvent = function ( event )
@@ -3420,7 +3499,7 @@ TGuiClass.prototype._fireOrientationChanged = function()
     }
     catch ( exc )
     {
-      TSys.log ( "" + exc ) ;
+      TSys.log ( exc ) ;
     }
   }
 };
@@ -3737,7 +3816,10 @@ TGuiClass.prototype._collectPersistentData = function ( persistentData, elem, ro
       ch = ch.nextSibling ; 
       continue ;
     }
-
+    if ( ch.jsPeer && typeof ch.jsPeer.collectPersistentData === 'function' )
+    {
+      ch.jsPeer.collectPersistentData ( persistentData ) ;
+    }
     if ( ch.name && ch.xIsPersistent )
     {
       if (  ch.xClassName == "Date"

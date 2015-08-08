@@ -8,25 +8,30 @@ var TTable = function ( xmlAttributes )
     return ;
   }
   TTable.prototype.counter++ ;
-  this._counter = TTable.prototype.counter ;
-  this.jsClassName = "TTable" ;
-  this.name = "TTable$" + this._counter ;
-  this.selectedColumnIndex = -1 ;
-  this.selectedItem = null ;
-  this.selectedCell = null ;
-  this.selectMultiple = false ;
-  this.wordWrap = false ;
-  this.showHeader = true ;
-  this.rowName = "row" ;
-  this.getValuesAll = false ;
-  this.getValuesChanged = false ;
-  this.getValuesNone = false ;
-  this.rowsPlain = false ;
-  this._hasChanged = false ;
-  this.dom = null ;
-  this.selectable = true ;
-
-  this.oldBehaviour = false ;
+  this._counter               = TTable.prototype.counter ;
+  this.jsClassName            = "TTable" ;
+  this.name                   = "TTable$" + this._counter ;
+  this.selectedColumnIndex    = -1 ;
+  this.selectedItem           = null ;
+  this.selectedCell           = null ;
+  this.selectMultiple         = false ;
+  this.wordWrap               = false ;
+  this.showHeader             = true ;
+  this.rowName                = "row" ;
+  this.getValuesAll           = false ;
+  this.getValuesChanged       = false ;
+  this.getValuesNone          = false ;
+  this.rowsPlain              = false ;
+  this._hasChanged            = false ;
+  this.dom                    = null ;
+  this.selectable             = true ;
+  this.oldBehaviour           = false ;
+  this.checkOnSelect          = false ;
+  this.tableHeaderMenu        = new TableHeaderMenu ( this ) ;
+  this.tableHeaderMenuVisible = this._headerMenuVisible ;
+  this.tableHeaderWrapper     = new TableHeader() ;
+  this.columnsResizeable      = false ;
+  this.persistentStatus       = this._persistentStatus ;
 
   if (  typeof ( xmlAttributes ) == 'object'
      && xmlAttributes.tagName
@@ -50,30 +55,43 @@ var TTable = function ( xmlAttributes )
     if ( rowName ) this.rowName = rowName ;
     var multiple = this.xmlAttributes.getAttribute ( "multiple" ) ;
     this.selectMultiple = String  ( multiple ) == 'true' ? true : false ;
+
     var get_values = this.xmlAttributes.getAttribute ( "get-values" ) ;
     if ( get_values )
     {
       if ( get_values === "all" ) this.getValuesAll = true ;
       if ( get_values === "changed" ) this.getValuesChanged = true ;
       if ( get_values === "false" ) this.getValuesNone = true ;
+      if ( get_values === "checked" ) this.getValuesChecked = true ;
     }
     else
     {
-      var getValuesAll = this.xmlAttributes.getAttribute ( "getValuesAll" ) ;
+      var getValuesAll  = this.xmlAttributes.getAttribute ( "getValuesAll" ) ;
       this.getValuesAll = String  ( getValuesAll ) == 'true' ? true : false ;
     }
 
     s = this.xmlAttributes.getAttribute ( "show-header" ) ;
     if ( String ( s ) == 'false' ) this.showHeader = false ;
-    this.rowsPlain = this.xmlAttributes.getAttribute ( "rows-plain" ) == 'true' ;
-    this.selectOnFill = this.xmlAttributes.getAttribute ( "select-on-fill" ) ;
+    this.rowsPlain     = this.xmlAttributes.getAttribute ( "rows-plain" ) == 'true' ;
+    this.checkOnSelect = this.xmlAttributes.getAttribute ( "check-on-select" ) == 'true' ;
+    this.selectOnFill  = this.xmlAttributes.getAttribute ( "select-on-fill" ) ;
     if ( this.selectOnFill )
     {
       this.selectOnFill = parseInt ( this.selectOnFill ) ;
       if ( isFinite ( this.selectOnFill ) ) this.selectOnFill += 1 ;
     }
-    this.autofocus = this.xmlAttributes.getAttribute ( "autofocus" ) == 'true' ;
-    this.selectonfocus = this.xmlAttributes.getAttribute ( "selectonfocus" ) == 'true' ;
+    this.autofocus         = this.xmlAttributes.getAttribute ( "autofocus" ) === 'true' ;
+    this.selectonfocus     = this.xmlAttributes.getAttribute ( "selectonfocus" ) === 'true' ;
+    this.columnsResizeable = this.xmlAttributes.getAttribute ( "columns-resizeable" ) === 'true'
+    var ps = this.xmlAttributes.getAttribute ( "persistent" ) ;
+    if ( ps === "true" )
+    {
+      this.persistentStatus = true ;
+    }
+    if ( ps === "false" )
+    {
+      this.persistentStatus = false ;
+    }
   }
   this.columnTypes                                 = [] ;
   this.textAlign                                   = [] ;
@@ -90,9 +108,7 @@ var TTable = function ( xmlAttributes )
   this.sortableList                                = [] ;
   this.anyEditable                                 = false ;
   this.anyMandatory                                = false ;
-  
   this.formats                                     = [] ;
-  
   this._flushed                                    = false ;
   this.numberOfSelectedRows                        = 0 ;
   if ( this.selectable ) this.selectedRowClassName = "ThemeTableRowClassSelected" ;
@@ -103,13 +119,13 @@ var TTable = function ( xmlAttributes )
   this.getValuesListener                           = [] ;
   this.preSortedIndex                              = -1 ;
   this.preSortedDirection                          = 0 ;
-  this.tableHeaderMenu                             = new TableHeaderMenu ( this ) ;
-  this.tableHeaderMenuVisible                      = true ;
 };
 TTable.prototype =
 {
   counter: 0
 };
+TTable.prototype._headerMenuVisible = true ;
+TTable.prototype._persistentStatus = true ;
 TTable.prototype.toString = function()
 {
   return "(" + this.jsClassName + ")["
@@ -117,6 +133,59 @@ TTable.prototype.toString = function()
        + ",name=" + this.name
        + "]"
        ;
+};
+TTable.prototype.getUniquePathName = function()
+{
+  var un = this.getName() ;
+  var p = this.dom.parentNode ;
+  while ( p )
+  {
+    if ( p.name )
+    {
+      if ( p.id && p.id.charAt ( 0 ) !== 'O' )
+      {
+        un = p.id + "-" + p.name + "-" + un ;
+      }
+      else
+      {
+        un = p.name + "-" + un ;
+      }
+    }
+    p = p.parentNode ;
+  }
+  return un ;
+};
+TTable.prototype.collectPersistentData = function ( pd )
+{
+  try
+  {
+    if ( ! this.persistentStatus )
+    {
+      return ;
+    }
+    if ( typeof JSON === 'undefined' )
+    {
+      return ;
+    }
+    var found = false ;
+    for ( var k in this.namesOfHiddenColumns )
+    {
+      found = true ;
+      break ;
+    }
+    var tabid = this.getUniquePathName() ;
+    if ( ! found )
+    {
+      pd.remove ( tabid + ".HIDDEN_COLUMNS" ) ;
+      return ;
+    }
+    var namesOfHiddenColumns = this.namesOfHiddenColumns ;
+    pd.setValue ( tabid + ".HIDDEN_COLUMNS", JSON.stringify ( namesOfHiddenColumns ) ) ;
+  }
+  catch ( exc )
+  {
+    TSys.log ( exc ) ;
+  }
 };
 TTable.prototype.setName = function ( name )
 {
@@ -184,13 +253,13 @@ TTable.prototype.handleTD2Right = function ( refresh )
   var txml = Tango.getThemeXml ( "TableHeader", "normal" ) ;
   var ins = txml.getInsets() ;
   var spanWidth = this.domBody.offsetWidth - this.TABLE.offsetWidth ;
-  if ( spanWidth <= ins.left + ins.right ) return ;
   if ( ! this.TD2Right )
   {
     this.TD2Right = document.createElement ( "td" ) ;
     this.TR2.appendChild ( this.TD2Right ) ;
     TGui.addEventListener ( this.TD2Right, "mouseup", this.mouseupOnHeader.bindAsEventListener ( this, -1 ) ) ;
   }
+  if ( spanWidth <= ins.left + ins.right ) return ;
   if ( refresh )
   {
     if ( this.TD2Right.dSpan )
@@ -358,6 +427,18 @@ TTable.prototype.layout = function ( dom, externalAttributes, nix, layoutContext
 {
   this.window = layoutContext.window ;
   this.dom = dom ;
+  if ( this.selectMultiple )
+  {
+    this.dom.style.MozUserSelect = "none" ;
+    this.dom.style.WebkitUserSelect = "none" ;
+    this.dom.style.MsUserSelect = "none" ;
+    this.dom.style.OUserSelect = "none" ;
+    this.dom.style.userSelect = "none" ;
+  }
+  this.dom.unselectable="on"
+  this.dom.onselectstart="return false;" 
+  this.dom.onmousedown="return false;"
+
   this.dom.style.overflow = "hidden" ;
   this.domBody = document.createElement ( "div" ) ;
   this.dom.appendChild ( this.domBody ) ;
@@ -661,6 +742,29 @@ TTable.prototype.layout = function ( dom, externalAttributes, nix, layoutContext
   {
     TGlobalEventHandler.unFocus() ;
   } ) ;
+  if ( this.persistentStatus )
+  {
+    var pd = TSys.getPersistentData() ;
+    try
+    {
+      if ( typeof JSON !== 'undefined' )
+      {
+        var tabid = this.getUniquePathName() ;
+        var namesOfHiddenColumns = JSON.parse ( pd.getValue ( tabid + ".HIDDEN_COLUMNS" ) ) ;
+        if ( namesOfHiddenColumns )
+        {
+          for ( var key in namesOfHiddenColumns )
+          {
+            this.setColumnVisible ( key, false ) ;
+          }
+        }
+      }
+    }
+    catch ( exc )
+    {
+      TSys.log ( exc ) ;
+    }
+  }
 };
 TTable.prototype.getFocusHelper = function()
 {
@@ -748,6 +852,7 @@ TTable.prototype._setHeaderImages = function ( refresh )
     if ( ! TD.listenerInstalled )
     {
       TGui.addEventListener ( TD, "mouseup", this.mouseupOnHeader.bindAsEventListener ( this, i ) ) ;
+      TGui.addEventListener ( TD, "mousemove", this.mouseOnHeader.bindAsEventListener ( this, "mousemove", TD, "mousemove", i ) ) ;
       TD.listenerInstalled = true ;
       if ( this.sortableList[i] )
       {
@@ -771,6 +876,11 @@ TTable.prototype._setHeaderImages = function ( refresh )
     if ( TD.nodeType != DOM_ELEMENT_NODE ) continue ;
     if ( TD.nodeName != "TD" ) continue ;
     TD.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "TableHeader", "normal", TD.offsetWidth, TD.offsetHeight ) ;
+  }
+  if ( ! this.TD2Right.listenerInstalled )
+  {
+    TGui.addEventListener ( this.TD2Right, "mousemove", this.mouseOnHeader.bindAsEventListener ( this, "mousemove", this.TD2Right, "mousemove", i ) ) ;
+    this.TD2Right.listenerInstalled = true ;
   }
 };
 TTable.prototype.mouseOnHeaderTooltip = function ( event, what, td, action, columnIndex )
@@ -797,6 +907,27 @@ TTable.prototype.mouseupOnHeader = function ( event, columnIndex )
 };
 TTable.prototype.mouseOnHeader = function ( event, what, td, action, columnIndex )
 {
+  var ev = new TEvent ( event ) ;
+  this.tableHeaderWrapper.dom = td ;
+  if ( this.columnsResizeable )
+  {
+    if ( this.tableHeaderWrapper.isInResizeArea ( ev ) )
+    {
+      td.parentNode.style.cursor = "col-resize" ;
+      if ( event.type === "mouseup" || event.type === "mousedown" )
+      {
+        return ;
+      }
+    }
+    else
+    {
+      td.parentNode.style.cursor = "default" ;
+    }
+  }
+  if ( event.type == "mousemove" )
+  {
+    return ;
+  }
   if ( td.tooltip )
   {
     if ( action === "mouseover" ) TGui.tooltipOver ( event ) ;
@@ -805,7 +936,6 @@ TTable.prototype.mouseOnHeader = function ( event, what, td, action, columnIndex
     else
     if ( action === "mousedown" ) TGui.tooltipClose ( event ) ;
   }
-  var ev = new TEvent ( event ) ;
   if ( ev.isButtonRight() )
   {
     return ;
@@ -895,7 +1025,7 @@ TTable.prototype.setColumns = function ( columnNames, columnTitles )
     }
   }
   this.columnNames = columnNames ;
-  this.namesOfHiddenColumns = [] ;
+  this.namesOfHiddenColumns = {} ;
 
   this.column2Index = new Array() ;
   this.index2Column = new Array() ;
@@ -1262,10 +1392,15 @@ TTable.prototype.setData = function ( data )
     fontSize = eRow.getAttribute ( "font-size" ) ;
     fontFamily = eRow.getAttribute ( "font-family" ) ;
     var font = eRow.getAttribute ( "font" ) ;
-		if ( eRow.getAttribute ( "selectable" ) === "false" )
-		{
-			TR.unselectable = true ;
-		}
+    if ( eRow.getAttribute ( "selectable" ) === "false" )
+    {
+      TR.unselectable = true ;
+    }
+    TR.checkOnSelect = this.checkOnSelect ;
+    if ( eRow.getAttribute ( "check-on-select" ) )
+    {
+      TR.checkOnSelect = eRow.getAttribute ( "check-on-select" ) === 'true' ;
+    }
 
     if ( font ) TR.style.font = font ;
     if ( color ) TR.style.color = color ;
@@ -1912,7 +2047,7 @@ TTable.prototype.mouseUp = function ( event )
     this.getNumberOfSelectedItems() ;
     if ( this.numberOfSelectedRows > 1 )
     {
-      this.deselectAll() ;
+      this.deselectAll ( event ) ;
       this.mouseDown ( event ) ;
     }
   }
@@ -2100,12 +2235,12 @@ if ( ev.isCtrl() && ev.isShift() )
     {
       this.getNumberOfSelectedItems() ;
       if ( this.numberOfSelectedRows > 1 ) return ;
-      this.deselectAll() ;
+      this.deselectAll ( event ) ;
     }
   }
   else
   {
-    this.deselectAll() ;
+    this.deselectAll ( event ) ;
   }
 
   if ( this.selectMultiple && ev.isShift() )
@@ -2155,21 +2290,21 @@ if ( ev.isCtrl() && ev.isShift() )
         r = r.nextSibling ;
       }
     }
-    this.deselectAll() ;
+    this.deselectAll ( event ) ;
 //      if ( rowIndex == -1 ) TR.index ;
     if ( firstIndex == -1 && lastIndex == -1 )
     {
-      this._selectItems ( this.TBODY.firstChild, TR ) ;
+      this._selectItems ( this.TBODY.firstChild, TR, event ) ;
     }
     else
     if ( firstIndex >= 0 && rowIndex >= firstIndex )
     {
-      this._selectItems ( firstRow, TR ) ;
+      this._selectItems ( firstRow, TR, event ) ;
     }
     else
     if ( firstIndex >= 0 && rowIndex <= firstIndex )
     {
-      this._selectItems ( TR, lastRow ) ;
+      this._selectItems ( TR, lastRow, event ) ;
     }
     this.selectedItem = TR ;
     ev.setType ( TEvent.prototype.ITEM_SELECTED ) ;
@@ -2204,13 +2339,19 @@ if ( ev.isCtrl() && ev.isShift() )
 };
 TTable.prototype._setSelected = function ( TR, state, fireSelectionEvent, event, ignoreBrowser )
 {
-  var ev ;
+  var ev, TD ;
   state = state ? true : false ;
 
   if ( ! TR ) return ;
   if ( TR.selected == state ) return ;
   var isKey = false ;
-  if ( event ) isKey = event.type.indexOf ( "key" ) === 0 ;
+  var src ;
+  if ( event )
+  {
+    isKey = event.type.indexOf ( "key" ) === 0 ;
+    var ev = new TEvent ( event ) ;
+    src = ev.getSource() ;
+  }
   if ( state )
   {
     TR.className = this.selectedRowClassName ;
@@ -2220,6 +2361,17 @@ TTable.prototype._setSelected = function ( TR, state, fireSelectionEvent, event,
     {
       TR.style.backgroundColor = "transparent" ;
       TR.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Selected", "background", TR.offsetWidth, TR.offsetHeight ) ;
+    }
+    if ( !src || ( src.type !== 'checkbox' && src.type !== 'radio' ) )
+    {
+      if ( TR.checkOnSelect )
+      {
+        TD = TR.firstChild ;
+        if ( TD.xInput && ( TD.xInput.type == 'checkbox' || TD.xInput.type == 'radio' ) )
+        {
+          TD.xInput.checked = true ;
+        }
+      }
     }
     if ( ! Tango.ua.firefox || isKey || ignoreBrowser )
     {
@@ -2239,6 +2391,17 @@ TTable.prototype._setSelected = function ( TR, state, fireSelectionEvent, event,
     if ( this.selectedBackgroundImageExists )
     {
       TR.style.backgroundImage = "none" ;
+    }
+    if ( ! src || ( src.type !== 'checkbox' && src.type !== 'radio' ) )
+    {
+      if ( TR.checkOnSelect )
+      {
+        TD = TR.firstChild ;
+        if ( TD.xInput && ( TD.xInput.type == 'checkbox' || TD.xInput.type == 'radio' ) )
+        {
+          TD.xInput.checked = false ;
+        }
+      }
     }
     if ( ! Tango.ua.firefox || isKey || ignoreBrowser )
     {
@@ -2448,10 +2611,20 @@ TTable.prototype.getNumberOfSelectedItems = function()
   }
   return this.numberOfSelectedRows ;
 };
-TTable.prototype._selectItems = function ( startRow, endRow )
+TTable.prototype._selectItems = function ( startRow, endRow, event )
 {
   this.numberOfSelectedRows = 0 ;
   var r = startRow ;
+  var TD ;
+  var checker = null ;
+  if ( event )
+  {
+    var ev = new TEvent ( event )
+    if ( ev.getSource().type === 'checkbox' || ev.getSource().type === 'radio' )
+    {
+      checker = ev.getSource() ;
+    }
+  }
   while ( r )
   {
     if ( r.nodeType != DOM_ELEMENT_NODE )
@@ -2464,10 +2637,21 @@ TTable.prototype._selectItems = function ( startRow, endRow )
     r.selected = true ;
     if ( this.selectedBackgroundImageExists )
     {
-//        TR.style.backgroundColor = "transparent" ;
-      TR.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Selected", "background", TR.offsetWidth, TR.offsetHeight ) ;
+//        r.style.backgroundColor = "transparent" ;
+      r.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Selected", "background", TR.offsetWidth, TR.offsetHeight ) ;
     }
-    if ( r == endRow ) break ;
+    if ( r.checkOnSelect )
+    {
+      TD = r.firstChild ;
+      if ( checker !== TD.xInput )
+      {
+        if ( TD.xInput && ( TD.xInput.type === 'checkbox' || TD.xInput.type === 'radio' ) )
+        {
+          TD.xInput.checked = true ;
+        }
+      }
+    }
+    if ( r === endRow ) break ;
     r = r.nextSibling ;
   }
 };
@@ -2494,7 +2678,7 @@ TTable.prototype._setClassImagesRow = function()
     }
   }
 };
-TTable.prototype.getAllItems = function ( changedOnly )
+TTable.prototype.getAllItems = function ( changedOnly, checkedOnly )
 {
   var a = [] ;
   var ch = this.TBODY.firstChild ;
@@ -2510,6 +2694,23 @@ TTable.prototype.getAllItems = function ( changedOnly )
     {
       ch = ch.nextSibling ;
       continue ;
+    }
+    if ( checkedOnly )
+    {
+      var TD = ch.firstChild ;
+      if ( ! TD.xInput )
+      {
+        ch = ch.nextSibling ;
+        continue ;
+      }
+      if ( TD.xInput && ( TD.xInput.type === 'checkbox' || TD.xInput.type === 'radio' ) )
+      {
+        if ( ! TD.xInput.checked )
+        {
+          ch = ch.nextSibling ;
+          continue ;
+        }
+      }
     }
 //      ch.hasChanged = false ;
     a.push ( ch.domRow ) ;
@@ -2541,9 +2742,9 @@ TTable.prototype.getAllItems = function ( changedOnly )
           {
             var v = ch1.xInput.value ;
             if ( this.columnTypes[index] == 'float' || this.columnTypes[index] == 'money' )
-      {
-        v = v.replace ( /,/g, '.' ) ;
-      }
+            {
+              v = v.replace ( /,/g, '.' ) ;
+            }
             x.setContent ( v ) ;
           }
         }
@@ -2664,6 +2865,15 @@ TTable.prototype.getSelectedItems = function()
               {
                 x = xRow.getXml ( this.columnNames[index] ) ;
                 if ( ! x ) x = xRow.addXml ( this.columnNames[index] ) ;
+                if ( ch1.xInput.type == 'checkbox' || ch1.xInput.type == 'radio' )
+                {
+                  if ( ch1.xInput.checked ) x.setContent ( ch1.xInput.value ) ;
+                  else
+                  {
+                    if ( ch1.xInput.xDefaultValue ) x.setContent ( ch1.xInput.xDefaultValue ) ;
+                  }
+                }
+                else
                 if ( ch1.firstChild.type == 'select-one' )
                 {
                   x.setContent ( ch1.firstChild.value ) ;
@@ -2727,10 +2937,19 @@ TTable.prototype.fireItemEvent = function ( ev )
     if ( this._flushed ) break ;
   }
 };
-TTable.prototype.deselectAll = function()
+TTable.prototype.deselectAll = function ( event )
 {
   var si = this.selectedItem ;
   var TR = this.TBODY.firstChild ;
+  var checker = null ;
+  if ( event )
+  {
+    var ev = new TEvent ( event )
+    if ( ev.getSource().type === 'checkbox' || ev.getSource().type === 'radio' )
+    {
+      checker = ev.getSource() ;
+    }
+  }
   while ( TR )
   {
     if ( TR.nodeType != DOM_ELEMENT_NODE )
@@ -2746,6 +2965,17 @@ TTable.prototype.deselectAll = function()
       }
       if ( TR.sectionRowIndex % 2 == 1 ) TR.className = "ThemeTableRowClassAlternate" ;
       else                               TR.className = "ThemeTableRowClass" ;
+      if ( TR.checkOnSelect )
+      {
+        TD = TR.firstChild ;
+        if ( TD.xInput !== checker )
+        {
+          if ( TD.xInput && ( TD.xInput.type == 'checkbox' || TD.xInput.type == 'radio' ) )
+          {
+            TD.xInput.checked = false ;
+          }
+        }
+      }
     }
     TR.selected = false ;
     TR = TR.nextSibling ;
@@ -2756,6 +2986,66 @@ TTable.prototype.deselectAll = function()
   {
     var ev = new TEvent ( null, TEvent.prototype.ITEM_DESELECTED ) ;
     this.fireItemEvent ( ev ) ;
+  }
+};
+TTable.prototype.checkAll = function ( event )
+{
+  if ( this.selectMultiple && this.checkOnSelect )
+  {
+    var startRow = this.TBODY.firstChild ;
+    var endRow = this.TBODY.lastChild ;
+    this._selectItems ( startRow, endRow, event ) ;
+    var ev = new TEvent ( null, TEvent.prototype.ITEM_SELECTED ) ;
+    this.fireItemEvent ( ev ) ;
+  }
+  else
+  {
+    var TR = this.TBODY.firstChild ;
+    while ( TR )
+    {
+      if ( TR.nodeType != DOM_ELEMENT_NODE )
+      {
+        TR = TR.nextSibling ;
+        continue ;
+      }
+      var TD = TR.firstChild ;
+      if ( TD.xInput )
+      {
+        if ( TD.xInput && ( TD.xInput.type === 'checkbox' || TD.xInput.type === 'radio' ) )
+        {
+          TD.xInput.checked = true ;
+        }
+      }
+      TR = TR.nextSibling ;
+    }
+  }
+};
+TTable.prototype.uncheckAll = function ( event )
+{
+  if ( this.selectMultiple && this.checkOnSelect )
+  {
+    this.deselectAll ( event ) ;
+  }
+  else
+  {
+    var TR = this.TBODY.firstChild ;
+    while ( TR )
+    {
+      if ( TR.nodeType != DOM_ELEMENT_NODE )
+      {
+        TR = TR.nextSibling ;
+        continue ;
+      }
+      var TD = TR.firstChild ;
+      if ( TD.xInput )
+      {
+        if ( TD.xInput && ( TD.xInput.type === 'checkbox' || TD.xInput.type === 'radio' ) )
+        {
+          TD.xInput.checked = false ;
+        }
+      }
+      TR = TR.nextSibling ;
+    }
   }
 };
 TTable.prototype.mouseClicked = function ( event )
@@ -3049,10 +3339,12 @@ TTable.prototype.getValues = function ( xml )
   if ( this.getValuesNone ) return ;
   if ( ! xml ) xml = new TXml() ;
   var a = null ;
+  if ( this.getValuesChecked ) a = this.getAllItems ( false, true ) ;
+  else
   if ( this.getValuesChanged ) a = this.getAllItems ( true ) ;
   else
   if ( this.getValuesAll ) a = this.getAllItems() ;
-  else                      a = this.getSelectedItems() ;
+  else                     a = this.getSelectedItems() ;
   for ( var i = 0 ; i < a.length ; i++ )
   {
     xml.addDuplicate ( a[i], this.rowName ) ;
@@ -3287,28 +3579,28 @@ TTable.prototype.setColumnEditTypeCheckBox = function ( colIndexOrName )
     this.editable[index] = "check" ;
   }
 };
-TTable.prototype.checkAll = function ( colIndexOrName, state )
-{
-  state = state ? true : false ;
-  var index = this.getColumnIndexByName ( colIndexOrName ) ;
-  if ( index < 0 ) return ;
-  if ( this.editable[index] != "check" ) return ;
-  for ( var tr = this.TBODY.firstChild ; tr ; tr = tr.nextSibling )
-  {
-    var n = 0 ;
-    tr.hasChanged = true ;
-    for ( var td = tr.firstChild ; td ; td = td.nextSibling )
-    {
-      if ( n == index )
-      {
-        if ( ! td.xInput ) throw "Table: " + this.getName() + ", column " + index + " has no checkable." ;
-        td.xInput.checked = state ;
-        break ;
-      }
-      n++ ;
-    }
-  }
-};
+// TTable.prototype.checkAll = function ( colIndexOrName, state )
+// {
+//   state = state ? true : false ;
+//   var index = this.getColumnIndexByName ( colIndexOrName ) ;
+//   if ( index < 0 ) return ;
+//   if ( this.editable[index] != "check" ) return ;
+//   for ( var tr = this.TBODY.firstChild ; tr ; tr = tr.nextSibling )
+//   {
+//     var n = 0 ;
+//     tr.hasChanged = true ;
+//     for ( var td = tr.firstChild ; td ; td = td.nextSibling )
+//     {
+//       if ( n == index )
+//       {
+//         if ( ! td.xInput ) throw "Table: " + this.getName() + ", column " + index + " has no checkable." ;
+//         td.xInput.checked = state ;
+//         break ;
+//       }
+//       n++ ;
+//     }
+//   }
+// };
 TTable.prototype.setColumnType = function ( colIndexOrName, type )
 {
   var index = this.getColumnIndexByName ( colIndexOrName ) ;
@@ -4118,7 +4410,7 @@ TTable.prototype.getText = function()
       str += "</td>" ;
     }
     str += "</tr>" ;
-  }
+  }G
   str += "</tbody>" ;
   str += "</table>" ;
   return str ;
@@ -4391,6 +4683,38 @@ TTable.prototype.setEnabled = function ( state )
     this.glassOverTable = div ;
   }
 };
+var TableHeader = function ( id )
+{
+  Tango.initSuper( this, TComponent, id );
+  this.jsClassName = "TableHeader" ;
+} ;
+TableHeader.inherits( TComponent ) ;
+TableHeader.prototype.isInResizeArea = function ( ev )
+{
+  var x = TGui.getPageOffsetLeft ( this.dom ) ;
+  var y = TGui.getPageOffsetTop ( this.dom ) ;
+  var w = this.dom.offsetWidth ;
+  var h = this.dom.offsetHeight ;
+  var X = ev.getX() ;
+  var Y = ev.getY() ;
+  if ( this.dom.parentNode.lastChild == this.dom  )
+  {
+  }
+  if ( Y < y + 2 || Y > y + h - 2 )
+  {
+    return false ;
+  }
+  if ( X > x && X < x + 7 )
+  {
+    return true ;
+  }
+  if ( X > x + w - 5 && X < x + w + 2 )
+  {
+    return true ;
+  }
+  return false ;
+};
+
 TableHeaderMenu = function ( table )
 {
   this.tab = table ;
@@ -4610,6 +4934,7 @@ TTableRow.prototype =
   getIndex: function() { return this.TR.sectionRowIndex ; },
   getDom: function() { return this.TR.domRow ; },
   getXml: function() { return new TXml ( this.TR.domRow ) ; },
+  getContent: function ( name ) { return new TXml ( this.TR.domRow ).getContent ( name ) ; },
   getHtmlElement: function() { return this.TR ; },
   getInputComponentAt: function ( indexOrName )
   {
