@@ -12,7 +12,7 @@ if ( !Array.isArray )
   };
 }
 var _isBrowser = true ;
-if ( typeof document !== 'undefined' && typeof module === 'undefined' ) // browser ?
+if ( typeof document !== 'undefined' && typeof module === 'undefined' ) // browser
 {
 	_isBrowser = true ;
 }
@@ -349,6 +349,22 @@ gepard.Event.prototype =
 	{
   	return this.control._isFailureInfoRequested ;
 	},
+	setStatusInfoRequested: function()
+	{
+  	this.control._isStatusInfoRequested = true ;
+	},
+	isStatusInfoRequested: function()
+	{
+  	return this.control._isStatusInfoRequested ;
+	},
+	setIsStatusInfo: function()
+	{
+  	this.control._isStatusInfo = true ;
+	},
+	isStatusInfo: function()
+	{
+  	return this.control._isStatusInfo ;
+	},
 	/**
 	 * Description
 	 * @method setIsBroadcast
@@ -604,6 +620,12 @@ gepard.Event.prototype =
 		if ( ! this.control ) return ;
 		if ( ! this.control.status ) return ;
 		return this.control.status.reason ;
+	},
+	getStatusName: function()
+	{
+		if ( ! this.control ) return ;
+		if ( ! this.control.status ) return ;
+		return this.control.status.name ;
 	},
 	sendBack: function()
 	{

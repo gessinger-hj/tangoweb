@@ -153,7 +153,7 @@ var TSysClass = function()
     	return true;
   	};
 	}
-  this._use_local_storage = true ;
+  this._use_local_storage = false ;
 };
 TSysClass.prototype =
 {
