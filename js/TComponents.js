@@ -1235,11 +1235,19 @@ TTextField.prototype.getText = function()
   }
   return this.dom.value ;
 };
+TTextField.prototype.setCaretPositionToStart = function()
+{
+  this.setCaretPosition ( 0 ) ;
+};
+TTextField.prototype.setCaretPositionToEnd = function()
+{
+  this.setCaretPosition ( this.dom.value.length ) ;
+};
 TTextField.prototype.setCaretPosition = function ( iCaretPos )
 {
   if ( ! this.dom ) return ;
   if ( document.selection )
-  { 
+  {
     this.dom.focus ();
     var r = document.selection.createRange() ;
     r.moveStart ( "character", - this.dom.value.length ) ;
@@ -1250,7 +1258,7 @@ TTextField.prototype.setCaretPosition = function ( iCaretPos )
     this.dom.focus ();
   }
   else
-  if ( typeof ( this.dom.selectionStart ) == "number" )
+  if ( typeof ( this.dom.selectionStart ) === "number" )
   {
     this.dom.focus ();
     this.dom.selectionStart = iCaretPos;
@@ -1261,7 +1269,7 @@ TTextField.prototype.setCaretPosition = function ( iCaretPos )
 TTextField.prototype.setSelectionStart = function( n )
 {
   if ( ! this.dom ) return ;
-  if ( typeof ( this.dom.selectionStart ) == "number" )
+  if ( typeof ( this.dom.selectionStart ) === "number" )
   {
     this.dom.focus() ;
     this.dom.selectionStart = n ;
@@ -1270,7 +1278,7 @@ TTextField.prototype.setSelectionStart = function( n )
 TTextField.prototype.setSelectionEnd = function( n )
 {
   if ( ! this.dom ) return ;
-  if ( typeof ( this.dom.selectionEnd ) == "number" )
+  if ( typeof ( this.dom.selectionEnd ) === "number" )
   {
     this.dom.focus() ;
     this.dom.selectionEnd = n ;

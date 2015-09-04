@@ -5616,8 +5616,11 @@ TGuiClass.prototype.createHtmlContainer = function ( xElements, externalAttribut
     if ( onkeyup ) a["onkeyup"] = onkeyup ;
     if ( onkeydown ) a["onkeydown"] = onkeydown ;
     var persistent = xElem.getAttribute ( "persistent" ) ;
-    if ( persistent )
+    var persistentValue ;
+    if ( persistent && name )
     {
+      persistentValue = TSys.getPersistentValue ( name, ctx.windowId ) ;
+      if ( persistentValue !== 'undefined' ) a["persistentValue"] = persistentValue ;
       a["persistent"] = true ;
     }
     var dragable = xElem.getAttribute ( "dragable" ) ;
@@ -6225,7 +6228,6 @@ i++ ;
       var preSelectedIndex = -1 ;
       if ( persistent )
       {
-        var persistentValue = TSys.getPersistentValue ( name, ctx.windowId ) ;
         if ( typeof ( persistentValue ) != 'undefined' )
         {
           preSelectedIndex = parseInt ( persistentValue ) ;
@@ -6293,11 +6295,6 @@ i++ ;
        || tagName == "DateTime"
        )
     {
-      if ( persistent )
-      {
-        var persistentValue = TSys.getPersistentValue ( name ) ;
-        if ( persistentValue  ) a["persistentValue"]= persistentValue ;
-      }
       if ( tagName == "Date" ) a["xClassName"] = "Date" ;
       if ( tagName == "DateTime" ) a["xClassName"] = "DateTime" ;
 
@@ -6662,11 +6659,7 @@ i++ ;
       s += "'" ;
 
       if ( styleRight && ! TGui.isLTR() ) s += " dir='ltr' " ;
-      if ( persistent )
-      {
-        var persistentValue = TSys.getPersistentValue ( name ) ;
-        if ( persistentValue  ) value = persistentValue ;
-      }
+      if ( persistentValue ) value = persistentValue ;
       if ( value )
       {
         s += " value='" + value + "'" ;
@@ -6698,7 +6691,6 @@ i++ ;
       if ( style ) s += style ;
       s += "'" ;
 s += " wrap='off' " ;
-      var persistentValue = TSys.getPersistentValue ( name ) ;
       if ( persistentValue  )
       {
         s += ">" + persistentValue + "</textarea>";
@@ -9245,6 +9237,10 @@ log ( "Missing ch.xClassName, ch.className: " + ch.className ) ;
       if ( layoutContext.listenerContext && ! a["ignorechange"] )
       {
         layoutContext.listenerContext.addOnKeyUpEvent ( ch ) ;
+      }
+      if ( a["persistent"] )
+      {
+        new TTextField ( ch ).setCaretPositionToEnd() ;
       }
     }
     else
