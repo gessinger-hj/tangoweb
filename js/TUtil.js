@@ -3161,6 +3161,7 @@ DateUtilsClass.prototype =
     this._dateTimeFormatMedium["de"] = "d.MMM.yyyy HH:mm:ss" ;
     this._dateFormatLong["de"] = "d.MMMM.yyyy" ;
     this._dateTimeFormatLong["de"] = "d.MMMM.yyyy HH:mm:ss" ;
+    this._setFormats() ;
   },
   getDateTimeFormatShort: function()
   {
@@ -3168,9 +3169,9 @@ DateUtilsClass.prototype =
     if ( f ) return f ;
     return this._dateTimeFormatShort["en"] ;
   },
-  setFormats: function ( webConfig )
+  _setFormats: function ()
   {
-    if ( ! this._initialized ) this._initialize() ;
+    var webConfig = TSys.getWebConfig() ;
     if ( ! webConfig.getXml() ) return ;
     var str = webConfig.getXml().getContent ( "FormatSymbols/Date" ) ;
     if ( ! str ) return ;
@@ -3453,6 +3454,14 @@ DateUtilsClass.prototype =
     if ( mode == this.SHORT )
     {
       f = this._dateFormatShort[lang] ;
+// if ( f.startsWith ( "M" ) )
+{
+  // var str = "" ;
+  // str += "\nf=" + f ;
+  // str += "\nlang=" + lang ;
+  // str += "||||||||||||||" + TSys.toFullString ( this._dateFormatShort ) + "|||||||||||||||" ;
+  // TSys.log ( str ) ;
+}
       if ( f ) return f + post ;
       if ( lang == "en" ) return "M/d/yyyy" + post ;
       return "d.M.yyyy" + post ;

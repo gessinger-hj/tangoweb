@@ -1783,7 +1783,6 @@ log ( exc ) ;
     if ( this.webConfig && this.webConfig.xml ) return this.webConfig ;
     this.webConfig = new TWebConfig() ;
     this.webConfig.initialize() ;
-    DateUtils.setFormats ( this.webConfig ) ;
     this._useAxlCache = this.webConfig.getBool ( "UseAxlCache", Tango.ua.realMobile ) ;
     this._minPageWidth = this.webConfig.getInt ( "MinPageWidth", 0 ) ;
     this._minPageHeight = this.webConfig.getInt ( "MinPageHeight", 0 ) ;
@@ -6348,25 +6347,25 @@ i++ ;
             + " style='" + st + "'"
             + ">\n"
             ;
-  var widthM4 = "width:" + ( this.M_width * 4 ) + "px;" ;
-  var widthM5 = "width:" + ( this.M_width * 5 ) + "px;" ;
+      var widthM4 = "width:" + ( this.M_width * 4 ) + "px;" ;
+      var widthM5 = "width:" + ( this.M_width * 5 ) + "px;" ;
 
       var showDayOfMonth = xElem.getAttribute ( "show-day-of-month" ) == 'false' ? false : true ;
       var style_day = "position:absolute;" + fontSize + widthM5 ;
       if ( ! showDayOfMonth ) style_day += "display:none" ;
-    a["show-day-of-month"] = showDayOfMonth ;
+      a["show-day-of-month"] = showDayOfMonth ;
       var showMonthNames = xElem.getAttribute ( "show-month-names" ) == 'true' ? true : false ;
-  if ( showMonthNames )
-  {
-    a["show-month-names"] = showMonthNames ;
-    var monthNames = DateUtils.getMonthNames() ;
-    var len = 0 ;
-    for ( var i = 0 ; i < monthNames.length ; i++ )
-    {
-      len = Math.max ( len, monthNames[i].length ) ;
-    }
-    widthM5 = "width:" + ( ( len + 1 ) * this.M_width ) + "px;" ;
-  }
+      if ( showMonthNames )
+      {
+        a["show-month-names"] = showMonthNames ;
+        var monthNames = DateUtils.getMonthNames() ;
+        var len = 0 ;
+        for ( var i = 0 ; i < monthNames.length ; i++ )
+        {
+          len = Math.max ( len, monthNames[i].length ) ;
+        }
+        widthM5 = "width:" + ( ( len + 1 ) * this.M_width ) + "px;" ;
+      }
 
       if ( dateFormat.startsWith ( "M" ) )
       {

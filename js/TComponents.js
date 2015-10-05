@@ -1088,6 +1088,7 @@ TDate.prototype.setTime = function ( millis )
 TDate.prototype.setMinimumDate = function ( minDate )
 {
   if ( ! this.dom ) return null ;
+  if ( ! minDate ) return null ;
   var currentDate = this.getDate() ;
   this.dom.minDate = minDate ;
   var selectedIndex = this.dom.hYear.selectedIndex ;
@@ -1103,6 +1104,7 @@ TDate.prototype.setMinimumDate = function ( minDate )
 TDate.prototype.setMaximumDate = function ( maxDate )
 {
   if ( ! this.dom ) return null ;
+  if ( ! maxDate ) return null ;
   var currentDate = this.getDate() ;
   this.dom.maxDate2 = maxDate ;
   if ( currentDate && currentDate.getTime() > maxDate.getTime() )

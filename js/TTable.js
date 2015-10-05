@@ -3856,7 +3856,7 @@ TTable.prototype.insertRowAt = function ( row, index )
         if ( this.columnTypes[i] == "date" )
         {
           columnValues[i] = columnValues[i].trim() ;
-          if ( eRowChild.getAttribute ( "visibleText" ) )
+          if ( eRowChild && eRowChild.getAttribute ( "visibleText" ) )
           {
             TD.appendChild ( document.createTextNode ( columnVisibleText[i] ) ) ;
           }
