@@ -6086,7 +6086,8 @@ TextFieldDelayedEventHandler.prototype =
       }
     }
     else
-    if ( ev.isAlt() || ev.isCtrl()
+    if ( ev.isAlt()
+       || ( ev.isCtrl() && ev.getCharCode() !== 'V' )
        || kc === 37
        || kc === 38
        || kc === 39
@@ -6392,7 +6393,8 @@ tfrl.resultlistPatternType = a["resultlistPatternType"] ;
       this.timer.stop() ;
     }
     else
-    if ( ev.isAlt() || ev.isCtrl()
+    if ( ev.isAlt()
+       || ( ev.isCtrl() && ev.getCharCode() !== 'V' )
        || kc === 37
        || kc === 38
        || kc === 39
