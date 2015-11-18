@@ -1015,6 +1015,22 @@ TXml.prototype =
     if ( !s ) return null ;
     return DateUtils.parseDate ( s ) ;
   },
+  filter: function ( visitor )
+  {
+    var toBeRemoved = [] ;
+    this.elements ( function f ( e )
+    {
+      if ( visitor ( e ) === true )
+      {
+        toBeRemoved.push ( e ) ;
+      }
+    } ) ;
+    for ( var i = 0 ; i < toBeRemoved.length ; i++ )
+    {
+      toBeRemoved[i].remove() ;
+    }
+    toBeRemoved.length = 0 ;
+  },
   elements: function ( visitor )
   {
     if ( typeof (  visitor ) == 'function' )

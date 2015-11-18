@@ -475,6 +475,12 @@ CosmosClass.prototype._getDomByClassName = function ( dom, name, list )
       if ( ! list ) return ch ;
       list.push ( ch) ;
     }
+    else
+    if ( ch.className && ch.className.indexOf ( name ) >= 0 )
+    {
+      if ( ! list ) return ch ;
+      list.push ( ch) ;
+    }
     if ( ch.firstChild )
     {
       var cch = this._getDomByClassName ( ch, name, list ) ;
@@ -492,13 +498,14 @@ CosmosClass.prototype.showGoogleMapSearch = function ( address )
 var contentId = "map" ;
   var s = ""
         + "<xml>\n"
-        + "  <Window resizable='true' closable='true' >\n"
+        + "  <Window resizable='true' closable='true' id='GOOGLE_MAP_X'>\n"
         + "    <Container style='bottom:-0px;right:-0px;' >\n"
         + "      <TextField name='address' style='right:-0px;' \n"
         + "        onkeyup=\"function(event)\n"
         + "        {\n"
         + "        l=[];\n"
         + "        var d=Cosmos.getDomByClassName('pac-container',l);\n"
+        + "        if ( ! l.length ) return;\n"
         + "        if(l.length>1){l[0].parentNode.removeChild(l[0]);l[0]=l[1];}\n"
         + "        l[0].style.zIndex=64999 ;\n"
         + "        }\"\n"
