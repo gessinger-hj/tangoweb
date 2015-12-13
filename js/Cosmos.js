@@ -658,20 +658,24 @@ CosmosClass.prototype.getExplanationFromFreeDictionary = function ( q )
   if ( ! q ) return "" ;
   q = encodeURIComponent ( q ) ;
   var url = "http://www.thefreedictionary.com/" ;
+// log ( "url=" + url ) ;
   var u = new URLProxy ( url + q ) ;
   var t = u.getText() ;
+// log ( t ) ;
   var pos0 = t.indexOf ( "<body" ) ;
   var pos1 = t.indexOf ( "</body>" ) ;
   t = t.substring ( pos0, pos1 + 6 ) ;
-  pos0 = t.indexOf ( "<div id=MainTxt>" ) ;
+  pos0 = t.indexOf ( '<div id="MainTxt">' ) ;
   if ( pos0 < 0 )
   {
     t = "Not found" ;
   }
   else
   {
-    pos0 = t.indexOf ( "<table", pos0 ) ;
-    pos1 = t.indexOf ( "</table>", pos0 ) ;
+    pos0 = t.indexOf ( "<section", pos0 ) ;
+    pos1 = t.indexOf ( "</section>", pos0 ) ;
+    // pos0 = t.indexOf ( "<table", pos0 ) ;
+    // pos1 = t.indexOf ( "</table>", pos0 ) ;
     t = t.substring ( pos0, pos1 ) ;
   }
   t = this.adjustHref ( t, url ) ;
