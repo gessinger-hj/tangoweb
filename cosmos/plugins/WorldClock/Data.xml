@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<table>
+<loc id='GMXX0080'>
+<dnam>Mainz, Germany</dnam>
+<tm>3:15 PM</tm>
+<lat>50.00</lat>
+<lon>8.27</lon>
+<sunr>7:50 AM</sunr>
+<suns>6:34 PM</suns>
+<zone>2</zone>
+<id>GMXX0080</id>
+</loc>
+<loc id='USNY0996'>
+<dnam>New York, NY</dnam>
+<tm>9:18 AM</tm>
+<lat>40.71</lat>
+<lon>-74.01</lon>
+<sunr>7:08 AM</sunr>
+<suns>6:14 PM</suns>
+<zone>-4</zone>
+<id>USNY0996</id>
+</loc>
+<loc id='USHI0026'>
+<dnam>Honolulu, HI</dnam>
+<tm>3:20 AM</tm>
+<lat>21.30</lat>
+<lon>-157.85</lon>
+<sunr>6:27 AM</sunr>
+<suns>6:06 PM</suns>
+<zone>-10</zone>
+<id>USHI0026</id>
+</loc>
+<loc id='INXX0096'>
+<dnam>New Delhi, India</dnam>
+<tm>6:52 PM</tm>
+<lat>28.61</lat>
+<lon>77.21</lon>
+<sunr>6:22 AM</sunr>
+<suns>5:51 PM</suns>
+<zone>5</zone>
+<id>INXX0096</id>
+</loc>
+<loc>
+<dnam>London, United Kingdom</dnam>
+<id>UKXX0085</id>
+</loc>
+<loc>
+<dnam>San Francisco, CA</dnam>
+<id>USCA0987</id>
+</loc>
+<loc>
+<dnam>Mumbai, India</dnam>
+<id>INXX0087</id>
+</loc>
+<loc>
+<dnam>Dhaka, Bangladesh</dnam>
+<id>BGXX0003</id>
+</loc>
+<loc>
+<dnam>Phnom Penh, Cambodia</dnam>
+<id>CBXX0001</id>
+</loc>
+<loc>
+<dnam>Manila, Philippines</dnam>
+<id>RPXX0017</id>
+</loc>
+<loc>
+<dnam>Palau, PW</dnam>
+<id>USPW0001</id>
+</loc>
+<loc>
+<dnam>Mangilao, GU</dnam>
+<id>USGU0010</id>
+</loc>
+<loc>
+<dnam>Pohnpei, FM</dnam>
+<id>USFM0003</id>
+</loc>
+<loc>
+<dnam>Christchurch, New Zealand</dnam>
+<id>NZXX0006</id>
+</loc>
+<loc>
+<dnam>Melbourne, Australia</dnam>
+<id>ASXX0075</id>
+</loc>
+<loc>
+<dnam>Kwajalein/Bucholz, MH</dnam>
+<id>USMH0001</id>
+</loc>
+<loc>
+<dnam>Nausori, Fiji</dnam>
+<id>FJXX0005</id>
+</loc>
+<loc>
+<dnam>Pago Pago, AS</dnam>
+<id>USAS0001</id>
+</loc>
+<loc>
+<dnam>Midway Island, MQ</dnam>
+<id>USMQ0001</id>
+</loc>
+<loc>
+<dnam>Los Angeles, CA</dnam>
+<id>USCA0638</id>
+</loc>
+<loc>
+<dnam>Kodak, TN</dnam>
+<id>USTN0269</id>
+</loc>
+<loc>
+<dnam>Bethel, AK</dnam>
+<id>USAK0028</id>
+</loc>
+</table>
+<id>NZXX0006</id>
+</xml>

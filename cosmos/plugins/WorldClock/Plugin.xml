@@ -1,0 +1,356 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Header>
+    <Type>Desklet</Type>
+    <Title>World Clock</Title>
+    <Description>World Clock</Description>
+  </Header>
+  <Script><![CDATA[
+  {
+    desklet: null,
+    xData: null,
+    _constructor_: function()
+    {
+      this.initialize() ;
+      this.desklet = new this.WorldClock ( "WorldClock" ) ;
+//      this.desklet.addEventListener ( "dblclick", this, this.dblclick ) ;
+      this.desklet.parent = this ;
+      this.desklet.setSize ( 128, 128 ) ;
+      this.desklet.setStartAngle ( 0 ) ;
+
+      this.desklet.setBack ( 'WC_face.png' ) ;
+      this.desklet.setHourHand ( 'WC_hourhand.png' ) ;
+      this.desklet.setMinuteHand ( 'WC_minutehand.png' ) ;
+      this.desklet.setSecondHand ( 'WC_minutehand.png' ) ;
+      this.desklet.setOverlay ( 'WC_shine.png' ) ;
+
+      try
+      {
+        this.xData = this.desklet.getUserData() ;
+      }
+      catch ( exc )
+      {
+        this.xData = new TXml() ;
+      }
+      this.xDataTable = this.xData.get ( "table" ) ;
+      if ( this.xDataTable && this.xDataTable.isEmpty() )
+      {
+        this.xDataTable.remove() ;
+        this.xDataTable = null ;
+      }
+      if ( ! this.xDataTable )
+      {
+        var x = new TXml ( TSys.getXml ( "${home}/ConfigData.xml" ) ) ;
+        var xx = x.get ( "table" ) ;
+        this.xData.addDuplicate ( xx ) ;
+        this.xDataTable = this.xData.get ( "table" ) ;
+      }
+      var cityNumber = this.xData.getContent ( "cityNumber" ) ;
+
+      if ( ! cityNumber )
+      {
+        cityNumber = 983 ;
+        var xId = this.xData.ensureXml ( "cityNumber" ) ;
+        xId.setContent ( cityNumber ) ;
+      }
+      this.desklet.setLocationParameter ( cityNumber ) ;
+      this.desklet.start() ;
+    },
+    initialize: function()
+    {
+      this.WorldClock = function ( name, id )
+      {
+        Tango.initSuper ( this, ClockDeskletDefault, name, id );
+        this.jsClassName = "WorldClock" ;
+        this.first = true ;
+        this.src  = new www_timeanddate_com() ;
+      } ;
+      this.WorldClock.inherits( ClockDeskletDefault ) ;
+      this.WorldClock.prototype.setLocationParameter = function ( cityNumber )
+      {
+        this.parameter = this.src.getParameter ( cityNumber ) ;
+        this.zone = this.parameter.zone ;
+        this.dnam = this.parameter.dnam ;
+	if ( this.cityLabel ) this.cityLabel.innerHTML = this.dnam ; //+ "(" + this.zone + ")" ;
+      } ;
+      this.WorldClock.prototype.paint = function()
+      {
+        if ( this.first )
+        {
+          this.first = false ;
+          var sz = this.getSize() ;
+          var str = "<span style='width:" + sz.width + "px;font-size:xx-small;text-align:center;color:black;'>X</span>" ;
+          this.cityLabel = TGui.createElement ( str ) ;
+          this.dom.appendChild ( this.cityLabel ) ;
+          this.cityLabel.style.position = 'absolute' ;
+          this.cityLabel.style.left = "0px" ;
+          this.cityLabel.style.top = "84px" ;
+          this.cityLabel.innerHTML = this.dnam ;
+          this.cityLabel.innerHTML = this.dnam + "(" + this.zone + ")" ;
+
+          var str = "<span style='width:" + sz.width + "px;font-size:xx-small;text-align:center;color:black;'>X</span>" ;
+          this.timeLabel = TGui.createElement ( str ) ;
+          this.dom.appendChild ( this.timeLabel ) ;
+          this.timeLabel.style.position = 'absolute' ;
+          this.timeLabel.style.left = "0px" ;
+          this.timeLabel.style.top = "96px" ;
+          this.timeLabel.innerHTML = "16:10:10" ;
+
+          var str = "<xml><IconButton style='width:15px;'"
+                  + " normal='" + Cosmos.getIconConfigure ( "inside" ) + "'"
+                  + " inside='" + Cosmos.getIconConfigure ( "normal" ) + "'"
+                  + " pressed='" + Cosmos.getIconConfigure ( "pressed" ) + "'"
+                  + " name='PB.CONFIG'"
+                  + " /></xml>"
+                  ;
+          var xml = TSys.parseXml ( str ) ;
+          this.eConfigure = TGui.createElement ( xml ) ;
+          this.dom.appendChild ( this.eConfigure ) ;
+          this.eConfigure.style.top = "0px" ;
+          this.eConfigure.style.left = "0px" ;
+          this.eConfigure.style.visibility = "hidden" ;
+          TGui.addEventListener ( this.eConfigure, "click", this.onConfigureClick.bindAsEventListener ( this ) ) ;
+
+          str = "<xml><IconButton style='width:15px;'"
+		  + " normal='${home}/google-favicon.png'"
+                  + " name='PB.GOOGLE'"
+                  + " /></xml>"
+                  ;
+          xml = TSys.parseXml ( str ) ;
+          this.eGoogle = TGui.createElement ( xml ) ;
+          this.dom.appendChild ( this.eGoogle ) ;
+          this.eGoogle.style.top = "0px" ;
+          this.eGoogle.style.left = "15px" ;
+          this.eGoogle.style.visibility = "hidden" ;
+          TGui.addEventListener ( this.eGoogle, "click", this.onGoogleClick.bindAsEventListener ( this ) ) ;
+
+          str = "<xml><IconButton style='width:15px;'"
+		  + " normal='${home}/www.timeanddate.com-16.png'"
+                  + " name='PB.TIMEANDDATE'"
+                  + " /></xml>"
+                  ;
+          xml = TSys.parseXml ( str ) ;
+          this.eTimeAndDate = TGui.createElement ( xml ) ;
+          this.dom.appendChild ( this.eTimeAndDate ) ;
+          this.eTimeAndDate.style.top = "15px" ;
+          this.eTimeAndDate.style.left = "0px" ;
+          this.eTimeAndDate.style.visibility = "hidden" ;
+          TGui.addEventListener ( this.eTimeAndDate, "click", this.onTimeAndDateClick.bindAsEventListener ( this ) ) ;
+        }
+        if ( ! Tango.ua.opera )
+        {
+          if ( this.hourhand && ! this.hourhandLoaded ) { this.timer.stop() ; this.timer.start() ; return ; }
+          if ( this.minutehand && ! this.minutehandLoaded )  { this.timer.stop() ; this.timer.start() ; return ; }
+          if ( this.secondhand && ! this.secondhandLoaded )  { this.timer.stop() ; this.timer.start() ; return ; }
+          if ( this.overlay && ! this.overlayLoaded )  { this.timer.stop() ; this.timer.start() ; return ; }
+          if ( this.back && ! this.backLoaded )  { this.timer.stop() ; this.timer.start() ; return ; }
+        }
+
+        var size = this.getSize() ;
+        var context = this.getContext('2d');
+        context.clearRect(0, 0, size.width, size.height);
+
+        if ( this.back )
+        {
+          try
+          {
+            this.drawBack ( context ) ;
+          }
+          catch ( exc )
+          {
+            log ( exc ) ;
+          }
+        }
+        context.save();
+
+        context.translate(size.width/2, size.height/2);
+        var d = new Date() ;
+        var hours = ( d.getUTCHours() + this.parameter.dUTCHours ) % 24 ;
+        var minutes = d.getUTCMinutes() + this.parameter.dUTCMinutes ;
+
+        var hh = hours + minutes / 60.0 ;
+        var hoursAngle = hh * ( 360 / 12 ) ;
+        var mm = minutes + d.getSeconds() / 60.0 ;
+        var minutesAngle = mm * ( 360 / 60 ) ;
+        var secondsAngle = d.getSeconds() * ( 360 / 60 ) ;
+
+        var ha = hoursAngle * ( Math.PI * 2 / 360.0 ) + this.startAngle ;
+        var ma = minutesAngle * ( Math.PI * 2 / 360.0 ) + this.startAngle ;
+        var sa = secondsAngle * ( Math.PI * 2 / 360.0 ) + this.startAngle ;
+
+        d.setHours ( hours ) ;
+        d.setMinutes ( minutes ) ;
+
+        var sTime = DateUtils.formatDate ( d, "HH:mm:ss" ) ;
+        this.timeLabel.innerHTML = sTime ;
+
+        if ( this.hourhand )
+        {
+          context.save();
+          context.rotate( ha );
+          context.drawImage ( this.hourhand, -size.width/2, -size.height/2 ) ;
+          context.restore();
+        }
+
+        if ( this.minutehand )
+        {
+          context.save();
+          context.rotate ( ma );
+          context.drawImage ( this.minutehand, -size.width/2, -size.height/2 ) ;
+          context.restore();
+        }
+
+        if ( this.secondhand )
+        {
+          context.rotate ( sa );
+          context.drawImage ( this.secondhand, -size.width/2, -size.height/2 ) ;
+        }
+
+        context.restore();
+        if ( this.overlay )
+        {
+          context.drawImage( this.overlay, 0, 0);
+        }
+      } ;
+      this.WorldClock.prototype.drawBack = function ( context )
+      {
+        context.clearRect  (0,   0, 128, 128);
+	var d = this.zone ;
+	if ( d > 0 ) d-- ;
+        var x = Math.floor ( -248 + 64 - ( d * 10.3 ) ) ;
+        var WC_cylmap = new Image() ;
+        WC_cylmap.src = this.getImageUrl ( 'WC_cylmap.png' ) ;
+        context.drawImage( WC_cylmap, x, 0);
+
+        var i2 = new Image() ;
+        i2.src = this.getImageUrl ( 'WC_mapmask-FF00FF-2.png' ) ;
+        context.drawImage( i2, 0, 0);
+
+        /* set all pink to alpha = 0 */
+        var imgd = context.getImageData ( 0, 0, 128, 128);
+        var pix = imgd.data;
+        for (var i = 0, n = pix.length; i < n; i += 4)
+        {
+          if ( pix[i  ] == 0xFF && pix[i+2] == 0xFF )
+          {
+            pix[i+3] = 0 ; /* i+3 is alpha (the fourth element)*/
+          }
+        }
+        context.putImageData(imgd, 0, 0);
+        context.clearRect  (0,   0, 128, 128);
+
+        context.drawImage( this.back, 0, 0);
+
+        var imgd2 = context.getImageData ( 0, 0, 128, 128);
+        var pix2 = imgd2.data;
+
+        for (var i = 0, n = pix2.length; i < n; i += 4)
+        {
+          if ( pix[i+3] != 0 )
+          {
+            pix2[i] = pix[i] ;
+            pix2[i+1] = pix[i+1] ;
+            pix2[i+2] = pix[i+2] ;
+          }
+        }
+        context.putImageData(imgd2, 0, 0);
+      };
+      this.WorldClock.prototype.focusGained = function()
+      {
+        ClockDeskletDefault.prototype.focusGained.apply ( this, arguments ) ;
+        if ( this.eConfigure ) this.eConfigure.style.visibility = "inherit" ;
+        if ( this.eGoogle ) this.eGoogle.style.visibility = "inherit" ;
+        if ( this.eTimeAndDate ) this.eTimeAndDate.style.visibility = "inherit" ;
+      };
+      this.WorldClock.prototype.focusLost = function()
+      {
+        ClockDeskletDefault.prototype.focusLost.apply ( this, arguments ) ;
+        if ( this.eConfigure ) this.eConfigure.style.visibility = "hidden" ;
+        if ( this.eGoogle ) this.eGoogle.style.visibility = "hidden" ;
+        if ( this.eTimeAndDate ) this.eTimeAndDate.style.visibility = "hidden" ;
+      };
+      this.WorldClock.prototype.onConfigureClick = function ( event )
+      {
+        var w = new CosmosWindow ( "${home}/Configure.axl" ) ;
+        this.w = w ;
+        w.setPagelet ( this ) ;
+        w.create() ;
+        this.parent.xData.sort ( "table/row[dnam]" ) ;
+        w.setValues ( this.parent.xData ) ;
+        var pb = w.getComponent ( "PB.SEARCH" ) ;
+        pb.addEventListener ( "click", this, this.searchLocation ) ;
+        w.show() ;
+      };
+      this.WorldClock.prototype.onGoogleClick = function ( event )
+      {
+        Cosmos.showGoogleMap ( this.parameter.latitude, this.parameter.longitude ) ;
+      };
+      this.WorldClock.prototype.onTimeAndDateClick = function ( event )
+      {
+        var url = "http://www.timeanddate.com/worldclock/city.html?n=" + this.parameter.cityNumber ;
+        window.open ( url ) ;
+      };
+      this.WorldClock.prototype.actionTable = function ( event, close )
+      {
+        var ev = new TEvent ( event ) ;
+        var w = ev.getWindow() ;
+        var ud = w.getPeer ( "table" ).getSelectedUserXml() ;
+        if ( !ud ) return ;
+        var cityNumber = ud.getContent ( "number" ) ;
+        this.setLocationParameter ( cityNumber ) ;
+        if ( close ) w.closeImediately() ;
+      };
+      this.WorldClock.prototype.actionTableResult = function ( ev )
+      {
+        var w = ev.getWindow() ;
+        var ud = ev.getPeer ( "table.result" ).getSelectedUserXml() ;
+        if ( !ud ) return ;
+        var cityNumber = ud.getContent ( "number" ) ;
+        var table = w.getPeer ( "table" ) ;
+        var r = table.findRow ( "number", cityNumber ) ;
+        if ( r )
+        {
+          r.getXml().remove() ;
+          r.remove() ;
+        }
+        table.addRow ( ud ) ;
+        this.parent.xDataTable.addDuplicate ( ud ) ;
+      } ;
+      this.WorldClock.prototype.searchLocation = function ( event )
+      {
+        var ev = new TEvent ( event ) ;
+        var vals = ev.getValues() ;
+        var w = ev.getWindow() ;
+        var q = vals.getContent ( "q" ) ;
+        if ( ! q ) return ;
+        try
+        {
+          var xml = this.src.searchCity ( q ) ;
+          w.setValues ( xml ) ;
+        }
+        catch ( exc )
+        {
+          throw exc ;
+        }
+      } ;
+      this.WorldClock.prototype.flush = function()
+      {
+        this.parent.flush() ;
+        ClockDeskletDefault.prototype.flush.apply ( this, arguments ) ;
+        if ( this.w ) this.w.closeImediately() ;
+      } ;
+    },
+    dblclick: function ( event )
+    {
+      this.desklet.close() ;
+    },
+    flush: function()
+    {
+      var x = this.xData.ensureXml ( "cityNumber" ) ;
+      x.setContent ( this.desklet.parameter.cityNumber ) ;
+      this.desklet.saveUserData ( this.xData ) ;
+    }
+  }
+  ]]></Script>
+</xml>
+
