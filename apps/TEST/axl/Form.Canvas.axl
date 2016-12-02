@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='Form.Canvas' id="Form.Canvas">
+  <Container right=-0 bottom=-0 style='background: transparent;'
+    onload="function(event)
+    {
+      var elem = document.getElementById('myCanvas');
+
+      if (elem && elem.getContext)
+      {
+        var context = elem.getContext('2d');
+context.fillStyle   = '#FF00FF';
+context.fillRect  (0,   0, 128, 128);
+
+context.clearRect  (0,   0, 128, 128);
+
+var back = new Image() ;
+back.src = 'img/WC_cylmap.png' ;
+context.drawImage( back, -248+64, 0);
+
+var i2 = new Image() ;
+i2.src = 'img/WC_mapmask-FF00FF-2.png' ;
+context.drawImage( i2, 0, 0);
+
+/* set all pink to alpha = 0 */
+var imgd = context.getImageData ( 0, 0, 128, 128);
+var pix = imgd.data;
+var  a = [] ;
+for (var i = 0, n = pix.length; i < n; i += 4)
+{
+  if ( pix[i  ] == 0xFF && pix[i+2] == 0xFF )
+  {
+    pix[i+3] = 0 ; /* i+3 is alpha (the fourth element)*/
+  }
+  a[i  ] = pix[i  ] ;
+  a[i+1] = pix[i+1] ;
+  a[i+2] = pix[i+2] ;
+  a[i+3] = pix[i+3] ;
+}
+context.clearRect  (0,   0, 128, 128);
+
+var i3 = new Image() ;
+i3.src = 'img/WC_face.png' ;
+context.drawImage( i3, 0, 0);
+
+var imgd2 = context.getImageData ( 0, 0, 128, 128);
+var pix2 = imgd2.data;
+
+for (var i = 0, n = pix2.length; i < n; i += 4)
+{
+  if ( a[i+3] != 0 )
+  {
+    pix2[i] = a[i] ;
+    pix2[i+1] = a[i+1] ;
+    pix2[i+2] = a[i+2] ;
+  }
+}
+context.putImageData(imgd2, 0, 0);
+
+
+/*log ( 'context.strokeText: ' + context.strokeText ) ;*/
+      }
+    }" ><![CDATA[
+<canvas id="myCanvas" width="128" height="128">
+Fallback content, in case the browser does not support Canvas.
+</canvas>
+  ]]></Container>
+</Container>

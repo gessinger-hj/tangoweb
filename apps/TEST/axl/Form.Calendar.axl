@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Calendar' desktop='true'
+>
+  <Container name='X' onchange='handle:PB' Xonload='*.onload()' Xpagelet='new XX()'>
+    <XCalendar name='ZZZ' show-buttons='false'
+       Xonclick='function(event){ var ev = new TEvent ( event ) ; log ( ev.getValues() ) ; }'
+       ondblclick='function(event){ var ev = new TEvent ( event ) ; log ( ev.getValues() ) ; }'
+    />
+    <br/>
+    <DateTime name=XYZ default='false' Xmandatory='true' />
+    <TextField name=TFXYZ Xmandatory='true' />
+    <PushButton name='PB' text='PB' disabled='true' />
+    <br/>
+    <Label text='default-is-null=true'/><Date name='DATE2' default='false' xdefault='99991231' default-is-null='true' />
+    <br/>
+    <Label text='min-date=2011-10-01'/><Date name='DATE4' default='false' xdefault='99991231' default-is-null='true' min-date='2011-10-01' />
+    <br/>
+    <Label text='DATE5'/><Date name='DATE5' default='false' mandatory='true'/>
+    <PushButton text='set min-date to now' onclick='function(e)
+	    {
+	    var d = new Date() ;
+	    var ev = new TEvent ( e ) ;
+	    var cd = ev.getContainer().getComponent ( "DATE5" ) ;
+	    cd.setMinimumDate ( d ) ;
+	    }
+	    ' />
+    <br/>
+    <Label text='DATE6'/><Date name='DATE6' />
+    <PushButton text='set min-date to now' img='Tango/Misc/ok' onclick='function(e)
+	    {
+	    var d = new Date() ;
+	    var ev = new TEvent ( e ) ;
+	    var cd = ev.getContainer().getComponent ( "DATE6" ) ;
+	    cd.setMinimumDate ( d ) ;
+	    }
+	    ' />
+    <PushButton text='set max-date to now' img='Tango/Misc/ok' onclick='function(e)
+	    {
+	    var d = new Date() ;
+	    var ev = new TEvent ( e ) ;
+	    var cd = ev.getContainer().getComponent ( "DATE6" ) ;
+	    cd.setMaximumDate ( d ) ;
+	    }
+	    ' />
+    <br/>
+    <Label text='DATE3'/>
+    <Date name='DATE3'
+          show-day-of-month='false'
+          default-day-of-month='first'
+          default-time='235959'
+          show-month-names='true'
+          max-year='0'
+          min-year='-6'
+          onchange='{
+            execute: function ( event )
+            {
+              var ev = new TEvent ( event ) ;
+              var date  = ev.getComponent().getDate() ;
+              date = DateUtils.addMonth ( date, 1 ) ;
+              date = DateUtils.roundDownToMonth ( date ) ;
+              date = DateUtils.addDay ( date, -1 ) ;
+              ev.getContainer().getComponent ( "LDATE" ).setValue ( date ) ;
+            }
+          }'
+    />
+    <Label text='slave'/>
+    <Label style='width:80px;' name='LDATE' get-value='true' type='date'
+    onload='function(ev)
+    {
+      var date = new Date() ;
+      date = DateUtils.addMonth ( date, 1 ) ;
+      date = DateUtils.roundDownToMonth ( date ) ;
+      date = DateUtils.addDay ( date, -1 ) ;
+      ev.getComponent().setValue ( date ) ;
+    }'/>
+    <PushButton text='GetValues' style='width:200px;' onclick='function(e)
+	    {
+	    log(new TEvent(e).getValues());
+	    }
+	    ' />
+    <br/>
+    <Date name='DATE7' show-month-names='true' />
+    <PushButton text='add timespans' onclick='{
+      execute: function ( event )
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+        var d = v.getDate ( "DATE7" ) ;
+        log ( DateUtils.formatDate ( d, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addDay ( d, 1 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addDay ( d, 7 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addMonth ( d, 1 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addMonth ( d, 3 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addMonth ( d, 6 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addMonth ( d, 12 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addMonth ( d, 2 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+        d2 = DateUtils.addDay ( d, 14 ) ; log ( DateUtils.formatDate ( d2, "yyyy-MM-dd" ) ) ;
+      }
+      }'
+    />
+    <br/>
+    <DateTime name='DATE8' />
+    <br/>
+    <PushButton text='reset' onclick='
+    {
+	    execute: function ( event )
+	    {
+	      var ev = new TEvent ( event ) ;
+        ev.getContainer().reset() ;
+	    }
+	  }'
+    />
+  </Container>
+</Container>
+</xml>
+

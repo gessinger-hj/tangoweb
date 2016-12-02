@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Mail' name='X'
+>
+  <Container style='width:400px;height:300px;'
+  >
+    <Label text='Mail' /><tab name=T1 /><TextField name='MAIL' type='email' style='right:-4px;' />
+    <br/>
+      <PushButton text='set val'
+        onclick='function(event)
+        {
+	var ev = new TEvent ( event ) ;
+	var x = new TXml() ;
+	x.add ( "MAIL", "hans-juergen_gessinger@datamaticstech.d" ) ;
+	ev.getContainer().setValues ( x ) ;
+	}'
+	/>
+    <br/>
+      <XPushButton text='mail'
+        onclick='function(event)
+        {
+  var mm = new CoMailMessage() ;
+
+  var m = new VXXmlMailMessage() ;
+
+  var fa = "hge@wevli077.com" ;
+  var ta = "hans-juergen_gessinger@datamaticstech.de" ;
+  m.setFromMailAddress ( fa ) ;
+  m.setSubject ( "Fair Usage Policy Change Request" ) ;
+  m.addTORecipient ( ta ) ;
+  m.addBodyPart ( "xxxxxxxxxxxxxxxxxxxx", "text/html" ) ;
+  mm.addXml ( m ) ;
+log ( mm.msg ) ;
+  /*
+  var xResult = mm.send() ;
+  */
+        }'
+        />
+  </Container>
+</Container>
+</xml>
+

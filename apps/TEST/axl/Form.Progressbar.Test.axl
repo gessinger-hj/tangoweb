@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Progressbar Test" id='Form.Progressbar.Test' name='Form.Progressbar.Test' >
+  <PushButton text='Set Percentage' onclick='
+{
+  bar: null,
+  percent: 0,
+  execute: function ( event )
+  {
+    if ( ! this.bar )
+    {
+      this.bar = new TEvent ( event ).getContainer().getPeer ( "PBar" ) ;
+    }
+    this.bar.setPercent ( this.percent ) ;
+    this.percent += 10 ;
+if ( this.percent > 100 ) this.percent = 0 ;
+  }
+}' />
+  <PushButton text='Start' onclick='
+{
+  execute: function ( event )
+  {
+    new TEvent ( event ).getContainer().getPeer ( "PBar" ).start() ;
+  }
+}' />
+  <PushButton text='Start Auto' onclick='
+{
+  execute: function ( event )
+  {
+    new TEvent ( event ).getContainer().getPeer ( "PBar" ).startAuto(10) ;
+  }
+}' />
+  <PushButton text='Stop' onclick='
+{
+  execute: function ( event )
+  {
+    new TEvent ( event ).getContainer().getPeer ( "PBar" ).stop() ;
+  }
+}' />
+  <PushButton text='Working Panel' onclick='
+{
+  execute: function ( event )
+  {
+    new TWorkingPanel({ progressBarShowSeconds: true
+                      , cancel:function(event)
+                        {
+                        }
+                      } ) ;
+  }
+}' />
+  <br/>
+  <Progressbar name='PBar' style='width:200px;height:18px;' />
+  <br/>
+  <TextField />
+</Container>

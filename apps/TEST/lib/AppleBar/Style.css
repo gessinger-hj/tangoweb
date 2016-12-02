@@ -1,0 +1,19 @@
+.AppleContainerTitle
+{
+  margin:0px;
+  padding-top:4px;
+  top:0px;
+  left:0px;
+  height:19px;
+  font-weight: 700;
+  font-size: 13px;
+  color:white;
+  text-align:center;
+  text-shadow: black 1px 1px 1px;
+  font-family: "Bitstream Vera Sans [bitstream]" ;
+}
+.AppleContainerBody
+{
+  background-color:white;
+  border: 1px solid #808080;
+}

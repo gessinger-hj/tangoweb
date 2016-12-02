@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Create Tariff' id="Tariff.Window.Create" onclose='TGui.windowCancel()' >
+    <Container style='right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <ListLabel text='Name' /><tab name='T1' X='+3' /><TextField name='TARIFF_NAME' mandatory='true' style='width:200px;right:-0px;' />
+      <br />
+      <ListLabel text='Tariff Model' /><tab name='T1' X='+3' /><TextField value='11' name='TARIFF_MODEL_ID' type='int' mandatory='true' style='right:-0px;' />
+      <br />
+      <ListLabel text='Client ID' /><tab name='T1' X='+3' /><TextField value='0' name='CLIENT_ID' type='int' mandatory='true' style='right:-0px;' />
+      <br />
+<!--
+      <ListLabel text='Description' /><tab name='T1'/><TextField name='DESCRIPTION' mandatory='true' style='width:200px;right:-0px;'/>
+      <br />
+-->
+      <Container bottom='0' right='0' >
+	<PushButton id='PB.Save' disabled=true img='Tango/Misc/edit-save' text='%Save%' onclick='*.createSave(event)' />
+        <PushButton img='Tango/Misc/edit-cancel' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

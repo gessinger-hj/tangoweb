@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container >
+<!--
+<Container name='X' >
+  <Script><![CDATA[
+  {
+    w: null,
+    uploadImageFile: function ( event )
+    {
+      this.w = new TUploadWindow() ;
+      this.w.setTaskName ( "UPLOAD" ) ;
+      this.w.setTitle ( "Excel Import..." ) ;
+      this.w.setTopLineText ( "Please select an excel file and press <b>Import</b>" ) ;
+      this.w.setButtonUploadText ( "Import" ) ;
+      this.w.setMsgXmlData ( "<xml>"
+                      + "<REQUEST>"
+                      + "<Operation>UPLOAD.FILE</Operation>"
+                      + "</REQUEST>"
+                      + "</xml>"
+                      ) ;
+      this.w.create() ;
+      var thiz = this ;
+      this.w.on ( "input", function ( ev )
+      {
+        var f = thiz.w.getUploadFile() ;
+        var FILE = f.toUpperCase() ;
+        if ( FILE.indexOf ( ".XLS" ) < 0 )
+        {
+          thiz.w.getSubmitButton().setEnabled ( false ) ;
+          var d = new TUserDialog ( "The choosen file <br/>" + f + "<br/> is <b>not</b> an excel file."
+                                   , "Excel Import..."
+                                   ) ;
+          d.error ( this.w ) ;
+          return false ;
+        }
+        var b = thiz.w.getSubmitButton() ;
+        b.dom.focus() ;
+        return true ;
+      } );
+      this.w.on ( "upload-success", function ( ev ) {log ( ev ) ; } ) ;
+      this.w.on ( "upload-error", function ( ev ) {log ( ev ) ; } ) ;
+      this.w.on ( "before-submit", function ( ev ) {log ( ev ) ; return true ; } ) ;
+      this.w.show() ;
+    }
+  }
+  ]]></Script>
+  <PushButton text='uploadImageFile' onclick='*.uploadImageFile()' />
+</Container>
+<br/>
+-->
+<Container name='Y' >
+  <Script><![CDATA[
+  {
+    w: null,
+    uploadImageFile: function ( event )
+    {
+      this.w = new TUploadWindow() ;
+      this.w.setTaskName ( "UPLOAD" ) ;
+      this.w.setTitle ( "Excel Import..." ) ;
+      this.w.setTopLineText ( "Please select an excel file and press <b>Import</b>" ) ;
+      this.w.setButtonUploadText ( "Import" ) ;
+      this.w.setMsgXmlData ( "<xml>"
+                      + "<REQUEST>"
+                      + "<Operation>UPLOAD.FILE</Operation>"
+                      + "</REQUEST>"
+                      + "</xml>"
+                      ) ;
+      this.w.create() ;
+      var thiz = this ;
+      this.w.addPropertyChangeListener ( function ( ev )
+      {
+var src = ev.getSource() ;
+log ( "src=" + src ) ;
+var files = src.files ;
+log ( files, true ) ;
+thiz.sendFile ( files[0] ) ;
+return ;
+        var f = this.w.getUploadFile() ;
+        var FILE = f.toUpperCase() ;
+        if ( false ) /* FILE.indexOf ( ".XLS" ) < 0 ) */
+        {
+          w.getSubmitButton().setEnabled ( false ) ;
+          var d = new TUserDialog ( "The choosen file <br/>" + f + "<br/> is <b>not</b> an excel file."
+                                   , "Excel Import..."
+                                   ) ;
+          d.error ( w ) ;
+          return false ;
+        }
+        var b = w.getSubmitButton() ;
+        b.dom.focus() ;
+        return true ;
+      },"input");
+      this.w.addPropertyChangeListener ( function ( ev ) {/*log ( ev ) ;*/ }, "upload-success" ) ;
+      this.w.addPropertyChangeListener ( function ( ev ) {/*log ( ev ) ;*/ }, "upload-error" ) ;
+      this.w.show() ;
+      },
+      sendFile: function ( file )
+      {
+          var p = this.getFormParameter() ;
+log ( "p=" + p ) ;
+          var uri = TSys.getWebConfig().getContextPath() + "/FileUploadServlet" + p ;
+log ( "uri=" + uri ) ;
+          var xhr = new XMLHttpRequest();
+          var fd = new FormData();
+var xml = this.w._msgXmlData ;
+/*
+oReq.addEventListener("progress", updateProgress, false);
+oReq.addEventListener("load", transferComplete, false);
+oReq.addEventListener("error", transferFailed, false);
+oReq.addEventListener("abort", transferCanceled, false);
+
+
+var files = INPUT_FILE.files ;
+log ( files, true ) ;
+log ( "window.FormData=" + window.FormData ) ;
+log ( "window.File=" + window.File ) ;
+log ( "window.FileReader=" + window.FileReader ) ;
+log ( "window.FileList=" + window.FileList ) ;
+if (window.File && window.FileReader && window.FileList && window.Blob)
+{
+
+}
+
+
+ */
+          xhr.open ( "POST", uri, true ) ;
+          xhr.onreadystatechange = function()
+          {
+            if ( xhr.readyState == 4 && xhr.status == 200 )
+            {
+              log ( xhr.responseText ) ;
+            }
+          };
+          xhr.onload = function()
+          {
+            /*if ( xhr.readyState == 4 && xhr.status == 200 )*/
+            {
+              log ( "2 ---------- " + xhr.responseText ) ;
+            }
+          };
+          fd.append ( "task", this.w.taskName ) ;
+          fd.append ( "MSG_XML_DATA", xml ) ;
+          fd.append ( "UploadFile", file, file.name ) ;
+          /* Initiate a multipart/form-data upload*/
+          xhr.send ( fd ) ;
+        },
+        getFormParameter: function()
+        {
+          if ( ! this.w._uploadAttributeNames.length ) return "" ;
+          var formParameter = "" ;
+          formParameter = "?" ;
+          var first = true ;
+          for ( var i = 0 ; i < this.w._uploadAttributeNames.length ; i++ )
+          {
+            if ( first ) first = false ;
+            else formParameter += "&" ;
+            formParameter += this.w._uploadAttributeNames[i] + "=" + this.w._uploadAttributeValues[i] ;
+          }
+        }
+      }'
+    ]]></Script>
+  <PushButton text='uploadImageFile2' onclick='*.uploadImageFile()' />
+<Container name='Y' >
+  <UploadContainer name='ulc' style='height:200px;background-color:yellow;'
+  top-line-text='Please select an excel file and press <b>Import</b>'
+  button-upload-text='Import'
+  task-name='UPLOAD'
+  title='Excel Import...'
+  multiple='true'
+  >
+  </UploadContainer>
+</Container>
+</Container>
+</Container>
+</xml>
+

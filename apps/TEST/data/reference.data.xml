@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<xml>
+  <Table.Titles>
+    <Global>
+      <Item name="staff_name" text="Name" />
+      <Item name="staff_first_name" text="Vorname" />
+      <Item name="staff_number" text="Personalnummer" />
+      <Item name="end_date" text="Enddatum" />
+      <Item name="last_modified" text="Zuletzt ge&auml;ndert" />
+    </Global>
+  </Table.Titles>
+  <FileExplorerRoot>/home/gess/kepler</FileExplorerRoot>
+</xml>

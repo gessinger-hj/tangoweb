@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Table.Focus' name='X' onchange='handle:PB.GetValues'
+  onload='*.onload()'
+  pagelet='
+  {
+    xml: null,
+    container: null,
+    tab: null,
+    toString: function()
+    {
+      return "(Pagelet in Form.Table.Focus)" ;
+    },
+		onload: function ( ev )
+		{
+  		this.xml = new TXml() ;
+  		var xTab = this.xml.add ( "COMMIT_TABLE" ) ;
+  		var r = null ;
+
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "FIRST" ) ; r.add ( "NFC", "10.10" ) ; r.add ( "NPS", "123456.789" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Voice National" ) ; r.add ( "NFC", "20.20" ) ; r.add ( "NPS", "20000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Voice International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop" ) ; r.add ( "NFC", "10.10" ) ; r.add ( "NPS", "10000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop National" ) ; r.add ( "NFC", "20.20" ) ; r.add ( "NPS", "20000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "300" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "LAST" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+
+  		var en = xTab.getEnum ( "row" ) ;
+  		var i = 0 ;
+  		while ( en.hasNext() )
+  		{
+    		i++ ;
+    		var r = en.nextXml() ;
+    		r.getXml ( "ST" ).setContent ( r.getContent ( "ST" ) + "-" + i ) ;
+  		}
+      this.container = ev.getContainer() ;
+      this.container.setValues ( this.xml ) ;
+
+  		this.tab = this.container.getPeer ( "COMMIT_TABLE" ) ;
+/*
+  		TGlobalEventHandler.setFocus ( this.tab.dom ) ;
+  		var r = this.tab.getFirstRow() ;
+  		r.setSelected ( true, true ) ;
+*/
+/*
+      var b = this.container.getComponent ( "HIDDEN" ) ;
+      var loc = b.getLocationOnPage() ;
+      loc.x = - loc.x - 200 ;
+      b.setLocation ( loc ) ;
+      var d = b.getDom() ;
+      TGui.addEventListener ( d, "focus", this.bevents.bindAsEventListener ( this ) ) ;
+      TGui.addEventListener ( d, "blur", this.bevents.bindAsEventListener ( this ) ) ;
+*/
+      CissDatabase = function()
+      {
+        Tango.initSuper( this, DatabaseClass );
+        this.jsClassName = "CissDatabase" ;
+        this.nameSpace = "CISS" ;
+      } ;
+      CissDatabase.inherits ( DatabaseClass ) ;
+      CissDatabase.prototype.toString = function()
+      {
+        return "(" + this.jsClassName + ")" ;
+      };
+      CissDatabase.prototype.searchCustomer = function ( CUSTOMERCODE )
+      {
+        CUSTOMERCODE = CUSTOMERCODE.replace ( /\*/g, "%" ) ;
+        if ( CUSTOMERCODE.indexOf ( "%" ) < 0 )
+        {
+          CUSTOMERCODE = "%" + CUSTOMERCODE + "%" ;
+        }
+        CUSTOMERCODE = CUSTOMERCODE.toUpperCase() ;
+        var xml = this.select ( "PARTNER"
+                              , "select p.PARTNERID, p.PARTNERCODE, o.OPERATORCODE from partner p, operator o\n"
+                              + " where p.OPERATORID=o.OPERATORID and upper(p.PARTNERCODE) like ? and rownum < 10"
+                              , CUSTOMERCODE
+                              ) ;
+        return xml ;
+      };
+      this.cissDB = new CissDatabase() ;
+		},
+    search: function ( event )
+    {
+var ev = new TEvent ( event ) ;
+      var v = ev.getValues() ;
+      var pattern = v.getContent ( "SEARCH_PATTERN" ) ;
+log ( ev ) ;
+log ( "pattern=" + pattern ) ;
+log ( "this.PARTNERCODE_2_OPERATORCODE[pattern]=" + this.PARTNERCODE_2_OPERATORCODE[pattern] ) ;
+    },
+    PARTNERCODE_2_OPERATORCODE: {},
+    searchNames: function ( ev )
+    {
+      var a = [] ;
+      var v = ev.getValues() ;
+      var pattern = v.getContent ( "SEARCH_PATTERN" ) ;
+      if ( ! pattern || pattern === "*" || pattern === "%" )
+      {
+        return [] ;
+      }
+      var x = this.cissDB.searchCustomer ( pattern ) ;
+      var en = x.getEnum ( "PARTNER/row" ) ;
+      while ( en.hasNext() )
+      {
+        var r = en.nextXml() ;
+        var PARTNERCODE = r.getContent ( "PARTNERCODE" ) ;
+        var OPERATORCODE = r.getContent ( "OPERATORCODE" ) ;
+        this.PARTNERCODE_2_OPERATORCODE[PARTNERCODE] = OPERATORCODE ;
+        a.push ( r.getContent ( "PARTNERCODE" ) ) ;
+      }
+      return a ;
+    }
+	}'
+>
+  <Table name='COMMIT_TABLE' style='width:500px;height:250px;'
+         sortable='true'
+         Xget-values='false'
+         Xshow-header='true'
+         Xautofocus='true'
+         selectonfocus='true'
+  >
+    <Columns>
+      <Column name='ST' />
+      <Column name='NFC' type='money' pre-sorted='up' />
+      <Column name='NPS' type='float' format="%'.2f"/>
+      <Column name='DATE' type='date' format='long' />
+    </Columns>
+  </Table>
+  <Container>
+  <TextField name='SEARCH_PATTERN' default='*' action='*.search()'
+    resultlist='*.searchNames()'
+    resultlist-pattern-type='like'
+   />
+    <!-- TextField name='TF.Pattern'/ -->
+    <br/>
+    <PushButton text='Check 1'/>
+    <br/>
+    <PushButton text='Check 2'/>
+  </Container>
+  <Table name='COMMIT_TABLE'
+         style='width:500px;height:250px;'
+         sortable='true'
+         Xget-values='false'
+         show-header='true'
+         selectonfocus='true'
+  >
+    <Columns>
+      <Column name='ST' />
+      <Column name='NFC' type='money' pre-sorted='up' />
+      <Column name='NPS' type='float' format="%'.2f"/>
+      <Column name='DATE' type='date' format='long' />
+    </Columns>
+  </Table>
+</Container>
+</xml>
+

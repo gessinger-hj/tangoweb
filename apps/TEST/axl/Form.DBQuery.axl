@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.DBQuery' >
+<DBQuery.QueryBuilder name='X' id='Form.DBQuery' desktop='true' style='left:0px;top:0px;bottom:-0;right:-0;' >
+</DBQuery.QueryBuilder>
+</Container>
+

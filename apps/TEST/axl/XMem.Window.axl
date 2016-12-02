@@ -1,0 +1,234 @@
+<xml>
+<Window title='Mem Information' id='Window.Mem.Information' 
+>
+  <Container style='top:0px;left:0px;right:-0px;bottom:-0px;height:600px;' 
+  >
+    <Container style='top:0px;left:0px;right:-0px;bottom:-0px;attach-bottom:true;' 
+    >
+      <TitleLabel text='Details' style='top:0px;left:0px;right:-0px;' /> 
+      <br/> 
+      <Table name='TABLE_MEM' style='width:500px;height:500px;left:0px;right:-0px;bottom:-0px;attach-bottom:true;'
+      >
+        <Columns>
+         <Column name='PID' title='PID' sortable='true' />
+         <Column name='UID' title='User' sortable='true' />
+         <Column name='MB' title='RSS(MB)' sortable='true' type='float' format='%.3f'/>
+         <Column name='XOPTS' title='-X opts' sortable='true' />
+         <Column name='CLAZZ' title='Class' sortable='true' />
+        </Columns>
+<Data>
+<row>
+<PID>26445</PID><UID>ag02808</UID><MB>9.576</MB><XOPTS></XOPTS><CLAZZ>org.gessinger.co.mail.CalypsoMail</CLAZZ></row>
+<row>
+<PID>26368</PID><UID>ag02808</UID><MB>11.668</MB><XOPTS></XOPTS><CLAZZ>org.gessinger.tango.nr.NetResource</CLAZZ></row>
+<row>
+<PID>26329</PID><UID>ag02808</UID><MB>13.696</MB><XOPTS></XOPTS><CLAZZ>org.gessinger.ka.log.KaLog</CLAZZ></row>
+<row>
+<PID>26392</PID><UID>ag02808</UID><MB>18.496</MB><XOPTS></XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>26343</PID><UID>ag02808</UID><MB>31.408</MB><XOPTS></XOPTS><CLAZZ>org.gessinger.co.apps.CoDefaultDispatcher</CLAZZ></row>
+<row>
+<PID>26299</PID><UID>ag02808</UID><MB>65.476</MB><XOPTS>-Xmx80m</XOPTS><CLAZZ>org.apache.catalina.startup.Bootstrap</CLAZZ></row>
+<row>
+<PID>26439</PID><UID>ag02808</UID><MB>82.716</MB><XOPTS></XOPTS><CLAZZ>org.gessinger.tango.query.QuerySubscriber</CLAZZ></row>
+<row>
+<PID>6905</PID><UID>dss</UID><MB>21.708</MB><XOPTS>-Xms10M
+-Xmx10M</XOPTS><CLAZZ>org.gessinger.dss.monitoring.dataCollector.DssDataCollectorServer</CLAZZ></row>
+<row>
+<PID>6871</PID><UID>dss</UID><MB>27.036</MB><XOPTS>-Xms10M
+-Xmx10M</XOPTS><CLAZZ>org.gessinger.ka.log.KaLog</CLAZZ></row>
+<row>
+<PID>7134</PID><UID>dss</UID><MB>27.744</MB><XOPTS>-Xms10M
+-Xmx10M</XOPTS><CLAZZ>org.gessinger.dss.monitoring.DssMonitoringSubscriber</CLAZZ></row>
+<row>
+<PID>7108</PID><UID>dss</UID><MB>38.320</MB><XOPTS>-Xms20M
+-Xmx20M</XOPTS><CLAZZ>org.gessinger.bt.dgs.publisher.DgsFileRequestFeeder</CLAZZ></row>
+<row>
+<PID>7008</PID><UID>dss</UID><MB>44.792</MB><XOPTS>-Xms20M
+-Xmx20M</XOPTS><CLAZZ>org.gessinger.dss.dpp.DgsDpp</CLAZZ></row>
+<row>
+<PID>7037</PID><UID>dss</UID><MB>45.232</MB><XOPTS>-Xms20M
+-Xmx20M</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>6886</PID><UID>dss</UID><MB>83.092</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.co.apps.CoDefaultDispatcher</CLAZZ></row>
+<row>
+<PID>30678</PID><UID>dss</UID><MB>97.616</MB><XOPTS>-Xms64M
+-Xmx128M</XOPTS><CLAZZ>org.apache.catalina.startup.Bootstrap</CLAZZ></row>
+<row>
+<PID>7078</PID><UID>dss</UID><MB>121.928</MB><XOPTS>-Xms64M
+-Xmx512M</XOPTS><CLAZZ>org.gessinger.dss.formatter.DssFormattingSubscriber</CLAZZ></row>
+<row>
+<PID>11833</PID><UID>gess</UID><MB>18.784</MB><XOPTS></XOPTS><CLAZZ>XMem</CLAZZ></row>
+<row>
+<PID>2055</PID><UID>gess</UID><MB>22.388</MB><XOPTS>-Xmx40m</XOPTS><CLAZZ>org.gessinger.tango.display.TDisplay</CLAZZ></row>
+<row>
+<PID>1996</PID><UID>gess</UID><MB>23.168</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.tango.nr.NetResource</CLAZZ></row>
+<row>
+<PID>2134</PID><UID>gess</UID><MB>23.372</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.hsc.entrust.subscriber.EntrustIdentityGuardSubscriber</CLAZZ></row>
+<row>
+<PID>2160</PID><UID>gess</UID><MB>23.568</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.hsc.mailcomposer.MailComposer</CLAZZ></row>
+<row>
+<PID>2182</PID><UID>gess</UID><MB>23.912</MB><XOPTS>-Xmx40m</XOPTS><CLAZZ>org.gessinger.tango.dsshandler.DssHandler</CLAZZ></row>
+<row>
+<PID>2168</PID><UID>gess</UID><MB>25.464</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.hsc.mailtemplate.subscriber.MailTemplateSubscriber</CLAZZ></row>
+<row>
+<PID>2243</PID><UID>gess</UID><MB>29.292</MB><XOPTS>-Xmx10m
+-Xms10m
+-XX:MaxPermSize=30m
+-XX:ReservedCodeCacheSize=20m</XOPTS><CLAZZ>org.gessinger.tango.query.QuerySubscriber</CLAZZ></row>
+<row>
+<PID>2213</PID><UID>gess</UID><MB>31.128</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.co.mail.CalypsoMail</CLAZZ></row>
+<row>
+<PID>2082</PID><UID>gess</UID><MB>37.900</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>2061</PID><UID>gess</UID><MB>38.624</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>2066</PID><UID>gess</UID><MB>42.708</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>1952</PID><UID>gess</UID><MB>56.452</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.ka.log.KaLog</CLAZZ></row>
+<row>
+<PID>2092</PID><UID>gess</UID><MB>59.504</MB><XOPTS>-Xmx40m</XOPTS><CLAZZ>org.gessinger.tango.dssws.DSSWsSubscriber</CLAZZ></row>
+<row>
+<PID>1967</PID><UID>gess</UID><MB>61.764</MB><XOPTS>-Xmx40m</XOPTS><CLAZZ>org.gessinger.co.apps.CoDefaultDispatcher</CLAZZ></row>
+<row>
+<PID>2114</PID><UID>gess</UID><MB>64.428</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.tango.reporter.Reporter</CLAZZ></row>
+<row>
+<PID>2018</PID><UID>gess</UID><MB>86.188</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>21232</PID><UID>gess</UID><MB>166.568</MB><XOPTS>-Xmx80m</XOPTS><CLAZZ>org.apache.catalina.startup.Bootstrap</CLAZZ></row>
+<row>
+<PID>939</PID><UID>isdp</UID><MB>19.652</MB><XOPTS>-Xms20M
+-Xmx20M</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>1410</PID><UID>isdp</UID><MB>21.344</MB><XOPTS>-Xms20M
+-Xmx20M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpFileRequestFeeder</CLAZZ></row>
+<row>
+<PID>846</PID><UID>isdp</UID><MB>30.888</MB><XOPTS>-Xms10M
+-Xmx10M</XOPTS><CLAZZ>org.gessinger.ka.log.KaLog</CLAZZ></row>
+<row>
+<PID>1024</PID><UID>isdp</UID><MB>37.648</MB><XOPTS>-Xms10M
+-Xmx10M</XOPTS><CLAZZ>org.gessinger.co.mail.CalypsoMail</CLAZZ></row>
+<row>
+<PID>1384</PID><UID>isdp</UID><MB>37.656</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpSubscriber</CLAZZ></row>
+<row>
+<PID>966</PID><UID>isdp</UID><MB>39.400</MB><XOPTS>-Xms20M
+-Xmx20M</XOPTS><CLAZZ>org.gessinger.co.db.CalypsoDb</CLAZZ></row>
+<row>
+<PID>993</PID><UID>isdp</UID><MB>52.644</MB><XOPTS>-Xms10M
+-Xmx10M</XOPTS><CLAZZ>org.gessinger.tango.nr.NetResource</CLAZZ></row>
+<row>
+<PID>1299</PID><UID>isdp</UID><MB>53.252</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpSubscriber</CLAZZ></row>
+<row>
+<PID>1194</PID><UID>isdp</UID><MB>56.692</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpSubscriber</CLAZZ></row>
+<row>
+<PID>1242</PID><UID>isdp</UID><MB>62.276</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpSubscriber</CLAZZ></row>
+<row>
+<PID>860</PID><UID>isdp</UID><MB>80.756</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.co.apps.CoDefaultDispatcher</CLAZZ></row>
+<row>
+<PID>1057</PID><UID>isdp</UID><MB>91.532</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.tango.reporter.Reporter</CLAZZ></row>
+<row>
+<PID>1163</PID><UID>isdp</UID><MB>100.812</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpSubscriber</CLAZZ></row>
+<row>
+<PID>1344</PID><UID>isdp</UID><MB>104.364</MB><XOPTS>-Xms40M
+-Xmx40M</XOPTS><CLAZZ>org.gessinger.isdp.adapter.IsdpSubscriber</CLAZZ></row>
+<row>
+<PID>6543</PID><UID>ngmd</UID><MB>51.560</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.co.apps.CoDefaultDispatcher</CLAZZ></row>
+<row>
+<PID>6598</PID><UID>ngmd</UID><MB>51.984</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.md.ftp.FtpSensor</CLAZZ></row>
+<row>
+<PID>6599</PID><UID>ngmd</UID><MB>57.848</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.md.sftp.SFtpSensor</CLAZZ></row>
+<row>
+<PID>6513</PID><UID>ngmd</UID><MB>59.212</MB><XOPTS>-Xmx20m</XOPTS><CLAZZ>org.gessinger.ka.log.KaLog</CLAZZ></row>
+<row>
+<PID>6566</PID><UID>ngmd</UID><MB>65.612</MB><XOPTS>-Xmx10m</XOPTS><CLAZZ>org.gessinger.tango.nr.NetResource</CLAZZ></row>
+<row>
+<PID>6587</PID><UID>ngmd</UID><MB>71.856</MB><XOPTS>-Xmx40m</XOPTS><CLAZZ>org.gessinger.md.sub.Converter</CLAZZ></row>
+</Data>
+      </Table>
+      <br/> 
+      <Container style='bottom:0px;right:0px;'> 
+        <PushButton text='Print'          onclick='function(event)
+          {
+            var ev = new TEvent ( event ) ;
+            var c = ev.getContainer() ;
+            var tab = c.getPeer("TABLE_MEM") ;
+            tab.print() ;
+          }'
+        />        <PushButton text='CSV'          onclick='function(event)
+          {
+            var ev = new TEvent ( event ) ;
+            var c = ev.getContainer() ;
+            var tab = c.getPeer("TABLE_MEM") ;
+            tab.createCsv() ;
+          }'
+        />        <PushButton text='Excel'          onclick='function(event)
+          {
+            var ev = new TEvent ( event ) ;
+            var c = ev.getContainer() ;
+            var tab = c.getPeer("TABLE_MEM") ;
+            tab.createExcel() ;
+          }'
+        />      </Container> 
+    </Container> 
+    <br/> 
+    <Container style='top:0px;left:0px;right:-0px;bottom:0px;attach-bottom:true;' 
+    >
+      <TitleLabel text='Overview' style='top:0px;left:0px;right:-0px;' /> 
+      <br/> 
+      <Table name='TABLE_OVERVIEW' style='width:500px;height:150px;left:0px;right:-0px;bottom:-0px;'
+      >
+        <Columns>
+         <Column name='UID' title='User' sortable='true' />
+         <Column name='MB' title='RSS(MB)' sortable='true' type='float' format='%.3f'/>
+        </Columns>
+<Data>
+<row>
+<UID>ag02808</UID><MB>227.574</MB></row>
+<row>
+<UID>dss</UID><MB>495.574</MB></row>
+<row>
+<UID>gess</UID><MB>815.637</MB></row>
+<row>
+<UID>isdp</UID><MB>770.426</MB></row>
+<row>
+<UID>ngmd</UID><MB>349.680</MB></row>
+</Data>
+      </Table>
+    </Container> 
+    <br/> 
+    <Container style='bottom:0px;right:0px;'> 
+      <PushButton name='ShowMemInfo' text='Refresh'        onclick='function(event)
+        {
+          var ev = new TEvent ( event ) ;
+          var w = ev.getWindow() ;
+          var TABLE_MEM = w.getPeer ( "TABLE_MEM" ) ;
+          var udTABLE_MEM = TABLE_MEM.getSelectedUserXml() ;
+          var TABLE_OVERVIEW = w.getPeer ( "TABLE_OVERVIEW" ) ;
+          var udTABLE_OVERVIEW = TABLE_OVERVIEW.getSelectedUserXml() ;
+          var PID = "" ;
+          if ( udTABLE_MEM ) PID = udTABLE_MEM.getContent ( "PID" ) ;
+          var UID = "" ;
+          if ( udTABLE_OVERVIEW ) UID = udTABLE_OVERVIEW.getContent ( "UID" ) ;
+          TABLE_MEM.deselectAll() ;
+          TABLE_OVERVIEW.deselectAll() ;
+          var xml = new TXml() ;
+          xml.add ( "NAME", "RefreshMemInfo" ) ;
+          var r = null;
+          r = TABLE_MEM.findRow ( "PID", PID ) ;
+          if ( r ) r.setSelected ( true, true ) ;
+          r = TABLE_OVERVIEW.findRow ( "UID", UID ) ;
+          if ( r ) r.setSelected ( true, true ) ;
+        }'
+      />    </Container> 
+  </Container> 
+</Window>
+</xml>
+

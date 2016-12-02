@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Include src='Menu' />
+<Main >
+<XInclude src='Macros' />
+<Multiform name=X id='MF' style='left:0px;bottom:-0;right:-0;' >
+<!--
+<Container >
+<Container style='bottom:-0;right:-0;'
+decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,right:4},type:"sliced"}'
+>
+-->
+<XInclude src='Form.Table-2' />
+<XInclude src='Form.NetEvents' />
+<XInclude src='image.handling/Form.New.Image.Handling.axl' />
+<XInclude src='Form.Gepard-2' />
+<XInclude src='Form.Gepard' />
+
+<XInclude src='Form.UserAndGroups' />
+<XInclude src='Form.Table.Sort.Test' />
+<Include src='Form.Misc' />
+<XInclude src='Form.Upload' />
+
+<XInclude src='Form.Notebook' />
+
+<XInclude src='Form.Date.Test' />
+<XInclude src='Form.Mail' />
+<XInclude src='Form.JSON' />
+<XInclude src='Form.RExec' />
+<XInclude src='Form.Table-4' />
+<XInclude src='Form.Empty' />
+<XInclude src='Form.Bugs' />
+<XInclude src='Form.Ace' />
+<XInclude src='Form.Calendar' />
+<XInclude src='Form.Edit.Xml' />
+<XInclude src='Form.RExec' />
+<XInclude src='Form.CSS' />
+<XInclude src='Form.ChoiceButton' />
+<XInclude src='Form.Tree' />
+<XInclude src='Form.NB' />
+<XInclude src='Form.Canvas.Test' />
+<XInclude src='Form.Demo' />
+<XInclude src='Form.Grid' />
+<XInclude src='Form.Table' />
+<XInclude src='Form.Table-3' />
+<XInclude src='Form.Table.Focus' />
+<XInclude src='Form.Menu' />
+<XInclude src='FileExplorer' />
+<XInclude src='Ls.Form' />
+<XInclude src='DocumentEditor' />
+<XInclude src='Form.Animations' />
+<XInclude src='Form.ReportEditor' />
+<XInclude src='Form.DBQuery' />
+<XInclude src='Form.Google' />
+<XInclude src='Form.WebWorker' />
+</Multiform>
+</Main>
+</xml>
+

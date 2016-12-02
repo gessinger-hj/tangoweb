@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Window id='Window.Gepard.Tail.File.Select' title='Select a File to tail...' close-with-escape='true'>
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB_Apply;'>
+    <Container style='top:0px;left:0px;right:-0;bottom:-0;attach-bottom:true;padding:0px;' >
+      <Table name='list' style='bottom:-0;right:-0px;height:250px;width:420px;'
+        ondblclick='*.apply()'
+      > 
+        <Columns>
+          <Column name='name' title='Name' />
+        </Columns>
+      </Table> 
+    </Container>
+    <br/>
+    <Container style='right:0;bottom:0;' >
+      <PushButton name='PB_Apply' text='~%Apply%' disabled='true' onclick='*.apply()'/>
+      <PushButton name='PB_Close' text='%Close%' onclick='TGui.closeWindow()' />
+    </Container>
+  </Container>
+</Window>
+</xml>

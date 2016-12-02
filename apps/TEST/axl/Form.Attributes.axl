@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.Attributes'
+Xpagelet='
+{
+  
+}'
+>
+  <Container name='X' style='bottom:-2px;right:-2px;' >
+  <PushButton text='Edit'
+    onclick='function(event)
+    {
+    var p = {} ;
+    p.TABLE = "T_EXPORT_PARAMETER" ;
+    p.KEY = "ID" ;
+    p.NAME = "NAME" ;
+    p.VALUE = "VALUE" ;
+    p.FOREIGN_KEY = "ID_EXPORT_GROUP" ;
+      var dba = new DBAttributes ( null ) ;
+      dba.edit ( 17 ) ;
+    }'
+  />
+  </Container>
+</Container>

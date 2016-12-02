@@ -1,0 +1,108 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label='Scenario Configuration Template Generator (SCT)' name='X' id='Form.SCTGenerator' pagelet='new SCTGenerator()' onload='*.onload()'>
+  <Container name='DISP' style='right:-0px;margin:0px;' onchange='handle:PB.CreateTemplate'>
+    <Container name='RSE'>
+      <TitleLabel text='Available RSE and PMF Files'/>
+      <br />
+      <Table name='RSE_TABLE' style='left:0px;bottom:-0px;right:-0px;width:600px;height:200px;'
+      >
+        <Columns>
+          <Column name='RAW_EXTRACT_FILE' />
+          <Column name='RAW_EXTRACT_DATE' type='datetime' title='Created At'/>
+          <Column name='PARAMETER_MAPPING_FILE' />
+          <Column name='PARAMETER_MAPPING_DATE' type='datetime' title='Created At'/>
+        </Columns>
+      </Table>
+      <br/>
+      <Container style='right:0px;'>
+        <PushButton name='PB.CreateTemplate' text='Create Template' disabled='true'
+          onclick='function ( event )
+          {
+            var ev = new TEvent ( event ) ;
+            var sctgen = ev.getPagelet() ;
+            var x = sctgen.createTemplate ( ev.getValues() ) ;
+            var xLOG = x.get ( "LOG" ) ;
+            if ( x.getBoolAttribute ( "error", false ) )
+            {
+              sctgen.textDisplay.addCode ( x.getContent ( "LOG" ), true, "color:red;" ) ;
+            }
+            else
+            {
+              sctgen.textDisplay.add ( x.getContent ( "LOG" ), true, true ) ;
+            }
+            if ( xLOG )
+            {
+              var templateFileName = xLOG.getAttribute ( "templateFileName" ) ;
+              if ( templateFileName )
+              {
+                var topc = sctgen.getContainer() ;
+                var x = sctgen.getSCTFileList() ;
+                topc.setValues ( x ) ;
+                var tab = topc.getPeer ( "SCT_TABLE" ) ;
+                var r = tab.findRow ( "SCT_FILE", templateFileName ) ;
+                if ( r )
+                {
+                  r.TR.style.color = "green" ;
+                  r.TR.style.fondWeight = "bold" ;
+                }
+              }
+            }
+          }'
+        />
+        <PushButton text='Show RSE and PMF files'
+          onclick='function ( event )
+          {
+            var ev = new TEvent ( event ) ;
+            var sctgen = ev.getPagelet() ;
+            var c = ev.getContainer() ;
+            c.reset() ;
+            var x = sctgen.getRSEFileList() ;
+            c.setValues ( x ) ;
+          }'
+        />
+      </Container>
+    </Container>
+    <Container name='SCT'>
+      <TitleLabel text='Available Configuration Templates'/>
+      <br />
+      <Table name='SCT_TABLE' style='left:0px;bottom:-0px;right:-0px;width:400px;height:200px;'
+      >
+        <Columns>
+          <Column name='TYPE' />
+          <Column name='SCENARIO' />
+          <Column name='VERSION' />
+          <Column name='DATE' type='datetime'/>
+          <!-- <Column name='SCT_FILE' /> -->
+        </Columns>
+      </Table>
+      <br/>
+      <Container style='right:0px;'>
+        <PushButton text='Show SCT files'
+          onclick='function ( event )
+          {
+            var ev = new TEvent ( event ) ;
+            var sctgen = ev.getPagelet() ;
+            var c = ev.getContainer() ;
+            c.reset() ;
+            var x = sctgen.getSCTFileList() ;
+            c.setValues ( x ) ;
+          }'
+        />
+      </Container>
+    </Container>
+  </Container>
+	<br/>
+  <Container name='CLOG' style='left:0px;bottom:-0px;right:-0px;margin:0px;'>
+      <PushButton text='Clear'
+        onclick='function(event)
+        {
+          var ev = new TEvent ( event ) ;
+          var sctgen = ev.getPagelet() ;
+          sctgen.textDisplay.clear() ;
+        }'
+      />
+      <TitleLabel text='Log Output'/>
+      <br />
+    <TextDisplay name='LOG' style='left:0px;bottom:-0px;right:-0px;width:400px;overflow:auto;' />
+  </Container>
+</Container>

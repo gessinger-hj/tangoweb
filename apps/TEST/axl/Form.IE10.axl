@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.IE10' name='X'
+>
+  <Container style='height:400px;right:-0;' >
+    <PushButton name='info' text='Info' />
+    <PushButton name='info' text='Info' />
+    <br/>
+    <Container style='height:400px;width:200px;top:100px;left:100px;'
+    >
+      <Html><![CDATA[
+        <style type='text/css'>
+        .note
+        {
+          margin: 0;
+          padding: 4px;
+          background:rgba(255,255,255,0.95);
+          box-shadow:0 6px 12px rgba(0,0,0,0.7);
+          border-radius:5px 5px 5px 5px;
+          padding-top: 5px;
+          padding-left: 5px; 
+          padding-bottom: 5px; 
+          padding-right: 5px; 
+        }
+        </style>
+        <div class='note'>
+          insgesamt 100                                                                                                    
+12 -rw-r--r-- 1 gess gess 8980 Mär 16 21:49 examples.desktop                                                     
+ 4 drwxr-xr-x 2 gess gess 4096 Mär 17 10:18 Vorlagen                                                             
+ 4 drwxr-xr-x 2 gess gess 4096 Mär 17 10:18 Videos                                                               
+ 4 drwxr-xr-x 2 gess gess 4096 Mär 17 10:18 Öffentlich                                                           
+ 0 lrwxrwxrwx 1 gess gess   16 Mär 18 21:55 bin -> /local/data/bin/                                              
+ 0 lrwxrwxrwx 1 gess gess   21 Mär 18 21:55 Projects -> /local/data/Projects/                                    
+ 0 lrwxrwxrwx 1 gess gess   16 Mär 18 21:55 apps -> /local/data/apps                                             
+ 0 lrwxrwxrwx 1 gess gess   23 Mär 20 23:46 resourcesx -> /local/data/resourcesx/                                
+ 4 drwxrwxr-x 2 gess gess 4096 Mär 22 18:41 Ubuntu One                                                           
+ 0 lrwxrwxrwx 1 gess gess   16 Mär 23 18:30 src -> /local/data/src/                                              
+ 4 -rw-r--r-- 1 gess gess  131 Mär 23 19:36 notes.txt                                                            
+        </div>
+      ]]></Html>
+    </Container>
+    <br/>
+    <Container >
+      <PushButton name='info' text='Info' />
+    </Container>
+  </Container>
+</Container>
+

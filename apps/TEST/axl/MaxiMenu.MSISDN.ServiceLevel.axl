@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Container style='right:-0;bottom:-0;' name='X'
+    dragable='true'
+    >
+    <IconButton style='top:0px;right:0;width:11px;'
+      normal='Tango/NotebookButtonCloser/normal'
+      inside='Tango/NotebookButtonCloser/inside'
+      pressed='Tango/NotebookButtonCloser/pressed'
+      onclick='*.closeMaxiMenu()'
+    />
+    <br/>
+    <Table name='serviceChargesList' style='left:0px;width:300px;height:100px;right:-0;bottom:-0;'
+           sortable='false' row-name='serviceCharge'
+	   show-header='false'
+	   onclick='*.onclick_maxiMenu_serviceChargesList()'
+    >
+      <Columns>
+	<Column name='productBundleCode' title='Code' TODO='naming' />
+	<Column name='productBundleName' title='Name' TODO='naming' />
+	<Column name='serviceChargeTypeId' title='Type' >
+	  <Mappings>
+		<option value='1' >Recurring</option>
+		<option value='2' >One time</option>
+		<option value='3' >Adjustment</option>
+		<option value='4' >Discount</option>
+	  </Mappings>
+	</Column>
+      </Columns>
+    </Table>
+    <br/>
+    <Container style='right:-0px;' >
+      <Label text='Valid from:' /><Date name='validFrom' />
+      <br/>
+      <PushButton name='B_Apply' disabled='true' style='right:0px;' text='Apply' onclick='*.addServiceCharge()'/>
+    </Container>
+  </Container>
+</xml>

@@ -1,0 +1,625 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.Empty' style=''
+onload='function(event)
+{
+}'
+>
+  <define property='TextField' />
+  <Xdefine property='auditlog' />
+  <Xdefine property='TitleLabel' />
+  <Xdefine property='Locale' />
+  <Xdefine property='Caret' />
+  <Xdefine property='GeoLocation' />
+  <Xdefine property='HR' />
+  <Xdefine property='mail' />
+  <Xdefine property='ShadowBox' />
+  <Xdefine property='Shortcut' />
+  <Xdefine property='TextArea' />
+  <Xdefine property='MultiHash' />
+  <Xdefine property='sprintf' />
+
+  <if property='TextField' >
+    <TextField name='TF' mandatory='true'
+      pattern='/[^a-zA-Z]*([a-zA-Z0-9_]*)/'
+    />
+    <TextField name='TFPWD' id='passchk_pass'
+    onkeyup='checkPassword()'
+    />
+    <PushButton text='Inherit Test' onclick='inheritTest()' />
+    <Label text='Timed keydown' />
+    <TextField name='CODE' delay='true' action='function(ev)
+    {
+      log ( ev ) ;
+    }'/>
+    <br/>
+    <Container name='passwordmeter' style='width:200px;heith:100px' />
+    <!-- <Container name='passchk' style='width:200px;heith:100px' id='passchk' /> -->
+  </if>
+  <Container name='X' style='bottom:-2px;right:-2px;' >
+    <if property='sprintf' >
+      <PushButton text='sprintf'
+        onclick='function(event)
+        {
+	  var ev = new TEvent ( event ) ;
+	  var v = ev.getValues() ;
+          var format = v.getContent ( "format" ) ;
+          var value = v.getFloat ( "value", 0 ) ;
+          log ( format.sprintf ( value ) ) ;
+        }'
+        />
+        <TextField name='format' value="%.2f"/>
+        <TextField name='value' value='1234567.125' />
+        <Choice name='TYPE_OF_PERIOD' focus='true' >
+	  <option>Option A</option>
+	  <option>Option B</option>
+	  <option>Option C</option>
+	  <option>Option D</option>
+        </Choice>
+    </if>
+    <if property='TitleLabel' >
+      <Container style='width:400px;' id='TL' >
+        <TitleLabel text="XXXXXXXXXXXXXXXXXXXX" />
+        <Xbr/>
+        <XPushButton text='info' onclick='function()
+	        {
+	        var x = TSys.getXmlById ( "TL" ) ;
+	        log ( x ) ;
+	        }'
+	        />
+        <br/>
+        <ToolbarButton text='Calc' img='Tango/Misc/ok'
+          onclick='{
+            execute: function ( event )
+            {
+              var w = new TWindow ( "Window.Calculator.Full" ) ;
+              w.create() ;
+              w.show() ;
+            }
+          }'
+	  />
+        <ToolbarButtonSmall img='Tango/Misc/ok' />
+      </Container>
+    </if>
+    <if property='GeoLocation' >
+      <PushButton text='Geo Location'
+        onclick='
+        {
+          execute: function ( event )
+          {
+            Net.getGeoLocationPosition ( this.callback ) ;
+          },
+          callback: function ( p )
+          {
+            log ( p, true ) ;
+          }
+        }'
+      />
+    </if>
+    <if property='Caret' >
+      <PushButton text='caret++'
+        onclick='
+        {
+          execute: function ( event )
+          {
+            this.tf = new TTextField ( "TF" ) ;
+            this.dom = this.tf.dom ;
+            var x = this.tf.getCaretPosition() ;
+            log ( "x: " + x ) ;
+/*
+            this.tf.setSelectionStart ( x + 1 ) ;
+            this.tf.setSelectionEnd ( x + 2 ) ;
+*/
+            this.tf.setCaretPosition ( x + 1 ) ;
+          }
+        }'
+      />
+      <PushButton text='caret--'
+        onclick='
+        {
+          execute: function ( event )
+          {
+            this.tf = new TTextField ( "TF" ) ;
+            this.dom = this.tf.dom ;
+            var x = this.tf.getCaretPosition() ;
+/*
+            this.tf.setSelectionStart ( x + 1 ) ;
+            this.tf.setSelectionEnd ( x + 2 ) ;
+*/
+            this.tf.setCaretPosition ( x - 1 ) ;
+          }
+        }'
+      />
+      <TextField id='TF' value='12345678' />
+    </if>
+  </Container>
+  <if property='Locale' >
+    <br/>
+    <Container name='X' id='CLocale' >
+      <PushButton text='de_DE' tooltip='de_DE'
+        onclick='function(event)
+	{
+	  var ev = new TEvent ( event ) ;
+          var c = ev.getContainer() ;
+          c.setLocale ( new Locale ( "de_DE" ) ) ;
+        }'
+        />
+      <PushButton text='en_GB' tooltip='de_DE'
+        onclick='function(event)
+	{
+	  var ev = new TEvent ( event ) ;
+          var c = ev.getContainer() ;
+          c.setLocale ( new Locale ( "en_GB" ) ) ;
+        }'
+        />
+      <PushButton text='hu_HU' tooltip='hu_HU'
+        onclick='function(event)
+	{
+	  var ev = new TEvent ( event ) ;
+          var c = ev.getContainer() ;
+          c.setLocale ( new Locale ( "hu_HU" ) ) ;
+        }'
+        />
+      <PushButton text='set float tf' tooltip='de_DE'
+        onclick='function(event)
+	{
+	var x = new TXml() ;
+	x.add ( "TF", "1234567.22" ) ;
+	x.add ( "UTF", "1.33" ) ;
+	new TEvent(event).getContainer().setValues(x) ;
+        }'
+        />
+      <PushButton text='get float tf' tooltip='de_DE'
+        onclick='
+	function(event)
+	{
+	var x = new TEvent(event).getValues() ;
+	log ( x ) ;
+        }'
+        />
+      <Label text='Signed: ' /><TextField name='TF' type='float' />
+      <Label text='Unsigned: ' /><TextField name='UTF' type='ufloat' />
+      <Label name='TF' type='float' text='yyyyyyyyyyyyyyyyyyyy'/>
+      <Label name='UTF' type='ufloat' text='yyyyyyyyyyyyyyyyyyyy'/>
+    </Container>
+  </if>
+  <if property='MultiHash' >
+    <br/>
+    <Container name='XX' pagelet='
+      {
+        mh:null,
+        _constructor_: function()
+        {
+          this.mh = new MultiHash() ;
+        },
+        add: function ( k, v )
+        {
+          this.mh.put ( k, v ) ;
+        },
+        remove: function(k)
+        {
+          this.mh.remove ( k ) ;
+        },
+        print: function()
+        {
+        log ( this.mh ) ;
+        }
+      }'
+    >
+      <PushButton text='add A'
+        onclick='
+	function(event)
+	{
+	var ev = new TEvent(event) ;
+	var p = ev.getPagelet() ;
+	p.add ( "A", "X" ) ;
+        }'
+        />
+      <PushButton text='remove A'
+        onclick='
+	function(event)
+	{
+	var ev = new TEvent(event) ;
+	var p = ev.getPagelet() ;
+	p.remove ( "A" ) ;
+        }'
+        />
+      <PushButton text='add B'
+        onclick='
+	function(event)
+	{
+	var ev = new TEvent(event) ;
+	var p = ev.getPagelet() ;
+	p.add ( "B", "Y" ) ;
+        }'
+        />
+      <PushButton text='Show MH'
+        onclick='
+	function(event)
+	{
+	var ev = new TEvent(event) ;
+	var p = ev.getPagelet() ;
+	p.print() ;
+        }'
+        />
+    </Container>
+  </if>
+  <if property='Shortcut' >
+    <br/>
+<TextField name='DATE' value="Sat, 09 Apr 2011 12:29:23 GMT-0500" style='width:300px;' />
+      <PushButton text='Date'
+        onclick='
+{
+	execute: function(event)
+	{
+var ev = new TEvent ( event ) ;
+var v = ev.getValues() ;
+var d = v.getContent ( "DATE" ) ;
+var D = new Date ( Date.parse ( d ) ) ;
+var str = this.translateTimeOffsetOf ( D ) ;
+log ( D ) ;
+/*
+var str = this.tt ( 0 * 24 * 60 * 60 + 12 * 60 * 60 + 11 * 60 + 53) ;
+*/
+log ( str ) ;
+        },
+        tt: function ( diff )
+        {
+          var daysec = 24 * 60 * 60 ;
+          var days = Math.floor ( diff / daysec ) ;
+          diff = diff % daysec ;
+          var hours = Math.floor ( diff / ( 60 * 60 ) ) ;
+          diff = diff % ( 60 * 60 ) ;
+          var minutes = Math.floor ( diff / 60 ) ;
+          diff = diff % 60 ;
+          var seconds = Math.floor ( diff ) ;
+log ( "------------------" ) ;
+log ( "days=" + days ) ;
+log ( "hours=" + hours ) ;
+log ( "minutes=" + minutes ) ;
+log ( "seconds=" + seconds ) ;
+        },
+        translateTimeOffsetOf: function ( D )
+        {
+          var NOW = new Date() ;
+          var diff = Math.floor ( ( NOW.getTime() - D.getTime() ) / 1000 ) ;
+          var daysec = 24 * 60 * 60 ;
+          var days = Math.floor ( diff / daysec ) ;
+          diff = diff % daysec ;
+          var hours = Math.floor ( diff / ( 60 * 60 ) ) ;
+          diff = diff % ( 60 * 60 ) ;
+          var minutes = Math.floor ( diff / 60 ) ;
+          diff = diff % 60 ;
+          var seconds = Math.floor ( diff ) ;
+log ( "------------------" ) ;
+log ( "days=" + days ) ;
+log ( "hours=" + hours ) ;
+log ( "minutes=" + minutes ) ;
+log ( "seconds=" + seconds ) ;
+          var str = "" ;
+          if ( days ) str = "" + days + " days, " + hours + " hours, " + minutes + " and " + seconds + " seconds ago." ;
+          else
+          if ( hours ) str = "" + hours + " hours, " + minutes + " minutes and " + seconds + " seconds ago." ;
+          else
+          if ( minutes ) str = "" + minutes + " minutes and " + seconds + " seconds ago." ;
+          else
+          if ( seconds ) str = "" + seconds + " seconds ago." ;
+          return str ;
+        }
+}'
+        />
+    <br/>
+    <CustomButton Ximg='' text='~Calculator' onclick='
+    {
+      execute: function ( event )
+      {
+        var w = new TWindow ( "Window.Calculator" ) ;
+        w.create() ;
+        w.show() ;
+      }
+    }'
+    estyle='{ normal: { image: { src:"cosmos/docks/Intrigue/IntrigueBottom_NS.png",
+                                           border: { top:5,left:5,bottom:10,right:10 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      inside: { image: { src:"cosmos/docks/Intrigue/IntrigueBottom_S.png",
+                                         border: { top:5,left:5,bottom:10,right:10 }
+                                       },
+                                color: { foreground:"black" }
+                              },
+                      padding:{top:5,left:5,bottom:10,right:10 }
+                    }' />
+      <PushButton text='~Dialog'
+        onclick='
+	function(event)
+	{
+	var d = new TUserDialog ( "Shortcut Test" ) ;
+	d.info() ;
+        }'
+        />
+      <PushButton disabled='true' text='Disabled' />
+      <PushButton text='disable'
+	      onclick='function()
+	      {
+	     var c = TGui.getComponent ( "CLocale" ) ;
+             c.setEnabled ( false ) ;
+	     }'/>
+    <br/>
+    <Notebook name='X' >
+      <Container label='Window.Sampl~e' name='X' >
+        <PushButton text='~Window.Sample'
+          onclick='function ( event )
+          {
+	    var w = new TWindow ( "Window.Sample.2" ) ;
+            w.create() ;
+	    w.show() ;
+          }'
+        />
+      </Container>
+      <Container label='www_timeanddate_co~m' name='X' >
+        <PushButton text='www_~timeanddate_com'
+          onclick='
+  {
+    tad: null,
+    execute: function(event)
+    {
+      if ( ! this.tad )
+      {
+        this.tad  = new www_timeanddate_com() ;
+      }
+      var ev = new TEvent(event) ;
+      var v = ev.getValues() ;
+      var q = v.getContent ( "query" ) ;
+      var n = parseInt ( q ) ;
+      if  ( isNaN ( n ) )
+      {
+        if ( q.length < 3 ) return ;
+        var x = this.tad.searchCity ( q ) ;
+log ( "1 ------" ) ;
+log ( x ) ;
+        n = x.getInt ( "table.result/row/number", -1 ) ;
+      }
+      else
+      {
+      }
+log ( "2 ------" ) ;
+log ( n ) ;
+      var p = this.tad.getParameter ( n ) ;
+log ( "3 ------" ) ;
+log ( p, true ) ;
+      var d = new Date() ;
+      var lh = d.getHours() ;
+      var lm = d.getMinutes() ;
+      d.setHours ( lh + p.dHours ) ;
+      d.setMinutes ( lm + p.dMinutes ) ;
+log ( "4 ------" ) ;
+log ( d ) ;
+    }
+  }'
+        />
+        <Label text='City: ' /><TextField name='query' value='179' />
+      </Container>
+    </Notebook>
+  </if>
+  <if property='HR' >
+    <br/>
+    <PushButton text='HR'
+      onclick='function(event)
+      {
+        var e = document.getElementById ( "HR.1" ) ;
+        log ( e ) ;
+        log  ( new TComponent ( e ) ) ;
+      }' />
+    <br/>
+    <Container name='X' style='width:600px;'>
+        <![CDATA[
+<p>
+---------------------
+4 -rw-r--r-- 1 hjg users 2758 2010-05-09 22:22 home.lst
+4 drwxrwxr-x 2 hjg users 4096 2010-05-10 02:01 Ubuntu One
+4 -rw-r--r-- 1 hjg users 1083 2010-05-12 22:46 X.nvidia-settings-rc
+0 lrwxrwxrwx 1 hjg users   36 2010-06-07 21:48 accounts.txt -> /local/suse92/home/gess/accounts.txt
+<hr id='HR.1' style='width:60%' />
+4 drwxr-xr-x 3 hjg users 4096 2010-07-23 15:28 google-chrome
+4 -rw-r--r-- 1 hjg users   57 2010-09-28 20:29 QCB10029.LOG
+8 -rw-r--r-- 1 hjg users 6561 2010-10-05 23:02 pgadmin.log
+4 -rw-r--r-- 1 hjg users   57 2010-10-16 14:46 QCB1655.LOG
+</p>
+        ]]>
+    </Container>
+  </if>
+  <br/>
+<!--
+  <Container>
+    <PushButton text='NONE'
+      onclick='function(event)
+      {
+      var e = document.getElementById ( "RED" ) ;
+      var t = TGui.getComputedStyle ( e, "display" ) ;
+      log ( t ) ;
+      e.style.display = "none" ;
+      }' />
+    <PushButton text='block'
+      onclick='function(event)
+      {
+      var e = document.getElementById ( "RED" ) ;
+      var t = TGui.getComputedStyle ( e, "display" ) ;
+      log ( t ) ;
+      e.style.display = "block" ;
+      }' />
+  </Container>
+  <br/>
+  <Container style='width:140px;height:500px;background-color:gray;overflow:auto;' >
+    <Container style='width:100px;height:400px;background-color:yellow' >
+    </Container>
+    <br/>
+    <Container id="RED" style='width:100px;height:200px;background-color:red' >
+    </Container>
+  </Container>
+-->
+  <if property='ShadowBox' >
+    <Container dragable='true' style='left:100px;width:200px;height:300px;background-color:#eeeeee;box-shadow: 5px 5px 6px rgba(0,0,0,0.3);border-radius: 3px;' >
+    </Container>
+<tab/>
+    <Container dragable='true' style='width:200px;height:300px;background-color:#eeeeee;box-shadow: 0 0 7px 4px rgba(0,0,0,0.2);' >
+    </Container>
+  </if>
+  <if property='TextArea' >
+  <Container name='X' onchange='handle:PB' >
+  	<PushButton text='Save' name='PB' disabled='true' />
+		<br/>
+    <TextArea name='TA' mandatory='true' style='width:200px;height:200px' />
+  </Container>
+  </if>
+  <if property='auditlog' >
+    <PushButton text='auditlog' name='PB'
+    onclick='
+    {
+      execute: function ( event )
+      {
+        var auditEvent = new AuditEvent() ;
+        auditEvent.setAction ( "YYYYYYYYYYYYYYYYYYY" ) ;
+        auditEvent.setText ( "<xml>.......</xml>" ) ;
+        NetResource.auditlog ( auditEvent ) ;
+      }
+    }'
+    />
+    <PushButton text='YQL'
+    onclick='
+    {
+      execute: function ( event )
+      {
+/*
+        var url = "http://www.zeit.de"  ;
+        http://developer.yahoo.com/yql/console
+*/
+        var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22YHOO%22%2C%22AAPL%22%2C%22GOOG%22%2C%22MSFT%22)&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+
+        var u = "select from yahoo.finance.quotes where symbol in (\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")" ;
+        var u1 = encodeURIComponent ( u ) ;
+        log ( u ) ;
+        log ( u1 ) ;
+        /*
+        var p = new URLProxy ( url ) ;
+        */
+/*
+        var t = p.getText() ;
+        log ( t ) ;
+*/
+/*        var x = p.getXml() ;
+        log ( x ) ;*/
+      }
+    }'
+    />
+  <!--
+    http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22YHOO%22%2C%22AAPL%22%2C%22GOOG%22%2C%22MSFT%22)&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys
+  -->
+    <PushButton text='Notify' onclick='SystemNotifications.notify ( "Execution done<br/>xxxxxxxxxxxx")' />
+    <PushButton text='Notify Progress' onclick='SystemNotifications.progress ( "Executing<br/>xxxxxxxxxxxx")' />
+    <PushButton text='Inherit Test' onclick='inheritTest()' />
+    <PushButton text='Popup Test' onclick='
+		function ( event )
+		{
+			var ev = new TEvent ( event ) ;
+			var xp = new TXml ( TSys.getAxl ( "PopupMenu" ) ) ;
+      var pm = new PopupMenu ( xp, ev.getSource() ) ;
+      var xm = xp.get ( "PopUpMenu/MenuItem" ) ;
+      var xt = new TXml ( "MenuTitle" ) ;
+      xt.addAttribute ( "text", "TITLE" ) ;
+      xm.insertBefore ( xt ) ;
+      var xs = new TXml ( "Separator" ) ;
+      xm.insertBefore ( xs ) ;
+      /*log ( xp ) ;*/
+      var f = function ( e )
+      {
+		var mi = e.getMenuItem() ;
+		log ( mi ) ;
+			} ;
+			var fe = new TFunctionExecutor ( f ) ;
+			pm.setDefaultAction ( fe ) ;
+      pm.show ( event ) ;
+		}' />
+<Container name='X' >
+<Script><![CDATA[
+{
+  _initialize_: function()
+  {
+    CissDatabase = function()
+		{
+  		Tango.initSuper( this, DatabaseClass );
+  		this.jsClassName = "CissDatabase" ;
+  		this.nameSpace = "CISS" ;
+		} ;
+		CissDatabase.inherits ( DatabaseClass ) ;
+		CissDatabase.prototype.toString = function()
+		{
+    	return "(" + this.jsClassName + ")" ;
+  	};
+  },
+	exec: function ( event )
+	{
+		var operatorCode = "VGEL" ;
+		var partnerTypeCode = "GDSP_PARTNER" ;
+		var sql = ""
+		+ "select partnercode, p.name from partner p, partner_type pt, operator op\n"
+		+ "where  p.partnertypeid=pt.partner_type_id and p.modified_at is null\n"
+		+ "and p.oclientid=op.operatorid and op.operatorcode='" + operatorCode + "'\n"
+		+ "and pt.code='" + partnerTypeCode + "'\n"
+		;
+		var db = new CissDatabase() ;
+		var xRef = db.getRefData2 ( sql, "CODE", "PARTNERCODE", "NAME" ) ;
+log ( xRef ) ;
+  }
+}
+]]></Script>
+    <PushButton text='CISS-SQL' onclick='*.exec()' />
+</Container>
+  </if>
+  <if property='DBQueryParams'>
+	<Container name='X' pagelet='new DatabaseConnectionEditor()' onload='*.onload()' onchange='handle:PB_test PB_save'>
+	  <DisplayContainer style='right:-0px;' >
+	  	<Container style='padding:0px;right:-2px;' onkeyup='*.onkeyup()'>
+			  <ListLabel text='Vendor:'/><tab name='T1' x='+2'/><Choice reset='false' mandatory='true' name='vendor' onchange='*.onchange()' style='right:-0px;'/>
+	  	  <br/>
+				<ListLabel text='Name:'/><tab name='T1'/><TextField mandatory='true' name='name' style='right:-0px;'
+				value-hook='
+				{
+					setValue: function ( xml, elem )
+					{
+					},
+					getValue: function ( xml, elem )
+					{
+/*
+return false ;
+*/
+					},
+					flush: function()
+					{
+TSys.log ( "-------- flush -----" + this ) ;
+					},
+					toString: function()
+					{
+						return "value hook --------" ;
+					}
+				}'/>
+	  		<br/>
+				<ListLabel text='Host:'/><tab name='T1'/><TextField mandatory='true' name='host' style='right:-0px;'/>
+	  		<br/>
+				<ListLabel text='Port:'/><tab name='T1'/><TextField mandatory='true' type='int' name='port' style='right:-0px;'/>
+	  		<br/>
+				<ListLabel text='Uid:'/><tab name='T1'/><TextField mandatory='true' name='uid' style='right:-0px;'/>
+	  		<br/>
+				<ListLabel text='Pwd:'/><tab name='T1'/><TextField type='password' name='pwd' style='right:-0px;'/>
+	  		<br/>
+				<Label reset='true' name='pattern' style='right:-0px;width:300px;'/>
+	  	</Container>
+	  </DisplayContainer>
+		<br/>
+	  <Container style='padding:0px;right:0px;' >
+    	<PushButton name='PB_test' text='Test' onclick='*.test()' />
+    	<PushButton name='PB_save' text='Save' onclick='*.save()' />
+    	<PushButton text='Cancel' onclick='*.cancel()' />
+  	</Container>
+  </Container>
+  </if>
+</Container>

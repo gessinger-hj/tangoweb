@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.New.Image.Handling' style=''
+>
+<Container name='X' style='bottom:-0px;right:-0px;' onload='*.onload()' >
+  <Script><![CDATA[
+  {
+    _initialize_: function()
+    {
+Tango.include ( "Images.js" ) ;
+    },
+    onload: function ( ev )
+    {
+      this.container = ev.getContainer() ;
+    },
+    step1: function ( e )
+    {
+      this.slicedImage = new SliceableImage ( "img/Intrigue.Dock.Bottom.png", 10, 10, 10, 10 ) ;
+      var IMAGE1 = document.getElementById ( "IMAGE1" ) ;
+      var IMAGE2 = document.getElementById ( "IMAGE2" ) ;
+      var IMAGE3 = document.getElementById ( "IMAGE3" ) ;
+      var BUTTON = document.getElementById ( "BUTTON" ) ;
+      var BUTTON2 = document.getElementById ( "BUTTON2" ) ;
+      var step1 = document.getElementById ( "step1" ) ;
+BUTTON.className = "ThemePushButton" ;
+BUTTON2.className = "ThemePushButton" ;
+      this.slicedImage.slice ( function()
+      {
+        this.paint ( IMAGE1 ) ;
+        this.paint ( IMAGE2 ) ;
+        this.paint ( IMAGE3 ) ;
+        var du = this.getDataURL ( BUTTON ) ;
+        BUTTON.style.backgroundImage = "url(" + du + ")" ;
+        var du = this.getDataURL ( BUTTON2 ) ;
+        BUTTON2.style.backgroundImage = "url(" + du + ")" ;
+      });
+    }
+  }
+  ]]></Script>
+  <Container>
+  <PushButton text='step 1' id='step1' onclick='*.step1()' />
+    <Container style='width:500px;height:500px;bottom:-0;right:-0;'>
+      <![CDATA[
+        <img id='IMAGE1' style='width:100px;height:32px;background-color:yellow;display:block;'>
+        <img id='IMAGE2' style='width:100px;height:32px;background-color:yellow;display:block;'>
+        <img id='IMAGE3' style='width:24px;height:24px;background-color:yellow;display:block;'>
+<br/>
+        <span ><canvas id='WORK_CANVAS'></span>
+        <button style='border:0px;padding:4px;width:96px;height:48px;' id='BUTTON'>Clear display</button>
+        <button style='border:0px;padding:4px;width:120px;height:33px;' id='BUTTON2'>Clear display</button>
+        ]]>
+    </Container>
+  </Container>
+</Container>
+</Container>

@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Demo' name='X'
+>
+  <Container style='height:400px;right:-0;' >
+    <Container style='height:400px;bottom:-0;width:600px;' name='X'
+    >
+      <Container name='X' onchange='handle:PB.Apply'
+      >
+        <Label text='Float:' /><TextField name='TF' type='float' mandatory='Input' />
+	<PushButton name='PB.Apply' text='Apply' disabled='true' />
+      </Container>
+      <br/>
+      <Label text='Label:' /><TextField style='right:0;'/>
+      <br/>
+      <Choice name='TYPE_OF_PERIOD' sorted='true'>
+	<option>Option D</option>
+  <option selected='true'>Option B</option>
+  <option>Option A</option>
+  <option>Option C</option>
+      </Choice>
+      <Date name='DATE1' style='right:4px;attach-right:true;' />
+      <br/>
+      <PushButton stacked='true' reverse='true' img='Tango/Folder.16/normal' text='Window' onclick='
+      {
+        execute: function ( event )
+        {
+          var w = new TWindow ( "Window.Demo.1" ) ;
+          w.create() ;
+          w.show() ;
+        }
+      }' />
+      <br/>
+      <Container style='padding:0px' >
+        <Checkbox2 text='Checkbox 1' name='Checkbox1' default='false1' />
+        <br/>
+        <Checkbox2 text='Checkbox 2' name='Checkbox2' default='false2' />
+      </Container>
+      <Container style='padding:0px' >
+        <Radio2 text='Radio 1' name='Radio' />
+        <br/>
+        <Radio2 text='Radio 2' name='Radio' />
+        <br/>
+        <Radio2 text='Radio 3' name='Radio' />
+      </Container>
+      <br/>
+      <Label text='DecoratedTextField' /><DecoratedTextField name='UID' />
+      <br/>
+      <Label text='ChoiceButton' />
+      <ChoiceButton name='Counter2' text="Counter" >
+        <option value='0'>Counter - 0</option>
+        <option value='1'>Counter - 1</option>
+        <option value='2'>Counter - 2</option>
+        <option value='3'>Counter - 3</option>
+        <option value='4'>Counter - 4</option>
+        <option value='5'>Counter - 5</option>
+      </ChoiceButton>
+      <br/>
+      <DisplayContainer>
+        <TitleLabel text='ListLabel in DisplayContainer' Xstyle='top:-4px;left:0px;right:-0px;border-radius:5px 5px 0 0;' />
+        <br/>
+        <ListLabel text='Name:' /><tab name='T1' /><TextField />
+        <br/>
+        <ListLabel text='City:' /><tab name='T1' /><TextField />
+        <br/>
+        <ListLabel text='Date:' /><tab name='T1' /><Date />
+      </DisplayContainer>
+    </Container>
+    <Splitbar />
+    <Container style='height:400px;right:-4;bottom:-4;'
+    >
+      <Notebook style='bottom:-0;right:-0;' >
+        <Container label='One' >
+          <Toolbar style='left:0px;top:1px;' >
+            <ToolbarToggle name='CHECK' text='Check' img='Tango/Folder.16/normal'/>
+<Group>
+            <ToolbarToggle name='RADIO' text='1' img='Tango/Folder.16/normal'/>
+            <ToolbarToggle name='RADIO' text='2' img='Tango/Folder.16/normal'/>
+</Group>
+            <ToolbarButton text='Save' img='Tango/Misc/edit-save'/>
+          </Toolbar>
+          <br/>
+          <img src='Tango/Alert/info' style='width:32px;height:32px;' />
+          <img src='Tango/Alert/warning' style='width:32px;height:32px;' />
+          <img src='Tango/Alert/error' style='width:32px;height:32px;' />
+          <img src='Tango/Alert/question' style='width:32px;height:32px;' />
+          <br/>
+          <PushButton text='Info' img='Tango/Misc/ok' onclick='function(event)
+          {
+            var d = new TUserDialog ( "This is an<br/>Information" ) ;
+            d.info() ;
+          }'/>
+        </Container>
+        <Container img='Tango/Folder.16/normal' label='Progressbar' name='X' selected='true'>
+          <PushButton text='Set Percentage' onclick='
+          {
+            bar: null,
+            percent: 0,
+            execute: function ( event )
+            {
+              if ( ! this.bar )
+              {
+                this.bar = new TEvent ( event ).getContainer().getPeer ( "PBar" ) ;
+              }
+              this.percent = this.bar.getPercent() ;
+              this.percent += 10 ;
+              if ( this.percent > 100 ) this.percent = 0 ;
+              this.bar.setPercent ( this.percent ) ;
+            }
+          }' />
+          <PushButton text='Start' onclick='function ( event ) { new TEvent ( event ).getContainer().getPeer ( "PBar" ).start() ; }' />
+          <PushButton text='Start Auto' onclick='function ( event ) { new TEvent ( event ).getContainer().getPeer ( "PBar" ).startAuto(10) ; }' />
+          <PushButton text='Stop' onclick='function ( event ) { new TEvent ( event ).getContainer().getPeer ( "PBar" ).stop() ; }' />
+          <PushButton text='Working Panel' onclick='
+          function ( event )
+          {
+            new TWorkingPanel({ progressBarShowSeconds: true
+                              , showThumbOnly: false
+                              , cancel:function(event)
+                                {
+                                }
+                              } ) ;
+          }' />
+          <br/>
+          <Progressbar name='PBar' style='width:200px;height:16px;' />
+        </Container>
+        <Container label='Three' closable='true'>
+        </Container>
+        <Container img='Tango/Folder.16/normal' label='Four' closable='true'>
+        </Container>
+      </Notebook>
+    </Container>
+  </Container>
+  <SplitbarHorizontal />
+  <Container style='bottom:-0;right:-0;padding:0px;'
+  >
+    <Container style='width:200px;height:300px;bottom:-4;' >
+      <TitleLabel text='The Table' style='right:-0px;' />
+      <br/>
+      <Table name=X style='width:200px;bottom:-0px;' sortable='true' >
+        <Columns >
+          <Column name='NAME' title='Name' />
+          <Column name='SIZE' title='Size' />
+          <Column name='DATE' title='Date' />
+        </Columns>
+        <Data>
+          <row> <NAME>Name 1</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+          <row> <NAME>Name 2</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+          <row> <NAME>Name 3</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+          <row> <NAME>Name 4</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+          <row> <NAME>Name 5</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+          <row> <NAME>Name 6</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+          <row> <NAME>Name 7</NAME> <SIZE>1024</SIZE> <DATE>20100101</DATE> </row>
+        </Data>
+      </Table>
+    </Container>
+    <Container style='height:300px;bottom:-4;' >
+      <TitleLabel text='The Tree' style='right:-0px;' />
+      <br/>
+      <Tree style='width:400px;right:-0px;bottom:-0px;'
+            name="TREE"
+            plain='true'
+            get-values='true'
+      >
+        <Data>
+          <node name="node-0" title='title-0' >
+            <node name="node-1" title='title-1' img='book.gif'  img-open='book_open.gif'>
+              <node name="node-11" title='title-11' img='book.gif'  img-open='book_open.gif'>
+                <node name="node-111" title='title-111' img='book.gif'  img-open='book_open.gif' ACTION="XXXXX" >
+		        <DESC>bbbbbbbbbbbbbbbbbbbbbbbbbbbb</DESC>
+                </node>
+              </node>
+            </node>
+          </node>
+        </Data>
+      </Tree>
+    </Container>
+  </Container>
+</Container>
+

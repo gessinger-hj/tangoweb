@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container name=X id='Form.DBQuery.Simple' desktop='true' pagelet='new VgeQueryBuilder ( "AuditPointA", "T_RAS_MD_RECORD" )' >
+  <Container style='right:-0;bottom:-0;padding:0px;margin:0px;' >
+    <Container style='right:-0;' name='ACTIONS_CONTAINER'
+                 onload='*.onloadActionsContainer()'
+    >
+      <PushButton img='Tango/Misc/edit' text='Edit' onclick='*.renameQuery()' />
+      <Label text='Name' /><Label name='NAME' reset='true' style='width:100px;'/>
+      <Label name='DESCRIPTION' reset='true' style='width:100px;right:-0;'/>
+      <br/>
+      <PushButton text='New' img='asterisk_yellow.gif' onclick='*.newSQL()' />
+      <PushButton text='Save' img='Tango/Misc/edit-save' onclick='*.saveSQL()' />
+      <PushButton text='Save as...' img='Tango/Misc/edit-save' onclick='*.saveAsSQL()' />
+      <PushButton text='Open' img='book_open.gif' onclick='*.openSQL()' />
+      <PushButton text='Show SQL' onclick='*.showSQL()' />
+      <PushButton text='Execute' onclick='*.executeSQL(xml)' />
+      <PushButton text='Execute HTML' onclick='*.executeSQL(html)' />
+      <PushButton img='Tango/Misc/edit-delete' text='Delete' onclick='*.deleteSQL()' />
+    </Container>
+    <br/>
+    <Container style='height:250px;width:700px;right:-0;background-color:white;bottom:-0;attach-right:true;padding:0px;'>
+      <Container style='right:-0;padding:0px;'>
+        <Container style='bottom:-0px;'
+                   onload='*.onloadSourceColumnsContainer()'
+                   onchange='handle:PB.Columns PB.Filter'
+        >
+          <Label text='Available Columns' class='SimpleTitle' />
+	  <br/>
+          <Table name='COLUMNS' style='left:0px;right:-0;bottom:-4;attach-bottom:true;' Xshow-header='false'
+                ondblclick='*._addToColumns()'
+                dragsource='true'
+          >
+            <Columns>
+              <Column name='COLUMN_NAME' title='Column name' />
+            </Columns>
+          </Table>
+          <br/>
+          <Container style='bottom:0;right:2;' >
+            <Label text='Add to:' />
+            <PushButton disabled='true' name='PB.Columns' text='Columns' onclick='*._addToColumns()' />
+            <PushButton disabled='true' name='PB.Filter' text='Filter' onclick='*._addToFilter()' />
+          </Container>
+        </Container>
+        <DBQuery.ColumnsContainer style='height:200px;right:-0;background-color:white;bottom:-0;' name='COLUMNS_CONTAINER'
+        >
+        </DBQuery.ColumnsContainer>
+      </Container>
+      <SplitbarHorizontal/>
+      <DBQuery.FilterContainer style='height:200px;right:-0;background-color:white;bottom:-0;attach-bottom:true;' name='FILTER_CONTAINER'
+      >
+      </DBQuery.FilterContainer>
+      <SplitbarHorizontal/>
+      <DisplayContainer name='RESULT_CONTAINER' style='width:300px;height:300px;bottom:-0;right:-0;overflow:hidden;'
+                       onload='*.onloadResultContainer()'
+      >
+      </DisplayContainer>
+    </Container>
+  </Container>
+</Container>
+</xml>
+

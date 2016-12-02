@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gepard Examples</title>
+    <style type="text/css">
+        input#chat {
+            width: 410px
+        }
+
+        #console-container {
+            width: 600px;
+        }
+
+        #console {
+            border: 1px solid #CCCCCC;
+            border-right-color: #999999;
+            border-bottom-color: #999999;
+            height: 300px;
+            overflow-y: scroll;
+            padding: 5px;
+            width: 100%;
+        }
+
+        #console p {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+<script type="text/javascript" src="Event.js" ></script>
+<script type="text/javascript" src="MultiHash.js" ></script>
+<script type="text/javascript" src="GPWebClient.js" ></script>
+<script type="text/javascript">
+var Console = {};
+Console.log = function ( message )
+{
+    var p = document.createElement('div');
+    p.style.wordWrap = 'break-word';
+    p.innerHTML = message;
+    this._log ( p ) ;
+}
+Console.clear = function()
+{
+  var console = document.getElementById('console');
+  while (console.childNodes.length > 0) {
+    console.removeChild(console.firstChild);
+  }
+  console.scrollTop = console.scrollHeight;
+}
+Console._log = function ( p )
+{
+    var console = document.getElementById('console');
+    console.appendChild(p);
+    while (console.childNodes.length > 25) {
+        console.removeChild(console.firstChild);
+    }
+    console.scrollTop = console.scrollHeight;
+};
+
+var Xmp = {};
+
+Xmp.initialize = function()
+{
+  this.port = 17502 ;
+  var thiz = this ;
+  try
+  {
+    this.wc = gepard.getWebClient ( this.port ) ;
+    this.wc.on ( "open", function onopen()
+    {
+    }) ;
+    this.wc.on ( "error", function onerror()
+    {
+    }) ;
+    this.wc.on ( "close", function onclose()
+    {
+    }) ;
+  }
+  catch ( exc )
+  {
+    console.log ( exc ) ;
+  }
+};
+Xmp.sendEvent = function ( name )
+{
+    this.wc.fire ( name,
+    { error:function error_callback(e)
+      {
+        Console.log ( "Error" ) ;
+        Console.log ( e.getStatus().reason ) ;
+      }
+    } ) ;
+};
+Xmp.lockResource = function ( name )
+{
+    this.lock = new gepard.Lock ( name ) ;
+    this.lock.acquire ( function lock_callback ( err )
+    {
+        Console.log ( "" + this ) ;
+    }) ;
+};
+Xmp.unlockResource = function()
+{
+    if ( ! this.lock ) return ;
+    this.lock.release() ;
+    this.lock = null ;
+};
+Xmp.semAcquire = function ( name )
+{
+    this.sem = new gepard.Semaphore ( name ) ;
+    Console.log ( "Aquiring semaphore=" + name ) ;
+    this.sem.acquire ( function sem_callback ( err )
+    {
+        Console.log ( "" + this ) ;
+    }) ;
+};
+Xmp.semRelease = function()
+{
+    if ( ! this.sem ) return ;
+    this.sem.release() ;
+    this.sem = null ;
+};
+Xmp.on = function ( name )
+{
+  this.eventName = name ;
+  var thiz = this ;
+  Console.log ( "Listen to event: " + name ) ;
+  this.wc.on ( name, function event_listener_callback ( e )
+  {
+    Console.log ( thiz.toFullString ( e ) ) ;
+  }) ;
+}
+Xmp.removeEventListener = function()
+{
+    if ( ! this.eventName ) return ;
+    this.wc.removeEventListener ( this.eventName ) ;
+};
+Xmp.toFullString = function ( text, indent )
+{
+  if ( ! indent ) indent = "" ;
+  if ( Array.isArray ( text ) || ( typeof ( text ) == 'object' && text ) )
+  {
+    var str = "" ;
+    if ( text.jsClassName && typeof ( text.toString ) == 'function' )
+    {
+      str += indent + text + "<br/>" ;
+      return ;
+    }
+    if ( typeof ( text.nodeType ) == 'number' && text.nodeName && typeof ( text.firstChild  ) )
+    {
+      str += indent + text + "<br/>" ;
+      return ;
+    }
+    for ( var key in text )
+    {
+      var p = text [ key ] ;
+      if ( typeof ( p ) == 'function' ) continue ;
+      if ( Array.isArray ( p ) || ( typeof ( p ) == 'object' && ! ( p instanceof Date ) ) )
+      {
+        str += indent + "\"" + key + "\": <br/>" + this.toFullString ( p, indent + "  " ) + "<br/>" ;
+        continue ;
+      }
+      str += indent + "\"" + key + "\": \"" + p + "\"<br/>" ;
+    }
+    return str ;
+  }
+  return String ( text ) ;
+};
+
+var SplitedImage = function ( imageSource, top, left, bottom, right )
+{
+  if ( typeof imageSource === 'string' )
+  {
+    if ( imageSource.indexOf ( '{' ) === 0 ) )
+    {
+      this._imagedescriptor = JSON.parse ( imageSource ) ;
+      
+    }
+  {
+  }
+  if ( typeof imageSource === 'object' )
+  {
+
+  }
+};
+var ImageStore = function()
+{
+  this._splitImages = {} ;
+};
+ImageStore.prototype.add = function ( imageSource, top, left, bottom, right )
+{
+  // body...
+};
+</script>
+</head>
+<body>
+  <div>
+    <table>
+      <tr><td>Send event:</td><td><button onclick='Xmp.sendEvent("ALARM")'>ALARM</button></td></tr>
+      <tr><td>Listen to:</td><td><button onclick='Xmp.on("ALARM")'>ALARM</button></td></tr>
+      <tr><td>Resource:</td><td><button onclick='Xmp.lockResource("user:4711")'>acquire "user:4711"</button></td></tr>
+      <tr><td></td><td><button onclick='Xmp.unlockResource()'>release "user:4711"</button></td></tr>
+      <tr><td>Semaphore:</td><td><button onclick='Xmp.semAcquire("user:10000")'>acquire "user:1000"</button></td></tr>
+      <tr><td></td><td><button onclick='Xmp.semRelease()'>release "user:1000"</button></td></tr>
+    </table>
+    <div id="console-container">
+      <button style='float:right;' onclick='Console.clear()'>Clear console</button>
+        <div id="console"></div>
+    </div>
+    <span id='IMAGE_CONTAINER'><img src="Intrigue.Dock.Bottom.png" id='IMAGE'></span>
+    <span id='CANVAS_CONTAINER'><canvas id='CANVAS'></span>
+    <span ><canvas id='TOP_LEFT'></span>
+  </div>
+<script type="text/javascript">
+try
+{
+
+    Xmp.initialize();
+    canvas = document.getElementById ( "CANVAS" ) ;
+    var img = new Image() ;
+    img.onload = function ( event )
+    {
+      Console.log  ( "width=" + img.width ) ;
+      Console.log  ( "height=" + img.height ) ;
+      Console.log  ( "width=" + canvas.width ) ;
+      Console.log  ( "height=" + canvas.height ) ;
+      canvas.width = img.width ;
+      canvas.height = img.height ;
+var ctx=canvas.getContext("2d");
+ctx.drawImage(img,0,0);
+var imgData=ctx.getImageData(0,0,10,10);
+
+TOP_LEFT = document.getElementById ( "TOP_LEFT" ) ;
+TOP_LEFT.style.visibility = "hidden" ;
+TOP_LEFT.width = 10 ;
+TOP_LEFT.height = 10 ;
+var ctx_TOP_LEFT=TOP_LEFT.getContext("2d");
+// TOP_LEFT.style.backgroundColor = "red" ;
+ctx_TOP_LEFT.putImageData(imgData,0,0);
+var data = TOP_LEFT.toDataURL() ;
+TOP_LEFT.style.visibility = "visible" ;
+Console.log ( data ) ;
+document.getElementById ( "IMAGE" ).src = data ;
+    }
+    img.src = "Intrigue.Dock.Bottom.png" ;
+}
+catch ( exc )
+{
+    Console.log ( "" + exc ) ;
+}
+function x()
+{
+
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Menubar>
+  <MenuItem img='TaskReport-16.png' text='~Reports' onclick='TGui.selectOrAddMultiform ( MF, Form.ReportEditor )' />
+  <MenuItem img='function-16.png' text='~Functions' onclick='TGui.selectOrAddMultiform ( MF, Form.Edit.T_FUNCTION )' />
+  <MenuItem Ximg='function-16.png' text='~Demo' onclick='TGui.selectOrAddMultiform ( MF, Form.Demo )' />
+  <MenuButton text='~Allgemein'
+    img='5days-16x16.gif' >
+      <MenuItem text='Wikipedia' onclick='TGui.createIframeWindow(http://maps.google.com/maps?hl=en&z=12&q=Mainz,Maps,true)' />
+<MenuItem text='Region Calmont' onclick='mosel_webcams(region-calmont-webcam)'/>
+<MenuItem text='Prinzenkopf' onclick='mosel_webcams(prinzenkopf-webcam)'/>
+<MenuItem text='Wolf' onclick='mosel_webcams(wolf-webcam)' />
+<MenuItem text='Brauneberg/Kesten/Osann-Monzel' onclick='mosel_webcams(brauneberg-kesten-osann-monzel-webcam)'/>
+<MenuItem text='Bernkastel-Kues' onclick='mosel_webcams(bernkastel-webcam)'/>
+
+<MenuItem text='Enkirch' onclick='mosel_webcams(enkirch-webcam)'/>
+<MenuItem text='Leiwen/Trittenheim' onclick='mosel_webcams(leiwen-trittenheim-webcam)'/>
+
+<MenuItem text='Mehring' onclick='mosel_webcams(mehring-webcam)'/>
+<MenuItem text='Piesport' onclick='mosel_webcams(piesport-webcam)'/>
+<MenuItem text='Traben-Trarbach' onclick='mosel_webcams(traben-trarbach-webcam)'/>
+<MenuItem text='Ürzig' onclick='mosel_webcams(uerzig-webcam)'/>
+<MenuItem text='Zell' onclick='mosel_webcams(zell-webcam)'/>
+    <MenuItem text='XMem'
+        onclick='function(event)
+        {
+					var w = new TWindow ( "XMem.Window" ) ;
+					w.create() ;
+					w.show() ;
+        }' />
+    <MenuItem text='Choose Theme' img='5days-16x16.gif' onclick='TGui.chooseTheme()' />
+    <MenuItem text='logout'
+        onclick='function(event)
+        {
+          TSys.logout() ;
+        }' />
+    <MenuItem text='Calcula~tor' onclick='
+        {
+          execute: function ( event )
+          {
+            var w = new TWindow ( "Window.Calculator.Full" ) ;
+            w.create() ;
+            w.show() ;
+          }
+        }'
+        />
+    <MenuItem text='Abmel~den' >
+      <MenuItem text='Customi~ze' onclick='function(){log("Customize");}'/>
+      <MenuItem text='Abmelden' />
+      <MenuItem text='Change password' />
+      <MenuItem text='More'>
+        <MenuItem text='AAAAAAAAAAAAAA' />
+        <MenuItem text='BBBBBBBBBBBBBB' />
+        <MenuItem text='CCCCCCCCCCC' />
+      </MenuItem>
+    </MenuItem>
+    <MenuItem text='Change ~password'>
+      <MenuItem text='Customi~ze' onclick='function(){log("Customize");}'/>
+      <MenuItem text='Abmelden' />
+      <MenuItem text='Change password' />
+    </MenuItem>
+  </MenuButton>
+  <MenuItem text='~User & Groups' onclick='TGui.selectOrAddMultiform ( MF, Form.UserAndGroups )' />
+  <MenuItem text='~Query Builder' onclick='TGui.selectOrAddMultiform ( MF, Form.DBQuery )' />
+  <MenuItem text='~One' onclick='TGui.selectOrAddMultiform ( MF, 0 )' />
+  <MenuItem text='Attri~butes'>
+    <MenuItem text='~Global Attributes' onclick='GlobalAttributes.edit()' />
+    <MenuItem text='~Attributes'
+      onclick='function(event)
+      {
+        var p = {} ;
+        p.TABLE = "T_EXPORT_PARAMETER" ;
+        p.KEY = "ID" ;
+        p.NAME = "NAME" ;
+        p.VALUE = "VALUE" ;
+        p.FOREIGN_KEY = "ID_EXPORT_GROUP" ;
+        p.TITLE = "TITLE" ;
+        var dba = new DBAttributes ( null ) ;
+        dba.edit ( 17 ) ;
+      }'
+    />
+  </MenuItem>
+	<MenuButton text='~Search...'>
+      <MenuItem text='Google...'
+onclick='function(event)
+{
+  var w = new TWindow ( "Window.Google.Search" ) ;
+  w.create() ;
+  w.show() ;
+}'
+      />
+    </MenuButton>
+    <MenuItem img='folder-icon-24.png' text='~LS' tooltip='File Explorer'
+      onclick='function(event)
+      {
+              var mf = TGui.getPeerById ( "MF" ) ;
+        mf.selectOrAdd ( "Ls.Form" ) ;
+      }'
+    />
+    <MenuItem img='folder-icon-24.png' text='~File Explorer' tooltip='File Explorer 2'
+	    onclick='function(event)
+	    {
+              var mf = TGui.getPeerById ( "MF" ) ;
+	      mf.selectOrAdd ( "FileExplorer" ) ;
+	    }'
+    />
+    <MenuItem text='R~Exec'
+      onclick='function(event)
+      {
+              var mf = TGui.getPeerById ( "MF" ) ;
+        mf.selectOrAdd ( "Form.RExec" ) ;
+      }'
+    />
+    <MenuItem text='~Gepard'
+	    onclick='function(event)
+	    {
+              var mf = TGui.getPeerById ( "MF" ) ;
+	      mf.selectOrAdd ( "Form.Gepard" ) ;
+	    }'
+    />
+  <MenuButton text='~Widgets...'
+    <MenuItem img='cosmos/widgets/GoogleTranslate/icon.png' text='~Google Translate' onclick='Cosmos.showWidget(GoogleTranslate)' />
+    <MenuItem img='cosmos/widgets/Babelfish/icon.png' text='~Babelfish' onclick='Cosmos.showWidget(Babelfish)' />
+    <MenuItem img='google-maps-favicon.png' text='Google ~Maps' onclick='Cosmos.showGoogleMapSearch()' />
+    <MenuItem img='cosmos/widgets/Calculator/icon.png' text='~Calculator' onclick='Cosmos.showWidget(Calculator)' />
+    <MenuItem img='cosmos/widgets/WhatIsMyIpAddress/icon.png' text='~WhatIsMyIpAddress' onclick='Cosmos.showWidget(WhatIsMyIpAddress)' />
+    <MenuItem text='C~alendars' img='Google-calendar-48x48.png' onclick='TGui.openWindow(Window.Calendar)' />
+  </MenuButton>
+  <if property='HOSTNAME' operator='eq' value='wevli077' >
+    <MenuItem img='burger-16.png' style='right:0px;' name='PluginMonitor' text='&nbsp;' onclick='PluginMonitor.toggleDisplay()' />
+  </if>
+    <MenuButton style='right:0px;' text='~Introspection'
+    >
+      <MenuItem text='User Agent'
+                onclick='function()
+                {
+                  log ( "User Agent: " + navigator.userAgent ) ;
+                  log ( Tango.ua, true ) ;
+		  log ( "window.Worker=" + !! window.Worker ) ;
+		  log ( "window.XMLHttpRequest=" + !! window.XMLHttpRequest ) ;
+		  log ( "window.WebSocket=" + !! window.WebSocket ) ;
+		  log ( "window.JSON=" + !! window.JSON ) ;
+                }'
+      />
+      <MenuItem text='CSS'
+                onclick='function()
+                {
+                  for ( var i = 0 ; i < document.styleSheets.length ; i++ )
+                  {
+                    var sheet = document.styleSheets[i];
+                    log ( "" + i + ": " + sheet.href + ", disabled: " + sheet.disabled ) ;
+                  }
+                }'
+      />
+      <MenuItem text='JS'
+                onclick='function()
+                {
+                  var en = new TXEnum ( document.getElementsByTagName("head")[0], "script" ) ;
+                  var i = 0 ;
+                  while ( en.hasNext() )
+                  {
+                    var d = en.next() ;
+                    log ( "" + i + ": " + d.src ) ;
+                    i++ ;
+                  }
+                }'
+      />
+      <MenuItem text='Theme' onclick='function() { log ( Tango.themeImageMappingXml ) ; }' />
+      <MenuItem text='WebConfig' onclick='function() { var wc = TSys.getWebConfig() ; log ( wc ) ; }' />
+      <MenuItem text='User' onclick='function() { var u = TSys.getUser() ; log ( u ) ; }' />
+    </MenuButton>
+    <MenuButton text='AskYesNo' Xdisabled='true' style='right:4px;'
+      onclick='function(event)
+      {
+      var str = "Do you really want to exit this Application?" ;
+      var d = new TUserDialog ( str ) ;
+      d.setTitle ( "Exit Application" ) ;
+      d.setDefaultToYes() ;
+      d.setUserFunction ( function(answer){log(answer);} ) ;
+      d.askYesNo() ;
+      }'
+    />
+  </Menubar>

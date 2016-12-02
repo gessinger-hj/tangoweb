@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Container id='Form.Sample' name='X' pagelet='new GUIHandlerClass()' onload='*.onload()'
+  >
+<!--
+<Container id='Form.Sample' name='X'
+	  pagelet='
+	    {
+	      counter: 0,
+	      first: true,
+	      number: "123456",
+	      _constructor_: function()
+	      {
+	        this.first = false ;
+	      },
+	      onload: function(event)
+	      {
+	        this.container = event.getContainer() ;
+	      },
+	      setV: function(event)
+	      {
+	        this.counter++ ;
+	        log ( "counter: " + this.counter ) ;
+	        var v = this.container.getValues() ;
+		log ( v ) ;
+	        var MAIL = v.ensureXml ( "ADDRESS/MAIL" ) ;
+	        MAIL.setContent ( "xxxxxxxxxx" ) ;
+	        this.container.setValues ( v ) ;
+	    /*
+	      var x = new TXml() ;
+	      var xADDRESS = x.addXml ( "ADDRESS" ) ;
+	      xADDRESS.addXml ( "NAME", "Ayaz" ) ;
+	      xADDRESS.addXml ( "CITY", "Mumbai" ) ;
+	      xADDRESS.addXml ( "MAIL", "a@x.d" ) ;
+	      c.setValues ( x ) ;
+	    */
+	      }
+	    }'
+>
+-->
+  <DisplayContainer style='width:300px;' path='ADDRESS'
+	  onchange='handle:PB.Get'
+    >
+    <Label text='Info' /><tab name=T1 X='+4' /><TextField name='NAME' value='xxx' style='right:4px;' />
+    <br/>
+    <Label text='%Cancel%' /><tab name=T1 /><TextField name='CITY' value='xxx' style='right:-4px;' />
+    <br/>
+    <Label text='Mail' /><tab name=T1 /><TextField name='MAIL' type='email' style='right:-4px;' />
+    <br/>
+    <Choice name='CHOICE' mandatory='true' default='false' >
+	    <option value='1'>one</option>
+	    <option value='2'>two</option>
+	    <option value='3'>three</option>
+	    <option value='4'>four</option>
+	    <option value='5'>five</option>
+    </Choice>
+    <br/>
+    <PushButton name='PB.Get' disabled='true' text='Get' onclick='
+	    function(event)
+	    {
+	    log ( event ) ;
+	    var ev = new TEvent ( event ) ;
+	    log ( ev ) ;
+	    var c = ev.getContainer() ;
+	    log ( c ) ;
+	    var v = ev.getValues() ;
+	    log ( v ) ;
+	    }'
+	    />
+    <PushButton text='Set' onclick='*.setV(event)' />
+    <PushButton text='Show Window' onclick='*.showWindow(event)' />
+    <br/>
+    <PushButton text='Handle Choice' onclick='*.handleChoice(event)' />
+    <br/>
+    <PushButton text='Set Reference Data' onclick='
+	    function(event)
+	    {
+	    var ev = new TEvent ( event ) ;
+	    var c = ev.getContainer() ;
+	    var x = new TXml() ;
+	    var xCHOICE = x.addXml ( "CHOICE" ) ;
+	    var xOpt = null ;
+	    for ( var i = 0 ; i < 10 ; i++ )
+	    {
+	      xOpt = xCHOICE.addXml ( "option", "Number " + i ) ;
+	      xOpt.addAttribute ( "value", "" + i ) ;
+	    }
+	    log ( x ) ;
+	    c.setRefData ( x ) ;
+	    }'
+	    />
+  </DisplayContainer >
+  <Splitbar/>
+  <DisplayContainer style='right:-0px;bottom:-0px;' >
+  </DisplayContainer >
+</Container>
+</xml>
+

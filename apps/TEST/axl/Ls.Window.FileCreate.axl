@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml >
+<Dialog title='%CreateFile%' id="Ls.Window.FileCreate" onclose='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save;javascript:
+  {
+    w:null,
+    execute: function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      if ( ! this.w )
+      {
+        this.w = ev.getWindow() ;
+      }
+      if ( this.w.getAttribute ( "ERROR" ) ) return false ;
+    }
+  }'
+  >
+    <DisplayContainer style='right:-4;bottom:-2;width:300px;attach-bottom:true;' >
+      <TextField tabx='24' label='%Name%' name='FILE.NAME' style='width:200px;right:-0;'
+	      mandatory='true'
+	      onkeyup='
+	      {
+          w:null,
+          label:null,
+      		timer:null,
+      		tf:null,
+	        execute: function (event)
+	        {
+      		  if ( ! this.tf )
+      		  {
+	            var ev = new TEvent ( event ) ;
+      		    var v = ev.getValues() ;
+              this.w = ev.getWindow() ;
+      		    this.pagelet = this.w.getPagelet() ;
+              this.label = this.w.getComponent ( "L.Status.2" ) ;
+      		    this.tf = ev.getComponent() ;
+      		    this.timer = new TTimer ( 500, function(t)
+      		    {
+      		      if ( t.pagelet.fileExists ( t.text ) )
+      		      {
+                  t.w.addAttribute ( "ERROR", "true" ) ;
+                  t.label.setValue ( "<b>" + t.text + "</b> already exists." ) ;
+                  t.w.checkStatus() ;
+                }
+                else
+      		      if (  t.text.indexOf ( "/" ) >= 0
+      		         || t.text.indexOf ( "\\" ) >= 0
+      		         || t.text.indexOf ( ":" ) >= 0
+      		         || t.text.indexOf ( "*" ) >= 0
+      		         || t.text.indexOf ( "?" ) >= 0
+            			 )
+      		      {
+                  t.w.addAttribute ( "ERROR", "true" ) ;
+                  t.label.setValue ( "Invalid name: <b>" + t.text + "</b>" ) ;
+                  t.w.checkStatus() ;
+                }
+                else
+                {
+                  t.w.addAttribute ( "ERROR", "" ) ;
+                  t.label.setValue ( "" ) ;
+                  t.w.checkStatus() ;
+                }
+      		    }) ;
+      		    this.timer.setRepeats ( false ) ;
+      		    this.timer.label = this.label ;
+      		    this.timer.w = this.w ;
+      		    this.timer.pagelet = this.pagelet ;
+      		  }
+      		  var t = this.tf.getText() ;
+      		  this.timer.stop() ;
+      		  if ( t.length < 1 )
+      		  {
+              this.label.setValue ( "" ) ;
+      		    return ;
+      		  }
+      		  this.timer.text = t ;
+            this.label.setValue ( "" ) ;
+      		  this.timer.start() ;
+	        }
+	      }'
+      />
+      <br/>
+      <Label name='L.Status.2' text='' style='right:-0;color:red;' />
+    </DisplayContainer>
+    <br />
+    <Container style='bottom:0;right:0;' >
+      <PushButton disabled='true' id='PB.Save' img='Tango/Misc/edit-save' text='%Create%' onclick='*.fileCreateSave(event)' />
+      <PushButton text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>
+

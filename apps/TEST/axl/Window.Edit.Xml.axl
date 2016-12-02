@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' title='Demo 1...' id="Window.Edit.Xml"
+  Xonopen='*.onload()'
+  pagelet='{
+    _initialize_: function ( dom )
+    {
+    },
+    toString: function()
+    {
+      return "(Pagelet)[Window.Edit.Xml]" ;
+    },
+    onload: function ( ev )
+    {
+      var c = ev.getContainer() ;
+      this.editor = c.getPeer ( "Include.Edit.Xml" ) ;
+    },
+    getEditor: function()
+    {
+      return this.editor ;
+    }
+  }'
+  >
+    <Container right='-0' bottom='-0' name='Form' Xstyle='top:0px;left:0px;'
+  onload='*.onload()'
+    >
+    <Include src='Include.Edit.Xml' />
+    </Container>
+  </Window>
+</xml>
+

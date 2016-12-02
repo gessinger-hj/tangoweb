@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Edit.Xml' name='X'
+  onload='*.onload()'
+  pagelet='{
+    _initialize_: function ( dom )
+    {
+    },
+    onload: function ( ev )
+    {
+      var c = ev.getContainer() ;
+      this.xmlPagelet = c.getPeer ( "Include.Edit.Xml" ) ;
+      this.xmlPagelet.addEventListener ( this, this.eventListener ) ;
+    },
+    load: function ( event )
+    {
+      var str = TSys.getAxlText ( "Form.Mail" ) ;
+      this.xmlPagelet.setText ( str ) ;
+    },
+    eventListener: function ( ev )
+    {
+    log ( ev ) ;
+    },
+    openWindow: function ( event )
+    {
+      var w = new TWindow ( "Window.Edit.Xml" ) ;
+      w.create() ;
+      var p = w.getPagelet() ;
+      var e = p.getEditor() ;
+      var str = TSys.getAxlText ( "Form.Mail" ) ;
+      e.setText ( str ) ;
+      e.addEventListener ( this, this.eventListener ) ;
+      w.show() ;
+    }
+  }'
+>
+  <Container style='right:-0;' >
+    <PushButton text='Load' onclick='*.load()' />
+    <PushButton text='Window' onclick='*.openWindow()' />
+  </Container>
+  <br/>
+<Include src='Include.Edit.Xml' />
+</Container>
+</xml>
+

@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.NB' name='X'
+>
+	<Define tag='NotebookLeft' >
+		<Container style='margin-left:-1px;top:2px;bottom:-0px;right:-0px;padding-left:4px;'
+	      decoration='{ src:"img/Default-2-right-full-2.png", border: { top:2,left:1,bottom:9,right:6}
+	                         , padding: { top:0,left:0,bottom:0,right:0}
+	                         , type:"sliced"
+	                         }'
+		>
+		</Container>
+	</Define>
+<Define tag='NBButtonLeftFirst'>
+<CustomButton text='Calculator' style='right:-0px;' checkable='true' onclick='
+{
+  execute: function ( event )
+  {
+  }
+}'
+estyle='{ normal: { image: { src:"Default-2-top-left.png",
+                                         border: { top:2,left:6,Xbottom:10,Xright:10 }
+                                       },
+                                color: { foreground:"black" }
+                              },
+                      inside: { image: { src:"Default-2-top-left-checked.png",
+                                         border: { top:2,left:6,Xbottom:10,Xright:10 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      checked: { image: { src:"Default-2-top-left-checked.png",
+                                         border: { top:2,left:6,Xbottom:10,Xright:10 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      padding:{top:3,left:8,bottom:4,right:2 }
+                    }' />
+</Define>
+<Define tag='NBButtonLeftMiddle'>
+<CustomButton text='Calculator' style='right:-0px;' checkable='true' onclick='
+{
+  execute: function ( event )
+  {
+  }
+}'
+estyle='{ normal: { image: { src:"Default-2-left.png",
+                                         border: { top:1,left:7,Xbottom:10 }
+                                       },
+                                color: { foreground:"black" }
+                              },
+                      inside: { image: { src:"Default-2-left-checked-2.png",
+                                         border: { top:1,left:7,Xbottom:10 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      pressed: { image: { src:"Default-2-left-checked-2.png",
+                                         border: { top:1,left:6,bottom:0,right:0 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      checkedInside: { image: { src:"Default-2-left-checked-2.png",
+                                         border: { top:1,left:6,bottom:0,right:0 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      padding:{top:3,left:8,bottom:4,right:2 }
+                    }' />
+</Define>
+<Define tag='NBButtonLeftLast'>
+<CustomButton text='Calculator' style='right:-0px;' checkable='true' onclick='
+{
+  execute: function ( event )
+  {
+  }
+}'
+estyle='{ normal: { image: { src:"Default-2-bottom-left.png",
+                                         border: { top:1,left:6,bottom:9,right:0 }
+                                       },
+                                color: { foreground:"black" }
+                              },
+                      inside: { image: { src:"Default-2-bottom-left-checked.png",
+                                         border: { top:1,left:6,bottom:9,right:0 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      checked: { image: { src:"Default-2-bottom-left-checked.png",
+                                         border: { top:1,left:6,bottom:9,right:0 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      padding:{top:2,left:8,bottom:11,right:2 }
+                    }' />
+</Define>
+
+	<Container style='left:0px;margin-right:0px;top:2px;padding:0px;' >
+	<Group >
+	<Grid style='margin-right:0px;padding:0px;right:-0px;'>
+		<tr>
+      <td><NBButtonLeftFirst text='Reports' checked='true'/></td>
+    </tr>
+    <tr>
+      <td><NBButtonLeftMiddle text='CSA Reports'/></td>
+    </tr>
+    <tr>
+      <td><NBButtonLeftMiddle text='XXXXXXX'/></td>
+    </tr>
+    <tr>
+      <td><NBButtonLeftMiddle text='XXXXXXX'/></td>
+    </tr>
+    <tr>
+      <td><NBButtonLeftMiddle text='XXXXXXX'/></td>
+    </tr>
+    <tr>
+      <td><NBButtonLeftLast text='XXXXXXX'/></td>
+    </tr>
+  </Grid>
+	</Group>
+	</Container>
+	<NotebookLeft style='margin-left:-1px;top:2px;bottom:-0px;right:-0px;padding-left:4px;'>
+	</NotebookLeft>
+</Container>
+</xml>

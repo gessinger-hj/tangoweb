@@ -1,0 +1,54 @@
+  <ACS.RESULT>
+    <CUSTOMER.LIST>
+      <row >
+        <NAME>ACS24</NAME>
+        <CUSTOMERCODE>ACS24</CUSTOMERCODE>
+        <Scenario>ZoneCustomEB_1_2</Scenario>
+      </row>
+      <row >
+        <NAME>test2</NAME>
+        <CUSTOMERCODE>test2</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row >
+        <NAME>Test2</NAME>
+        <CUSTOMERCODE>Test2</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row >
+        <NAME>M2M_Test1</NAME>
+        <CUSTOMERCODE>M2M_Test1</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row >
+        <NAME>test1</NAME>
+        <CUSTOMERCODE>test1</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row >
+        <NAME>FQRMP1</NAME>
+        <CUSTOMERCODE>FQRMP1</CUSTOMERCODE>
+        <Scenario>RED_MultiProposition</Scenario>
+      </row>
+      <row >
+        <NAME>test</NAME>
+        <CUSTOMERCODE>test</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row >
+        <NAME>Test</NAME>
+        <CUSTOMERCODE>Test</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row >
+        <NAME>Test1</NAME>
+        <CUSTOMERCODE>Test1</CUSTOMERCODE>
+        <Scenario>RED_MultiProposition</Scenario>
+      </row>
+      <row >
+        <NAME>SFUK</NAME>
+        <CUSTOMERCODE>SFUK</CUSTOMERCODE>
+        <Scenario>Salesforce</Scenario>
+      </row>
+    </CUSTOMER.LIST>
+  </ACS.RESULT>

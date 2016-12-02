@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Date Test" id='Form.Date.Test' name='X' onchange='handle:PB.Test'>
+<!--
+<Container label="Date Test" id='Form.Date.Test' name='Form.Date.Test' onchange='handle:PB.Test'>
+-->
+  <Container pagelet='new CalendarTest()'>
+    <PushButton text='getEasterDate(2014)' onclick='*.getEasterDate(2014,event)' />
+    <PushButton text='getBeweglicheFeiertage(2014)' onclick='*.getBeweglicheFeiertage(2014,event)' />
+    <PushButton text='getFreedays(2014,4)' onclick='*.getFreedays(2013,10,event)' />
+    <PushButton text='numberOfWorkingHours()' onclick='*.numberOfWorkingHours()' />
+  </Container>
+  <br/>
+  <Container name='X' pagelet='new CalendarTest()'>
+    <Label text='Area:'/>
+    <Choice name='areaName' onchange='*.areaChanged()'>
+      <option>GERMANY</option>
+      <option>BADEN_WUERTTEMBERG</option>
+      <option>BAYERN</option>
+      <option>BERLIN</option>
+      <option>BRANDENBURG</option>
+      <option>BREMEN</option>
+      <option>HAMBURG</option>
+      <option>HESSEN</option>
+      <option>MECKLENBURG_VORPOMMERN</option>
+      <option>NIEDERSACHSEN</option>
+      <option>NORDRHEIN_WESTFALEN</option>
+      <option>RHEINLAND_PFALZ</option>
+      <option>SAARLAND</option>
+      <option>SACHSEN</option>
+      <option>SACHSEN_ANHALT</option>
+      <option>SCHLESWIG_HOLSTEIN</option>
+      <option>THUERINGEN</option>
+      <option>AUSTRIA</option>
+      <option>SCHWEIZ</option>
+      <option>FRANCE</option>
+      <option>UNITED_KINGDOM</option>
+    </Choice>
+    <br/>
+    <Calendar name='START' show-buttons='false'
+       onclick='*.calculateFromCalendars()'
+       Xondblclick='function(event){ var ev = new TEvent ( event ) ; log ( ev.getValues() ) ; }'
+    />
+    <Calendar name='END' show-buttons='false'
+       onclick='*.calculateFromCalendars()'
+       Xondblclick='function(event){ var ev = new TEvent ( event ) ; log ( ev.getValues() ) ; }'
+    />
+    <br/>
+    <Label text='Number of working-hours:' /><Label name='NOWH' />
+    <br/>
+    <Label text='Number of working-days:' /><Label name='NOWD' />
+  </Container>
+</Container>

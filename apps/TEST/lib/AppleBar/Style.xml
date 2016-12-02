@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Axl>
+  </Axl>
+  <Css>${home}/Style.css</Css>
+  <Script><![CDATA[
+{
+  _initialize_: function()
+  {
+    AppleBarFactoryClass = function()
+    {
+      this.jsClassName = "AppleBarFactoryClass" ;
+      this.height = 32 ;
+    }
+    AppleBarFactoryClass.prototype.toString = function()
+    {
+      return "(" + this.jsClassName + ")" ;
+    }
+    AppleBarFactoryClass.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml() ;
+      var xCont = axl.addXml ( "Container" ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      var style = xml.getAttribute ( "style" ) ;
+    
+      var fullStyle = "height:" + this.height + "px;padding:0px;" ;
+      if ( style ) fullStyle += style;
+      xCont.addAttribute ( "style", fullStyle ) ;
+      xCont.addAttribute ( "decoration"
+                         , '{ src:"${home}/apple-globalnavbg-bar-2.png"'
+                         + ', border: { top:5,left:39,bottom:5,right:5}'
+                         + ', padding: { top:0,left:39,bottom:0,right:38}'
+                         + ', type:"sliced"'
+                         + '}'
+                         ) ;
+      xCont.copyChildrenFrom ( xml ) ;
+      return axl.getDom() ;
+    }
+    AppleBarFactory = new AppleBarFactoryClass() ;
+    TGui.addTagDefinition ( "AppleBar", AppleBarFactory ) ;
+    AppleBarButtonFactoryClass = function()
+    {
+      Tango.initSuper ( this, CustomButtonFactoryClass );
+      this.jsClassName = "AppleBarButtonFactoryClass" ;
+    }
+    AppleBarButtonFactoryClass.inherits( CustomButtonFactoryClass ) ;
+
+    AppleBarButtonFactoryClass.prototype.toString = function()
+    {
+      return "(" + this.jsClassName + ")" ;
+    }
+    AppleBarButtonFactoryClass.prototype.getEStyle = function ( xml )
+    {
+      xml.addAttribute ( "style", 'height:' + AppleBarFactory.height + 'px;font-weight:bold;margin-right:0px;text-shadow: #BBBBBB 1px 1px;' ) ;
+      var o = { normal: { image: { src:"${home}/apple-globalnavbg-2-1.png"
+                                 , border: { top:5,left:5,bottom:5,right:5 }
+                                 }
+                        , color: { foreground:"black", textShadow:"#BBBBBB 1px 1px" }
+                        }
+              , inside: { image: { src:"${home}/apple-globalnavbg-2-2.png"
+                                 , border: { top:5,left:5,bottom:5,right:5 }
+                                 }
+                        , color: { foreground:"white", textShadow:"none" }
+                        }
+              , pressed: { image: { src:"${home}/apple-globalnavbg-2-3.png"
+                                  , border: { top:5,left:5,bottom:5,right:5 }
+                                  }
+                         , color: { foreground:"white", textShadow:"none" }
+                         }
+              , padding:{top:5,left:5,bottom:5,right:5 }
+            } ;
+      var eStyle = new EStyle ( o ) ;
+      return eStyle ;
+    }
+    AppleBarButtonFactory = new AppleBarButtonFactoryClass() ;
+    TGui.addTagDefinition ( "AppleBarButton", AppleBarButtonFactory ) ;
+
+    AppleContainerFactoryClass = function()
+    {
+      this.jsClassName = "AppleContainerFactoryClass" ;
+      this.titleHeight = 24 ;
+      this.currentPeer = undefined ;
+    }
+    AppleContainerFactoryClass.prototype.toString = function()
+    {
+      return "(" + this.jsClassName + ")" ;
+    }
+    AppleContainerFactoryClass.prototype.getPeer = function()
+    {
+      var p = this.currentPeer ;
+      this.currentPeer = undefined ;
+      return p ;
+    }
+    AppleContainerFactoryClass.prototype.getAxl = function ( dom )
+    {
+      var xml = new TXml ( dom ) ;
+      var axl = new TXml() ;
+      var xCont = axl.addXml ( "Container" ) ;
+      var title = xml.getAttribute ( "title" ) ;
+
+      this.currentPeer = new Pagelet ( xml ) ;
+      xCont.copyAttributesFrom ( xml ) ;
+      var bodyId = TSys.getTempId() ;
+      var titleId = undefined ;
+      if ( typeof ( title ) == 'string' && title != "false" )
+      {
+        titleId = TSys.getTempId() ;
+        var xTitle = xCont.addXml ( "Container" ) ;
+        if ( title ) xTitle.addCDATA  ( title ) ;
+        xTitle.addAttribute ( "name", "title" ) ;
+        xTitle.addAttribute ( "id", titleId ) ;
+        xTitle.addAttribute ( "style", "right:-0;margin:0px;" ) ;
+        xTitle.addAttribute ( "class", "AppleContainerTitle" ) ;
+        xTitle.addAttribute ( "decoration"
+                            , '{ src:"${home}/header-blue.png"'
+                            + ', border: { top:5,left:5,bottom:5,right:5}'
+                            + ', type:"sliced"'
+                            + '}'
+                            ) ;
+      }
+
+      var xBr = xCont.addXml ( "br" ) ;
+      var xBody = xCont.addXml ( "Container" ) ;
+      var style = xml.getAttribute ( "style" ) ;
+      var img = xml.getAttribute ( "img" ) ;
+    
+      var fullStyle = "padding:0px;" ;
+      if ( style ) fullStyle += style;
+      xCont.addAttribute ( "style", fullStyle ) ;
+      xCont.addAttribute ( "decoration"
+                         , '{ src:"${home}/Default-2.png"'
+                         + ', border: { top:13,left:13,bottom:13,right:13}'
+                         + ', padding: { top:2,left:6,bottom:10,right:6}'
+                         + ', type:"sliced"'
+                         + '}'
+                         ) ;
+      xBody.addAttribute ( "style", "left:0px;right:-0;bottom:-0;" ) ;
+      xBody.addAttribute ( "class", "AppleContainerBody" ) ;
+      xBody.addAttribute ( "name", "body" ) ;
+      xBody.copyChildrenFrom ( xml ) ;
+      xBody.addAttribute ( "id", bodyId ) ;
+      this.currentPeer.titleId = titleId ;
+      this.currentPeer.bodyId = bodyId ;
+      return axl.getDom() ;
+    }
+    AppleContainerFactory = new AppleContainerFactoryClass() ;
+    TGui.addTagDefinition ( "AppleContainer", AppleContainerFactory ) ;
+  }
+}
+  ]]></Script>
+</xml>
+

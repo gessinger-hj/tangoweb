@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container name='Include.Edit.Xml'
+  style='right:-0;bottom:-0;attach-bottom:true;padding:0px;'
+  onload='*.onload()'
+  pagelet='{
+    _eventMulticaster: new EventMulticaster(),
+    pbSave: null,
+    _initialize_: function ( dom )
+    {
+    },
+    /*
+    flush: function()
+    {
+    log ( "----------flush---------" ) ;
+    xx.xx.xx = 9 ;
+    },
+    */
+    toString: function()
+    {
+      return "(Pagelet)[Form.Edit.Xml]" ;
+    },
+    onload: function ( ev )
+    {
+      var c = ev.getContainer() ;
+      this.ta = c.getComponent ( "TA.AXL" ) ;
+      this.td = c.getPeer ( "TextDisplay.INFO" ) ;
+      this.pbSave = c.getComponent ( "PB.Save" ) ;
+    },
+    addEventListener: function ( obj, func, actionName )
+    {
+      this._eventMulticaster.add ( obj, func, actionName ) ;
+    },
+    setName: function ( name )
+    {
+      this.name = name ;
+    },
+    getName: function()
+    {
+      return this.name ;
+    },
+    setText: function ( text )
+    {
+      this.ta.setText ( text ) ;
+    },
+    getText: function()
+    {
+      return this.ta.getText() ;
+    },
+    setTitle: function ( title )
+    {
+      this.title = title ;
+    },
+    getTitle: function()
+    {
+      return this.title ;
+    },
+    parse: function ( event )
+    {
+      var str = this.ta.getText() ;
+      var thiz = this ;
+      var x = TSys.parseXml ( str, function ( xerror, xmlString )
+      {
+        thiz.ta.setText ( "" + xerror + "\n" + xmlString ) ;
+      } ) ;
+    },
+    parseRemote: function()
+    {
+      var str = this.ta.getText() ;
+      var x = TSys.evaluateXmlParsing ( str, true, false ) ;
+      this.td.clear() ;
+      if ( ! x || x.isEmpty() )
+      {
+        this.pbSave.setEnabled ( true ) ;
+        return ;
+      }
+      this.pbSave.setEnabled ( false ) ;
+      var errorText = TSys.escapeHtmlCharacters ( x.getContent ( "ErrorText" ) ) + " at line: " + x.getContent ( "Line" ) + " column: " + x.getContent ( "Column" ) ;
+      var before = TSys.escapeHtmlCharacters ( x.getContent ( "Before" ) ) ;
+      var after = TSys.escapeHtmlCharacters ( x.getContent ( "After" ) ) ;
+
+      this.td.addCode ( errorText, false, "font-weight:bold;" ) ;
+      this.td.addCode ( before, false, "color:red;" ) ;
+      this.td.appendCode ( after, false ) ;
+    },
+    timer: null,
+    onkeyup: function ( event )
+    {
+      if ( ! this.timer )
+      {
+        this.timer = new TTimer ( 500, function(t)
+        {
+          t.pagelet.parseRemote() ;
+        }) ;
+        this.timer.setRepeats ( false ) ;
+        this.timer.pagelet = this ;
+      }
+      this.timer.stop() ;
+      this.timer.start() ;
+      this.pbSave.setEnabled ( false ) ;
+    },
+    save: function ( event )
+    {
+      var ev = new TEvent ( event ) ;
+      this._eventMulticaster.fireEvent ( ev, "save" ) ;
+      this.pbSave.setEnabled ( false ) ;
+    }
+  }'
+>
+  <Container style='right:-0;' >
+    <PushButton name='PB.Save' disabled='true' text='Save' onclick='*.save()' />
+  </Container>
+  <br/>
+  <Container style='left:0px;bottom:-0px;right:-0;padding:0px;' >
+    <Container style='width:600px;height:300px;right:-0;attach-bottom:true;padding:0px;' >
+      <TextArea name='TA.AXL' style='top:0px;left:0px;right:-0;bottom:-0;' onkeyup='*.onkeyup()' />
+    </Container>
+    <SplitbarHorizontal/>
+    <Container style='height:100px;right:-0;bottom:-0;padding:0px;' >
+      <TextDisplay name='TextDisplay.INFO' style='top:0px;left:0px;right:-0;bottom:-0;' />
+    </Container>
+  </Container>
+</Container>
+</xml>
+

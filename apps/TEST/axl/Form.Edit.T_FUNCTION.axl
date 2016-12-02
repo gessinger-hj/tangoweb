@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Edit.T_FUNCTION' name='Form.Edit.T_FUNCTION'
+>
+  <Container style='bottom:-0;width:400px;' >
+    <Container style='height:300px;right:-0;' name='X' onchange='handle:PB.Edit.Attributes' >
+      <TitleLabel text='Tariffs' />
+      <br/>
+      <PushButton text='Search' onclick='
+        function(event)
+        {
+          var x = RB.getTariffList ( "*" ) ;
+          var ev = new TEvent ( event ) ;
+          ev.getContainer().setValues ( x ) ;
+        }'
+      />
+      <PushButton disabled='true' name='PB.Edit.Attributes' text='Edit Attributes' onclick='
+        function(event)
+        {
+          var ev = new TEvent ( event ) ;
+          var c = ev.getContainer() ;
+	  var tab = c.getPeer ( "T_TARIFF" ) ;
+	  var x = tab.getSelectedUserXml() ;
+	  if ( !x ) return ;
+          var ID = x.getContent ( "ID" ) ;
+          var ta = new TariffAttributes ( ID ) ;
+          ta.edit ( ID ) ;
+        }'
+      />
+      <PushButton text='Create' onclick='
+        function(event)
+        {
+          var ev = new TEvent ( event ) ;
+          TariffEditor.setTableContainer ( ev.getContainer() ) ;
+          TariffEditor.create ( event ) ;
+        }'
+      />
+      <br/>
+      <Table style='right:-0;bottom:-0;' name='T_TARIFF'
+        ondblclick='function(ev)
+        {
+          var tab = ev.getPeer() ;
+          var x = tab.getSelectedUserXml() ;
+          var ID = x.getContent ( "ID" ) ;
+          var ta = new TariffAttributes ( ID ) ;
+          ta.edit ( ID ) ;
+        }'
+      >
+        <Columns>
+          <Column name='ID' title='ID' />
+          <Column name='TARIFF_NAME' title='Name' />
+          <Column name='STATUS' title='STATUS' />
+          <Column name='TARIFF_MODEL_ID' title='TARIFF_MODEL_ID' />
+          <Column name='CLIENT_ID' title='CLIENT_ID' />
+        </Columns>
+      </Table>
+    </Container>
+    <br/>
+    <Container style='height:400px;bottom:-0;right:-0;' name='X' >
+      <TitleLabel text='Functions' />
+      <br/>
+      <PushButton text='%Search%' onclick='
+        function(event)
+        {
+          var x = FunctionEditorManager.getFunctionList ( "*" ) ;
+          var ev = new TEvent ( event ) ;
+          ev.getContainer().setValues ( x ) ;
+        }'
+      />
+      <PushButton text='%Edit%' onclick='
+        function(event)
+        {
+          var c = TGui.getComponent ( "Form.Edit.T_FUNCTION" ) ;
+          var fe = c.getPeer ( "Form.Function.Editor" ) ;
+          var tab = c.getPeer ( "T_FUNCTION" ) ;
+          var x = tab.getSelectedUserXml() ;
+	  if ( ! x ) return ;
+
+          var id = x.getContent ( "FUNCTION_ID" ) ;
+          var name = x.getContent ( "FUNCTION_NAME" ) ;
+          var type = x.getContent ( "FUNCTION_TYPE" ) ;
+	  FunctionEditorManager.editInWindow ( id, name, type ) ;
+        }'
+      />
+      <PushButton text='%EditAttributes%' onclick='
+        function(event)
+        {
+          var c = TGui.getComponent ( "Form.Edit.T_FUNCTION" ) ;
+          var fe = c.getPeer ( "Form.Function.Editor" ) ;
+          var tab = c.getPeer ( "T_FUNCTION" ) ;
+          var x = tab.getSelectedUserXml() ;
+	  if ( ! x ) return ;
+
+          var id = x.getContent ( "FUNCTION_ID" ) ;
+	  FunctionEditorManager.editAttributes ( id ) ;
+        }'
+      />
+      <PushButton text='%New%' onclick='
+        function(event)
+        {
+	  FunctionEditorManager.createNewFunction() ;
+        }'
+      />
+      <PushButton text='%Export%' onclick='
+        function(event)
+        {
+	  FunctionEditorManager.exportFromDatabase() ;
+        }'
+      />
+      <br/>
+      <Table style='right:-0;bottom:-0;' name='T_FUNCTION' sortable='true'
+        ondblclick='function(ev)
+        {
+          var c = TGui.getComponent ( "Form.Edit.T_FUNCTION" ) ;
+          var fe = c.getPeer ( "Form.Function.Editor" ) ;
+          var tab = ev.getPeer() ;
+          var x = tab.getSelectedUserXml() ;
+
+          var id = x.getContent ( "FUNCTION_ID" ) ;
+          var name = x.getContent ( "FUNCTION_NAME" ) ;
+          var type = x.getContent ( "FUNCTION_TYPE" ) ;
+          fe.edit ( id, name, type ) ;
+        }'
+      >
+        <Columns>
+          <Column name='FUNCTION_ID' title='ID' />
+          <Column name='FUNCTION_TYPE_ID' title='%Type%' />
+          <Column name='FUNCTION_NAME' title='%Name%' />
+        </Columns>
+      </Table>
+    </Container>
+  </Container>
+  <Splitbar />
+  <Container style='right:-0;bottom:-0;padding:0px;'>
+    <Form.Function.Editor style='right:-2;bottom:-0;'/>
+  </Container>
+</Container>
+

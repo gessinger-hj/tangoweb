@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.NetEvents' onload='*.onload()'
+pagelet='
+{
+  id: "XXX",
+  netEventListener: null,
+  container: null,
+  onload: function ( ev )
+  {
+    this.container = ev.getContainer() ;
+    var logDisplay = this.container.getComponent ( "LOG" ) ;
+    this.textDisplay = new TTextDisplay ( logDisplay.getDom() ) ;
+    this.notifier = new SystemNotifierClass ( { width: 500, showIcons: false } ) ;
+    var thiz = this ;
+    this.notifier.on ( "click", function notifier_onclick(ev)
+    {
+      thiz.notifier.close() ;
+      NetEventHandler.removeListener ( thiz.netEventListener ) ;
+      thiz.netEventListener = null ;
+    });
+  },
+  toString: function()
+  {
+    return "(" + this.id + ")" ;
+  },
+  info: function()
+  {
+    log ( "window.Worker=" + !! window.Worker ) ;
+    log ( "window.XMLHttpRequest=" + !! window.XMLHttpRequest ) ;
+    log ( "window.WebSocket=" + !! window.WebSocket ) ;
+    log ( "window.JSON=" + !! window.JSON ) ;
+    log ( "window.DOMParser=" + !! window.DOMParser ) ;
+  },
+  addListener: function()
+  {
+    if ( this.netEventListener ) return ;
+    this.netEventListener = new NetEventListener ( "plugins", this.plugins.bind ( this ) ) ;
+    NetEventHandler.addListener ( this.netEventListener ) ;
+    NetResource.emit ( "emit-plugins-info" ) ;
+  },
+  plugins: function ( xEvent )
+  {
+    var xPLUGINS = xEvent.get ( "xml/PLUGINS" ) ;
+    this.notifier.clear() ;
+    this.notifier.notify ( "<b>CISS Transactions</b>" ) ;
+    var thiz = this ;
+    xPLUGINS.elements ( function PLUGIN_elements ( row )
+    {
+      var t = "" ;
+      var date = row.getDate ( "TRANSACTIONTASKSTART" ) ;
+      var tt = DateUtils.formatTimeShort ( date ) ;
+      t += tt + " - " ;
+      t += row.getContent ( "PARAMVALUEIN0" ) ;
+      t += " - " ;
+      t += row.getContent ( "PARTNERCODE" ) ;
+      t += " - " ;
+      t += row.getContent ( "EN" ) ;
+      var EXEC_CLASS = row.getContent ( "EXEC_CLASS" ) ;
+      if ( EXEC_CLASS.indexOf ( "." ) >= 0 )
+      {
+        EXEC_CLASS = EXEC_CLASS.substring ( EXEC_CLASS.indexOf ( "." ) + 1 ) ;
+      }
+      t += " (" + EXEC_CLASS + ")" ;
+      thiz.notifier.notify ( t ) ;
+    });
+    var BDE = xEvent.get ( "xml/BDE" ) ;
+    thiz.notifier.notify ( "<b>BDE</b>" ) ;
+    if ( ! BDE )
+    {
+      return ;
+    }
+    var first = true ;
+    var ACTIVE = BDE.get ( "ACTIVE" ) ;
+    ACTIVE.elements ( function ACTIVE_elements ( report )
+    {
+      if ( first )
+      {
+        thiz.notifier.notify ( "<b>Active</b>" ) ;
+        first = false ;
+      }
+      thiz.notifier.notify ( report.getContent ( "LINE" ) ) ;
+    });
+    first = true ;
+    var QUEUE = BDE.get ( "QUEUE" ) ;
+    QUEUE.elements ( function QUEUE_elements ( report )
+    {
+      if ( first )
+      {
+        thiz.notifier.notify ( "<b>Queue</b>" ) ;
+        first = false ;
+      }
+      thiz.notifier.notify ( report.getContent ( "LINE" ) ) ;
+    });
+  },
+  removeListener: function()
+  {
+    if ( ! this.netEventListener ) return ;
+    this.netEventListener.remove() ;
+    this.netEventListener = null ;
+  },
+  removeAllListener: function()
+  {
+    NetEventHandler.removeAllListener() ;
+    this.netEventListener = null ;
+  },
+  _pullEvents: function()
+  {
+    if ( ! this.netEventListener ) return ;
+    NetEventHandler._pullEvents() ;
+  },
+  _peekEvents: function()
+  {
+    if ( ! this.netEventListener ) return ;
+    NetEventHandler._peekEvents() ;
+  }
+}'
+>
+  <Container name='X' >
+    <PushButton text='info' onclick='*.info()' />
+    <PushButton text='addListener' onclick='*.addListener()' />
+    <PushButton text='removeListener' onclick='*.removeListener()' />
+    <PushButton text='removeAllListener' onclick='*.removeAllListener()' />
+    <!-- <PushButton text='_pullEvents' onclick='*._pullEvents()' /> -->
+    <!-- <PushButton text='_peekEvents' onclick='*._peekEvents()' /> -->
+  </Container>
+  <br/>
+  <Container>
+  <Html><![CDATA[
+<style type='text/css'>
+.hamburger {
+    border: 1px solid transparent /*#374C77*/ ;
+    border-radius: 3px 3px 3px 3px;
+    cursor: pointer;
+    display: block;
+    height: 16px;
+    padding: 2px 2px 2px;
+    position: relative;
+    width: 16px;
+/*
+    background: #4569b2;
+    background: -moz-linear-gradient(top,  #4569b2 0%, #4062a5 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4569b2), color-stop(100%,#4062a5));
+    background: -webkit-linear-gradient(top,  #4569b2 0%,#4062a5 100%);
+    background: -o-linear-gradient(top,  #4569b2 0%,#4062a5 100%);
+    background: -ms-linear-gradient(top,  #4569b2 0%,#4062a5 100%);
+    background: linear-gradient(to bottom,  #4569b2 0%,#4062a5 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4569b2', endColorstr='#4062a5',GradientType=0 );
+*/
+}
+ 
+/*
+The white stripes in the hamburger button
+*/
+.hamburger div {
+    background-color: darkslategray;
+    /*border: 1px solid #000;*/
+    border-radius: 2px 2px 2px 2px;
+    height: 3px;
+    margin-top: 2px;
+    width: 91%;
+}
+</style>
+   <div class="hamburger">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+
+
+  sdfg gh sfgh sfgh fgh
+  ]]></Html>
+</Container>
+  <#TextDisplay name='LOG' style='left:0px;bottom:-0px;right:-0px;width:400px;overflow:auto;' />
+</Container>

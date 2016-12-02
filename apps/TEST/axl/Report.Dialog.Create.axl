@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Dialog img='TaskReport-new-16.png' id='Report.Dialog.Create' title='Create New Report...' onclose='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;'
+      onchange='handle:PB.Save'
+  >
+    <DisplayContainer style='right:-0;bottom:-0;attach-bottom:true;width:600px;'
+    >
+      <ListLabel text='Name:' /><tab name='T1' X='+10' /> <TextField name='REPORT_NAME' style='right:-0;'  mandatory='true'/>
+      <br/> <ListLabel text='Description:' /><tab name='T1' X='+10' /> <TextField name='DESCRIPTION' style='right:-0;' />
+      <br/> <ListLabel text='ROOT_TAG'/><tab name='T1' X='+10' /><TextField name='ROOT_TAG' style='right:-0;' mandatory='true'/>
+      <br/> <ListLabel text='CONTEXT'/><tab name='T1'/><TextField name='CONTEXT' style='right:-0;' mandatory='true' default='*'/>
+      <br/> <ListLabel text='CREDENTIAL_ID'/><tab name='T1'/><Choice name='CREDENTIAL_ID' style='right:-0;'/>
+      <br/> <ListLabel text='START_DATE'/><tab name='T1'/><Label name='START_DATE' style='right:-0;' type='datetime'/>
+      <br/> <ListLabel text='END_DATE'/><tab name='T1'/><Label name='END_DATE' style='right:-0;' type='datetime'/>
+      <br/> <ListLabel text='FILE_NAME'/><tab name='T1'/>
+        <TextField name='FILE_NAME' style='right:-0;'  mandatory='true'
+	type='function(str)
+	{
+          var nA = 0 ;
+          var nB = 0 ;
+          for ( var i = 0 ; i < str.length ; i++ )
+          {
+            var c = str.charAt ( i ) ;
+            if ( c == "{" ) nA++ ;
+            if ( c == "}" ) nB++ ;
+          }
+	  if ( nA != nB ) return false ;
+	  return true ;
+	}'
+	>
+	</TextField>
+      <br/> <ListLabel text='DOC_TYPE_NAME'/><tab name='T1'/><TextField name='DOC_TYPE_NAME' style='right:-0;'  mandatory='true'/>
+      <br/> <ListLabel text='LOOP_VAR_NAME'/><tab name='T1'/><Label name='LOOP_VAR_NAME' style='right:-0;'/>
+      <br/> <ListLabel text='DEFAULT_FORMAT'/><tab name='T1'/>
+        <Choice name='DEFAULT_FORMAT' style='right:-0;' >
+	  <option>csv</option>
+	  <option >xml</option>
+	  <option >xls</option>
+	  <option >pdf</option>
+	</Choice>
+      <br/> <ListLabel text='CSV_DELIMITER'/><tab name='T1'/>
+        <Choice name='CSV_DELIMITER' style='right:-0;'>
+	  <option></option>
+	  <option value='"' >quote</option>
+	  <option value="'" >apostroph</option>
+	</Choice>
+      <br/> <ListLabel text='CSV_SEPARATOR'/><tab name='T1'/>
+        <Choice name='CSV_SEPARATOR' style='right:-0;'>
+	  <option>,</option>
+	  <option>;</option>
+	  <option value='	'>tab</option>
+	</Choice>
+    </DisplayContainer>
+    <br/>
+    <Container style='bottom:0px;right:0px;' >
+      <PushButton name='PB.Save' img='save-16x16.gif' disabled=true text='%Save%' onclick='*.createReportSave(event)' />
+      <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>

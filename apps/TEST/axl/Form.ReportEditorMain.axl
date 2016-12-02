@@ -1,0 +1,159 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.ReportEditorMain' style='top:0px;left:0px;bottom:-0;right:-0;' reset='false' name='X'
+  pagelet='new ReportEditor()'
+ >
+  <Container style='left:0px;padding:0px;margin:0px;right:-0;bottom:-0;'
+             onload='*.onload(event)'
+  >
+    <Container style='left:0px;margin:0px;' right='-0' name='SEARCH_PARAMETER' >
+      <Label text='Name or part of name:' /><TextField persistent=true name='REPORT_NAME' style='width:200px;' default='*' action='*.searchReport(event)' />
+      <PushButton img='database-search-icon-16.png' text='Search' onclick='*.searchReport(event)' />
+      <PushButton img='database-down-icon-16.png' text='Download Definitions' onclick='*.downloadDefinitions(event)' />
+      <PushButton img='lock--pencil.png' text='Edit Credentials' onclick='*.editCredentials(event)' />
+      <PushButton img='function-2-16.png' text='Edit Global Functions' onclick='*.editGlobalFunctions(event)' />
+      <ChoiceButton style='width:100px;' name='NameSpace' Xdisabled='true' default='false' onchange='*.changeNameSpace()' >
+      </ChoiceButton>
+      <PushButton img='TaskReport-new-16.png' text='Create Report' onclick='*.createReport(event)' />
+    </Container>
+    <br />
+    <Container style='left:0px;bottom:-0;right:-0;padding:0px;' >
+    <Container style='left:0px;bottom:-1;' >
+      <Container right='-0' >
+        <Label text='Search Result' style='font-weight:bold;' />
+          <XToolbarButtonSmall img='edit-blue.png' onclick='*.showReport()' style='right:4px;' />
+      </Container>
+      <br/>
+      <Table name='ACT_REPORT' style='overflow:auto;width:400px;bottom:-2;right:-0;'  reset=true 
+            click='*.showReport()'
+            sortable='true'
+         >
+        <Columns>
+         <Column name='REPORT_ID' title='ID' />
+         <Column name='REPORT_NAME' title='Name' />
+         <Column name='DESCRIPTION' title='Description' />
+         <Column name='CONTEXT' title='Context' />
+        </Columns>
+      </Table>
+    </Container>
+    <Splitbar/>
+    <Container style='bottom:-0;right:-0;' >
+      <Container style='height:23px;right:-0;' >
+        <Label text='Details' style='font-weight:bold;' center='y' />
+      </Container>
+      <br/>
+      <Container name='RIGHT' style='bottom:-2;right:-4;top:27px;'
+      >
+        <DisplayContainer name='RIGHT_DETAILS' style='padding:0px;right:-0;top:0px;'
+        >
+          <Container style='padding:0px;width:240px;' >
+	    <ListLabel text='ID:' /><tab name='T1' X='+10' /> <Label name='REPORT_ID' style='right:-0;' get-value='true' reset='true'/>
+            <br/>
+	    <ListLabel text='LAST_EXECUTED'/><tab name='T1'/><Label name='LAST_EXECUTED' style='right:-0;' type='datetime' reset='true'/>
+            <br/>
+	    <ListLabel text='LAST_MODIFIED'/><tab name='T1'/><Label name='LAST_MODIFIED' style='right:-0;' type='datetime' reset='true'/>
+            <br/>
+	    <ListLabel text='ROOT_TAG'/><tab name='T1'/><Label name='ROOT_TAG' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='CONTEXT'/><tab name='T1'/><Label name='CONTEXT' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='DBUID'/><tab name='T1'/><Label name='DBUID' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='CREDENTIAL_ID'/><tab name='T1'/><Label name='CREDENTIAL_ID' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='START_DATE'/><tab name='T1'/><Label name='START_DATE' style='right:-0;' type='datetime' reset='true'/>
+            <br/>
+	    <ListLabel text='END_DATE'/><tab name='T1'/><Label name='END_DATE' style='right:-0;' type='datetime' reset='true'/>
+            <br/>
+	    <ListLabel text='SCHEDULE_ID'/><tab name='T1'/><Label name='SCHEDULE_ID' style='right:-0;'  reset='true'/>
+          </Container>
+          <Container style='padding:0px;width:140px;right:-4;' >
+	    <ListLabel text='Name:' /><tab name='T1' X='+10' /> <Label name='REPORT_NAME' style='right:-0;' get-value='true'  reset='true'/>
+            <br/>
+	    <ListLabel text='Description:' /><tab name='T1' X='+10' /> <Label name='DESCRIPTION' style='right:-0;'  reset='true'/>
+            <br/>
+	    <ListLabel text='FILE_NAME'/><tab name='T1'/><Label name='FILE_NAME' style='right:-0;'  reset='true'/>
+            <br/>
+	    <ListLabel text='DOC_TYPE_NAME'/><tab name='T1'/><Label name='DOC_TYPE_NAME' style='right:-0;'  reset='true'/>
+            <br/>
+	    <ListLabel text='LOOP_VAR_NAME'/><tab name='T1'/><Label name='LOOP_VAR_NAME' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='DBURL'/><tab name='T1'/><Label name='DBURL' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='DEFAULT_FORMAT'/><tab name='T1'/><Label name='DEFAULT_FORMAT' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='CSV_DELIMITER'/><tab name='T1'/><Label name='CSV_DELIMITER' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='CSV_SEPARATOR'/><tab name='T1'/><Label name='CSV_SEPARATOR' style='right:-0;' reset='true'/>
+            <br/>
+	    <ListLabel text='CRON_EXPRESSION'/><tab name='T1'/><Label name='CRON_EXPRESSION' style='right:-0;' reset='true'/>
+          </Container>
+	  <br/>
+          <Container style='right:-0;' >
+            <PushButton name='PB.EditReport' disabled='true' img='edit-blue.png' onclick='*.editReport()' text='Edit Report' />
+            <Label text='Format:' />
+            <ChoiceButton name='CH.FORMAT' disabled='true' >
+              <option value='html' img='text_html.png' >HTML</option>
+              <option value='xls' img='excel.gif' >Excel</option>
+              <option value='xml' img='application_xml.png' >XML</option>
+              <option value='csv' img='text_csv.png'>CSV</option>
+              <option value='pdf' Ximg='text_csv.png'>PDF</option>
+            </ChoiceButton>
+            <PushButton img='database-process-icon-16.png' text='Execute' name='PB.ExecuteReport' disabled='true' onclick='*.executeReport' />
+            <PushButton text='Edit Variables' name='PB.EditVariables' disabled='true' img='edit-blue.png' onclick='*.editVariables' />
+            <PushButton img='clock-icon-2-16.png' name='PB.EditSchedule' text='Edit Schedule' disabled='true' onclick='*.editSchedule(event)' />
+            <PushButton img='function-2-16.png' name='PB.EditFunctions' text='Edit Functions' disabled='true' onclick='*.editFunctions(event)' />
+          </Container>
+        </DisplayContainer>
+        <br/>
+	<Container name='RIGHT_STATEMENT' style='padding:0px;right:-0;bottom:-0;'
+	  Xonchange='handle:PB.EditStatement PB.EditStatementDefinition'
+        >
+          <Container style='right:-0;padding:0px;' >
+	  <PushButton text='Edit Details' name='PB.EditStatement' disabled='true' img='edit-blue.png'
+	    onclick='*.editReportStatementDetails()'
+	  />
+          <PushButton text='Edit Definition' name='PB.EditStatementDefinition' disabled='true' img='icon_sql.gif'
+	    onclick='*.editReportStatementDefinition()'
+	   />
+          <PushButton text='New Statement' name='PB.NewStatement' disabled='true' img='edit_add.png'
+	    onclick='*.createNewStatement()'
+	   />
+          <PushButton text='Remove Statement' name='PB.RemoveStatement' disabled='true' img='edit_remove.png'
+	    onclick='*.removeStatement()'
+	   />
+	  </Container>
+	  <br/>
+          <Table name='ACT_REPORT_STMT' style='width:400px;bottom:-0;right:-0;'  reset='true'
+		 onclick='*.statementsTableSelected()'
+	         ondblclick='*.editReportStatementDefinition()'
+                 sortable='false'
+                 selectable='true'
+                 onchange='*.statementsTableChanged()'
+          >
+            <Columns>
+             <Column name='ACTION' valign='middle' />
+             <Column name='POSITION' title='Pos.' />
+             <Column name='REPORT_STMT_ID' title='ID'/>
+             <Column name='ROOT_TAG'/>
+<!--
+             <Column name='CONTEXT'/>
+-->
+<!--
+             <Column name='CREDENTIAL_ID'/>
+-->
+             <Column name='PARENT_STMT_ID' title='Parent' editable='choice' />
+<!--
+             <Column name='TYPE'/>
+-->
+             <Column name='LAST_MODIFIED' type='datetime' />
+             <Column name='DESCRIPTION'/>
+            </Columns>
+          </Table>
+        </Container>
+      </Container>
+    </Container>
+  </Container>
+  </Container>
+</Container>
+</xml>

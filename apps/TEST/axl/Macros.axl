@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Define tag='Box'>
+    <Container decoration='box'></Container>
+  </Define>
+  <Define tag='BoxTop'>
+    <Container decoration='boxTop'></Container>
+  </Define>
+  <Define tag='BoxBottom'>
+    <Container decoration='boxBottom'></Container>
+  </Define>
+  <Define tag='ToolbarRight'>
+    <Container style='padding:0px;' decoration='toolbar.right'></Container>
+  </Define>
+  <Define tag='ToolbarLeft'>
+    <Container style='padding:0px;' decoration='toolbar.left'></Container>
+  </Define>
+</xml>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog title="Change Configuration Parameter" id="ACSWindow.Change.Parameter" onclose='TGui.cancelWindow()' resizable='false'>
+    <Container style='top:0px;left:0px;bottom:-0;right:-0;' name='X' onchange='handle:PB.Apply'>
+      <DisplayContainer style='bottom:-0;right:-4;' >
+        <ListLabel text='CUSTOMERCODE'/>
+          <tab name='T1' X='+4' />
+            <TextField path='Base/CUSTOMERCODE' name='CUSTOMERCODE' Xmaxlength='4' mandatory='true' style='right:-4px;'
+                      pattern='/[^a-zA-Z]*([a-zA-Z0-9_]*)/'
+           />
+        <br />
+        <ListLabel text='CUSTOMER_TYPE'/><tab name='T1' />
+          <Choice path='Base/PARTNER_TYPE_ID' name='PARTNER_TYPE_ID' style='right:-0px;' mandatory='true' sorted='true' >
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+          </Choice>
+        <br />
+        <ListLabel text='General Ledger Account'/>
+          <tab name='T1'/>
+          <Choice path='Base/GENERALLEDGERACCOUNT' name='GENERALLEDGERACCOUNT'  mandatory='true' style='right:-0px;' />
+          <!-- <TextField path='Base/GENERALLEDGERACCOUNT' name='GENERALLEDGERACCOUNT'  mandatory='true' style='right:-4px;' /> -->
+        <br />
+        <ListLabel text='OPERATORCODE'/><tab name='T1'/>
+          <Choice path='Base/SERVICEPROVIDER_NAME' name='SERVICEPROVIDER_NAME' style='right:-0px;'  mandatory='true' sorted='true' >
+            <option value=VGEL>VGEL</option>
+          </Choice>
+        <br />
+        <Hidden name='REVIEW_INTERVAL' path='Base/REVIEW_INTERVAL'/>
+        <ListLabel text='Scenario' /><tab name='T1'/>
+          <Choice name='Scenario' style='right:-0px;' mandatory='true' sorted='true' >
+          </Choice>
+        <br />
+          <ListLabel text='Use FUP' /><tab name='T1'/>
+          <Checkbox path='Base/FUP' name='FUP' value='true' text=' ' default='false' />
+      </DisplayContainer>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton text="Apply" name='PB.Apply' onclick='*.doChangeParameter()' disabled='true' />
+        <PushButton text="Cancel" onclick='TGui.cancelWindow()' />
+      </Container>
+    </Container>
+  </Dialog>
+</xml>
+
+

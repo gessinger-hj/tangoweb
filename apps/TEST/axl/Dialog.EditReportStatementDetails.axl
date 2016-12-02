@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Dialog id='Dialog.EditReportStatementDetails' title='Edit Details...' onclick='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save' >
+    <Hidden name='LAST_MODIFIED' />
+    <DisplayContainer style='right:-0;bottom:-0;attach-bottom:true;width:600px;' >
+      <ListLabel text='ID:' /><tab name='T1' X='+10' /> <Label name='REPORT_STMT_ID' style='right:-0;' get-value='true' />
+      <br/> <ListLabel text='Root Tag'/><tab name='T1'/><TextField name='ROOT_TAG' style='right:-0;' mandatory='true'/>
+      <Xbr/> <XListLabel text='Position'/><Xtab name='T1'/><XTextField name='POSITION' style='right:-0;' type='int' default='0'/>
+      <br/> <ListLabel text='Context'/><tab name='T1'/><TextField name='CONTEXT' style='right:-0;' mandatory='true'/>
+      <br/> <ListLabel text='Credential'/><tab name='T1'/><Choice default='false' default-is-null='true' name='CREDENTIAL_ID' style='right:-0;'/>
+      <!--
+      <br/> <ListLabel text='Type'/><tab name='T1'/><Label name='TYPE' style='right:-0;' />
+      -->
+      <br/> <ListLabel text='Type'/><tab name='T1'/>
+      <Choice name='TYPE'>
+	      <option value='SQL' >SQL</option>
+	      <option value='FUNC' >JS</option>
+      </Choice>
+      <br/> <ListLabel text='Description:' /><tab name='T1' X='+10' /> <TextField name='DESCRIPTION' style='right:-0;' />
+    </DisplayContainer>
+    <br/>
+    <Container style='bottom:0px;right:0px;' >
+      <PushButton name='PB.Save' img='save-16x16.gif' disabled=true text='%Save%' onclick='*.editReportStatementDetailsSave(event)' />
+      <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>

@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container style='right:-0;bottom:-0;' >
+  <Container style='top:0px;right:-0px;padding:0px;'>
+    <Hidden name='Offset' />
+    <Hidden name='BreadcrumbOffset' />
+    <Toolbar style='top:0px;bottom:-0;attach-bottom:true;' >
+      <ChoiceButton style='width:100px;' name='nameSpace' onchange='*.changeNameSpace()' />
+      <Label text='Places' class='SimpleTitle' />
+      <ChoiceButton name='Places' style='text-align:left;width:120px;' onchange='*.changePlace()' />
+  	  <Label text='Pattern' class='SimpleTitle' />
+      <CSSTextField name='PATTERN' value="" style='width:120px;' action='*.refreshFiles()'
+        onkeyup='{
+  	      timer:null,
+  	      execute: function ( event )
+  	      {
+  	        var ev = new TEvent ( event ) ;
+  		      if ( ev.isEnter() ) return ;
+  	        if ( ! this.timer )
+        		{
+        		  this.pagelet = ev.getPagelet() ;
+        		  this.timer = new TTimer ( 500, function(t)
+        		  {
+        	  	  t.thiz.pagelet.refreshFiles() ;
+        		  });
+        		  this.timer.setRepeats ( false ) ;
+        		  this.timer.thiz = this ;
+        		}
+        		this.timer.stop() ;
+        		this.timer.start() ;
+  	      }
+  	     }'
+  	    />
+        <PushButton text='Options' onclick='*.editOptions()'/>
+        <br/>
+        <Container name='Breadcrumb' style='right:-0px;padding:0px;overflow:hidden;'>
+          <PushButton text='XXX' style='visibility:hidden;' />
+        </Container>
+      </Toolbar>
+    </Container>
+    <br/>
+    <Container style='bottom:-0px;right:-0px;padding:0px;'>
+      <Container style='bottom:-0px;padding:0px;'>
+        <ToolbarVertical style='top:0px;left:0px;bottom:-0px;margin-right:0px;' >
+          <ToolbarButton name='TB.ShowList' img='refresh.png' tooltip='Refresh files' onclick='*.refreshFiles()'/>
+    			<br/>
+          <ToolbarButton Xdisabled='true' name='TB.Clone' img-width='24' img='editcopy-32.png' onclick='*.clone()'/>
+    			<br/>
+          <ToolbarButton disabled='true' name='TB.FolderUp' img-width='24' img='folder-up-icon-32.png' tooltip='Folder Up' onclick='*.folderUp()'/>
+    			<br/>
+          <ToolbarButton disabled='true' name='TB.ShowContent' img-width='24' img='Start-Menu-Search-icon-32.png' tooltip='Edit File' onclick='*.ondblclickFiles()'/>
+    			<br/>
+          <ToolbarButton disabled='true' name='TB.Download' img-width='24' img='download-1-icon-32.png' tooltip='Download File' onclick='*.fileDownload()'/>
+    			<br/>
+          <ToolbarButton disabled='true' name='TB.Edit' img-width='24' img='Actions-document-edit-icon-32.png' tooltip='Edit File' onclick='*.editFile()'/>
+    			<br/>
+          <ToolbarButton disabled='true' name='TB.FileRemove' img-width='24' img='remove-icon-32.png' tooltip='Remove File'  onclick='*.folderRemove()'/>
+    			<br/>
+          <ToolbarButton img-width='24' img='folder-add-icon-32.png' tooltip='Create Folder' onclick='*.folderCreate()'/>
+    			<br/>
+          <ToolbarButton img-width='24' img='page-add-icon-32.png' tooltip='Create File' onclick='*.fileCreate()'/>
+    			<br/>
+          <ToolbarButton img-width='24' img='upload-1-icon-32.png' tooltip='Upload File' onclick='*.fileUpload()'/>
+        </ToolbarVertical>
+        <Container style='bottom:-0px;right:-0;padding:0px;'>
+          <Table name='Files' style='right:-0;bottom:-0;width:340px;height:500px;attach-bottom:true;'
+                 sortable=true
+                 selectable=true
+    	           onsetvalues='*.onSetValuesFile()'
+    	           onclick='*.onclickFiles()'
+    	           ondblclick='*.ondblclickFiles()'
+                 dragsource='true'
+                 droptarget='true'
+          >
+            <PopupMenu name='MENU2' onopen='*.onopenTablePopup()' >
+              <MenuItem img='Start-Menu-Search-icon-32.png' name='MI.Display' text='Show Content' onclick='*.ondblclickFiles()' />
+              <MenuItem img='download-1-icon-32.png' name='MI.Download' text='Download'  onclick='*.fileDownload()'/>
+              <MenuItem img='Actions-document-edit-icon-32.png' name='MI.Edit' text='Edit'  onclick='*.editFile()'/>
+              <MenuItem name='MI.Hashes' text='Hashes' onclick='*.showHashes("*")'/>
+              <MenuItem name='MI.FileTouch' text='Touch' Ximg='remove-icon-32.png' onclick='*.fileTouch()'/>
+              <MenuItem name='MI.FileRemove' text='Remove' img='remove-icon-32.png' onclick='*.folderRemove()'/>
+            </PopupMenu>
+            <Columns>
+              <Column name="ICON" title="&nbsp;" type='icon'/>
+              <Column name="NAME" title="Name" />
+              <Column name="DATE" title="Date" type='datetime' />
+              <Column name="KB" title="Size (KB)" type='float' format="%'.0f"/>
+              <!-- <Column name="MIME_TYPE" title="Mime Type" /> -->
+            </Columns>
+          </Table>
+          <br/>
+          <Container style='bottom:0px;right:-0px;' class='SimpleTitle' >
+            <Label name='DirInfo' style='right:-0px;text-align:right;'/>
+          </Container>
+        </Container>
+      </Container>
+      <Splitbar />
+      <Container style='bottom:-0px;right:-0px;padding:0px;'>
+  			<Multiform name='MF' style='bottom:-0px;right:-0px;' >
+    			<Container name='C-DISPLAY'>
+            <DisplayContainer name='DISPLAY' style='top:0px;left:0px;width:400px;bottom:-0px;right:-0px;overflow:auto;'>
+            </DisplayContainer>
+          </Container>
+          <Include src='DocumentEditor'/>
+        </Multiform>
+      </Container>
+  </Container>
+</Container>

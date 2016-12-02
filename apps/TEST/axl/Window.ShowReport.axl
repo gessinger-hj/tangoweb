@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' title="xxx" id="Window.ShowReport" img='TaskReport-16.png'>
+    <Container style='bottom:-0;right:-0;' name='X' >
+      <Container name='DISPLAY' style='bottom:-0;right:-0;width:400px;height:400px;overflow:auto;' />
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton img='Icon.RedCross.gif' text="%Close%" onclick='TGui.closeWindow()' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

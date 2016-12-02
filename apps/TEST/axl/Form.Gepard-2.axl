@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.Gepard-2' style=''
+>
+  <Properties>
+    <Title>Gepard - Tail</Title>
+    <Favicon>img/gp-icon-16.ico</Favicon>
+  </Properties>
+
+<Container name='X' style='bottom:-0px;right:-0px;' onload='*.onload()' >
+  <Script><![CDATA[
+  {
+    wc: null,
+    port: null,
+    _initialize_: function()
+    {
+      this.port = TSys.getWebConfig().getValue ( "GEPARD_WEBSOCKET_PORT" ) ;
+      var thiz = this ;
+      try
+      {
+        this.wc = gepard.getWebClient ( this.port ) ;
+        // this.wc.on ( "open", function onopen()
+        // {
+        // }) ;
+      }
+      catch ( exc )
+      {
+        log ( exc ) ;
+        console.log ( exc ) ;
+      }
+    },
+    onload: function ( ev )
+    {
+      this.container      = ev.getContainer() ;
+    },
+    _sendEvent: function ( name, type )
+    {
+      // var ne = new gepard.Event ( "DB:REQUEST" ) ;
+      var ne = new gepard.Event ( "message-test" ) ;
+      ne.setResultRequested() ;
+      this.wc.fireEvent ( ne,
+        { result:function result(e)
+          {
+            log ( e ) ;
+          }
+        } ) ;
+    },
+    _addEventListener: function ( eventName )
+    {
+      var thiz = this ;
+      this.wc.on ( [ "alarm" ], function alarm_event_listener_callback ( e )
+      {
+log ( e ) ;
+        e.control.status = { code:0 } ;
+        e.body = { result: "xxxxxxxxxxxxxxxxxxxxxx" } ;
+        thiz.wc.sendResult ( e ) ;
+      }) ;
+    },
+    _removeEventListener: function ( eventName )
+    {
+      this.wc.removeEventListener ( [ "alarm" ] ) ;
+    },
+    _lockResource: function ( resourceId )
+    {
+      var thiz = this ;
+      this.lock = this.wc.getLock ( resourceId ) ;
+      this.lock.acquire ( function lockResource_callback ( err, lock )
+      {
+log ( lock ) ;
+      }) ;
+    },
+    _unlockResource: function ( resourceId )
+    {
+      if ( ! this.lock ) return ;
+      this.lock.release() ;
+      this.lock = null ;
+    },
+    _acquireSemaphore: function ( resourceId )
+    {
+      var thiz = this ;
+      this.sem = this.wc.getSemaphore ( resourceId ) ;
+      this.sem.acquire ( function acquireSemaphore_callback ( err, sem )
+      {
+log ( sem ) ;
+      }) ;
+    },
+    _releaseSemaphore: function()
+    {
+      if ( ! this.sem ) return ;
+      this.sem.release() ;
+      this.sem = null ;
+    }
+  }
+  ]]></Script>
+  <Container>
+    <PushButton text='Send Event with Result' onclick='*._sendEvent()' />
+    <PushButton text='Add Listener' onclick='*._addEventListener()' />
+    <PushButton text='Remove Listener' onclick='*._removeEventListener()' />
+    <br/>
+    <PushButton text='_lockResource' onclick='*._lockResource("user:4711")' />
+    <PushButton text='_unlockResource' onclick='*._unlockResource("user:4711")' />
+    <br/>
+    <PushButton text='_acquireSemaphore' onclick='*._acquireSemaphore("user:10000")' />
+    <PushButton text='_releaseSemaphore' onclick='*._releaseSemaphore("user:10000")' />
+  </Container>
+</Container>
+</Container>
