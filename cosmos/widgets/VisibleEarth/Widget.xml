@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Header>
+    <Type>Widget</Type>
+    <Title>Visible Earth</Title>
+    <Description>Visible Earth</Description>
+  </Header>
+  <Axl>
+    <Container >
+      <Container style='right:-0;bottom:-4;attach-bottom:true;height:180px;width:360px;'
+      >
+        <ImageContainer name='IC' style='right:-0;bottom:-0;'
+        />
+      </Container>
+      <br/>
+      <Label name='Label' style='right:-0px;bottom:0px;text-align:center;font-size:large;' />
+    </Container>
+  </Axl>
+  <Script><![CDATA[
+{
+  widget: null,
+  IC: null,
+  _NasaVisibleEarth: "http://www.fourmilab.ch/cgi-bin/uncgi/Earth?img=nasa.evif&imgsize=320&dynimg=y&opt=-p&lat=&lon=&alt=&tle=&date=0&utc=&jd=",
+  _EarthCloudCover: "http://www.fourmilab.ch/cgi-bin/uncgi/Earth?img=cloudy.bmp&imgsize=320&dynimg=y&opt=-p&lat=&lon=&alt=&tle=&date=0&utc=&jd=",
+  _www_timeanddate_com_sunmap:  "https://www.timeanddate.com/scripts/sunmap.php?iso=",
+  _www_timeanddate_com_day_and_night_worldmap: "https://www.timeanddate.com/scripts/sunmap.php?earth=1&iso=",
+  _www_fourmilab_ch_earthview_composite:" http://www.fourmilab.ch/cgi-bin/Earth/action?opt=-p&img=wx-cmap.bmp",
+  timer: null,
+  label: null,
+  _constructor_: function ( widget )
+  {
+    this.widget = widget ;
+    this.resizable = true ;
+    this.closable = true ;
+  },
+  isPagelet: function()
+  {
+    return true ;
+  },
+  _initialize_: function ( widget )
+  {
+    this.IC = this.widget.getPeer  ( "IC" ) ;
+    this.label = this.widget.getComponent  ( "Label" ) ;
+    this.display() ;
+    this.timer = new TTimer ( 120000, function ( t )
+    {
+      t.self.display() ;
+    });
+    this.timer.self = this  ;
+    this.timer.start() ;
+  },
+  display: function()
+  {
+    var sd = DateUtils.formatDate ( new Date(), "yyyyMMddTHHmmss" ) ;
+    var url = this._www_timeanddate_com_day_and_night_worldmap + sd ;
+    /*
+    var url = this._NasaVisibleEarth ;
+    */
+    this.IC.setImage  ( url  ) ;
+    var t = DateUtils.formatDateTimeLong ( ) ;
+    this.label.setText ( t ) ;
+  },
+  onOpen: function()
+  {
+  },
+  onClose: function ( ev )
+  {
+    this.timer.self = undefined ;
+    this.timer.flush() ;
+  },
+  onFocus: function ( state )
+  {
+  }
+}
+  ]]></Script>
+</xml>
+
