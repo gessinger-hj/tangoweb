@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Table' name='X'
+onload='function(event)
+{
+  var x = new TXml() ;
+  var xTab = x.add ( "COMMIT_TABLE" ) ;
+  var r = null ;
+  var e = null ;
+
+  r = xTab.add ( "row" ) ;
+  r.add ( "ST", "Voice" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "ST", "Voice National" ) ;
+  r.add ( "NFC", "20.20" ) ;
+  r.add ( "NPS", "200" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "ST", "Voice International" ) ;
+  r.add ( "NFC", "30.30" ) ;
+  r.add ( "NPS", "300" ) ;
+
+  r = xTab.add ( "row" ) ;
+  r.add ( "ST", "Laptop" ) ;
+  e = r.add ( "NFC", "" ) ;
+  e.addAttribute ( "editable", false ) ;
+  e = r.add ( "NPS", "" ) ;
+  e.addAttribute ( "editable", false ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "ST", "Laptop National" ) ;
+  r.add ( "NFC", "20.20" ) ;
+  r.add ( "NPS", "200" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "ST", "Laptop International" ) ;
+  r.add ( "NFC", "30.30" ) ;
+  e = r.add ( "NPS", "300" ) ;
+  e.addAttribute ( "editable", false ) ;
+
+  xTab = x.add ( "TAB_ONCHANGE" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "SEL", "true" ) ;
+  r.add ( "NFC", "30.30" ) ;
+  r.add ( "NPS", "300" ) ;
+  r.add ( "DATE", "20110401101112" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "SEL", "false" ) ;
+  r.add ( "NFC", "30.30" ) ;
+  r.add ( "NPS", "300" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "SEL", "false" ) ;
+  /*
+  r.add ( "NFC", "30.30" ) ;
+  */
+  r.add ( "NPS", "300" ) ;
+
+  xTab = x.add ( "EDIT_TABLE" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "SEL", "A" ) ;
+  r.add ( "NFC", "xxxxxxx" ) ;
+  r.add ( "NPS", "xxxxxxx" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "SEL", "B" ) ;
+  r.add ( "NFC", "xxxxxxx" ) ;
+  r.add ( "NPS", "xxxxxxx" ) ;
+  r = xTab.add ( "row" ) ;
+  r.add ( "SEL", "asdf afd asdf asdf adfg adfg adfg adfg gh ghj dghj dghj gdhj dghj hg" ) ;
+  r.add ( "NFC", "xxxxxxx" ) ;
+  r.add ( "NPS", "xxxxxxx" ) ;
+
+  var ev = new TEvent ( event ) ;
+  ev.getContainer().setValues ( x ) ;
+}'
+>
+  <Table name='COMMIT_TABLE' style='width:500px;height:250px;' Xget-values='all'
+ondblclick='function(event)
+{
+log ( new TEvent ( event ).getValues() ) ;
+}'
+  >
+      <PopupMenu name='MENU2' Xposition='CENTER' >
+        <MenuItem name='ITEM21' text='Get Values'
+onclick='function(event)
+{
+log ( new TEvent ( event ).getValues() ) ;
+}'
+        />
+        <MenuItem name='ITEM22' text='Item 22' />
+      </PopupMenu>
+    <Columns>
+      <Column name='ST' />
+      <Column name='NFC' editable='text' type='float' />
+      <Column name='NPS' editable='text' type='float' />
+    </Columns>
+  </Table>
+  <Container >
+    <PushButton text='create excel' style='right:0px;attach-right:true;'
+	    onclick='function ( event )
+	    {
+	      var ev = new TEvent ( event ) ;
+	      var tab = ev.getContainer().getPeer ( "COMMIT_TABLE" ) ;
+	      tab.createExcel() ;
+	    }'
+	    />
+  </Container>
+  <Table name='EDIT_TABLE' style='width:500px;height:250px;'
+  >
+    <Columns>
+      <Column name='SEL' sortable='true' width='100' />
+      <Column name='NFC' editable='textarea' />
+      <Column name='NPS' editable='textarea' />
+    </Columns>
+  </Table>
+  <br/>
+  <Table name='TAB_ONCHANGE' style='width:500px;height:250px;' Xget-values='all'
+onchange='function(event)
+{
+log ( new TEvent ( event ).getValues() ) ;
+}'
+  >
+    <Columns>
+      <Column name='SEL' editable='radio'>
+	      <Mappings>
+		      <option value='true' default='false' />
+	      </Mappings>
+      </Column>
+      <Column name='NFC' format='%.2f' type='float' />
+      <Column name='NPS' type='float' />
+      <Column name='DATE' type='date' />
+    </Columns>
+  </Table>
+  <!--
+  <Container name='X' >
+    <ListLabel text='Value:' /><tab name='T1' /><TextField type='float' name='FLOAT' />
+    <br/>
+    <ListLabel text='Format:' /><tab name='T1' /><TextField value='%6.2f' name='FORMAT' />
+    <br/>
+    <PushButton text='clear' style='right:0px;attach-right:true;'
+	    onclick='function ( event )
+	    {
+    var ev = new TEvent ( event ) ;
+    var td = ev.getContainer().getPeer ( "TD" ) ;
+    td.clear() ;
+	    }'
+	    />
+    <PushButton text='sprintf' style='right:0px;' onclick='
+{
+  td: null,
+  _constructor_: function()
+  {
+  },
+  _initialize_: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    this.container = ev.getContainer() ;
+    this.td = this.container.getPeer ( "TD" ) ;
+  },
+  execute: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var v = ev.getValues() ;
+    var d = v.getFloat ( "FLOAT", 0 ) ;
+    var FORMAT = v.getContent ( "FORMAT", "%6.2f" ) ;
+    this.td.println ( ">" + FORMAT.sprintf ( d ) + "<" ) ;
+  }
+}' />
+    <br/>
+    <TextDisplay style='width:200px;height:200px;' name='TD' />
+  </Container>
+  -->
+</Container>
+</xml>
+

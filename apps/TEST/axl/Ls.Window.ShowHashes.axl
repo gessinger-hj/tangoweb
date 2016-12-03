@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title="xxx" id="Ls.Window.ShowHashes" >
+    <Container style='bottom:-0;right:-0;' name='X' >
+      <Container style='bottom:-0;right:-0;width:500px;' >
+<Grid style='bottom:-0;right:-0;' >
+	<tr><td><Label class='SimpleTitle' style='text-align:right;right:-4px;' text='MD5' name='LMD5' /></td><td><Label name='MD5' style='right:-0px' get-value='true' /></td></tr>
+	<tr><td><Label text='' /></td><td><TextField name='TMD5' style='right:-0px' onkeyup='*.checkHash()' /></td></tr>
+	<tr><td><Label class='SimpleTitle' style='text-align:right;right:-4px;' text='SHA-1' name='LSHA-1' /></td><td><Label name='SHA-1' style='right:-0px' get-value='true' /></td></tr>
+	<tr><td><Label text='' /></td><td><TextField name='TSHA-1' style='right:-0px' onkeyup='*.checkHash()' /></td></tr>
+	<tr><td><Label class='SimpleTitle' style='text-align:right;right:-4px;' text='SHA-256' name='LSHA-256' /></td><td><Label name='SHA-256' style='right:-0px' get-value='true' /></td></tr>
+	<tr><td><Label text='' /></td><td><TextField name='TSHA-256' style='right:-0px' onkeyup='*.checkHash()' /></td></tr>
+<!--
+        <Label class='SimpleTitle' text='MD5' name='LMD5' /> <Label name='MD5' style='right:-0px' get-value='true' />
+          <br/><Label text='Test' /> <TextField name='TMD5' style='right:-0px' onkeyup='*.checkHash()' />
+	<br/>
+        <Label class='SimpleTitle' text='SHA-1' name='LSHA-1' /> <Label name='SHA-1' style='right:-0px' get-value='true' />
+          <br/><Label text='Test' /> <TextField name='TSHA-1' style='right:-0px' onkeyup='*.checkHash()' />
+	<br/>
+        <Label class='SimpleTitle' text='SHA-256' name='LSHA-256' /> <Label name='SHA-256' style='right:-0px' get-value='true' />
+          <br/><Label text='Test' /> <TextField name='TSHA-256' style='right:-0px' onkeyup='*.checkHash()' />
+-->
+</Grid>
+      </Container>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton img='Icon.RedCross.gif' text="%Close%" onclick='TGui.closeWindow()' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

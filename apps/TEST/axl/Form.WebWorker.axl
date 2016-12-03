@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.WebWorker'
+pagelet='
+{
+  id: "XXX",
+  worker: undefined,
+  info: function()
+  {
+    log ( "window.Worker=" + !! window.Worker ) ;
+    log ( "window.XMLHttpRequest=" + !! window.XMLHttpRequest ) ;
+    log ( "window.WebSocket=" + !! window.WebSocket ) ;
+    log ( "window.JSON=" + !! window.JSON ) ;
+    log ( "window.DOMParser=" + !! window.DOMParser ) ;
+  },
+  getWorker: function()
+  {
+    if ( ! window.Worker ) return ;
+    if ( this.worker ) return this.worker ;
+    this.worker = new Worker ( "Worker.js" ) ;
+    this.worker.onerror = this.errorFromWorker.bind ( this ) ;
+    this.worker.onmessage = this.msgFromWorker.bind ( this ) ;
+    if ( this.worker ) return this.worker ;
+  },
+  msgToWorker: function()
+  {
+    var w = this.getWorker() ;
+    var t = "" + new Date() ;
+    w.postMessage ( t ) ;
+  },
+  objToWorker: function()
+  {
+    var w = this.getWorker() ;
+    var o = { action:"getXml", url:"xxxxx" } ;
+    w.postMessage ( o ) ;
+  },
+  msgFromWorker: function ( event )
+  {
+    if ( event.data && typeof ( event.data ) == "object" )
+    {
+  /*
+        p = { result:"http", mimeType: "text/xml", status: HTTP.status, text: HTTP.responseText } ;
+      */
+      var xml = TSys.parseXml ( event.data.text ) ;
+  log ( "-----------------------" ) ;
+  log ( xml ) ;
+    }
+    else
+    {
+  log ( event.data, true ) ;
+    }
+  },
+  errorFromWorker: function ( event )
+  {
+  log ( "------ error -------------------" ) ;
+  log ( "event.message=" + event.message ) ;
+  log ( "event.filename=" + event.filename ) ;
+  log ( "event.lineno=" + event.lineno ) ;
+  },
+  startWorker: function()
+  {
+    var w = this.getWorker() ;
+    w.postMessage ( { action:"start" } ) ;
+  },
+  stopWorker: function()
+  {
+    var w = this.getWorker() ;
+    w.postMessage ( { action:"stop" } ) ;
+  },
+  getCredentialsAsRefData: function()
+  {
+  /*
+    var x = Database.query ( "ACT_REPORT_CREDENTIALS" , [ "CREDENTIAL_ID", "DBURL", "DBUID" ] ) ;
+log ( x ) ;
+*/
+    var msg = Database._createRequestMessage() ;
+    var dbv = new CoDbv ( msg ) ;
+    dbv.addQuery ( "ACT_REPORT_CREDENTIALS", [ "CREDENTIAL_ID", "DBURL", "DBUID" ] ) ;
+log ( msg ) ;
+
+dbv = Calypso.getDbv ( msg ) ;
+var x = dbv.getResultXml() ;
+log ( x ) ;
+return ;
+    var w = this.getWorker() ;
+    if ( w )
+    {
+    var url = Calypso.getUrl() ;
+log ( "url=" + url ) ;
+    w.postMessage ( { action:"http", url: url, msg: msg.toString() } ) ;
+    }
+
+    /*
+    var dbv = Calypso.getDbv ( msg ) ;
+    return dbv.getResultXml() ;
+    */
+  }
+}'
+>
+  <Container name='X' >
+      <PushButton text='info' onclick='*.info()' />
+      <PushButton text='msg' onclick='*.msgToWorker()' />
+      <PushButton text='obj' onclick='*.objToWorker()' />
+      <PushButton text='start' onclick='*.startWorker()' />
+      <PushButton text='stop' onclick='*.stopWorker()' />
+      <PushButton text='getCredentialsAsRefData' onclick='*.getCredentialsAsRefData()' />
+  </Container>
+</Container>

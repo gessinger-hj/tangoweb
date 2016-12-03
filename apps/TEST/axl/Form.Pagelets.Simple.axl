@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+	<Container id='Form.Pagelets' name='X' style='top:10px;left:10px;background-repeat:repeat-x;'
+>
+<!-- ========================================================================== -->
+<Define tag='SilverBarButton' >
+  <CustomButton text='' style='top:0px;margin-right:0px;bottom:-0;'
+  estyle='{ normal: { image: { src:"web-2/yahoo/bar-button-0.png"
+                             , border: { top:1,left:1,bottom:1,right:1 }
+                             }
+                             , color: { foreground:"black" }
+                    }
+          , inside: { image: { src:"web-2/yahoo/bar-button-0-lighter.png"
+                             , border: { top:1,left:1,bottom:1,right:1 }
+                             }
+                             , color: { foreground:"black" }
+                    }
+          , pressed: { image: { src:"web-2/yahoo/bar-button-0-darker.png"
+                             , border: { top:1,left:1,bottom:1,right:1 }
+                             }
+                             , color: { foreground:"black" }
+                    }
+          , padding:{top:1,left:1,bottom:1,right:1 }
+          }' />
+</Define>
+<Define tag='SilverBar' >
+  <Container style='width:400px;height:38px;'
+decoration='{src:"web-2/yahoo/bar.png",type:"sliced",border:{top:7,left:45,bottom:10,right:9},padding:{top:0,left:45,bottom:4,right:9}}'
+  >
+  </Container>
+</Define>
+<!-- ========================================================================== -->
+  <SilverBar style='width:400px;height:38px;align-center:x;' >
+    <SilverBarButton text='Silver 1' style='left:0px' />
+    <SilverBarButton text='Silver 2' />
+    <SilverBarButton text='Silver 3' />
+  </SilverBar>
+<br/>
+<!--
+  <Container style='width:250px;height:200px;'
+decoration='{src:"web-2/1und1/bg-module.png",type:"sliced",border:{top:24,left:5,bottom:5,right:5}}'
+  >
+  </Container>
+-->
+  <Pagelet style='width:250px;height:200px;'
+decoration-back='{src:"web-2/1und1/bg-module-blue.png",type:"sliced",border:{top:24,left:5,bottom:5,right:5}}'
+  >
+  </Pagelet>
+  <!--
+  <Container style='width:250px;height:200px;'
+decoration='{src:"web-2/widgetpedia/box-blue.png",type:"sliced",border:{top:26,left:9,bottom:9,right:9}}'
+  >
+  </Container>
+  <Container style='width:250px;height:200px;'
+decoration='{src:"web-2/widgetpedia/box-blue-2.png",type:"sliced",border:{top:26,left:9,bottom:9,right:9}}'
+  >
+  </Container>
+<br/>
+  <Pagelet style='width:250px;height:200px;' title="box-orange.png" dragable='true'
+decoration-back='{src:"web-2/widgetpedia/box-orange.png",type:"sliced",border:{top:26,left:9,bottom:9,right:9},padding:{left:5,right:5,bottom:5}}'
+decoration-body='content'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="box-orange.png"
+decoration-back='{src:"web-2/widgetpedia/box-orange.png",type:"sliced",border:{top:26,left:9,bottom:9,right:9},padding:{left:3,right:5,bottom:5}}'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="box-black.png" style-title='top:4px;color:white;font-weight:bold;'
+  decoration-back='{src:"web-2/widgetpedia/box-black.png",type:"sliced",border:{top:26,left:9,bottom:9,right:9},padding:{left:3,right:5,bottom:5}}'
+  decoration-body='content'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="bg_tags_sml.png"
+	  decoration-back='{src:"web-2/yahoo/bg_tags_sml.png",type:"sliced",border:{top:30,left:12,bottom:12,right:12},padding:{top:4,left:4,bottom:4,right:4}}'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="pagelet-title"
+  decoration-title='{src:"web-2/pagelet-title.png",type:"sliced",border:{top:4,left:4,bottom:4,right:4}}'
+  decoration-body='{src:"web-2/pagelet-body.png",type:"sliced",border:{top:4,left:4,bottom:4,right:4},padding:{top:4,left:4,bottom:4,right:4}}'
+  >
+  </Pagelet>
+  -->
+<br/>
+
+<!-- ========================================================================== -->
+<Define tag='YellowButtonSquare' >
+<CustomButton text='' 
+estyle='{ normal: { image: { src:"web-2/yahoo/button-square-1.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , inside: { image: { src:"web-2/yahoo/button-square-0.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , pressed: { image: { src:"web-2/yahoo/button-square-2.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , disabled: { image: { src:"web-2/yahoo/button-square-4.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , padding:{top:10,left:10,bottom:10,right:10 }
+        }' />
+</Define>
+<Define tag='YellowButtonRound' >
+<CustomButton text='' 
+estyle='{ normal: { image: { src:"web-2/yahoo/button-round-1.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , inside: { image: { src:"web-2/yahoo/button-round-0.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , pressed: { image: { src:"web-2/yahoo/button-round-2.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , disabled: { image: { src:"web-2/yahoo/button-round-4.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , padding:{top:8,left:10,bottom:8,right:10 }
+        }' />
+</Define>
+<!-- ========================================================================== -->
+<YellowButtonSquare text='button-square 0' />
+<YellowButtonSquare text='button-square 1' />
+<YellowButtonRound text='button-round 0' />
+<YellowButtonRound text='button-round 1' />
+
+<!-- ========================================================================== -->
+<Define tag='BlueButton' >
+<CustomButton text='' 
+estyle='{ normal: { image: { src:"web-2/2/share-facebook-button-1.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , inside: { image: { src:"web-2/2/share-facebook-button-2.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , pressed: { image: { src:"web-2/2/share-facebook-button-3.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , disabled: { image: { src:"web-2/2/share-facebook-button-4.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , padding:{top:5,left:5,bottom:5,right:5 }
+        }' />
+</Define>
+<BlueButton text="Blue Button" />
+<br/>
+  <Pagelet style='width:250px;height:200px;' title="body-yellow.png" style-title='top:9px;color:white;font-weight:bold;'
+  decoration-back='{src:"web-2/body-yellow.png",type:"sliced",border:{top:41,left:17,bottom:17,right:17},padding:{top:4,left:4,bottom:4,right:4}}'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="body-blue.png" style-title='top:9px;font-weight:bold;'
+  decoration-back='{src:"web-2/body-blue.png",type:"sliced",border:{top:41,left:17,bottom:17,right:17},padding:{top:4,left:4,bottom:4,right:4}}'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="bg_body.png"
+  decoration-back='{src:"web-2/bg_body.png",type:"sliced",border:{top:41,left:17,bottom:17,right:17},padding:{top:4,left:4,bottom:4,right:4}}'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="kachel.png"
+  decoration-back='{src:"web-2/kachel.png",type:"sliced",border:{top:13,left:13,bottom:13,right:13},padding:{top:6,left:6,bottom:12,right:12}}'
+  >
+  </Pagelet>
+  <Pagelet style='width:250px;height:200px;' title="info-box.gif"
+  decoration-back='{src:"web-2/info-box.gif",type:"sliced",border:{top:10,left:10,bottom:10,right:10},padding:{top:6,left:6,bottom:10,right:10}}'
+  >
+  </Pagelet>
+</Container>
+</xml>
+

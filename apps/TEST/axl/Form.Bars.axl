@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Bars'
+>
+<XAppleContainer title='title' >
+<PushButton text='Show Balloon' onclick='function(event)
+{
+  var n = new TTipBalloon ( "sdf sdf ffg dfg dfg<br/>dfg df", "MAIN.TF" ) ;
+  n.show() ;
+}'
+/>
+</XAppleContainer >
+<br/>
+<AppleBar style='align-center:x;' >
+	<AppleBarButton text='one' />
+	<AppleBarButton text='two' />
+	<AppleBarButton text='three' />
+	<AppleBarButton text='four' />
+	<AppleBarButton text='five' />
+	<AppleBarButton text='six' />
+</AppleBar>
+-->
+</Container>
+

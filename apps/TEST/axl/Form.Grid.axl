@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Grid' style='background-color:lightgray;'
+>
+<Container style='background-color:white;' name='X'
+  onkeyup='function(event)
+  {
+    var ev = new TEvent ( event ) ;
+    var c = ev.getContainer() ;
+    var v = ev.getValues() ;
+    var name = ev.getSource().name ;
+    var pos = name.indexOf ( "." ) ;
+    var toName = name.substring ( pos + 1 ) ;
+    var fromName = name.substring ( 0, pos ) ;
+
+    var plus = 0 ;
+    var minus = 0 ;
+    var en = v.elements() ;
+    while ( en.hasNext() )
+    {
+      var x = en.nextXml() ;
+      var n = x.getName() ;
+      if ( n.indexOf ( "CURRENT." ) == 0 )
+      {
+        continue ;
+      }
+      if ( n.indexOf ( "ADD." ) == 0 )
+      {
+        continue ;
+      }
+      if ( n.indexOf ( "MAX." ) == 0 )
+      {
+        continue ;
+      }
+      if ( n.indexOf ( "SUB." ) == 0 )
+      {
+        continue ;
+      }
+      if ( n.indexOf ( fromName ) == 0 )
+      {
+        minus += x.getInt ( 0 ) ;
+      }
+      if ( n.indexOf ( toName ) > 0 )
+      {
+        plus += x.getInt ( 0 ) ;
+      }
+    }
+    /*
+log ( "--------- " + name + " --------" ) ;
+log ( v ) ;
+log ( toName + " - plus: " + plus ) ;
+log ( fromName + " - minus: " + minus ) ;
+*/
+
+    var max = v.getInt ( "MAX." + fromName ) ;
+    var current = max - minus ;
+
+    var sum = plus ;
+    var vv = new TXml() ;
+    if ( current < 0 )
+    {
+      sum = plus + current ;
+      vv.add ( "ADD." + toName, sum ) ;
+      var n = v.getInt ( name, 0 ) ;
+      vv.add ( name, n + current ) ;
+      current = 0 ;
+    }
+    else
+    {
+      vv.add ( "ADD." + toName, sum ) ;
+    }
+    vv.add ( "CURRENT." + fromName, current ) ;
+    vv.add ( "SUB." + fromName, current - max ) ;
+    c.setValues ( vv ) ;
+  }'
+>
+<Hidden name='MAX.N0153566' value='50' />
+<Hidden name='MAX.N0153567' value='50' />
+<Hidden name='MAX.N0194816' value='20' />
+
+<Hidden name='SUB.N0153566' />
+<Hidden name='SUB.N0153567' />
+<Hidden name='SUB.N0194816' />
+
+<Grid style='top:0px;left:0px;'>
+  <tr>
+    <td colspan='2'><TitleLabel text='Move From...' /></td>
+    <td colspan='3'><TitleLabel text='Move to...' /></td>
+  </tr>
+  <tr>
+    <td><Label text='' /></td>
+    <td><Label text='Current' /></td>
+    <td><Label text='N0153566'/></td>
+    <td><Label text='N0153567'/></td>
+    <td><Label text='N0194816'/></td>
+</tr>
+  <tr>
+  <td><Label text='N0153566 - Contact Center Agent'/></td>
+  <td><Label name='CURRENT.N0153566' text='50'  type='int' get-value='true' style='right:-0px;' /></td>
+  <td><Label text='' /></td>
+    <td><TextField name='N0153566.N0153567' type='int' /></td>
+    <td><TextField name='N0153566.N0194816' type='int' /></td>
+  </tr>
+  <tr>
+  <td><Label text='N0153567 - Contact Center Agent Plus'/></td>
+  <td><Label name='CURRENT.N0153567' text='50'  type='int' get-value='true' style='right:-0px;' /></td>
+    <td><TextField name='N0153567.N0153566' type='int' /></td>
+  <td><Label text='' /></td>
+    <td><TextField name='N0153567.N0194816' type='int' /></td>
+  </tr>
+  <tr>
+  <td><Label text='N0194816 - Premium Contact Center Agent'/></td>
+  <td><Label name='CURRENT.N0194816' text='20' type='int' get-value='true'  style='right:-0px;' /></td>
+    <td><TextField name='N0194816.N0153566' type='int' /></td>
+    <td><TextField name='N0194816.N0153567' type='int' /></td>
+  <td><Label text='' /></td>
+  </tr>
+  <tr>
+    <td><Label text='' /></td>
+    <td><Label text='' /></td>
+    <td><Label text='0' name='ADD.N0153566' type='int' get-value='true' style='right:-0px;' /></td>
+    <td><Label text='0' name='ADD.N0153567' type='int' get-value='true' style='right:-0px;' /></td>
+    <td><Label text='0' name='ADD.N0194816' type='int' get-value='true' style='right:-0px;' /></td>
+  </tr>
+</Grid>
+<PushButton text='XML' onclick='function(event)
+  {
+    var ev = new TEvent ( event ) ;
+    var c = ev.getContainer() ;
+    var v = ev.getValues() ;
+log ( v ) ;
+
+
+    var en = v.elements() ;
+var a = [] ;
+    while ( en.hasNext() )
+    {
+      var x = en.nextXml() ;
+      var name = x.getName() ;
+      if ( name.indexOf ( "SUB." ) == 0 )
+      {
+        var nSUB = x.getInt ( 0 ) ;
+        var name = name.substring ( name.indexOf ( "." ) + 1 ) ;
+log ( "SUB::" + name + ": " + nSUB ) ;
+var n = a[name] ;
+if ( ! n ) n = 0 ;
+a[name] = n + nSUB ;
+      }
+      if ( name.indexOf ( "ADD." ) == 0 )
+      {
+        var nADD = x.getInt ( 0 ) ;
+        var name = name.substring ( name.indexOf ( "." ) + 1 ) ;
+log ( "ADD::" + name + ": " + nADD ) ;
+var n = a[name] ;
+if ( ! n ) n = 0 ;
+a[name] = n + nADD ;
+      }
+    }
+log ( a, true ) ;
+  }'/>
+
+</Container>
+</Container>

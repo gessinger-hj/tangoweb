@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Container id='Form.CSS' style='color:white;' >
+    <XContainer>
+      <Container ><![CDATA[]]></Container>
+      <br/>
+      <Container ><![CDATA[<input type='text' class='skip' value='ccccc' name='skip' />]]></Container>
+      <br/>
+      <CSSTextField name='CSSTextField' >aaaaaaaaaa</CSSTextField>
+    </XContainer>
+    <br/>
+    <XContainer >
+      <PushButton text='PushButton' name='PB' />
+<br/>
+      <PushButton text='PushButton' name='PB' />
+<br/>
+      <PushButton text='PushButton' name='PB' />
+<br/>
+      <PushButton text='PushButton' name='PB' />
+    </XContainer>
+    <XContainer >
+      <PushButton text='PushButton' name='PB' />
+<br/>
+      <PushButton text='PushButton' name='PB' />
+<br/>
+      <PushButton text='PushButton' name='PB' />
+<br/>
+      <PushButton text='PushButton' name='PB' />
+<br/>
+<!--
+      <Button class='download-itunes' text='download-itunes' />
+      <Button class='slick-black' text='slick-black' />
+      <Button id='B1' text='TEST' style='padding-top:3px;padding-bottom:7px;padding-right:6px;border:0px;-moz-focus-inner-border:0px;-moz-focus-inner-padding:0px;' />
+      <Button id='B2' text='TEST' style='padding:4px;padding-top:3px;padding-bottom:7px;padding-right:6px;' />
+-->
+<!--
+      <Button class='clean-gray' text='clean-gray' />
+      <Button class='minimal-indent' text='minimal-indent' />
+      <Button class='blue-pill' text='blue-pill' />
+      <Button class='skip' text='skip' />
+      <Button class='kick-ass' text='kick-ass' />
+      <Button class='thoughtbot' text='thoughtbot' />
+-->
+    </XContainer>
+    <Container name='XCONT' >
+      <PushButton text='PushButton' name='PB'
+	      img='ok-blue.png' onclick='function()
+	      {
+	      }'
+      />
+      <Button class='btn' name='btn'
+  onclick='
+  {
+    execute: function ( event )
+    {
+          var sle = new AuditEvent() ;
+          sle.setAction ( "YYYYYYYYYYYYYYYYYYY" ) ;
+    NetResource.auditlog ( sle ) ;
+    }
+  }'
+  Xstacked='true'
+  img='ok-blue.png'
+        text='btn css'
+       />
+      <PushButton text='normal'/>
+      <br/>
+      <PushButton disabled='true' text='disabled'/>
+      <br/>
+      <PushButton default='true' text='default'/>
+      <br/>
+      <Container class='css-menubar'><Label text='css-menubar'/></Container>
+    </Container>
+    <br/>
+    <Container style='width:100px;height:50px;' class='apple_tooltip_div' >
+    </Container>
+    <!--
+    http://ubuwaits.github.com/css3-buttons/
+    -->
+  </Container>
+</xml>
+

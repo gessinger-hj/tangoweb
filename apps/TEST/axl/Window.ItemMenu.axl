@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='false' borderless='true' x='0' y='0' >
+    <Container name='Form' style='bottom:-0;right:-0;' >
+<ItemView name='Form.ItemView.Test'
+          inline='true'
+          columns='1'
+>
+<Items>
+<row><img>cosmos/widgets/Webcam/icon.png</img>
+<text>Close</text>
+<function>TGui.closeWindow(event)</function>
+</row>
+<row><img>cosmos/widgets/DigitalBlue/icon.png</img>
+<text>Clock</text>
+</row>
+<row><img>cosmos/widgets/PostIt/icon.png</img>
+<text>PostIt</text>
+</row>
+<row><img>cosmos/widgets/Rss/icon.png</img>
+<text>Rss</text>
+</row>
+<row><img>cosmos/widgets/FreeDictionary/icon.png</img>
+<text>Free Dictionary</text>
+</row>
+<row><img>cosmos/widgets/GoogleTranslate/icon.png</img>
+<text>Google Translate</text>
+</row>
+<row><img>cosmos/widgets/FuzzyClock/icon.png</img>
+<text>Fuzzy Clock</text>
+</row>
+<row><img>cosmos/config/gnome-workspace.png</img>
+<text>Desklets</text>
+</row>
+<row><img>cosmos/plugins/Weather/icon.png</img>
+<text>Weather</text>
+</row>
+<row><img>cosmos/widgets/Leo/icon.png</img>
+<text>Leo</text>
+</row>
+</Items>
+</ItemView>
+    </Container>
+  </Window>
+</xml>
+

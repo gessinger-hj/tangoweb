@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+	<PopupMenu name='MENU2' position='CENTER' position='over' trigger='mousedown' button='left' onclick='
+		function(event)
+		{
+		log ( event ) ;
+		}'>
+      <MenuItem name='MENU0' text='Allgemein' img='5days-16x16.gif' >
+      </MenuItem>
+      <MenuItem name='MENU1' text='Menu 1' img='5days-16x16.gif' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+      </MenuItem>
+      <MenuItem name='MENU2' text='Menu 2' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+      </MenuItem>
+      <MenuItem name='MENU3' text='Menu 3' img='5days-16x16.gif'>
+      </MenuItem>
+    </PopupMenu>
+</xml>
+

@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.HtmlEditor' name='X'
+onchange='handle:PB.SET.TEXT'
+>
+  <Container style='width:200px;'
+  >
+    <PushButton id='PB.SET.TEXT' text='set text' disabled='true' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var TA = ev.getContainer().getComponent ( "TA" ) ;
+  var str = TA.getText() ;
+  var p = ev.getContainer().getPeer ( "HE" ) ;
+  p.setText ( str ) ;
+}
+' />
+    <PushButton text='get values' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+log ( v ) ;
+}
+' />
+    <PushButton text='set values' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var c = ev.getContainer() ;
+
+  var xMAIL = v.ensureElement ( "MAIL" ) ;
+  xMAIL.setContent ( "<b>geht oder</b> <i>geht nicht</i>" ) ;
+  c.setValues ( v ) ;
+}
+' />
+    <PushButton text='toggle' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var p = ev.getContainer().getPeer ( "HE" ) ;
+  p.toggleEditor() ;
+}
+' />
+    <PushButton text='insert text' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var p = ev.getContainer().getPeer ( "HE" ) ;
+  p.insertText("xxxxxxxxxxxxxxxxxx") ;
+}
+' />
+  <br/>
+  <TextArea name='TA' style='width:200px;height:200px;' />
+  </Container>
+  <br/>
+  <Container style='bottom:-0px;right:-0px;' >
+    <HtmlEditor name='MAIL' id="HE" style='width:300px;height:300px;'
+                action='function(event)
+                {
+                  log ( event ) ;
+                }'
+                onchange='function(event)
+                {
+/*
+                  log ( event ) ;
+*/
+                }'
+    >
+    </HtmlEditor>
+    <Splitbar/>
+    <DisplayContainer style='width:200px;height:300px;bottom:-0px;right:-60px;'
+    >
+    </DisplayContainer>
+  </Container>
+</Container>
+</xml>
+

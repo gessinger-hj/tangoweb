@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Edit.Xml' name='X'
+>
+  <Container style='height:400px;right:-0;bottom:-0;width:400px;' >
+  </Container>
+  <Splitbar />
+  <Container style='width:200px;height:300px;right:-0;bottom:-0;' name='X'
+  >
+    <Container style='right:-0;' >
+      <PushButton text='Load' onclick='
+function(event)
+{
+/*
+ TSys.logInternal = false ;
+*/
+  var ev = new TEvent ( event ) ;
+  var c = ev.getContainer() ;
+  var ta = c.getComponent ( "TA.AXL" ) ;
+  var str = TSys.getAxlText ( "Form.Mail" ) ;
+  ta.setText ( str ) ;
+}'
+/>
+      <PushButton text='Parse' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var c = ev.getContainer() ;
+  var ta = c.getComponent ( "TA.AXL" ) ;
+  var str = ta.getText() ;
+/*
+  try
+  {
+*/
+    var x = TSys.parseXml ( str,
+    function ( xerror, xmlString )
+    {
+      ta.setText ( "" + xerror + "\n" + xmlString ) ;
+/*
+      log ( xmlString ) ;
+      log ( xerror ) ;
+*/
+/*
+      log ( xerror ) ;
+*/
+    } ) ;
+/*
+    log ( x ) ;
+*/
+/*
+  }
+  catch ( exc )
+  {
+    ta.setText ( "" + exc ) ;
+  }
+*/
+}'
+/>
+      <PushButton text='Parse Remote' onclick='
+function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var c = ev.getContainer() ;
+  var ta = c.getComponent ( "TA.AXL" ) ;
+  var str = ta.getText() ;
+
+
+  var x = TSys.evaluateXmlParsing ( str, true, false ) ;
+/*
+  var lw = TGui.getLogWindow() ;
+  var td = lw.getTextDisplay() ;
+*/
+  var td = c.getPeer ( "TextDisplay.INFO" ) ;
+  if ( x.isEmpty() )
+  {
+    td.clear() ;
+    return ;
+  }
+
+/*
+ TSys.logInternal = false ;
+*/
+
+  var errorText = TSys.escapeHtmlCharacters ( x.getContent ( "ErrorText" ) ) + " at line: " + x.getContent ( "Line" ) + " column: " + x.getContent ( "Column" ) ;
+  var before = TSys.escapeHtmlCharacters ( x.getContent ( "Before" ) ) ;
+  var after = TSys.escapeHtmlCharacters ( x.getContent ( "After" ) ) ;
+
+  td.addCode ( errorText, false, "font-weight:bold;" ) ;
+  td.addCode ( before, false, "color:red;" ) ;
+  td.appendCode ( after, false ) ;
+}'
+/>
+    </Container>
+    <br/>
+    <Container style='height:400px;right:-0;bottom:-0;attach-bottom:true;' >
+      <TextArea name='TA.AXL' style='top:0px;left:0px;right:-0;bottom:-0;' >
+      </TextArea>
+    </Container>
+    <br/>
+    <Container style='height:200px;right:-0;bottom:-0;' >
+      <TextDisplay name='TextDisplay.INFO' style='top:0px;left:0px;right:-0;bottom:-0;' >
+      </TextDisplay>
+    </Container>
+  </Container>
+</Container>
+</xml>
+

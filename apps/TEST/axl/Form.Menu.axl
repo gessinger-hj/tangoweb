@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Menu'
+>
+<DisplayContainer style='width:400px;height:300px;' name='X'
+pagelet='
+{
+  execute: function(event)
+  {
+  },
+  log: function(event)
+  {
+log ( "---- log --------" ) ;
+log ( event ) ;
+  }
+}'
+  >
+    <Menubar name='MENUBAR' >
+      <MenuButton name='MENU0' text='Allgemein' img='5days-16x16.gif'
+onopen='function(ev)
+{
+/*
+  log ( ev ) ;
+*/
+}'
+ >
+        <MenuItem text='Choose Theme' img='5days-16x16.gif' onclick='TGui.chooseTheme()' />
+        <MenuItem text='Item 1' />
+      </MenuButton>
+      <MenuButton name='MENU1' text='Menu 1' img='5days-16x16.gif' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+        <MenuItem name='ITEM11' text='Enable ITEM13'
+onclick='*.log(event)'
+/>
+<!--
+           onclick='
+function(event)
+{
+var mp = event.getMenu() ;
+var mi = mp.getItem ( "ITEM13" ) ;
+mi.setEnabled ( true ) ;
+}'
+ />
+-->
+        <MenuItem name='ITEM12' text='Enable'
+           onclick='
+function(event)
+{
+var mp = event.getMenu() ;
+mp.setEnabled ( true ) ;
+}'
+ />
+        <MenuItem name='ITEM13' text='Item 13 has function'
+           onclick='
+function(event)
+{
+var mi = event.getMenuItem() ;
+var oe = mi.isEnabled() ;
+mi.setEnabled ( !oe ) ;
+/*
+var vals = event.getValues() ;
+log ( vals ) ;
+*/
+}'
+        />
+      </MenuButton>
+      <MenuButton name='MENU2' text='Menu 2' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+        <MenuItem name='ITEM21' text='Item 21' />
+        <MenuItem name='ITEM22' text='Item 22' >
+          <MenuItem name='ITEM221' text='Item 221' />
+          <MenuItem name='ITEM222' text='Item 222' />
+          <MenuItem name='ITEM223' text='Item 223' />
+          <MenuItem name='ITEM224' text='Item 224' />
+          <MenuItem name='ITEM225' text='Item 225'
+onopen='function(ev)
+{
+  var m = ev.getMenu() ;
+  var mi = m.getItem ( "ITEM2251" ) ;
+  mi.setEnabled ( ! mi.isEnabled() ) ;
+}'
+ >
+            <MenuItem name='ITEM2251' text='Item 2251' />
+            <MenuItem name='ITEM2252' text='Item 2252' />
+            <MenuItem name='ITEM2253' text='Item 2253' />
+          </MenuItem>
+        </MenuItem>
+        <MenuItem name='ITEM23' text='Item 23' />
+      </MenuButton>
+      <MenuButton name='MENU3' text='Menu 3' img='5days-16x16.gif'>
+        <MenuItem name='ITEM31' text='Item 31 xxxxxxxxxxxxxxxxx' />
+        <MenuItem name='ITEM32' text='Item 32' />
+        <MenuItem name='ITEM33' text='Item 33' />
+        <MenuItem name='ITEM34' text='Item 34' />
+        <MenuItem name='ITEM35' text='Item 35' />
+      </MenuButton>
+    </Menubar>
+<br/>
+    <TextField name='NAME' mandatory='xxxxxxxxxxx' />
+<br/>
+    <PushButton text='set enabled MENU1' onclick='
+function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var m = ev.getContainer().getComponent ( "MENUBAR" ) ;
+  m.setEnabled ( "MENU1", ! m.isEnabled ( "MENU1" ) ) ;
+}'
+ />
+    <PushButton text='set enabled ITEM13' onclick='
+function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var m = ev.getContainer().getComponent ( "MENUBAR" ) ;
+  m.setEnabled ( "MENU1/ITEM13", ! m.isEnabled ( "MENU1/ITEM13" ) ) ;
+}'
+ />
+<br/>
+    <PushButton text='set enabled MENU2/ITEM22/ITEM225/ITEM2253' onclick='
+function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var m = ev.getContainer().getComponent ( "MENUBAR" ) ;
+  m.setEnabled ( "MENU2/ITEM22/ITEM225/ITEM2253", ! m.isEnabled ( "MENU2/ITEM22/ITEM225/ITEM2253" ) ) ;
+}'
+ />
+<br/>
+    <PushButton text='get names of MENU2/ITEM22/ITEM225' onclick='
+function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var m = ev.getContainer().getComponent ( "MENUBAR" ) ;
+  var a = m.getChildNamesOf ( "MENU2/ITEM22/ITEM225" ) ;
+  for ( var i = 0 ; i < a.length ; i++ )
+  {
+    m.setEnabled ( "MENU2/ITEM22/ITEM225/" + a[i], false ) ;
+  }
+log ( a ) ;
+}'
+ />
+  </DisplayContainer>
+<Splitbar />
+  <DisplayContainer style='width:300px;height:300px;' name='X' >
+<img name='ICON' style='width:128px;height:128px;' src='Network_Connection_Manager-2-128.png' Xpopup='PopupMenu' >
+      <PopupMenu name='MENU2' text='Menu 2' tooltip='xxxxxxxxxxxxxxxxxxxxx' Xclass='CosmosPopupMenu' trigger='mousedown'>
+        <MenuItem name='ITEM21' text='Item 21' />
+        <MenuItem name='ITEM22' text='Item 22' >
+          <MenuItem name='ITEM221' text='Item 221' />
+          <MenuItem name='ITEM222' text='Item 222' />
+          <MenuItem name='ITEM223' text='Item 223' />
+          <MenuItem name='ITEM224' text='Item 224' />
+          <MenuItem name='ITEM225' text='Item 225' >
+            <MenuItem name='ITEM2251' text='Item 2251' />
+            <MenuItem name='ITEM2252' text='Item 2252' />
+            <MenuItem name='ITEM2253' text='Item 2253' />
+          </MenuItem>
+        </MenuItem>
+        <MenuItem name='ITEM23' text='Item 23' />
+      </PopupMenu>
+</img>
+<br/>
+<PushButton text='Popup XXX' >
+    <PopupMenu name='MENU2' position='center' trigger='mousedown' button='left'>
+      <MenuItem name='MENU0' text='Allgemein' img='5days-16x16.gif' >
+      </MenuItem>
+    </PopupMenu>
+</PushButton >
+    <PushButton text='Popup' onclick='
+function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var c = ev.getContainer().getComponent ( "ICON" ) ;
+  var pm = new PopupMenu ( "PopupMenu", ev.getComponent().dom ) ;
+  pm.setShowUnder() ;
+  pm.show ( event ) ;
+}'
+ />
+    <br/>
+      <DecoratedTextField name='UID' mandatory='User ID' />
+      <br/>
+    <PushButton name='PushButton' text='Popup UP' arrow='up' >
+      <Include src='PopupMenu' />
+    </PushButton>
+</DisplayContainer>
+</Container>
+</xml>
+

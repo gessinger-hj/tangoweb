@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Table-4' name='X'
+pagelet='new CHPInterface()'
+Xpagelet='{
+onload: function ( ev )
+{
+  this.container = ev.getComponent() ;
+  this.tab = this.container.getPeer ( "resourcesList" ) ;
+  this.list = [] ;
+
+  var param = {} ;
+  param.getAxlCallback = function ( maxiMenu )
+  {
+    thiz.createAxl ( this ) ;
+  };
+  param.target = this.tab.dom ;
+  this.maxiMenu = new MaxiMenu ( param ) ;
+  this.maxiMenu.addEventListener ( this, this.maxiMenu_remove, "remove" ) ;
+},
+maxiMenu_remove: function ( event )
+{
+},
+search: function ( event )
+{
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var thiz = this ;
+  thiz.v = v ;
+
+thiz.servideProviderId=5000102 ;
+thiz.customerId=5000721 ;
+thiz.accountId=5000696 ;
+
+/*
+thiz.servideProviderId=5000102 ;
+thiz.customerId=5000781 ;
+*/
+thiz.accountId=5000856 ;
+/*
+thiz.customerId=5000964 ;
+*/
+
+thiz.resourcesValuePattern = v.getContent ( "resourcesValuePattern" ).trim() ;
+thiz.resourcesValuePattern = thiz.resourcesValuePattern.replace ( /\*/g, "%" ) ;
+  
+  var script = TSys.getScript ( "getListOfResourcesForCustomer" ) ;
+  var msg = new CoMessage ( "VGE_CISS::DB:EXECUTE-STMT" ) ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "JSStatement" ) ;
+  stmt.addElement ( "Script", script ) ;
+  var xArguments = new TXml ( "Arguments" ) ;
+  xArguments.add ( "arg", thiz.customerId ) ;
+  xArguments.add ( "arg", 0 ) ;
+  xArguments.add ( "arg", 5 ) ;
+  xArguments.add ( "arg", thiz.resourcesValuePattern ) ;
+
+  stmt.addElement ( xArguments ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+  var x = dbv.getResultXml() ;
+
+  this.resourcesList = x.get ( "resourcesList" ) ;
+  this.list.length = 0 ;
+  var en = this.resourcesList.getEnum ( "resource" ) ;
+  while ( en.hasNext() )
+  {
+    this.list.push ( en.nextXml() ) ;
+  }
+  this.closeAll() ;
+},
+onclickTable: function ( event )
+{
+  var colIndex = this.tab.getSelectedColumnIndex() ;
+  var index = this.tab.getColumnIndexByName ( "arrow" ) ;
+  var r = this.tab.getSelectedRow() ;
+  if ( ! r )
+  {
+    return ;
+  }
+  var xr = r.getXml() ;
+  if ( colIndex == index )
+  {
+    if ( xr.getAttribute ( "open" ) )
+    {
+      r.setColumnVisibleText ( "arrow", "<img src=\"img/red_arrow_footer.png\" onmousedown=\"return false;\"/>" ) ;
+      xr.removeAttribute ( "open" ) ;
+      var xrName = xr.getName() ;
+      var TR = r.TR.nextSibling ;
+      while ( TR )
+      {
+        var nextTR = TR.nextSibling ;
+        var rr = new TTableRow ( r.table, TR ) ;
+        var xrr = rr.getXml() ;
+        var xrrName = xrr.getName() ;
+	if ( xrName == xrrName )
+	{
+	  break ;
+	}
+	rr.remove() ;
+        TR = nextTR ;
+      }
+    }
+    else
+    {
+      r.setColumnVisibleText ( "arrow", "<img src=\"img/red_arrow_footer-up.png\" onmousedown=\"return false;\"/>" ) ;
+      xr.addAttribute ( "open", true ) ;
+
+      var rIndex = r.getIndex() ;
+      var rowName = this.tab.rowName ;
+      this.tab.rowName = "charge" ;
+      var en2 = xr.getEnum ( "chargesList/charge" ) ;
+      while ( en2.hasNext() )
+      {
+        var r2 = en2.nextXml() ;
+	rIndex++ ;
+        this.tab.insertRowAt ( r2, rIndex ) ;
+      }
+      this.tab.rowName = rowName ;
+    }
+    return ;
+  }
+  if ( xr.getName() == "resource" )
+  {
+    return ;
+  }
+  else
+  if ( xr.getName() == "charge" )
+  {
+    return ;
+  }
+},
+openAll: function()
+{
+  var n = this.list.length ;
+  for ( var i = 0 ; i < n ; i++ )
+  {
+    this.list[i].addAttribute ( "open", true ) ;
+  }
+  this.display() ;
+},
+closeAll: function()
+{
+  var n = this.list.length ;
+  for ( var i = 0 ; i < n ; i++ )
+  {
+    this.list[i].removeAttribute ( "open" ) ;
+  }
+  this.display() ;
+},
+display: function()
+{
+  this.tab.clear() ;
+  var en = this.resourcesList.getEnum ( "resource" ) ;
+  while ( en.hasNext() )
+  {
+    var r = en.nextXml() ;
+    var isOpen = r.getAttribute ( "open" ) ;
+    if ( ! isOpen )
+    {
+      r.add ( "arrow", "<img src=\"img/red_arrow_footer.png\" onmousedown=\"return false;\"/>" ) ;
+    }
+    else
+    {
+      r.add ( "arrow", "<img src=\"img/red_arrow_footer-up.png\" onmousedown=\"return false;\"/>" ) ;
+    }
+    this.tab.addRow ( r ) ;
+    if ( ! isOpen )
+    {
+      continue ;
+    }
+
+    var rowName = this.tab.rowName ;
+    this.tab.rowName = "charge" ;
+    var en2 = r.getEnum ( "chargesList/charge" ) ;
+    while ( en2.hasNext() )
+    {
+      var r2 = en2.nextXml() ;
+      this.tab.addRow ( r2 ) ;
+    }
+    this.tab.rowName = rowName ;
+  }
+}
+}'
+onload='*.onload()'
+>
+  <DisplayContainer name="X" style='right:-4;' >
+    <Label text='%SearchParameter%' class='SimpleTitle' />
+    <br/>
+    <Label text='Resource(MSISDN)' /><TextField name='resourcesValuePattern' Xvalue='0129111017'/>
+    <tab name=T2 X='+1' />
+    <Label text='Email for MSISDN' /><TextField name='resourcesSparefield4Pattern' />
+    <br/>
+    <PushButton name='PB.Search' Xdisabled='true' text='%Search%' onclick='*.search()' />
+    <br/>
+    <PushButton text='Open all' onclick='*.openAll()' />
+    <PushButton text='Close all' onclick='*.closeAll()' />
+  </DisplayContainer>
+  <br/>
+  <Container style='right:-0;bottom:-0;' >
+    <Table name='resourcesList' style='right:-0;bottom:-0;'
+           sortable='false' reset='true' row-name='resource'
+	   onclick='*.onclickTable()'
+    >
+      <Columns>
+        <Column name='resourceId' title='ID' />
+        <Column name='resourceValue' title='MSISDN' />
+	<Column name='sparefield4' title='Email' />
+        <Column name='arrow' title='&nbsp;' />
+	<Column name='invoiceproductbundlecode' title='PB Code' />
+	<Column name='productname' title='P name' />
+	<Column name='value' title='Value' />
+      </Columns>
+    </Table>
+  </Container>
+</Container>
+</xml>

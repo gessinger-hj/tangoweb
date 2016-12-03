@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Table-2' name='X' Xonchange='handle:PB.GetValues'
+  onload='*.onload()'
+  pagelet='
+  {
+    xml: null,
+    container: null,
+    tab: null,
+		onload: function(event)
+		{
+  		this.xml = new TXml() ;
+  		var xTab = this.xml.add ( "COMMIT_TABLE" ) ;
+  		var r = null ;
+
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "FIRST" ) ; r.add ( "NFC", "10.10" ) ; r.add ( "NPS", "123456.789" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "A" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Voice National" ) ; r.add ( "NFC", "20.20" ) ; r.add ( "NPS", "20000" ) ; r.add ( "DATE", "20100709" ) ; /*r.add ( "N", "b" ) ;*/
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Voice International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "c" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop" ) ; r.add ( "NFC", "10.10" ) ; r.add ( "NPS", "10000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "d" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop National" ) ; r.add ( "NFC", "20.20" ) ; r.add ( "NPS", "20000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "e" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "f" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "g" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "i" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "300" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "j" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "k" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "l" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; /*r.add ( "N", "" ) ;*/
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; /*r.add ( "N", "" ) ;*/
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "Laptop International" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ; r.add ( "N", "o" ) ;
+  		r = xTab.add ( "row" ) ; r.add ( "ST", "LAST" ) ; r.add ( "NFC", "30.30" ) ; r.add ( "NPS", "30000" ) ; r.add ( "DATE", "20100709" ) ;
+
+  		var en = xTab.getEnum ( "row" ) ;
+  		var i = 0 ;
+  		while ( en.hasNext() )
+  		{
+    		i++ ;
+    		var r = en.nextXml() ;
+    		r.getXml ( "ST" ).setContent ( r.getContent ( "ST" ) + "-" + i ) ;
+  		}
+      this.container = event.getContainer() ;
+      this.container.setValues ( this.xml ) ;
+
+  		this.tab = this.container.getPeer ( "COMMIT_TABLE" ) ;
+  		TGlobalEventHandler.setFocus ( this.tab.dom ) ;
+  		var r = this.tab.getFirstRow() ;
+  		r.setSelected ( true, true ) ;
+		},
+    fillTable: function()
+    {
+      this.container.setValues ( this.xml ) ;
+    },
+    setLanguage: function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var v = ev.getValues() ;
+      var locale = this.container.getLocale() ;
+      var ics = locale.getInternationalCurrencySymbol() ;
+      locale = new Locale ( v.getContent ( "LANG" ) ) ;
+      locale.setInternationalCurrencySymbol ( ics ) ;
+      this.container.setLocale ( locale ) ;
+      this.fillTable(event) ;
+    },
+    setCurrency: function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var v = ev.getValues() ;
+      var locale = this.container.getLocale() ;
+      locale.setInternationalCurrencySymbol ( v.getContent ( "CURRENCY" ) ) ;
+      this.container.setLocale ( locale ) ;
+      this.fillTable(event) ;
+    },
+    setColumnVisible: function ( colIndexOrName, state )
+    {
+      this.tab.toggleColumnVisibility ( "ST" ) ;
+    },
+    xx: function()
+    {
+      var r = this.tab.findRow ( "ST", "Laptop-4" ) ;
+      r.setSelected ( true, true ) ;
+      var x = this.tab.getSelectedUserXml() ;
+      log ( x ) ;
+    },
+    dev: function()
+    {
+      var axl = new TXml() ;
+      var xc = axl.add ( "Container" ) ;
+      var cdev = this.container.getComponent ( "DEV" ) ;
+      var first = true ;
+      for ( k in this.tab.column2Index )
+      {
+        if ( first )
+        {
+          first = false ;
+        }
+        else
+        {
+          xc.add ( "br" ) ;
+        }
+        if ( ! this.tab.column2Index.hasOwnProperty (k) ) continue ;
+        var xcb = xc.add ( "Checkbox2" ) ;
+        xcb.addAttribute ( "text", k ) ;
+        xcb.addAttribute ( "value", this.tab.column2Index[k] ) ;
+        xcb.addAttribute ( "default", this.tab.column2Index[k] ) ;
+        xcb.addAttribute ( "onchange", "*.toggleColumn()" ) ;
+        if ( this.tab.isColumnVisible ( this.tab.column2Index[k] ) ) xcb.addAttribute ( "checked", "true" ) ;
+      }
+      cdev.setAxl ( axl ) ;
+    },
+    dev1: function()
+    {
+      if ( this.headerPopupDiv )
+      {
+        return ;
+      }
+      this.headerPopupDiv = document.createElement ( "div" ) ;
+      this.headerPopup = new TContainer ( this.headerPopupDiv ) ;
+      document.body.appendChild ( this.headerPopupDiv ) ;
+
+      this.headerPopupDiv.style.position = "absolute" ;
+      this.headerPopupDiv.style.top = "200px" ;
+      this.headerPopupDiv.style.left = "200px" ;
+      var css = TSys.getCssValues ( { "MenuItem":true}) ;
+      var axl = new TXml() ;
+      var xc = axl.add ( "Container" ) ;
+      var title = xc.add ( "Label", "Visible Columns" ) ;
+      title.addAttribute ( "style", "left:" + css.MenuItem.paddingLeft + "px;" ) ;
+      
+      xc.add ( "br" ) ;
+      for ( k in this.tab.column2Index )
+      {
+        if ( ! this.tab.column2Index.hasOwnProperty (k) ) continue ;
+        var xcb = xc.add ( "Checkbox2" ) ;
+        xcb.addAttribute ( "text", k ) ;
+        xcb.addAttribute ( "value", this.tab.column2Index[k] ) ;
+        xcb.addAttribute ( "default", this.tab.column2Index[k] ) ;
+        xcb.addAttribute ( "onchange", "*.toggleColumn()" ) ;
+        xc.add ( "br" ) ;
+        if ( this.tab.isColumnVisible ( this.tab.column2Index[k] ) ) xcb.addAttribute ( "checked", "true" ) ;
+      }
+      var b = xc.add ( "PushButton" ) ;
+      b.addAttribute ( "onclick", "*.setAllColumnsVisible()" ) ;
+      b.addAttribute ( "text", "Set all Visible" ) ;
+      b.addAttribute ( "style", "left:" + css.MenuItem.paddingLeft + "px;" ) ;
+
+      this.headerPopup.setAxl ( axl, this ) ;
+      var cspan = new TContainer ( this.headerPopup.dom.firstChild ) ;
+      var cspanBounds = cspan.getBounds() ;
+      this.headerPopup.setSize ( cspanBounds.width, cspanBounds.height ) ;
+
+      var pxml = Tango.getThemeXml ( "Menu" ) ;
+      if ( pxml.getBoolAttribute ( "pure-css", false ) )
+      {
+        this.headerPopup.dom.className = pxml.get ( "normal" ).getAttribute ( "class" ) ;
+      }
+      else
+      {
+        this.headerPopup.dom.style.backgroundImage = TGui.buildThemeBackgroundImageUrl ( "Menu", "normal", cspanBounds.width, cspanBounds.height ) ;
+      }
+      for ( var ch = cspan.dom.firstChild ; ch ; ch = ch.nextSibling )
+      {
+        if ( ch.nodeType !== DOM_ELEMENT_NODE )
+        {
+          continue ;
+        }
+        if ( ch.nodeName !== "DIV" )
+        {
+          continue ;
+        }
+        var span = ch.firstChild.nextSibling ;
+        if ( span.className !== "ButtonText" )
+        {
+          continue ;
+        }
+        span.style.left = css.MenuItem.paddingLeft + "px" ;
+      }
+      this._mouseDownAutoClose = new TFunctionExecutor ( this, this.mouseDownAutoClose ) ;
+      TGlobalEventHandler.addOnMouseDown ( this._mouseDownAutoClose ) ;
+    },
+    mouseDownAutoClose: function ( event )
+    {
+      var ev = new TEvent ( event ) ;
+      if ( this.headerPopup.contains ( ev.getX(), ev.getY() ) )
+      {
+        return true ;
+      }
+      TGui.flushAttributes ( this.headerPopup ) ;
+      this.headerPopup.dom.parentNode.removeChild ( this.headerPopup.dom ) ;
+      TGlobalEventHandler.removeOnMouseDown ( this._mouseDownAutoClose ) ;
+      this.headerPopupDiv = null ;
+      return ;
+    },
+    toggleColumn: function ( event )
+    {
+      var ev = new TEvent ( event ) ;
+      var cb = ev.getComponent() ;
+      var n = cb.getName() ;
+      var v = parseInt ( cb.getValue() ) ;
+      if ( cb.isChecked() ) this.tab.setColumnVisible ( v, true ) ;
+      else                  this.tab.setColumnVisible ( v, false ) ;
+      var n = this.tab.getNumberOfVisibleColumns() ;
+    },
+    setAllColumnsVisible: function ( event )
+    {
+      for ( var ch = this.headerPopup.dom.firstChild.firstChild ; ch ; ch = ch.nextSibling )
+      {
+        if ( ch.nodeType !== DOM_ELEMENT_NODE )
+        {
+          continue ;
+        }
+        if ( ch.jsPeer )
+        {
+          ch.jsPeer.setChecked ( true ) ;
+        }
+      }
+      this.tab.setAllColumnsVisible ( true ) ;
+    }
+	}'
+>
+  <Table name='COMMIT_TABLE' style='width:500px;height:450px;' sortable='true' Xget-values='false' show-header='true'
+    Xonclick='function(e){log("-------");}'
+    multiple='true'
+    check-on-select='true'
+  >
+    <Columns>
+      <Column name='ACTIVE' editable='check' check-on-select='true' >
+      	<Mappings>
+	  			<option value=1 default=0 />
+				</Mappings>
+      </Column>
+      <Column name='ST' />
+      <Column name='N' />
+      <Column name='NFC' type='money' pre-sorted='up' />
+      <Column name='NPS' type='float' format="%'.2f"/>
+      <Column name='DATE' title='Date' type='date' format='long' />
+    </Columns>
+  </Table>
+	<Container>
+  	<TextField name='TF.Pattern' onkeyup='
+	  {
+	    table:null,
+	    last_q:null,
+	    execute: function ( event )
+	    {
+	      var ev = new TEvent ( event ) ;
+	      if ( ! this.table )
+	      {
+          this.table = ev.getContainer().getPeer ( "COMMIT_TABLE" ) ;
+        }
+        var src = ev.getSource() ;
+        var q = ev.getSource().value ;
+        if ( this.last_q == q ) return ;
+        this.last_q = q ;
+        var r = this.table.setVisibleRowsIf ( "ST", q ) ;
+        if ( r ) r.setSelected ( true ) ;
+      }
+    }' />
+    <br/>
+    <PushButton text='Check all' onclick='function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var tab = ev.getContainer().getPeer ( "COMMIT_TABLE" ) ;
+      tab.checkAll ( "ACTIVE", true ) ;
+    }'/>
+    <PushButton text='Uncheck all' onclick='function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var tab = ev.getContainer().getPeer ( "COMMIT_TABLE" ) ;
+      tab.checkAll ( 0, false ) ;
+    }'/>
+    <PushButton name='PB.GetValues' Xdisabled='true' text='Get Values' onclick='function(event)
+    {
+      var ev = new TEvent ( event ) ;
+	    var table = ev.getContainer().getPeer ( "COMMIT_TABLE" ) ;
+      log ( new TEvent ( event ).getValues() ) ;
+			/*log ( table ) ;*/
+		}'/>
+		<br/>
+		<Label text='Currency:' />
+		<ChoiceButton name='CURRENCY' onchange='*.setCurrency()'>
+  		<option>EUR</option>
+  		<option>USD</option>
+  		<option>GBP</option>
+		</ChoiceButton>
+		<br/>
+		<Label text='Language:' />
+		<ChoiceButton name='LANG' onchange='*.setLanguage()'>
+  		<option>en_GB</option>
+  		<option>en_US</option>
+  		<option>de_DE</option>
+  		<option>fr_FR</option>
+  		<option>it_IT</option>
+  		<option>es_ES</option>
+  		<option>pt_PT</option>
+		</ChoiceButton>
+    <br/>
+    <PushButton text='Show Locale' onclick='function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var c = ev.getContainer() ;
+      log ( "-------------" ) ;
+      log ( c.getLocale() ) ;
+    }'/>
+		<br/>
+    <!-- <PushButton text='toggle column' onclick='*.setColumnVisible()'/> -->
+    <PushButton text='Dev' onclick='*.dev()'/>
+    <PushButton text='Dev !' onclick='*.dev1()'/>
+    <PushButton text='xx' onclick='*.xx()' />
+		<PushButton text='getCssValues' onclick='function getCssValuesX ()
+    {
+      var a = getCssValues.call ( null, { "MenuItem":true, "Menu":true } ) ;
+log ( a, true ) ;
+    }' />
+	</Container>
+  <br/>
+  <Container name='DEV'>
+  </Container>
+</Container>
+</xml>
+

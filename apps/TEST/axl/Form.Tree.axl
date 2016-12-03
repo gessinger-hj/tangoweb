@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Tree' name='X' pagelet='new Finder("TREE2")'
+  onload='*.onload()'
+>
+  <Container style='bottom:-0px;'
+  >
+    <ChoiceButton style='width:100px;' name='nameSpace' onchange='*.changeNameSpace()' />
+    <Label text='Places' class='SimpleTitle' />
+    <ChoiceButton name='Places' style='text-align:left;width:120px;' onchange='*.showFileListOfPlace()' />
+  </Container>
+  <br/>
+  <Container style='bottom:-0px;' name='X'
+   Xonload='function(ev)
+   {
+     var p = ev.getContainer().getPeer ( "TREE2" ) ;
+     p.addListener ( function(e)
+     {
+       var x = new TXml() ;
+       for  ( var i = 0 ; i < 4 ; i++ )
+       {
+         var xx  = x.add ( "node" ) ;
+         xx.addAttribute ( "title", "Child-" + i ) ;
+       }
+       var p = e.getPeer() ;
+       p.addChildren ( e.getSource(), x ) ;
+     }, "node-opened" ) ;
+   }'
+    onload='function(ev)
+    {
+      var p = ev.getContainer().getPeer ( "TREE2" ) ;
+      p.addListener ( function(e)
+      {
+        var TR = e.getSource() ;
+        if ( ! TR.isEmpty ) return ;
+        var xRow = new TXml ( TR.domRow ) ;
+        var path = xRow.getAttribute  ( "path" ) ;
+        var p = e.getPagelet() ;
+        var l = p.getDirList ( path ) ;
+        var v = new TXml() ;
+        l.get("LS.RESULT/Files").elements ( function(e)
+        {
+          var x  = v.add ( "node" ) ;
+          var name = e.getContent ( "NAME" ) ;
+          x.addAttribute ( "title",  name ) ;
+          x.addAttribute ( "name",  name ) ;
+          x.addAttribute ( "path",  path + "/" + name ) ;
+        }) ;
+        var tree = e.getContainer().getPeer ( "TREE2" ) ;
+        tree.addChildren ( e.getSource(), v ) ;
+      }, "node-opened" ) ;
+    }'
+  >
+    <Tree name='TREE2' style='width:400px;bottom:-0px;right:-4px;'
+      get-values='true'
+      always-show-chevron='true'
+      Xopen-on-click='true'
+      Xchevron-changed='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        log ( "--------chevron-changed------------------" ) ;
+        log ( ev ) ;
+      }'
+      ondblclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        log ( "--------dbl------------------" ) ;
+      }'
+      Xonsetvalues='function ( x )
+      {
+        if ( x.isEmpty() )
+        {
+          x.addAttribute ( "icon", "img/user-16.png" ) ;
+        }
+        else
+        {
+          x.addAttribute ( "icon", "img/group-wlm-16.png" ) ;
+        }
+      }'
+    >
+    <!--
+      <Data>
+        <node title='32328: DemoABSS - DemoASS Approved/CreateOrder/Finished' isBottomChild='true' key='32328'>
+          <node title='Child Orders: DemoABSS - DempoABSS.1'>
+            <node title='32345: DemoABSS - DempoABSS.1 Activated/CreateOrder/Finished' key='32345'></node>
+            <node title='32364: DemoABSS - DempoABSS.1 Activated/SoftMACOrder/Finished' isBottomChild='true' key='32364'></node>
+          </node>
+          <node title='Child Orders: DemoABSS - DempoABSS.1'/>
+          <node title='Child Orders: DemoABSS - DempoABSS.1'>
+            <node title='32345: DemoABSS - DempoABSS.1 Activated/CreateOrder/Finished' key='32345'></node>
+            <node title='Child Orders: DemoABSS - DempoABSS.1'>
+              <node title='32345: DemoABSS - DempoABSS.1 Activated/CreateOrder/Finished' key='32345'></node>
+              <node title='32364: DemoABSS - DempoABSS.1 Activated/SoftMACOrder/Finished' isBottomChild='true' key='32364'></node>
+            </node>
+          </node>
+          <node title='Child Orders: DemoABSS - DempoABSS.1'>
+            <node title='32345: DemoABSS - DempoABSS.1 Activated/CreateOrder/Finished' key='32345'></node>
+            <node title='32364: DemoABSS - DempoABSS.1 Activated/SoftMACOrder/Finished' isBottomChild='true' key='32364'></node>
+          </node>
+        </node>
+      </Data>
+      -->
+    </Tree>
+  </Container>
+  <Splitbar />
+  <Container style='width:100px;'
+  >
+    <PushButton text='Get' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+      log ( v ) ;
+      }'
+    />
+    <PushButton text='Set' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = TSys.getPrivateXml ( "tree.data.xml" ) ;
+        ev.getContainer().setValues ( v ) ;
+      }'
+    />
+    <PushButton text='Close all' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = TSys.getPrivateXml ( "tree.data.xml" ) ;
+        ev.getContainer().getPeer ( "TREE2" ).closeAll() ;
+      }'
+    />
+    <PushButton text='Open all' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = TSys.getPrivateXml ( "tree.data.xml" ) ;
+        ev.getContainer().getPeer ( "TREE2" ).openAll() ;
+      }'
+    />
+    <br />
+    <PushButton text='dirs' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var p = ev.getPagelet() ;
+        var ev = new TEvent ( event ) ;
+        var l = p.getDirList() ;
+        var v = new TXml() ;
+        var xTREE2 = v.add ( "TREE2" ) ;
+        l.get("LS.RESULT/Files").elements ( function(e)
+        {
+          var x  = xTREE2.add ( "node" ) ;
+          x.addAttribute ( "title",  e.getContent ( "NAME" ) ) ;
+          x.addAttribute ( "name",  e.getContent ( "NAME" ) ) ;
+          x.addAttribute ( "path",  e.getContent ( "NAME" ) ) ;
+        }) ;
+        ev.getContainer().getPeer ( "TREE2" ).setValues ( v ) ;
+      }'
+    />
+    <br/>
+    <Label text='path'/><TextField name='path' value='acs'/>
+    <PushButton text='get node' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+        var path = v.getContent ( "path" ) ;
+        path = "acs" ;
+        var path2 = "customer" ;
+        var p = ev.getPagelet() ;
+        var table = ev.getContainer().getPeer ( "TREE2" ) ;
+        var tn = table.getNode ( "ACS" ) ;
+log ( tn ) ;
+        var ttn = tn.openPath ( "acs/resources" ) ;
+log ( ttn ) ;
+        /*
+        var tn = table.findNode ( path ) ;
+        tn.open() ;
+        var chtn = tn.getChild ( path2 ) ;
+        if ( chtn ) chtn.open() ;
+        */
+/*
+table.openPath ( "ACS/acs/customer" ) ;
+table.openPath ( "ACS/acs/templates" ) ;
+table.openPath ( "ACS/de/devoteam/vge/acs" ) ;
+*/
+      }'
+    />
+  </Container>
+</Container>
+</xml>
+

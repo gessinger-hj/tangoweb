@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Splitbar' name='X'
+>
+  <Container style='height:400px;right:-0;' >
+    <Container style='height:400px;bottom:-0;width:400px;' name='X'
+    >
+<TextField name='X' />
+    <PushButton text='Focus' onclick='function()
+	    {
+log ( new TComponent ( document.activeElement ) ) ;
+	    }' />
+<br/>
+<TextField name='X' style='right:0;'/>
+<br/>
+<TextField name='X' style='right:0;'/>
+<br/>
+<TextField name='X' style='right:0;'/>
+<br/>
+<Choice name='TYPE_OF_PERIOD'
+	onchange='function(event)
+	{
+	var ev = new TEvent( event ) ;
+	log ( ev ) ;
+	var v = ev.getValues() ;
+	log ( v ) ;
+	}'
+       	>
+	<option>A</option>
+	<option>b</option>
+	<option>c</option>
+	<option>d</option>
+</Choice>
+<Date name='DATE1' style='right:4px;attach-right:true;' 
+	onchange='function(event)
+	{
+	var ev = new TEvent( event ) ;
+	log ( "------------" ) ;
+	log ( ev ) ;
+	var v = ev.getValues() ;
+	log ( v ) ;
+	}'
+       	/>
+<Date name='DATE2'  style='right:2px;attach-right:true;' />
+<!--
+<br/>
+<Choice name=X onchange='function(event)
+	{
+	log ( event ) ;
+	}'
+	>
+	<option>aa</option>
+	<option>bb</option>
+	<option>cc</option>
+	<option>dd</option>
+</Choice>
+-->
+<br/>
+<PushButton text='Download' onclick='function(event)
+	{
+        Database.setNameSpace ( "ISDP" ) ;
+        var stmt = Database.createDownloadStatement() ;
+	stmt.setTableName ( "ACT_REPORT_HISTORY" ) ;
+	stmt.setFileNameColumn ( "FILENAME" ) ;
+	stmt.setBlobColumnName ( "DOCUMENT" ) ;
+	stmt.setWhere ( "REPORT_HISTORY_ID=20956" ) ;
+	stmt.execute() ;
+	}'
+/>
+<br/>
+<PushButton reverse='true' img='Tango/Folder.16/normal' text='Window' onclick='
+{
+  execute: function ( event )
+  {
+    var w = new TWindow ( "Window.Scrolled.Body" ) ;
+    w.create() ;
+    var b = new TContainer ( w.getBody() ) ;
+    var axl = new TXml() ;
+    var c = axl.add ( "Container" ) ;
+    c.add ( "TextField" ) ;
+    b.setAxl ( axl ) ;
+    w.show() ;
+  }
+}' />
+<br/>
+<PushButton text='FileInfo' onclick='
+{
+  execute: function ( event )
+  {
+/*
+    new FileRessource().downloadFile ( "/home/gess/acronyl/test/private/bin/DssHandler.sh", true ) ;
+*/
+    var x = new FileRessource().getFileInfo ( "/home/gess/acronyl/test/private/bin/DssHandler.sh", true ) ;
+    log ( x ) ;
+  }
+}' />
+<PushButton text='FileText' onclick='
+{
+  execute: function ( event )
+  {
+    var x = new FileRessource().getFileText ( "/home/gess/acronyl/test/private/bin/DssHandler.sh", true ) ;
+    log ( x ) ;
+  }
+}' />
+    </Container>
+<Splitbar />
+    <Container style='height:400px;right:-4;bottom:-4;'
+    >
+<Notebook style='bottom:-0;right:-0;' >
+  <Container label='One' >
+<TextField name='X' Xstyle='right:0;'/>
+<br/>
+<TextField name='X' Xstyle='right:0;'/>
+<br/>
+<TextField name='X' Xstyle='right:0;'/>
+<br/>
+<TextField name='X' Xstyle='right:0;'/>
+<br/>
+<TextField name='X' style='bottom:4;'/>
+<TextField name='X' style='bottom:4;'/>
+<TextField name='X' style='bottom:4;'/>
+<TextField name='X' style='bottom:4;'/>
+<TextField name='X' style='bottom:4;'/>
+  </Container>
+  <Container img='Tango/Folder.16/normal' label='Two' >
+  </Container>
+  <Container label='Three' closable='true'>
+  </Container>
+  <Container img='Tango/Folder.16/normal' label='Four' closable='true'>
+  </Container>
+</Notebook>
+    </Container>
+  </Container>
+<SplitbarHorizontal />
+  <Container style='width:200px;height:300px;bottom:-4;'
+  >
+<TextField name='X' />
+  </Container>
+</Container>
+</xml>
+

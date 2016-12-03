@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Dialog id='Dialog.EditReportSchedule' title='Edit Report Schedule...' img='clock-icon-2-16.png' onclose='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;'
+      onchange='handle:PB.Save;javascript:
+  {
+    w:null,
+    label:null,
+    execute: function(event)
+    {
+      if ( ! this.w )
+      {
+        var ev = new TEvent ( event ) ;
+        this.w = ev.getWindow() ;
+        if ( ! this.w ) return 
+        this.label = this.w.getComponent ( "L.Status" ) ;
+      }
+      if ( this.w.getAttribute ( "ERROR" ) ) return false ;
+    }
+  }'
+  >
+<!--
+      <ADDITIONAL_FORMATS></ADDITIONAL_FORMATS>
+-->
+    <DisplayContainer style='right:-0;bottom:-0;attach-bottom:true;width:600px;'
+    >
+      <Hidden name='RETRY' value='0' />
+      <Hidden name='SCHEDULE_ID' />
+      <ListLabel text='ID:' /><tab name='T1' X='+12' /> <Label name='SCHEDULE_ID' style='right:-0;' />
+      <br/> <ListLabel text='LAST_EXECUTED'/><tab name='T1'/><Label name='LAST_EXECUTED' style='right:-0;' type='datetime'/>
+      <br/> <ListLabel text='LAST_MODIFIED'/><tab name='T1'/><Label name='LAST_MODIFIED' style='right:-0;' type='datetime'/>
+      <br/> <ListLabel text='START_DATE'/><tab name='T1'/><DateTime name='START_DATE' />
+      <br/> <ListLabel text='END_DATE'/><tab name='T1'/><DateTime name='END_DATE' default='false' Xdefault-is-null='true' />
+      <br/> <ListLabel text='CONTEXT'/><tab name='T1'/><TextField name='CONTEXT' style='right:-0;' default='*'/>
+      <br/> <ListLabel text='START_DATE'/><tab name='T1'/><Label name='START_DATE' style='right:-0;' type='datetime'/>
+      <br/> <ListLabel text='Description:' /><tab name='T1' X='+10' /> <TextField name='DESCRIPTION' style='right:-0;' />
+      <br/> <ListLabel text='CRON_EXPRESSION'/><tab name='T1'/>
+        <TextField name='CRON_EXPRESSION' style='right:-0;'  mandatory='true'
+        mandatory='true' minlength='5'
+        onkeyup='
+        {
+          w:null,
+          label:null,
+          timer:null,
+          tf:null,
+          execute: function (event)
+          {
+            if ( ! this.tf )
+            {
+              var ev = new TEvent ( event ) ;
+              this.w = ev.getWindow() ;
+	      this.pagelet = this.w.getPagelet() ;
+              this.label = this.w.getComponent ( "L.Status" ) ;
+	      this.tf = ev.getComponent() ;
+	      this.timer = new TTimer ( 500, function(t)
+	      {
+                try
+                {
+                  var x = t.pagelet.api.testCronExpression ( t.text ) ;
+                }
+                catch ( exc )
+                {
+                  log ( exc ) ;
+                  return ;
+                }
+                if ( x.get ( "Error" ) )
+                {
+                  t.w.addAttribute ( "ERROR", "true" ) ;
+		  t.label.dom.style.color = "red" ;
+                  t.label.setValue ( x.getContent ( "Error" ) ) ;
+                  t.w.checkStatus() ;
+                }
+                else
+                {
+                  t.w.addAttribute ( "ERROR", "" ) ;
+                  t.label.setValue ( x.getContent ( "Result" ) ) ;
+		  t.label.dom.style.color = "" ;
+                  t.w.checkStatus() ;
+                }
+	      }) ;
+	      this.timer.setRepeats ( false ) ;
+	      this.timer.label = this.label ;
+	      this.timer.w = this.w ;
+	      this.timer.pagelet = this.pagelet ;
+	    }
+	    var t = this.tf.getText() ;
+	    this.timer.stop() ;
+	    if ( t.length < 3 )
+	    {
+              this.label.setValue ( "" ) ;
+	      return ;
+	    }
+	    this.timer.text = t ;
+            this.label.setValue ( "" ) ;
+	    this.timer.start() ;
+	  }
+        }'
+	>
+	</TextField>
+      <br/>
+      <tab name='T1'/><Label name='L.Status' text='' style='right:-0;color:red;' />
+      <br/> <ListLabel text='FORMAT'/><tab name='T1'/>
+        <Choice name='FORMAT' style='right:-0;' >
+	  <option>csv</option>
+	  <option >xml</option>
+	  <option >xls</option>
+	  <option >pdf</option>
+	</Choice>
+      <br/> <ListLabel text='CSV_DELIMITER'/><tab name='T1'/>
+        <Choice name='CSV_DELIMITER' style='right:-0;'>
+	  <option></option>
+	  <option value='"' >quote</option>
+	  <option value="'" >apostroph</option>
+	</Choice>
+      <br/> <ListLabel text='CSV_SEPARATOR'/><tab name='T1'/>
+        <Choice name='CSV_SEPARATOR' style='right:-0;'>
+	  <option>,</option>
+	  <option>;</option>
+	  <option value='	'>tab</option>
+	</Choice>
+    </DisplayContainer>
+    <br/>
+    <Container style='bottom:0px;right:0px;' >
+      <PushButton name='PB.Remove' img='Tango/Misc/edit-remove' visible='false' text='%Remove%' onclick='*.editScheduleRemove(event)' />
+      <PushButton img='Help-icon-16.png' text='%Help%' onclick='*.helpOnCronExpression(event)' />
+      <PushButton name='PB.Save' img='Tango/Misc/edit-save' disabled=true text='%Save%' onclick='*.editScheduleSave(event)' />
+      <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>

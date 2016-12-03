@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.RoleToRight' style='left:0px;top:0px;' reset='false' name='X'
+  label='Role To Right'
+  pagelet='new IDInfo()'
+ >
+  <Container style='left:0px;padding:0px;margin:0px;right:-0;bottom:-0;'
+             onload='*.onload(event)'
+  >
+    <Container style='left:0px;margin:0px;right:-0;' >
+      <PushButton  text='Get Data' onclick='*.displayRoleToRight(event)' />
+    </Container>
+    <br />
+    <Container style='left:0px;bottom:-1;right:-0;' >
+      <Table name='V_ROLE_TO_RIGHT' style='width:500px;bottom:-2;right:-0;'  reset=true 
+            sortable='true'
+         >
+        <Columns>
+         <Column name='ROLE_NAME' title='Role Name' />
+         <Column name='RIGHT_NAME' title='Right Name' />
+         <Column name='RIGHT_CONTEXT' title='Context' />
+         <Column name='RIGHT_VALUE' title='Value' editable='textarea' />
+        </Columns>
+      </Table>
+    </Container>
+  </Container>
+</Container>
+</xml>

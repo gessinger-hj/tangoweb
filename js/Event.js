@@ -11,22 +11,22 @@ if ( !Array.isArray )
   	return arg && arg.constructor === Array ;
   };
 }
-var _isBrowser = true ;
-if ( typeof document !== 'undefined' && typeof module === 'undefined' ) // browser
-{
-	_isBrowser = true ;
+var _Event_isBrowser = true ;
+if ( typeof process === 'object' ) {
+  if ( typeof process.versions === 'object' ) {
+    if ( typeof process.versions.node !== 'undefined' ) {
+      _Event_isBrowser = false ;
+    }
+  }
 }
-else
-{
-	_isBrowser = false ;
-}
+var _Event_replace_Buffer_toJSON = null ;
 /**
  * Description
  * @constructor
- * @param {} name
- * @param {} type
- * @param {} data
- * @return 
+ * @class    Event
+ * @param      {}    name    { description }
+ * @param      {}    type    { description }
+ * @param      {}    data    { description }
  */
 gepard.Event = function ( name, type, data )
 {
@@ -37,16 +37,37 @@ gepard.Event.prototype =
 	/**
 	 * Description
 	 * @method serialize
-	 * @param {} obj
-	 * @return 
+	 * @param {object} obj
+	 * @return string
 	 */
 	serialize: function ( obj )
 	{
+		var Date_toJSON, Buffer_toJSON ;
 		if ( ! obj )
 		{
+			if ( this._Client ) delete this["_Client"] ;
 			obj = this ;
 		}
-	  var old = Date.prototype.toJSON ;
+ 		if ( typeof Buffer !== 'undefined' )
+ 		{
+ 			if ( _Event_replace_Buffer_toJSON === null )
+ 			{
+ 				var s = String ( Buffer.prototype.toJSON ) ;
+	 			if ( s.indexOf ( 'type:' ) < 0 && s.indexOf ( 'data' ) < 0 )
+	 			{
+	 				_Event_replace_Buffer_toJSON = true ;
+	 			}
+ 			}
+ 			if ( _Event_replace_Buffer_toJSON )
+ 			{
+	    	Buffer_toJSON = Buffer.prototype.toJSON ;
+ 				Buffer.prototype.toJSON = function function_Buffer_toJSON()
+ 				{
+			    return { type:"Buffer", data:Array.prototype.slice.call(this, 0) } ;
+			  }
+ 			}
+ 		}
+	  Date_toJSON = Date.prototype.toJSON ;
 	  try
 	  {
 	    /**
@@ -54,7 +75,7 @@ gepard.Event.prototype =
     	 * @method toJSON
     	 * @return ObjectExpression
     	 */
-    	Date.prototype.toJSON = function()
+    	Date.prototype.toJSON = function function_Date_toJSON()
 	    {
 	      return { type:'Date', 'value': this.toISOString() } ;
 	    };
@@ -62,11 +83,59 @@ gepard.Event.prototype =
 	  }
 	  finally
 	  {
-	    Date.prototype.toJSON = old ;
+	  	if ( Date_toJSON )
+	  	{
+	    	Date.prototype.toJSON = Date_toJSON ;
+	  	}
+	  	if ( Buffer_toJSON )
+	  	{
+	    	Buffer.prototype.toJSON = Buffer_toJSON ;
+	  	}
 	  }
 	},
-	_classNameToConstructorDone: false,
 	_classNameToConstructor: {},
+	addClassNameToConstructor: function ( className, clazz )
+	{
+		this._classNameToConstructor[className] = clazz ;
+	},
+	setTargetIsLocalHost: function ( state )
+	{
+		state = !! state ;
+    this._visit ( this.body, function e_visit ( o )
+    {
+      if ( typeof o.setTargetIsLocalHost === 'function' )
+      {
+        o.setTargetIsLocalHost ( state ) ;
+      }
+    }) ;
+  },
+	visit: function ( visitor )
+	{
+		this._visit ( this, visitor ) ;
+	},
+	_visit: function ( obj, visitor )
+	{
+		for ( var key in obj )
+		{
+			var o = obj[key] ;
+			if ( typeof o !== 'object' )
+			{
+				continue ;
+			}
+			if ( ! o )
+			{
+				continue ;
+			}
+			if ( visitor.call ( null, o ) === false )
+			{
+				return false ;
+			}
+			if ( this._visit ( o, visitor ) === false )
+			{
+				return false ;
+			}
+		}
+	},
 	/**
 	 * Description
 	 * @method deserialize
@@ -95,7 +164,7 @@ gepard.Event.prototype =
 	  }
 	  if ( deepClassInspection )
 	  {
-		  if ( typeof document === 'undefined' )
+		  if ( ! _Event_isBrowser )
 		  {
 		  	module.exports.prototype.deepDeserializeClass ( obj ) ;
 		  }
@@ -106,7 +175,7 @@ gepard.Event.prototype =
 	  }
 	  if ( ! classNameToConstructor )
 	  {
-		  if ( typeof document === 'undefined' )
+		  if ( ! _Event_isBrowser )
 		  {
 		  	classNameToConstructor = module.exports.prototype._classNameToConstructor ;
 		  }
@@ -184,7 +253,15 @@ gepard.Event.prototype =
 	        obj[k] = new Date ( o.value ) ;
 	        continue ;
 	      }
-	      if ( typeof document === 'undefined' )
+	      if ( typeof Buffer !== 'undefined' )
+	      {
+		      if ( o.type === "Buffer" && Array.isArray ( o.data ) )
+		      {
+		        obj[k] = new Buffer ( o.data ) ;
+		        continue ;
+		      }
+	      }
+	      if ( ! _Event_isBrowser )
 	      {
 		      if ( o.type === 'Xml' )
 		      {
@@ -193,16 +270,58 @@ gepard.Event.prototype =
 		        obj[k] = f.create ( o.value ) ;
 		        continue ;
 		      }
-		      if ( o.type === "Buffer" && Array.isArray ( o.data ) )
-		      {
-		        obj[k] = new Buffer ( o.data ) ;
-		        continue ;
-		      }
 	      }
 	    }
 	    if ( o.className && typeof o.className === 'string' )
 	    {
-	// console.log ( "o.className=" + o.className ) ;
+	      var mcn = this._classNameToConstructor[o.className] ;
+	      if ( mcn )
+	      {
+			    if ( typeof Object.create === 'function' )
+			    {
+				    obj[k] = that = Object.create ( mcn.prototype ) ;
+				    for ( var kk in o )
+				    {
+				      if ( ! o.hasOwnProperty ( kk ) ) continue ;
+				      var oo = o[kk] ;
+				      if ( oo && typeof oo === 'object' )
+				      {
+				        if ( oo.className && typeof oo.className === 'string' )
+				        {
+				          that[kk] = this.deserialize ( oo ) ;
+				          continue ;
+				        }
+				        if ( typeof oo.type === 'string' )
+				        {
+						      if ( oo.type === 'Date' )
+						      {
+						        that[kk] = new Date ( oo.value ) ;
+						        continue ;
+						      }
+						      if ( typeof Buffer !== 'undefined' )
+						      {
+							      if ( oo.type === "Buffer" && Array.isArray ( oo.data ) )
+							      {
+							        that[kk] = new Buffer ( oo.data ) ;
+							        continue ;
+							      }
+							    }
+						      if ( ! _Event_isBrowser )
+						      {
+							      // if ( o.type === 'Xml' )
+							      // {
+							      //   var txml = require ( "Xml" ) ;
+							      //   var f = new txml.XmlFactory() ;
+							      //   obj[k] = f.create ( o.value ) ;
+							      //   continue ;
+							      // }
+						      }
+				        }
+				      }
+				      that[kk] = o[kk]  ;
+				    }
+			    }
+	      }
 	    }
 	    if ( typeof o === 'object' )
 	    {
@@ -223,7 +342,7 @@ gepard.Event.prototype =
 		}
 		this.setType ( type ) ;
 		this.user = null ;
-		this.control = { createdAt: new Date() } ;
+		this.control = { createdAt: new Date(), plang: "JavaScript" } ;
 		if ( data )
 		{
 			if ( typeof data === 'object' ) this.body = data ;
@@ -234,7 +353,7 @@ gepard.Event.prototype =
 			}
 		}
 		else this.body = {} ;
-		if ( ! _isBrowser )
+		if ( ! _Event_isBrowser )
 		{
 			var os = require ( "os" ) ;
 			this._setHostname  ( os.hostname() ) ;
@@ -402,6 +521,15 @@ gepard.Event.prototype =
 	{
   	this.control.sourceIdentifier = sourceIdentifier ;
 	},
+	setChannel: function ( channel )
+	{
+		if ( this.control.channel ) return ;
+  	this.control.channel = channel ;
+	},
+	getChannel: function()
+	{
+  	return this.control.channel ;
+	},
 	/**
 	 * Description
 	 * @method getProxyIdentifier
@@ -512,8 +640,7 @@ gepard.Event.prototype =
 	 */
 	putValue: function ( name, value )
 	{
-		if ( ! name )
-		if ( typeof name !== 'string' )
+		if ( ! name || typeof name !== 'string' )
 		{
 			throw new Error ( "Event.putValue(): name must be a string." ) ;
 		}
@@ -525,14 +652,29 @@ gepard.Event.prototype =
 	},
 	/**
 	 * Description
+	 * @method removeValue
+	 * @param {string} name
+	 * @return 
+	 */
+	removeValue: function ( name )
+	{
+		if ( ! name || typeof name !== 'string' )
+		{
+			throw new Error ( "Event.removeValue(): name must be a string." ) ;
+		}
+		var v = this.body[name] ;
+		delete this.body[name] ;
+		return v ;
+	},
+	/**
+	 * Description
 	 * @method getValue
 	 * @param {string} name
 	 * @return {any} value
 	 */
 	getValue: function ( name )
 	{
-		if ( ! name )
-		if ( typeof name !== 'string' )
+		if ( ! name || typeof name !== 'string' )
 		{
 			throw new Error ( "Event.getValue(): name must be a string." ) ;
 		}
@@ -588,6 +730,14 @@ gepard.Event.prototype =
 	{
 		return this.control.uniqueId ;
 	},
+	isInUse: function()
+	{
+		return !! this.control.isInUse ;
+	},
+	setInUse: function()
+	{
+		return this.control.isInUse = true ;
+	},
 	/**
 	 * Description
 	 * @method isBad
@@ -627,12 +777,44 @@ gepard.Event.prototype =
 		if ( ! this.control.status ) return ;
 		return this.control.status.name ;
 	},
+	getStatusCode: function()
+	{
+		if ( ! this.control ) return ;
+		if ( ! this.control.status ) return ;
+		return this.control.status.code ;
+	},
+	setStatus: function ( code, name, reason )
+	{
+		if ( ! this.control ) this.control = {} ;
+		this.control.status = {} ;
+		if ( code )
+		{
+			code = parseInt ( code ) ;
+		}
+		if ( ! code )
+		{
+			code = 0 ;
+		}
+		this.control.status.code = code ;
+		if ( name )
+		{
+			this.control.status.name = name ;
+		}
+		if ( reason )
+		{
+			this.control.status.reason = reason ;
+		}
+	},
 	sendBack: function()
 	{
 		var c = this._Client ;
 		this._Client = null ;
 		delete this._Client ;
 		c.sendResult ( this ) ;
+	},
+	getClient: function()
+	{
+		return this._Client ;
 	},
 	_setHostname: function ( hostName )
 	{
@@ -652,7 +834,7 @@ gepard.Event.prototype =
 		return this.control.hostname ;
 	}
 };
-if ( _isBrowser )
+if ( _Event_isBrowser )
 {
 	gepard.serialize = gepard.Event.prototype.serialize ;
 	gepard.deserialize = gepard.Event.prototype.deserialize ;

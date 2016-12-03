@@ -1,0 +1,2223 @@
+  <ACS.RESULT>
+    <CUSTOMER.LIST>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIUK2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140211173654</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIUK2</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+        <Number>1</Number>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2MACS_2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507123946</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2MACS_2</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+        <Number>2</Number>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS50</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140526152947</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS50</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_1</Scenario>
+        <Number>3</Number>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>EVEUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131010182304</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>EVEUK</CUSTOMERCODE>
+        <Scenario>Eversheds</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FORUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140903161851</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FORUK</CUSTOMERCODE>
+        <Scenario>Ford</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS35</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130627125910</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS35</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIEIT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131125100216</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIEIT</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIMNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130919163845</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIMNL</CUSTOMERCODE>
+        <Scenario>DimData</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X52</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124174527</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X52</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SFUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131009135127</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SFUK</CUSTOMERCODE>
+        <Scenario>Salesforce</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NON.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140121113413</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NON.T</CUSTOMERCODE>
+        <Scenario>NovoNordisk</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>POSCASH</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118095619</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>POSCASH</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>EVE.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131010133406</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>EVE.T</CUSTOMERCODE>
+        <Scenario>Eversheds</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS44</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140528094732</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS44</CUSTOMERCODE>
+        <Scenario>Scenario7_3</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIM_1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130904105504</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIM_1</CUSTOMERCODE>
+        <Scenario>DimData</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CANON</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131029154315</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CANON</CUSTOMERCODE>
+        <Scenario>M2M-JP_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z42</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140121162102</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z42</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T12Z</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140114114312</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T12Z</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS54</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140602131653</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS54</CUSTOMERCODE>
+        <Scenario>Scenario8_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THYHU</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140205164648</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THYHU</CUSTOMERCODE>
+        <Scenario>Thyssen_HU</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THY.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130912091059</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THY.T</CUSTOMERCODE>
+        <Scenario>Thyssen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS45</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140527154849</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS45</CUSTOMERCODE>
+        <Scenario>Scenario8_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ALIIT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140731112652</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ALIIT</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y32</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822165348</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y32</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THY.2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140120161138</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THY.2</CUSTOMERCODE>
+        <Scenario>Thyssen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6S12</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131108140302</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6S12</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AMAUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140923135250</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AMAUK</CUSTOMERCODE>
+        <Scenario>RED_Phase2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SFDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507163816</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SFDE</CUSTOMERCODE>
+        <Scenario>Scenario4_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X11</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124165409</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X11</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ROWUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140820165332</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ROWUK</CUSTOMERCODE>
+        <Scenario>RED_Phase1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2MACS_3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507124227</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2MACS_3</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIMIT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131205103027</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIMIT</CUSTOMERCODE>
+        <Scenario>DimData_IT</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Flow1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130828141637</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Flow1</CUSTOMERCODE>
+        <Scenario>Flowserve</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ERDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140317134700</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ERDE</CUSTOMERCODE>
+        <Scenario>Ericsson_DE</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC11</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507163458</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC11</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS8</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130621162627</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS8</CUSTOMERCODE>
+        <Scenario>VMUK</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AMCDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131212112109</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AMCDE</CUSTOMERCODE>
+        <Scenario>R6_Bespoke2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>TELEROAM</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130902150022</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>TELEROAM</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AMCIT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140603102906</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AMCIT</CUSTOMERCODE>
+        <Scenario>Amcor_IT</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6S31</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131105105256</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6S31</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130719124056</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SNL</CUSTOMERCODE>
+        <Scenario>Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC3_1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130620131144</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC3_1</CUSTOMERCODE>
+        <Scenario>Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T22</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140106151040</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T22</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>RS01</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121219103311</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>RS01</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>KCUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130604113506</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>KCUK</CUSTOMERCODE>
+        <Scenario>Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS51</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140527175753</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS51</CUSTOMERCODE>
+        <Scenario>Scenario8_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FlowS</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130904142104</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FlowS</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ALLUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130919093656</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ALLUK</CUSTOMERCODE>
+        <Scenario>Alliance</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>YAHIT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130826171044</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>YAHIT</CUSTOMERCODE>
+        <Scenario>Yahoo_IT</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BAIUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140723113442</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BAIUK</CUSTOMERCODE>
+        <Scenario>RED_PH2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>12345</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130621160926</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>12345</CUSTOMERCODE>
+        <Scenario>Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CP.4.1.1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130417155620</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CP.4.1.1</CUSTOMERCODE>
+        <Scenario>SFDE</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T51</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140108062620</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T51</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIENL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131206135111</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIENL</CUSTOMERCODE>
+        <Scenario>Nielsen_NL</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SCBUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131204110521</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SCBUK</CUSTOMERCODE>
+        <Scenario>SCB</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BTest</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131008114218</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BTest</CUSTOMERCODE>
+        <Scenario>Barclays</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>REDQ3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140917151530</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>REDQ3</CUSTOMERCODE>
+        <Scenario>Scenario7_3</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THYNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140414111120</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THYNL</CUSTOMERCODE>
+        <Scenario>Thyssen_HU</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC3_2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130710141237</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC3_2</CUSTOMERCODE>
+        <Scenario>Scenario3_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BAR_2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130821104531</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BAR_2</CUSTOMERCODE>
+        <Scenario>Barclays</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121228140637</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS3</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y51</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822170124</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y51</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACSR6</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140520103116</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACSR6</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NI2UK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131002121949</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NI2UK</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CAUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130411171259</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CAUK</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PPVGEAD</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140606141250</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PPVGEAD</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIM_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130904134328</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIM_T</CUSTOMERCODE>
+        <Scenario>DimData</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS43</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140527153046</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS43</CUSTOMERCODE>
+        <Scenario>Scenario7_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>TRENDFIRE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130828110909</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>TRENDFIRE</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ERD.1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140313171458</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ERD.1</CUSTOMERCODE>
+        <Scenario>Ericsson_DE</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>test2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130823172804</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>test2</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS33</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130624153300</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS33</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIEDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131125151157</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIEDE</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC4_2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130710163110</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC4_2</CUSTOMERCODE>
+        <Scenario>Scenario4_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>COTUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140916164313</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>COTUK</CUSTOMERCODE>
+        <Scenario>RED_Phase2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y52</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822170222</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y52</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>T_RIM</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130624165747</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>T_RIM</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>RSUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140205145320</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>RSUK</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIGITCOMM</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131119145736</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIGITCOMM</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS21</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130411093935</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS21</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS36</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131029135416</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS36</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS6</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130102152410</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS6</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS24</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130521134009</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS24</CUSTOMERCODE>
+        <Scenario>ZoneCustomEB_1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FLONL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131112174719</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FLONL</CUSTOMERCODE>
+        <Scenario>Flowserve</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>TELROAM</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130829131257</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>TELROAM</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS34</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140521155903</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS34</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS27</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130617151244</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS27</CUSTOMERCODE>
+        <Scenario>ZoneCustomEB_1_3</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6bsp</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131212134947</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6bsp</CUSTOMERCODE>
+        <Scenario>R6_Bespoke2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>TESTMLA3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130916135709</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>TESTMLA3</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>MOR.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131014171126</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>MOR.T</CUSTOMERCODE>
+        <Scenario>MorganST</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FOR_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130906163224</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FOR_T</CUSTOMERCODE>
+        <Scenario>Ford</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DEVICEINDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140220132525</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DEVICEINDE</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AKNDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140926103128</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AKNDE</CUSTOMERCODE>
+        <Scenario>RED_Phase1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AERLIN</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131119140803</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AERLIN</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NONUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124092702</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NONUK</CUSTOMERCODE>
+        <Scenario>NovoNordisk</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T32</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140109092459</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T32</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS47</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140519172114</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS47</CUSTOMERCODE>
+        <Scenario>Scenario8_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2M_Test</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130424155952</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2M_Test</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z52</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140121082543</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z52</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC52B</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130719161343</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC52B</CUSTOMERCODE>
+        <Scenario>Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>TRIM2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130422164752</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>TRIM2</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BRABENDER</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131004083939</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BRABENDER</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THY.3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140203104110</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THY.3</CUSTOMERCODE>
+        <Scenario>Thyssen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ABMSOFT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131021105133</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ABMSOFT</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>STS.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140123102047</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>STS.T</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>RIUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130624163247</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>RIUK</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FLODE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131112174527</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FLODE</CUSTOMERCODE>
+        <Scenario>Flowserve</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z51</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140121080755</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z51</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIM.3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131205161214</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIM.3</CUSTOMERCODE>
+        <Scenario>DimData_IT</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC51B</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130719160424</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC51B</CUSTOMERCODE>
+        <Scenario>Scenario5_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NI2.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131014173757</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NI2.T</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>REDQ2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140811112135</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>REDQ2</CUSTOMERCODE>
+        <Scenario>RED_PH2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CHEUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131030144723</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CHEUK</CUSTOMERCODE>
+        <Scenario>Chevron</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z31</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140117114608</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z31</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X53</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124174956</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X53</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>YAHDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130716154121</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>YAHDE</CUSTOMERCODE>
+        <Scenario>Yahoo</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS26</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130617100450</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS26</CUSTOMERCODE>
+        <Scenario>ZoneCustomEB_1_3</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BITMOS</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118095217</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BITMOS</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ERTCO</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118095111</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ERTCO</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THYUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131107172120</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THYUK</CUSTOMERCODE>
+        <Scenario>Thyssen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PA52</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130513102046</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PA52</CUSTOMERCODE>
+        <Scenario>PA52</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Test2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140918170017</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Test2</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2MACS_1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507123426</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2MACS_1</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NetG1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131029170126</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NetG1</CUSTOMERCODE>
+        <Scenario>NetG1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FIRSTEQUITY</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118095815</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FIRSTEQUITY</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NOV.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131128113146</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NOV.T</CUSTOMERCODE>
+        <Scenario>Novartis</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS23</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130521134159</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS23</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC2_1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130826143018</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC2_1</CUSTOMERCODE>
+        <Scenario>Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS40</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140521143732</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS40</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SIMGOES</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131119113607</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SIMGOES</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z12</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140114161241</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z12</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>LAMB1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131104163029</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>LAMB1</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ALXUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140207105602</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ALXUK</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z22</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140116141352</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z22</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIMDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131203110812</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIMDE</CUSTOMERCODE>
+        <Scenario>DimData</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121123145158</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS2</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T12</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131126181153</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T12</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SEI.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131202164722</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SEI.T</CUSTOMERCODE>
+        <Scenario>SeikoEpson</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AKNIT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140909082443</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AKNIT</CUSTOMERCODE>
+        <Scenario>RED_Phase1_IT</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIMUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130924113738</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIMUK</CUSTOMERCODE>
+        <Scenario>DimData</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y22</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822164825</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y22</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FUP2dp</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130524170509</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FUP2dp</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SF4T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131204170612</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SF4T</CUSTOMERCODE>
+        <Scenario>Salesforce_NL</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SF3.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131113181501</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SF3.T</CUSTOMERCODE>
+        <Scenario>Salesforce</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NMRRR</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140130103609</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NMRRR</CUSTOMERCODE>
+        <Scenario>NMR_RR</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS20</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130410131217</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS20</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X32</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124173818</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X32</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FORDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140115172743</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FORDE</CUSTOMERCODE>
+        <Scenario>Ford_DE</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>MORUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131106102615</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>MORUK</CUSTOMERCODE>
+        <Scenario>MorganST</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SCB.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131204104739</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SCB.T</CUSTOMERCODE>
+        <Scenario>SCB</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS22</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130417172243</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS22</CUSTOMERCODE>
+        <Scenario>PA-Replacement</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC13</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130416182619</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC13</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS52</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140711170245</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS52</CUSTOMERCODE>
+        <Scenario>Scenario7_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SABIK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118094544</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SABIK</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NOVUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131128113536</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NOVUK</CUSTOMERCODE>
+        <Scenario>Novartis</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS62</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140901165944</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS62</CUSTOMERCODE>
+        <Scenario>RED_Phase2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SFIE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118114601</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SFIE</CUSTOMERCODE>
+        <Scenario>Salesforce</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CP.3.2.1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130617103251</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CP.3.2.1</CUSTOMERCODE>
+        <Scenario>Scenario3_2_onlyEB</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SF.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131004150912</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SF.T</CUSTOMERCODE>
+        <Scenario>Salesforce</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIE.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140221155805</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIE.T</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BAR_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130906172707</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BAR_T</CUSTOMERCODE>
+        <Scenario>Barclays</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PPVGEADI</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140606142253</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PPVGEADI</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS72</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140716142616</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS72</CUSTOMERCODE>
+        <Scenario>Scenario7_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y42</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822170043</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y42</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y41</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822165951</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y41</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y31</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140822164917</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y31</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CP.3.1.2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130607091342</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CP.3.1.2</CUSTOMERCODE>
+        <Scenario>Scenario3_1_onlyEB</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X12</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124170305</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X12</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS28</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130620173745</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS28</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z21</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140120180939</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z21</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS60</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140711170702</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS60</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T11</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131121093312</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T11</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>WMFAG</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131108110236</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>WMFAG</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>HAPPYORNOT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118095009</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>HAPPYORNOT</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACSx1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130219133110</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACSx1</CUSTOMERCODE>
+        <Scenario>VMUK</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ELINL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140123160945</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ELINL</CUSTOMERCODE>
+        <Scenario>EliLilly</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS10</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130121141542</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS10</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>VGE_M</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130516164522</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>VGE_M</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Flo.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131112174233</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Flo.T</CUSTOMERCODE>
+        <Scenario>Flowserve</Scenario>
+      </row>
+      <row color='gray' canRead='true' selectable='false' isDirectory='true' canWrite='true'>
+        <NAME>M2M</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131021103409</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2M
+(No valid Control.xml)</CUSTOMERCODE>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PAVNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20141013130307</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PAVNL</CUSTOMERCODE>
+        <Scenario>RED_Phase1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>test</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507112747</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>test</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC31B</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130719144741</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC31B</CUSTOMERCODE>
+        <Scenario>Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>YAHIE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131018094952</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>YAHIE</CUSTOMERCODE>
+        <Scenario>Yahoo</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIE.3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140221160026</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIE.3</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T42</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140108150322</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T42</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>E2ECustD</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131001132736</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>E2ECustD</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>LVL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131113102048</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>LVL</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CHE.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131029162008</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CHE.T</CUSTOMERCODE>
+        <Scenario>Chevron</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>JB007</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130627125647</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>JB007</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2M_Test1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130620094238</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2M_Test1</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC5_1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130604093930</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC5_1</CUSTOMERCODE>
+        <Scenario>Scenario5_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>JPMUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130814113528</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>JPMUK</CUSTOMERCODE>
+        <Scenario>JPMorgan</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS31</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130613092323</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS31</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BAR_3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130823131417</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BAR_3</CUSTOMERCODE>
+        <Scenario>Barclays</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>test1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130823171328</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>test1</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>HWNZ</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130411094614</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>HWNZ</CUSTOMERCODE>
+        <Scenario>HWNZ</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THY.4</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140305142543</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THY.4</CUSTOMERCODE>
+        <Scenario>Thyssen_HU</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>V1741</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131123095908</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>V1741</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SEINL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131125150443</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SEINL</CUSTOMERCODE>
+        <Scenario>SeikoEpson</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS5</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121228171232</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS5</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SF2.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131113163315</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SF2.T</CUSTOMERCODE>
+        <Scenario>Salesforce</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THYDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130917112741</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THYDE</CUSTOMERCODE>
+        <Scenario>Thyssen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ESBCAR</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140820120651</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ESBCAR</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X51</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124174705</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X51</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ALPUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140722154017</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ALPUK</CUSTOMERCODE>
+        <Scenario>Scenario7_3</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SEI.2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131128103147</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SEI.2</CUSTOMERCODE>
+        <Scenario>SeikoEpson</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>JP_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130815100045</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>JP_T</CUSTOMERCODE>
+        <Scenario>JPMorgan</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS46</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140603135909</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS46</CUSTOMERCODE>
+        <Scenario>Scenario8_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2M_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507105312</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2M_T</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS11</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130131132719</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS11</CUSTOMERCODE>
+        <Scenario>VMUK</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FQRMP1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140917151805</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FQRMP1</CUSTOMERCODE>
+        <Scenario>RED_MultiProposition</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>GLANTAIE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140827110145</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>GLANTAIE</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS7567</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130613173340</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS7567</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NIE.2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131203114707</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NIE.2</CUSTOMERCODE>
+        <Scenario>Nielsen_NL</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>REDMP</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20141010104530</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>REDMP</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z32</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140120110512</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z32</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>WHIDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140206084206</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>WHIDE</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC32B</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130719152736</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC32B</CUSTOMERCODE>
+        <Scenario>Scenario3_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6S11</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131211190609</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6S11</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CP.4.2.1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130614133302</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CP.4.2.1</CUSTOMERCODE>
+        <Scenario>Scenario4_2_test</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6X31</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140124173005</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6X31</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>LAMB3</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131104170447</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>LAMB3</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>CUMUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131213085956</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>CUMUK</CUSTOMERCODE>
+        <Scenario>R6_Bespoke2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>THGDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140812163112</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>THGDE</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>REDQ1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140811111951</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>REDQ1</CUSTOMERCODE>
+        <Scenario>RED_PH2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T41</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131210164104</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T41</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>COCUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131212185008</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>COCUK</CUSTOMERCODE>
+        <Scenario>R6_Bespoke2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>V.IT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140128155517</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>V.IT</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>COCDE</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131212111849</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>COCDE</CUSTOMERCODE>
+        <Scenario>R6_Bespoke2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T21</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131210152749</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T21</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SFNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131219100834</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SFNL</CUSTOMERCODE>
+        <Scenario>Salesforce_NL</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ALL_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130918105340</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ALL_T</CUSTOMERCODE>
+        <Scenario>Alliance</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T31</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140108140053</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T31</CUSTOMERCODE>
+        <Scenario>R6_Scenario3_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>DIM.2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131203103205</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>DIM.2</CUSTOMERCODE>
+        <Scenario>DimData</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FOR.2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131209164051</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FOR.2</CUSTOMERCODE>
+        <Scenario>Ford_DE</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS48</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140521151155</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS48</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>FLOUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131112175026</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>FLOUK</CUSTOMERCODE>
+        <Scenario>Flowserve</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ROWNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140820165225</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ROWNL</CUSTOMERCODE>
+        <Scenario>RED_Phase1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS61</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140825102423</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS61</CUSTOMERCODE>
+        <Scenario>RED_Phase2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS42</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140527152952</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS42</CUSTOMERCODE>
+        <Scenario>Scenario7_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC51C</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130719160115</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC51C</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Test</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121227111813</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Test</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC12</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130416165508</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC12</CUSTOMERCODE>
+        <Scenario>Scenario1_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ORCZ</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130130134847</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ORCZ</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>HPWEB</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130828111522</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>HPWEB</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>M2MACS_4</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130507130921</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>M2MACS_4</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BARUK</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130902104007</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BARUK</CUSTOMERCODE>
+        <Scenario>Barclays</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AKNNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140922141623</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AKNNL</CUSTOMERCODE>
+        <Scenario>RED_Phase1_FL</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ESBFAULT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140820121738</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ESBFAULT</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS4</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121123084350</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS4</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Test1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140918165921</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Test1</CUSTOMERCODE>
+        <Scenario>RED_MultiProposition</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Z41</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140121162007</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Z41</CUSTOMERCODE>
+        <Scenario>R6_Scenario4_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>AGGREKO</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130911165726</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>AGGREKO</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC2_2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130710141125</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC2_2</CUSTOMERCODE>
+        <Scenario>Scenario2_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>RS02</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20121217142709</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>RS02</CUSTOMERCODE>
+        <Scenario />
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ELI.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140122143427</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ELI.T</CUSTOMERCODE>
+        <Scenario>EliLilly</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS37</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140321164742</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS37</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS39</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140319152036</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS39</CUSTOMERCODE>
+        <Scenario>R6_Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BERGMANN</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130828111318</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BERGMANN</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>TAXIPAY</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131118094903</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>TAXIPAY</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS25</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130521131920</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS25</CUSTOMERCODE>
+        <Scenario>PA-Replacement</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PPVGEqadir</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140606142505</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PPVGEqadir</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Temp</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130513142817</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Temp</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PVHNL</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140917143357</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PVHNL</CUSTOMERCODE>
+        <Scenario>RED_Phase2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Yahoo</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130712091755</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Yahoo</CUSTOMERCODE>
+        <Scenario>Yahoo</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>PHT</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131115144143</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>PHT</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6Y21</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140917151443</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6Y21</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS38</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140317164709</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS38</CUSTOMERCODE>
+        <Scenario>Scenario1_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>SC5_2</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130709163217</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>SC5_2</CUSTOMERCODE>
+        <Scenario>Scenario5_2</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6.T1</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140123093343</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6.T1</CUSTOMERCODE>
+        <Scenario>R6_Scenario2_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>BAR_4</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130823162352</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>BAR_4</CUSTOMERCODE>
+        <Scenario>Barclays</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>Iplon</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130513105035</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>Iplon</CUSTOMERCODE>
+        <Scenario>M2M_Customer_only</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>ACS32</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130613132949</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>ACS32</CUSTOMERCODE>
+        <Scenario>Scenario4_1</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>NI3.T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20131113131755</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>NI3.T</CUSTOMERCODE>
+        <Scenario>Nielsen</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>YIT_T</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20130823162922</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>YIT_T</CUSTOMERCODE>
+        <Scenario>Yahoo</Scenario>
+      </row>
+      <row canRead='true' isDirectory='true' canWrite='true'>
+        <NAME>R6T52</NAME>
+        <DIR>/home/twtk/vge-web-configuration/acs/customer</DIR>
+        <DATE>20140113125340</DATE>
+        <ACCESS>RW</ACCESS>
+        <CUSTOMERCODE>R6T52</CUSTOMERCODE>
+        <Scenario>R6_Scenario5_2</Scenario>
+      </row>
+    </CUSTOMER.LIST>
+  </ACS.RESULT>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.BackboneXmp' name='X'	>
+	<Container name='X1'
+		pagelet='{
+			count: 0,
+			addItem: function ( event )
+			{
+				this.count++ ;
+				$C ( event, "UL" ).append ( "<li>Item: " + this.count + "</li>" ) ;
+			},
+			clear: function ( event )
+			{
+				this.count = 0 ;
+				$C ( event, "UL" ).removeChildren() ;
+			}
+		}'
+	>
+		<TitleLabel name='TT' text='Example 1' />
+		<br />
+		<PushButton text='Add an Item' name="PB" onclick='*.addItem()' />
+		<PushButton text='Clear' onclick='*.clear()' style='width:100px;height:40px;'/>
+		<br />
+		<Container name='C1' >
+			<Html><![CDATA[<ul name='UL'></ul>]]></Html>
+		</Container>
+	</Container>
+</Container>

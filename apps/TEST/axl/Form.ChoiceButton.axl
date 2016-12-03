@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.ChoiceButton'
+>
+  <Container style='width:300px;height:300px;' name='X' >
+    						<ChoiceButton Xonchange='inheritTest()' text='XX' >
+									<option value='textmate'>textmate</option>
+									<option value='twilight'>twilight</option>
+									<option value='eclipse'>eclipse</option>
+									<option value='cobalt'>cobalt</option>
+								</ChoiceButton>
+    <ChoiceButton style='width:100px;' name='Counter' Xposition='under'
+            Xonchange='function(event)
+	    {
+	    var ev = new TEvent ( event ) ;
+	    log ( ev ) ;
+	    var v = ev.getValues() ;
+	    log ( v ) ;
+	    }'>
+    </ChoiceButton>
+    <br/>
+    <Choice name='Counter' default='false' style='width:80px;' />
+    <br/>
+    <Choice name='Counter' default='false' style='width:180px;' />
+    <br/>
+    <PushButton text='Set Ref Data'
+	    onclick='function(event)
+	    {
+	    var x = new TXml() ;
+	    var xx = x.add ( "Counter" ) ;
+	    for ( var i = 0 ; i < 6 ; i++ )
+	    {
+	      var xOpt = xx.add ( "option", "Counter ----- " + i ) ;
+	      xOpt.addAttribute ( "value", "" + i ) ;
+	    }
+	    new TEvent ( event ).getContainer().setRefData ( x ) ;
+	    }'/>
+    <br/>
+    <PushButton text='Set Values'
+	    onclick='function(event)
+	    {
+	    var x = new TXml() ;
+	    var xx = x.add ( "Counter" ) ;
+	    for ( var i = 0 ; i < 6 ; i++ )
+	    {
+	      var xOpt = xx.add ( "option", "Value ----- " + i ) ;
+	      xOpt.addAttribute ( "value", "" + i ) ;
+	    }
+	    new TEvent ( event ).getContainer().setValues ( x ) ;
+	    }'/>
+    <br/>
+    <CosmosChoiceButton style='width:100px;' name='Counter2' text="Counter" >
+      <option img='strom-24.png' img-width='24' img-height='24' value='0'>Counter ----- 0</option>
+      <option img='strom-2-24.png' value='1' img-width='24' img-height='24'>Counter ----- 1</option>
+      <option value='2'>Counter 123456789012345678</option>
+      <option value='3'>Counter ----- 3</option>
+      <option value='4'>Counter ----- 4</option>
+      <option value='5'>Counter ----- 5</option>
+    </CosmosChoiceButton>
+    <br/>
+    <ChoiceButton style='width:100px;' id='Counter3' name='Counter3' text="Counter3" >
+      <option value='2'>Counter 123456789012345678</option>
+      <option img='strom-24.png' img-width='24' img-height='24' value='0'>Counter ----- 0</option>
+      <option img='strom-2-24.png' value='1' img-width='24' img-height='24'>Counter ----- 1</option>
+      <option value='3'>Counter ----- 3</option>
+      <option value='4'>Counter ----- 4</option>
+      <option value='5'>Counter ----- 5</option>
+    </ChoiceButton>
+    <br/>
+    <PushButton text='Width: 80' onclick='function(event)
+	{
+	  var cb = TGui.getComponent ( "Counter3" ) ;
+      var bounds1 = cb.getBounds() ;
+	  bounds1.width = 100 ;
+      cb.setSize ( bounds1 ) ;
+	}'/>
+    <PushButton text='Width: Max' onclick='function(event)
+	{
+	  var cb = TGui.getComponent ( "Counter3" ) ;
+      var bounds1 = cb.getBounds() ;
+	  var cp = new TContainer ( cb.dom.parentNode ) ;
+      var size1 = cp.getSize() ;
+	  bounds1.width = size1.width ;
+      cb.setSize ( bounds1 ) ;
+	}'/>
+  </Container>
+</Container>
+</xml>
+

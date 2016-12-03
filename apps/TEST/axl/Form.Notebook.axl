@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Notebook' name='X'
+>
+  <Notebook Xstyle='bottom:-0;right:-0;' name='NB' auto-deselect='true' >
+    <Container label='One' Xstyle='height:300px;' style='padding:0px;' >
+      <br/>
+      <PushButton text='Set Percentage' />
+      <PushButton text='Start' />
+      <PushButton text='Start Auto' />
+      <PushButton text='Stop' />
+      <PushButton text='Working Panel' />
+    </Container>
+    <Container img='Tango/Folder.16/normal' label='Progressbar' name='X' style='padding:0px;' >
+      <PushButton text='Set Percentage' />
+      <PushButton text='Start' />
+      <PushButton text='Start Auto' />
+      <PushButton text='Stop' />
+      <PushButton text='Working Panel' />
+    </Container>
+    <Container label='Three' style='padding:0px;' >
+    </Container>
+    <Container img='Tango/Folder.16/normal' label='Four' style='padding:0px;' >
+    </Container>
+  </Notebook>
+  <PushButton text='Deselect All' 
+    onclick='function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var c = ev.getContainer() ;
+      var nb = c.getPeer ( "NB" ) ;
+    nb.deselectAll() ;
+    }'
+    />
+  <PushButton text='Test' 
+    onclick='function(event)
+    {
+      var ev = new TEvent ( event ) ;
+      var c = ev.getContainer() ;
+      var nb = c.getPeer ( "NB" ) ;
+log ( new TComponent ( nb.notebookTop ) ) ;
+log ( nb.notebookTop.style.backgroundImage ) ;
+	  }'
+	  />
+</Container>
+</xml>
+

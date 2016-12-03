@@ -1,0 +1,130 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Container >
+    <Container name='X' >
+      <Label text='Persistent TextField' />
+      <TextField name='PTF' persistent='true'/>
+      <PushButton text='Set Caret Position' onclick='function(e)
+        {
+          var c = new TEvent ( e ).getContainer().getComponent ( "PTF" ) ;
+          c.setCaretPositionToEnd() ;
+        }'/>
+    </Container>
+    <br/>
+    <Container name='X' >
+      <Label name='AMOUNT' type='money' text='100.0' />
+      <br/>
+      <PushButton text='Set Values'
+      onclick='function(event)
+      {
+      var x = new TXml() ;
+      x.add ( "AMOUNT", "2000.33" ) ;
+      new TEvent ( event ).getContainer().setValues ( x ) ;
+      var locale = TSys.getLocale() ;
+      log ( locale.formatMoneyWithCurrency ( 1234567.888 ) ) ;
+      }' />
+    </Container>
+    <Container name='X' >
+      <Label name='CS' text='EUR' />
+      <TextField name='ICS' value="USD" />
+      <br/>
+      <PushButton text='Translate Money'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+        var ICS = v.getContent ( "ICS" ) ;
+        var url = TSys.getMainUrl()+"&action=GetCurrencySymbol&ICS=" + ICS ;
+        var x = new TXml ( TSys.getXml ( url ) ) ;
+log ( x ) ;
+      }' />
+    </Container>
+    <Container name='X' >
+      <Label text='Netlock ID' />
+      <TextField name='ID' value="T_IDENTITY:7" />
+      <br/>
+      <PushButton text='lock'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+        var ID = v.getContent ( "ID" ) ;
+        var netLock = new NetLock ( ID, function(nl)
+        {
+          log ( "----- thats it ----------------" ) ;
+          log ( nl ) ;
+        } ) ;
+        log ( netLock ) ;
+      }' />
+      <PushButton text='unlock'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+        var ID = v.getContent ( "ID" ) ;
+        NetLockStore.release ( ID ) ;
+      }' />
+      <PushButton text='unlock all'
+      onclick='function(event)
+      {
+        NetLockStore.releaseAll() ;
+      }' />
+    </Container>
+    <Container name='X' >
+      <PushButton text='Get Values'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var v = ev.getValues() ;
+  log ( v ) ;
+      }' />
+      <DateTime name='START_DATE' />
+    </Container>
+    <br/>
+    <Container name='X' >
+      <PushButton text='window with lock'
+      onclick='function(event)
+      {
+        var ID = "T_IDENTITY:7" ;
+  var w = new TWindow ( "Window.Sample.2" ) ;
+  w.addWindowListener ( function(ev)
+  {
+          NetLockStore.release ( ID ) ;
+  }) ;
+  w.create() ;
+  w.show() ;
+        var netLock = new NetLock ( ID, function(nl)
+        {
+          w.setAllInputEnabled ( true ) ;
+var d = new TUserDialog ( "This set of data is now owned by you." ) ;
+d.info() ;
+        } ) ;
+        if ( ! netLock.isOwner() )
+        {
+          w.setAllInputEnabled ( false ) ;
+var d = new TUserDialog ( "This set of data is in use by another user." ) ;
+d.info() ;
+        }
+      }' />
+      <PushButton text='log out'
+      onclick='function(event)
+      {
+      TSys.logout() ;
+      }' />
+    </Container>
+    <br/>
+    <Container name='X' >
+      <PushButton text='Call XmpSubscriber'
+      onclick='function(event)
+      {
+        var ID = "T_IDENTITY:7" ;
+  var msg = new CoMessage ( "XmpSubscriber.REQUEST" ) ;
+  msg.setXmlData ( "<Type>sample</Type>" ) ;
+  log ( msg ) ;
+  var x = Calypso.getXml ( msg ) ;
+  log ( x ) ;
+      }' />
+    </Container>
+  </Container>
+</xml>
+

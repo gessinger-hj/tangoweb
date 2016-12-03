@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog img='function-2-16.png' title='%EditFunction%' id="Dialog.Edit.ReportFunctions.Editor" close-with-escape='true' onclose='TGui.cancelWindow()' >
+    <Include src='Form.Edit.ReportFunctions.Editor' />
+  </Dialog>
+</xml>
+
+
+

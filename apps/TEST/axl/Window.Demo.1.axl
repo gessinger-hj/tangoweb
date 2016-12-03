@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' title='Demo 1...' id="Window.Demo.1" >
+    <Container right='-0' bottom='-0' name='Form' style='width:300px;height:400px;'
+    >
+    <Menubar name='NAME' >
+      <MenuButton text='Allgemein' img='5days-16x16.gif' >
+        <MenuItem text='Choose Theme' img='5days-16x16.gif' onclick='TGui.chooseTheme()' />
+        <MenuItem text='Item 1' />
+      </MenuButton>
+      <MenuButton text='Menu 1' img='5days-16x16.gif' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+        <MenuItem text='Item 11' />
+        <MenuItem text='Item 12' />
+        <MenuItem text='Item 13' />
+      </MenuButton>
+      <MenuButton name='MENU 2' text='Menu 2' tooltip='xxxxxxxxxxxxxxxxxxxxx' >
+        <MenuItem name='ITEM 21' text='Item 21' />
+        <MenuItem name='ITEM 22' text='Item 22' >
+          <MenuItem name='ITEM 221' text='Item 221' />
+          <MenuItem name='ITEM 222' text='Item 222' />
+          <MenuItem name='ITEM 223' text='Item 223' />
+          <MenuItem name='ITEM 224' text='Item 224' />
+          <MenuItem name='ITEM 225' text='Item 225'>
+            <MenuItem name='ITEM 2251' text='Item 2251' />
+            <MenuItem name='ITEM 2252' text='Item 2252' />
+            <MenuItem name='ITEM 2253' text='Item 2253' />
+          </MenuItem>
+        </MenuItem>
+        <MenuItem name='ITEM 23' text='Item 23' />
+      </MenuButton>
+      <MenuButton text='Menu 3' img='5days-16x16.gif'>
+        <MenuItem text='Item 13 xxxxxxxxxxxxxxxxx' />
+        <MenuItem text='Item 13' />
+        <MenuItem text='Item 13' />
+        <MenuItem text='Item 13' />
+        <MenuItem text='Item 13' />
+      </MenuButton>
+    </Menubar>
+    <br/>
+    </Container>
+  </Window>
+</xml>
+

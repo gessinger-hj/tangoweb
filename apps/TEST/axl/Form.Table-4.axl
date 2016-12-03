@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Table-4' name='X'
+pagelet='function()
+{
+CHPIService.prototype.search = function ( event, scroll )
+{
+  if ( ! scroll )
+  {
+    this.startIndex = 0 ;
+  }
+
+  var ev = new TEvent ( event ) ;
+  var v = ev.getValues() ;
+  var thiz = this ;
+  thiz.v = v ;
+
+thiz.servideProviderId=5000067 ;
+thiz.customerId=5001144 ;
+thiz.accountId=5001287 ;
+
+thiz.validFrom = v.getContent ( "validFrom" ).trim() ;
+thiz.resourcesValuePattern = v.getContent ( "resourcesValuePattern" ).trim() ;
+thiz.resourcesValuePattern = thiz.resourcesValuePattern.replace ( /\*/g, "%" ) ;
+  
+  var script = TSys.getScript ( "getListOfResourcesForCustomer" ) ;
+  var msg = new CoMessage ( "VGE_CISS::DB:EXECUTE-STMT" ) ;
+  var dbv = new CoDbv ( msg ) ;
+  var stmt = dbv.addXStatement ( "JSStatement" ) ;
+  stmt.addElement ( "Script", script ) ;
+  var xArguments = new TXml ( "Arguments" ) ;
+  xArguments.add ( "arg", thiz.customerId ) ;
+  xArguments.add ( "arg", thiz.accountId ) ;
+  xArguments.add ( "arg", thiz.validFrom ) ;
+  xArguments.add ( "arg", this.startIndex ) ;
+  xArguments.add ( "arg", this.numberPerPage ) ;
+  xArguments.add ( "arg", thiz.resourcesValuePattern ) ;
+
+  stmt.addElement ( xArguments ) ;
+  dbv = Calypso.getDbv ( msg ) ;
+  var xResult = dbv.getResultXml() ;
+
+  thiz.setSearchResult ( xResult ) ;
+
+  return ;
+} ;
+  return new CHPIService() ;
+}'
+onload='*.onload()'
+>
+  <DisplayContainer name="X" style='right:-4;' >
+    <Label text='%SearchParameter%' class='SimpleTitle' />
+    <br/>
+    <Label text='Resource(MSISDN)' /><TextField name='resourcesValuePattern' Xvalue='0129111017'/>
+    <Label text='Valid from' /><Date name='validFrom' default-time='000000' min-year='-4' default-date='today-365' format-out='yyyy-MM-ddTHH:mm:ss' />
+    <PushButton name='PB.Search' Xdisabled='true' text='%Search%' onclick='*.search()' />
+    <br/>
+    <ToolbarButtonSmall name='B_openAll' img-width='14' width='20' height='20' img='view_tree-expand-2-16x16.png' disabled='true' tooltip='Open all' onclick='*.openAll()' />
+    <ToolbarButtonSmall  name='B_closeAll' img-width='14' width='20' height='20' img='view_tree-collapse-2-16x16.png' disabled='true' tooltip='Close all' onclick='*.closeAll()' />
+    <Label name='L.Result' reset='true' text='Result 123 to 133'/>
+    <Container style='right:2px;'>
+	    <IconButton name='B_gotoFirst' onclick='*.gotoFirst()' style='width:16px;'
+		    normal='player_start.png'
+		    inside='player_start-high.png'
+		    pressed='player_start-press.png'
+		    disabled='player_start-dis.png'
+	    />
+	    <IconButton name='B_previousPage' onclick='*.previousPage()' style='width:16px;'
+		    normal='1leftarrow-2.png'
+		    inside='1leftarrow-2-high.png'
+		    pressed='1leftarrow-2-press.png'
+		    disabled='1leftarrow-2-dis.png'
+	    />
+	    <IconButton name='B_nextPage' onclick='*.nextPage()' style='width:16px;'
+		    normal='1rightarrow-2.png'
+		    inside='1rightarrow-2-high.png'
+		    pressed='1rightarrow-2-press.png'
+		    disabled='1rightarrow-2-dis.png'
+	    />
+	    <IconButton name='B_gotoLast' onclick='*.gotoLast()' style='width:16px;'
+		    normal='player_end.png'
+		    inside='player_end-high.png'
+		    pressed='player_end-press.png'
+		    disabled='player_end-dis.png'
+	    />
+    </Container>
+  </DisplayContainer>
+  <br/>
+  <Container style='right:-0;bottom:-0;' >
+    <Table name='resourcesList' style='right:-0;bottom:-0;'
+           sortable='false' reset='true' row-name='resource'
+	   onclick='*.onclickTable()'
+    >
+      <Columns>
+        <!--Column name='serviceChargeId' title='ID'/-->
+        <Column name='resourceValue' title='MSISDN' />
+        <Column name='arrow' title='&nbsp;' />
+	<Column name='serviceChargeCode' title='Code' />
+	<Column name='serviceChargeName' title='Name' />
+	<Column name='serviceChargeValue' title='Value' type='float'/>
+	<Column name='serviceChargeStartDate' title='Start' type='date'/>
+	<Column name='serviceChargeEndDate' title='End' type='date'/>
+	<Column name='serviceChargeTypeCode' title='Type' >
+		<Mappings>
+			<option value='RESOURCE_SCORE_RECURRING'>Recurring</option>
+		</Mappings>
+	</Column>
+      </Columns>
+    </Table>
+  </Container>
+</Container>
+</xml>

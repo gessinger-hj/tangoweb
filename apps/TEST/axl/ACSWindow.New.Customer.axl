@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title="Create a new Customer Configuration" id="ACSWindow.New.Customer" >
+    <Container style='top:0px;left:0px;bottom:-0;right:-0;' name='X' onchange='handle:PB.Apply'>
+      <DisplayContainer style='bottom:-0;right:-0;' >
+        <ListLabel text='CUSTOMERCODE (4 chars)'/>
+          <tab name='T1'/><TextField name='CUSTOMERCODE' maxlength='4' mandatory='true' style='right:-2px;' />
+        <br />
+        <ListLabel text='CUSTOMER_TYPE'/><tab name='T1'/>
+          <Choice name='PARTNER_TYPE_ID' style='right:-0px;' mandatory='true' >
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+          </Choice>
+        <br />
+        <ListLabel text='General Ledger Account'/>
+          <tab name='T1'/><TextField name='GENERALLEDGERACCOUNT'  mandatory='true' style='right:-2px;' />
+        <br />
+        <ListLabel text='OPERATORCODE'/><tab name='T1'/>
+          <Choice name='OPERATORCODE' style='right:-0px;'  mandatory='true' >
+            <option value=VGEL>VGEL</option>
+          </Choice>
+        <br />
+        <ListLabel text='Scenario' /><tab name='T1'/>
+          <Choice name='Scenario' style='right:-0px;' mandatory='true' >
+          </Choice>
+      </DisplayContainer>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton text="Apply" name='PB.Apply' onclick='*.doCreateCustomer()' disabled='true' />
+        <PushButton text="Cancel" onclick='TGui.closeWindow()' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

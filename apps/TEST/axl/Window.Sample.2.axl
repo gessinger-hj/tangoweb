@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' title='Sample 2...' id="Window.Sample.2" >
+    <Container right='-0' bottom='-0' name='Form' style='width:300px;right:-2;' >
+      <DisplayContainer style='width:300px;right:-2;' path='ADDRESS'
+        >
+        <ListLabel text='Info' /><tab name=T1 X='+4' /><TextField name='NAME' value='xxx' style='right:-4px;' />
+        <br/>
+        <ListLabel text='%Cancel%' /><tab name=T1 /><TextField name='CITY' value='xxx' style='right:-4px;' />
+        <br/>
+        <ListLabel text='Mail' /><tab name=T1 /><TextField name='MAIL' type='email' style='right:-4px;' />
+      </DisplayContainer>
+      <br/>
+      <Container style='right:0;' >
+        <PushButton default='true' name="XXX" text='Get' onclick='
+	        function(event)
+	        {
+	        log ( event ) ;
+	        var ev = new TEvent ( event ) ;
+	        log ( ev ) ;
+	        var c = ev.getContainer() ;
+	        log ( c ) ;
+	        var v = ev.getValues() ;
+	        log ( v ) ;
+	        }'
+	        />
+	<PushButton text='~Close' onclick='TGui.closeWindow()' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+

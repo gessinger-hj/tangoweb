@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Edit Attributes ...' id="Dialog.Edit.SingleAttribute" onclose='TGui.windowCancel()' >
+    <Container style='width:400px;height:200px;right:-4;bottom:-0;' name='Top' onchange='handle:PB.Edit' >
+      <Container name='Form.Values' style='attach-bottom:true;bottom:-4px;right:-0px;background-color:yellow;' >
+      </Container>
+      <br/>
+      <Container bottom='0' right='0' >
+        <PushButton id='PB.Save' disabled=true img='save-16x16.gif' text='%Save%' Xonclick='GlobalAttributes.save(event)' />
+        <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Animations' name='X'
+>
+  <DisplayContainer style='width:200px;height:300px;bottom:-0px;'
+  >
+    <PushButton text='Color' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  animColor ( ev.getContainer().getComponent ( "ANIM" ) ) ;
+}
+' />
+  <br/>
+  <PushButton text='Opacity' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  animOpacity ( ev.getContainer().getComponent ( "ANIM" ) ) ;
+}
+' />
+  <PushButton text='Size' onclick='
+{
+  first:true,
+  state:1,
+  execute: function(event)
+  {
+    var ev = new TEvent ( event ) ;
+    if ( this.first )
+    {
+      this.first = false ;
+      this.c = ev.getContainer().getComponent ( "ANIM2" ) ;
+      this.size = this.c.getSize() ;
+      this.csize = this.c.getInnerSize() ;
+      this.ex0 = new Animator() ;
+      this.ex0.addSubject(new NumericalStyleSubject(this.c.getDom(), "width", 1, this.csize.width)) ;
+      this.ex0.addSubject(new NumericalStyleSubject(this.c.getDom(), "height", 1, this.csize.height)) ;
+      this.ex0.addSubject(new NumericalStyleSubject(this.c.getDom(), "opacity", 0, 1));
+      this.ex1 = new Animator() ;
+      this.ex1.addSubject(new NumericalStyleSubject(this.c.getDom(), "width", this.csize.width, 1)) ;
+      this.ex1.addSubject(new NumericalStyleSubject(this.c.getDom(), "height", this.csize.height, 1)) ;
+      this.ex1.addSubject(new NumericalStyleSubject(this.c.getDom(), "opacity", 1, 0));
+    }
+    if ( this.state == 0 )
+    {
+      this.state = 1 ;
+      this.ex0.play() ;
+    }
+    else
+    {
+      this.state = 0 ;
+      this.ex1.play() ;
+    }
+  }
+}
+' />
+  <br/>
+  <PushButton text='Size 2' onclick='
+{
+  first:true,
+  state:1,
+  execute: function(event)
+  {
+    var ev = new TEvent ( event ) ;
+    if ( this.first )
+    {
+      this.first = false ;
+      this.c = ev.getContainer().getComponent ( "ANIM2" ) ;
+      this.size = this.c.getSize() ;
+      this.csize = this.c.getInnerSize() ;
+      this.c.setTransition ( "width,height,opacity", "1.3s" ) ;
+this.c.addTransitionEndListener(function(e){log(e.propertyName)});
+      /*
+      this.c.dom.style.OTransition = "width,height 0.3s ease-out" ;
+      this.c.dom.style.MozTransition = "width,height 0.3s ease-out" ;
+      this.c.dom.style.WebkitTransition = "width,height 0.3s ease-out" ;
+      */
+    }
+    if ( this.state == 0 )
+    {
+      this.state = 1 ;
+      this.c.dom.style.width = this.csize.width + "px" ;
+      this.c.dom.style.height = this.csize.height + "px" ;
+      this.c.dom.style.opacity = 1.0 ;
+    }
+    else
+    {
+      this.c.dom.style.width = "10px" ;
+      this.c.dom.style.height = "10px" ;
+      this.c.dom.style.opacity = 0 ;
+      this.state = 0 ;
+    }
+  }
+}
+' />
+  <br/>
+  <PushButton text='Fade In' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  /*
+  TAnimator.fadeIn ( ev.getContainer().getComponent ( "ANIM" ) ) ;
+  */
+  var cANIM = ev.getContainer().getComponent ( "ANIM" ) ;
+  cANIM.dom.style.OTransition = "opacity 0.3s ease-out" ;
+  cANIM.dom.style.MozTransition = "opacity 0.3s ease-out" ;
+  cANIM.dom.style.WebkitTransition = "opacity 0.3s ease-out" ;
+  cANIM.dom.style.opacity = 0.3 ;
+}
+' />
+  <PushButton text='Fade Out' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  /*
+  TAnimator.fadeOut ( ev.getContainer().getComponent ( "ANIM" ),
+  { onComplete: function()
+    {
+    }
+  } ) ;
+  */
+  var cANIM = ev.getContainer().getComponent ( "ANIM" ) ;
+  cANIM.dom.style.opacity = 1 ;
+}
+' />
+<br/>
+  <PushButton img='Tango/Folder.16/normal' text='Window' onclick='
+  {
+    execute: function ( event )
+    {
+var ev = new TEvent ( event ) ;
+      var w = new TWindow ( "Window.Demo.1" ) ;
+      w.create() ;
+w._animateIn = true ;
+      w.show() ;
+/*
+      TAnimator.fadeIn ( w, ev ) ;
+*/
+    }
+  }' />
+  </DisplayContainer>
+  <Container name='ANIM' style='width:200px;height:300px;background-color:yellow;backgound-image:none;'
+  >
+    <TextField style='right:-4px;' />
+  </Container>
+  <DisplayContainer name='ANIM2' style='width:200px;height:300px;'
+  >
+    <TextField style='right:-4px;' />
+  </DisplayContainer>
+</Container>
+</xml>
+

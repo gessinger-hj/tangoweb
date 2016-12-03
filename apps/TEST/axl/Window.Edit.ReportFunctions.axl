@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window img='function-2-16.png' title='Edit Report Functions...' id="Window.Edit.ReportFunctions" onclose='*.editWindowClose()' >
+    <Container style='width:600px;height:300px;right:-4;bottom:-0;' name='Top' onchange='handle:PB.Modify PB.Remove PB.EditScript' >
+      <Hidden name="REPORT_ID" />
+      <XContainer style='right:-0px;'>
+        <Label text='Name:' /><tab name='T1'/><Label name='REPORT_NAME' />
+	<br/>
+        <Label text='ID:' /><tab name='T1'/><Label name='REPORT_ID' />
+      </XContainer>
+      <Xbr/>
+      <Table name='ACT_REPORT_FUNCTIONS' style='left:0px;right:-0;bottom:-0;attach-bottom:true;'
+            sortable=true
+            selectable=true
+            ondblclick='*.editScript(event)'
+      >
+        <Columns>
+          <Column name="REPORT_FUNCTION_ID" title="ID" />
+          <Column name="NAME" title="Name" />
+	  <Column name="CONTEXT" title="CONTEXT" />
+          <Column name="DESCRIPTION" title="DESCRIPTION" />
+        </Columns>
+      </Table>
+      <br />
+      <Container style='bottom:0px;right:0px;' >
+        <PushButton name='PB.EditScript' disabled=true img='function-2-16.png' text='%Edit Script%' onclick='*.editScript(event)' />
+        <PushButton name='PB.Modify' disabled=true img='edit.png' text='%Modify%' onclick='*.modify(event)' />
+        <PushButton name='PB.Remove' disabled=true img='edit_remove.png' text='%Remove%' onclick='*.remove(event)' />
+        <PushButton name='PB.Add' img='edit_add.png' text='%Add%' onclick='*.addNew(event)' />
+        <PushButton img='Icon.RedCross.gif' text="%Close%" onclick='TGui.closeWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

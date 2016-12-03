@@ -1,0 +1,780 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.ExecuteSubscriber' name='X'
+  pagelet='{
+    _initialize_: function ( dom )
+    {
+    },
+    toString: function()
+    {
+      return "(Pagelet:Form.ExecuteSubscriber)" ;
+    },
+    onload: function ( ev )
+    {
+      var thiz = this ;
+      this.mm = this.createMaxiMenu ( function ()
+      {
+        thiz.show_me() ;
+      });
+      var c = ev.getContainer() ;
+      this.CLEFT = c.getComponent ( "CLEFT" ) ;
+      this.EXEC_PARAMETER = c.getComponent ( "EXEC_PARAMETER" ) ;
+      this.SHOW_FILES_PARAMETER = c.getComponent ( "SHOW_FILES_PARAMETER" ) ;
+      this.DISPLAY = c.getComponent ( "DISPLAY" ) ;
+      this.table = c.getPeer ( "List" ) ;
+      this.MF = c.getPeer ( "DISPLAY.MF" ) ;
+      this.DISPLAY_TABLE = c.getComponent ( "DISPLAY.TABLE" ) ;
+      this.filesTable = this.DISPLAY_TABLE.getPeer ( "Files" ) ;
+
+      this.last_show_me_millis = 0 ;
+      TGui.addEventListener ( this.filesTable.TABLE, "mousemove", this.tableMouseMove.bindAsEventListener ( this ) ) ;
+      TGui.addEventListener ( this.filesTable.TABLE, "mouseout", this.tableMouseOut.bindAsEventListener ( this ) ) ;
+      this.mm.addEventListener ( this, this.mm_mouseout, "mouseout" ) ;
+      this.mm.addEventListener ( this, this.mm_remove, "remove" ) ;
+    },
+    showList: function ( event )
+    {
+      var ev = new TEvent ( event ) ;
+      var xList = this.getList() ;
+      this.CLEFT.setValues ( xList ) ;
+    },
+    getList: function()
+    {
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "getList" ) ;
+      msg.setXmlData ( x ) ;
+      x = Calypso.getXml ( msg ) ;
+      var xRESULT = x.get ( "REXEC.RESULT" ) ;
+      return xRESULT ;
+    },
+    showAxl: function ( event )
+    {
+      var ud = this.table.getSelectedUserXml() ;
+      if ( ! ud ) return ;
+      var name = ud.getContent ( "Name" ) ;
+      var title = ud.getContent ( "Description" ) ;
+      this._showAxl ( name, title ) ;
+    },
+    editAxl: function ( event )
+    {
+      var ud = this.table.getSelectedUserXml() ;
+      if ( ! ud ) return ;
+      var name = ud.getContent ( "Name" ) ;
+      var axl = this.getAxl ( name, true ) ;
+      if ( ! axl ) return ;
+      var title = ud.getContent ( "Description" ) ;
+      this.openEditor ( name, axl, title ) ;
+    },
+    showFiles: function()
+    {
+      var ud = this.table.getSelectedUserXml() ;
+      if ( ! ud ) return ;
+      var name = ud.getContent ( "Name" ) ;
+      this._showFiles ( name ) ;
+    },
+    _showAxl: function ( name, title )
+    {
+      var axl = this.getAxl ( name ) ;
+      if ( ! axl ) return ;
+      var first = axl.first() ;
+      var second = first.first() ;
+      if ( first.getName() == "Window" || first.getName() == "Dialog" )
+      {
+	axl = first ;
+      }
+      var xh = first.add ( "Hidden" ) ;
+      xh.addAttribute ( "name", "ITEM.NAME" ) ;
+      xh.addAttribute ( "value", name ) ;
+      xh = first.add ( "Hidden" ) ;
+      xh.addAttribute ( "name", "ITEM.TITLE" ) ;
+      xh.addAttribute ( "value", title ) ;
+      if ( ! axl.getAttribute ( "name" ) )
+      {
+        axl.addAttribute ( "name", "X" ) ;
+      }
+      this.EXEC_PARAMETER.setAxl ( axl ) ;
+    },
+    getAxl: function ( name, raw )
+    {
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "getAxl" ) ;
+      x.add ( "Name", name ) ;
+      x.add ( "Raw", ( raw ? "true" : "false" ) ) ;
+      msg.setXmlData ( x ) ;
+      var xx = Calypso.getXml ( msg ) ;
+      var xRESULT = xx.get ( "REXEC.RESULT" ) ;
+      var rc = xRESULT.getInt ( "RC" ) ;
+      if ( rc )
+      {
+        var stderr = xRESULT.getContent ( "STDERR" ) ;
+        var d = new TUserDialog ( stderr ) ;
+        d.info() ;
+        return ;
+      }
+      var axl = xRESULT.get ( "AXL" ) ;
+      return axl ;
+    },
+    isText: function ( fn )
+    {
+      var isText = false ;
+      if (  fn == "csv"
+         || fn == "xml"
+         || fn == "txt"
+         || fn == "html"
+         || fn == "htm"
+         || fn.endsWith ( ".csv" )
+         || fn.endsWith ( ".xml" )
+         || fn.endsWith ( ".txt" )
+         || fn.endsWith ( ".html" )
+         || fn.endsWith ( ".htm" )
+         )
+      {
+	isText = true ;
+      }
+      return isText ;
+    },
+    exec: function ( event, format )
+    {
+      var ev = new TEvent ( event ) ;
+      var v = ev.getValues() ;
+      if ( format && format.indexOf ( "$" ) < 0 )
+      {
+        v.ensureElement ( "Format" ).setContent ( format ) ;
+      }
+      if ( v.getBool ( "Inline", false ) )
+      {
+        var thiz = this ;
+        TSys.executeLater ( function()
+        {
+          thiz._exec ( v ) ;
+        }) ;
+	return ;
+      }
+      v.add ( "Async", "true" ) ;
+      if ( v.getBool ( "Async", false ) )
+      {
+        var x = this.__exec ( v ) ;
+        var LOCK_ID = x.getContent ( "LOCK_ID" ) ;
+        var name = v.getContent ( "ITEM.NAME" ) ;
+        var title = v.getContent ( "ITEM.TITLE" ) ;
+        var thiz = this ;
+        var netLock = new NetLock ( LOCK_ID, function(nl)
+        {
+          SystemNotifier.notify ( "Execution done:\n" + title ) ;
+	  thiz.EXEC_PARAMETER.setAllInputEnabled ( true ) ;
+	  thiz.CLEFT.setAllInputEnabled ( true ) ;
+          thiz.table.setEnabled ( true ) ;
+          nl.release() ;
+	  if ( ! thiz.showExecResult ( LOCK_ID ) )
+	  {
+            thiz._showFiles ( name ) ;
+	  }
+        } ) ;
+        if ( netLock.isOwner() )
+        {
+          SystemNotifier.notify ( "Execution done:\n" + title ) ;
+          netLock.release() ;
+	  if ( ! this.showExecResult ( LOCK_ID ) )
+	  {
+	    this.showExecResult ( LOCK_ID ) ;
+	  }
+        }
+        else
+        {
+	  this.EXEC_PARAMETER.setAllInputEnabled ( false ) ;
+	  this.CLEFT.setAllInputEnabled ( false ) ;
+          this.table.setEnabled ( false ) ;
+          SystemNotifier.progress ( "Executing:\n" + title  ) ;
+        }
+      }
+    },
+    _exec: function ( v )
+    {
+      var x = this.__exec ( v ) ;
+      if ( v.getBool ( "Download" ) )
+      {
+        return ;
+      }
+      var RC = x.getInt ( "RC", -1 ) ;
+      var STDERR = x.getContent ( "STDERR" ) ;
+      var STDOUT = x.getContent ( "STDOUT" ) ;
+      var OUTPUT = x.getContent ( "OUTPUT" ) ;
+
+      var str = "" ;
+      if ( RC )
+      {
+        str += "RC=" + RC + "<br/>" ;
+      }
+      if ( ! RC && OUTPUT )
+      {
+        str += "<span ><pre>" + OUTPUT + "</pre></span>" ;
+      }
+      else
+      {
+        if ( STDERR )
+        {
+          str += "<span style=\"color:red;\"><pre>" + STDERR + "</pre></span><br/>" ;
+        }
+        if ( v.getBool ( "Inline" ) && STDOUT )
+        {
+          str += "<span ><pre>" + STDOUT + "</pre></span><br/>" ;
+        }
+      }
+      if ( str )
+      {
+        this.MF.select ( 1 ) ;
+        this.DISPLAY.setText ( str ) ;
+      }
+      else
+      {
+        this._showFiles ( v.getContent ( "ITEM.NAME" ) ) ;
+      }
+    },
+    __exec: function ( v )
+    {
+      var name = v.getContent ( "ITEM.NAME" ) ;
+      v.setName ( "Variables" ) ;
+
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "exec" ) ;
+      x.add ( "Name", name ) ;
+      var xInline = v.get ( "Inline" ) ;
+      if ( ! xInline ) x.add ( "Inline", "false" ) ;
+      else             x.add ( "Inline", v.getBool ( "Inline" ) ) ;
+      x.add ( v ) ;
+if ( v.getBool ( "Async", false ) )
+{
+  v.remove ( "Async" ) ;
+  v.remove ( "Inline" ) ;
+  v.remove ( "Download" ) ;
+  x.add ( "Async", "true" ) ;
+}
+      if ( v.getBool ( "Download" ) )
+      {
+        x.add ( "Download", "true" ) ;
+        msg.setXmlData ( x ) ;
+        Calypso.downloadDocument ( msg ) ;
+        return ;
+      }
+      msg.setXmlData ( x ) ;
+      x = Calypso.getXml ( msg ) ;
+      if ( ! x ) return ;
+      return x.get ( "REXEC.RESULT" ) ;
+    },
+    actionListener: function ( ev )
+    {
+      if ( ev.getAction() == "SAVE" )
+      {
+        var e = ev.getPeer() ;
+        var name = e.getName() ;
+	var str = e.getText() ;
+	var title = e.getTitle() ;
+        this.saveAxl ( name, str ) ;
+        this._showAxl ( name, title ) ;
+      }
+    },
+    openEditor: function ( name, axl, title )
+    {
+      var w = new TWindow ( "Window.Edit.Xml" ) ;
+      w.create() ;
+      var p = w.getPagelet() ;
+      var e = p.getEditor() ;
+      e.setName ( name ) ;
+      e.setText ( axl.toString ( true ) ) ;
+      e.setTitle ( title ) ;
+      w.setTitle ( title ) ;
+      e.addActionListener ( this, this.actionListener ) ;
+      w.show() ;
+    },
+    saveAxl: function ( name, axlString )
+    {
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "saveAxl" ) ;
+      x.add ( "Name", name ) ;
+      x.addCDATA ( "AXL", axlString ) ;
+      msg.setXmlData ( x ) ;
+      var xx = Calypso.getXml ( msg ) ;
+      var xRESULT = xx.get ( "REXEC.RESULT" ) ;
+      var rc = xRESULT.getInt ( "RC" ) ;
+      if ( rc )
+      {
+        var stderr = xRESULT.getContent ( "STDERR" ) ;
+        var d = new TUserDialog ( stderr ) ;
+        d.info() ;
+        return ;
+      }
+    },
+    filesTableDblClick: function ( event )
+    {
+      this.downloadFileFromFilesTable() ;
+    },
+    downloadFileFromFilesTable: function()
+    {
+      if ( ! this.filesTable ) return ;
+      var ud = this.filesTable.getSelectedUserXml() ;
+      if ( ! ud ) return ;
+      this.downloadFile ( ud.getContent ( "ITEM.NAME" ), ud.getContent ( "NAME" ) ) ;
+    },
+    deleteFileFromFilesTable: function()
+    {
+      if ( ! this.filesTable ) return ;
+      var ud = this.filesTable.getSelectedUserXml() ;
+      if ( ! ud ) return ;
+      this.deleteFile ( ud ) ;
+    },
+    downloadFileFromRow: function()
+    {
+      if ( ! this.r ) return ;
+      var ud = this.r.getXml() ;
+      this.mm.remove() ;
+      this.downloadFile ( ud.getContent ( "ITEM.NAME" ), ud.getContent ( "NAME" ) ) ;
+    },
+    deleteFileFromRow: function()
+    {
+      if ( ! this.r ) return ;
+      var ud = this.r.getXml() ;
+      this.mm.remove() ;
+      this.deleteFile ( ud ) ;
+    },
+    deleteFile: function ( ud )
+    {
+      var d = new TUserDialog ( "Are you sure to delete <b>" + ud.getContent ( "NAME" ) + "?</b>" ) ;
+      var thiz = this ;
+      d.askYesNo ( function ( ans )
+      {
+        if ( ! ans.isYes() ) return ;
+	thiz._deleteFile ( ud ) ;
+      });
+    },
+    _deleteFile: function ( ud )
+    {
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "deleteFile" ) ;
+      x.add ( "Name", ud.getContent ( "ITEM.NAME" ) ) ;
+      x.add ( "FileName", ud.getContent ( "NAME" ) ) ;
+      msg.setXmlData ( x ) ;
+      var xx = Calypso.getXml ( msg ) ;
+      var xRESULT = xx.get ( "REXEC.RESULT" ) ;
+      var rc = xRESULT.getInt ( "RC" ) ;
+      if ( rc )
+      {
+        var stderr = xRESULT.getContent ( "STDERR" ) ;
+        var d = new TUserDialog ( stderr ) ;
+        d.info() ;
+        return ;
+      }
+      this._showFiles ( this.itemNameOfFileList ) ;
+    },
+    _showFiles: function ( name )
+    {
+      if ( ! name )
+      {
+        var ud = this.table.getSelectedUserXml() ;
+        if ( ! ud ) return ;
+        name = ud.getContent ( "Name" ) ;
+      }
+      this.itemNameOfFileList = name ;
+      this.mm.remove() ;
+      var v = this.SHOW_FILES_PARAMETER.getValues() ;
+      var pattern = v.getContent ( "PATTERN", "*" ) ;
+      var xRESULT = this.listFiles ( name, pattern ) ;
+      if ( ! xRESULT ) return ;
+      this.MF.select ( 0 ) ;
+      this.DISPLAY_TABLE.setValues ( xRESULT ) ;
+    },
+    mm_remove: function ( ev )
+    {
+      this.filesTableLastRowIndex = -1 ;
+    },
+    mm_mouseout: function ( ev )
+    {
+      var loc = TGui.getLocationOnPageOf ( this.filesTable.TABLE ) ;
+      var x = ev.getX() - loc.x ;
+      var y = ev.getY() - loc.y ;
+      var r = this.filesTable.getRowFromPosition ( x, y ) ;
+      if ( r )
+      {
+        if ( this.filesTableLastRowIndex == r.getIndex() )
+        {
+	  return ;
+        }
+      }
+      this.mm.remove() ;
+    },
+    tableMouseOut: function ( event )
+    {
+      if ( ! this.mm.me )
+      {
+        this.mm.remove() ;
+        return ;
+      }
+      var ev = new TEvent ( event ) ;
+      var src = ev.getSource() ;
+      if ( src.nodeName != "TD" ) return ;
+
+      var bounds_TR = TGui.getBoundsOnPageOf ( this.r.TR ) ;
+      var TD = src ;
+      var TR = this.r.TR ;
+      var x = ev.getX() ;
+      var y = ev.getY() ;
+      if ( TD == TR.firstChild )
+      {
+        var dx = x - bounds_TR.x ;
+        if ( dx < 2 ) 
+        {
+          this.mm.remove() ;
+          return ;
+        }
+      }
+      if ( TD == TR.lastChild )
+      {
+        var dx = bounds_TR.x + bounds_TR.width - x ;
+        if ( dx < 2 ) 
+        {
+          this.mm.remove() ;
+        }
+        return ;
+      }
+      if ( TR.sectionRowIndex == 0 )
+      {
+        var dy = y - bounds_TR.y ;
+        if ( dy < 2 ) 
+        {
+          this.mm.remove() ;
+        }
+        return ;
+      }
+      if ( TR.sectionRowIndex == this.filesTable.getNumberOfRows() - 1 )
+      {
+        var dy = bounds_TR.y + bounds_TR.height - y ;
+        if ( dy < 2 ) 
+        {
+          this.mm.remove() ;
+          return ;
+        }
+      }
+      var bounds_TableDom = TGui.getBoundsOnPageOf ( this.filesTable.dom ) ;
+      var dy2 = this.filesTable.TABLE2 ? this.filesTable.TABLE2.offsetHeight : 0 ;
+      var dy = bounds_TR.y - bounds_TableDom.y - dy2 ;
+      if ( dy < 2 ) 
+      {
+        this.mm.remove() ;
+        return ;
+      }
+      dy = bounds_TableDom.y + bounds_TableDom.height - y ;
+      if ( dy < 2 ) 
+      {
+        this.mm.remove() ;
+        return ;
+      }
+    },
+    tableMouseMove: function ( event )
+    {
+      if ( ! this.filesTable ) return ;
+      var ev = new TEvent ( event ) ;
+      var loc = TGui.getLocationOnPageOf ( this.filesTable.TABLE ) ;
+      var x = ev.getX() - loc.x ;
+      var y = ev.getY() - loc.y ;
+      var r = this.filesTable.getRowFromPosition ( x, y ) ;
+      this.evx = ev.getX() ;
+      this.evy = ev.getY() ;
+      if ( ! r )
+      {
+        this.mm.remove() ;
+        return ;
+      }
+      if ( this.filesTableLastRowIndex != r.getIndex() )
+      {
+        this.mm.stop() ;
+        this.mm.remove() ;
+        this.r = r ;
+        this.filesTableLastRowIndex = r.getIndex() ;
+
+	var dt = new Date().getTime() - this.last_show_me_millis ;
+	if ( dt > 300 && dt < 1000 )
+	{
+          this.show_me() ;
+	}
+	else
+	{
+          this.mm.start() ;
+	}
+      }
+    },
+    show_me: function()
+    {
+      this.last_show_me_millis = new Date().getTime() ;
+      this.r.setSelected ( true, true ) ;
+      var xud = this.r.getXml() ;
+      var axl = new TXml() ;
+      var xCont = axl.add ( "Container" ) ;
+
+      var xe ;
+
+      xe = xCont.add ( "Label" ) ;
+      xe.addAttribute ( "text", "File") ;
+      xe.addAttribute ( "class", "SimpleTitle") ;
+
+      xe = xCont.add ( "Label" ) ;
+      xe.addAttribute ( "text", xud.getContent ( "NAME" ) ) ;
+
+      xCont.add ( "br" ) ;
+      xe = xCont.add ( "Label" ) ;
+      xe.addAttribute ( "text", "Possible actions:" ) ;
+
+      xe = xCont.add ( "PushButton" ) ;
+      xe.addAttribute ( "text", "Download" ) ;
+      xe.addAttribute ( "onclick", "*.downloadFileFromRow()" ) ;
+
+      xe = xCont.add ( "PushButton" ) ;
+      xe.addAttribute ( "text", "Delete" ) ;
+      xe.addAttribute ( "onclick", "*.deleteFileFromRow()" ) ;
+
+      var bounds_target = TGui.getBoundsOnPageOf ( this.filesTable.dom ) ;
+      var bounds_TR = TGui.getLocationOnPageOf ( this.r.TR ) ;
+      var y = bounds_TR.y - bounds_target.y + Math.round ( this.r.TR.offsetHeight / 2 ) ;
+      this.mm.show ( this.evx, y, axl, this.filesTable.dom ) ;
+    },
+    listFiles: function ( name, pattern )
+    {
+      if ( ! pattern ) pattern = "*" ;
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "listFiles" ) ;
+      x.add ( "Name", name ) ;
+      x.add ( "Pattern", pattern ) ;
+      msg.setXmlData ( x ) ;
+      var xx = Calypso.getXml ( msg ) ;
+      var xRESULT = xx.get ( "REXEC.RESULT" ) ;
+      var rc = xRESULT.getInt ( "RC" ) ;
+      if ( rc )
+      {
+        var stderr = xRESULT.getContent ( "STDERR" ) ;
+        var d = new TUserDialog ( stderr ) ;
+        d.info() ;
+        return ;
+      }
+      return xRESULT ;
+    },
+    downloadFile: function ( itemName, fileName )
+    {
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "downloadFile" ) ;
+      x.add ( "Name", itemName ) ;
+      x.add ( "FileName", fileName ) ;
+      msg.setXmlData ( x ) ;
+      Calypso.downloadDocument ( msg ) ;
+    },
+    timer_pattern: null,
+    onkeyup_pattern: function ( event )
+    {
+      if ( ! this.timer_pattern )
+      {
+        this.timer_pattern = new TTimer ( 500, function(t)
+        {
+          t.pagelet._showFiles ( t.pagelet.itemNameOfFileList ) ;
+        }) ;
+        this.timer_pattern.setRepeats ( false ) ;
+        this.timer_pattern.pagelet = this ;
+      }
+      this.timer_pattern.stop() ;
+      this.timer_pattern.start() ;
+    },
+    showExecResult: function ( LOCK_ID )
+    {
+      var msg = new CoMessage ( "REXEC.REQUEST" ) ;
+      var x = new TXml ( "REXEC.REQUEST" ) ;
+      x.add ( "Operation", "getExecResult" ) ;
+      x.add ( "LOCK_ID", LOCK_ID ) ;
+      msg.setXmlData ( x ) ;
+      x = Calypso.getXml ( msg ) ;
+      var STDERR = x.getContent ( "REXEC.RESULT/STDERR" ) ;
+      var RC = x.getContent ( "REXEC.RESULT/RC" ) ;
+      if ( STDERR )
+      {
+        var str = "<span style=\"color:red;\"><pre>" + STDERR + "</pre></span><br/>" ;
+        this.MF.select ( 1 ) ;
+        this.DISPLAY.setText ( str ) ;
+	return true ;
+      }
+      return false ;
+    },
+    createMaxiMenu: function ( cb )
+    {
+      MaxiMenu = function ( callback )
+      {
+        this.callback = callback ;
+	if ( this.callback )
+	{
+          this.timer = new TTimer ( 700, function(t)
+          {
+            t.thiz.callback.apply ( t.thiz ) ;
+          }) ;
+          this.timer.thiz = this ;
+          this.timer.setRepeats ( false ) ;
+	}
+        this._closeOnMouseDown = new TFunctionExecutor ( this, this.mouseDownAutoClose ) ;
+        TGlobalEventHandler.addOnMouseDown ( this._closeOnMouseDown ) ;
+	this._eventMulticaster = null ;
+      };
+      MaxiMenu.prototype.addEventListener = function ( obj, method, type )
+      {
+        if ( ! this._eventMulticaster ) this._eventMulticaster = new EventMulticaster() ;
+        this._eventMulticaster.add ( obj, method, type ) ;
+      };
+      MaxiMenu.prototype.toString = function()
+      {
+        return "(MaxiMenu)" ;
+      } ;
+      MaxiMenu.prototype.stop = function()
+      {
+        if( this.timer ) this.timer.stop() ;
+      };
+      MaxiMenu.prototype.start = function()
+      {
+        if( this.timer ) this.timer.start() ;
+      };
+      MaxiMenu.prototype.mouseDownAutoClose = function ( event )
+      {
+        this.stop() ;
+        if ( this.me )
+        {
+          if ( this.inside ( event ) ) return true ;
+        }
+        this.remove() ;
+        return true ;
+      } ;
+      MaxiMenu.prototype.remove = function ( event )
+      {
+        this.r = null ;
+        this.stop() ;
+        if ( ! this.me ) return ;
+        TGui.flushAttributes ( this.me, true ) ;
+        this.me.parentNode.removeChild ( this.me ) ;
+        this.me = null ;
+        this.mec = null ;
+        if ( this._eventMulticaster ) this._eventMulticaster.fireEvent ( "remove" ) ;
+      } ;
+      MaxiMenu.prototype.show = function ( x, y, axl, target )
+      {
+        var txml = Tango.getThemeXml ( "Menu", "normal" ) ;
+        var ins = txml.getInsets() ;
+        var pad = txml.getPadding() ;
+        if ( ! pad.top ) pad.top = ins.top + 2 ;
+        if ( ! pad.left ) pad.left = ins.left + 2 ;
+        if ( ! pad.bottom ) pad.bottom = ins.bottom + 2 ;
+        if ( ! pad.right ) pad.right = ins.right + 2 ;
+        var deco="{ src: \"theme:Menu/normal\", type:\"sliced\""
+                + ", border: { top:"+ins.top+", left:"+ins.left+", bottom:"+ins.bottom+", right:"+ins.right+" }"
+                + ", padding: { top:"+pad.top+", left:"+pad.left+", bottom:"+pad.bottom+", right:"+pad.right+" } }" ;
+        var xCont = axl.get ( "Container" ) ;
+        xCont.addAttribute ( "decoration", deco ) ;
+
+        this.me = TGui.createElement ( axl, target ) ;
+
+        this.me.className = "ThemeMenuButton" ;
+        target.appendChild ( this.me ) ;
+        var bounds_target = TGui.getBoundsOnPageOf ( target ) ;
+        this.me.style.top = ( y ) + "px" ;
+        this.me.style.left = ( x - bounds_target.x ) + "px" ;
+
+        this.mec = new TContainer ( this.me ) ;
+        this.mec.addEventListener ( "mouseout", this, this.mouseout ) ;
+        var fe = this.mec.findFirstFocusableElement() ;
+        if ( fe ) fe.focus() ;
+        var bounds_me = this.mec.getBounds() ;
+        if ( bounds_me.y + bounds_me.height > bounds_target.height )
+        {
+          this.me.style.top = ( bounds_target.height - bounds_me.height ) + "px" ;
+        }
+      } ;
+      MaxiMenu.prototype.inside = function ( event )
+      {
+        return this.mec.inside ( event ) ;
+      } ;
+      MaxiMenu.prototype.mouseout = function ( event )
+      {
+        if ( this.inside ( event ) ) return ;
+        if ( ! this._eventMulticaster ) return ;
+        this._eventMulticaster.fireEvent ( event, "mouseout" ) ;
+      } ;
+      return new MaxiMenu ( cb ) ;
+    }
+  }'
+>
+<Define tag='ButtonCreateCsv' >
+  <ButtonCreate text='Create Csv' format='CSV' />
+</Define>
+<Define tag='ButtonCreatePdf' >
+  <ButtonCreate text='Create Pdf' format='PDF' />
+</Define>
+<Define tag='ButtonCreate' >
+  <PushButton text='Create' onclick='*.exec(event,$[format])' />
+</Define>
+  <Container name='X' style='top:0px;left:0px;bottom:-0px;right:-0px;'
+    onload='*.onload()'
+    onchange='handle:PB.showAxl PB.editAxl PB.showFiles'
+  >
+    <Container name='CLEFT' style='bottom:-0px;' >
+      <Container style='right:-0px;'>
+        <PushButton text='Show Reports' onclick='*.showList()' />
+        <PushButton text='Show parameter' onclick='*.showAxl()' disabled='true' name='PB.showAxl' />
+        <PushButton text='Edit AXL' onclick='*.editAxl()' disabled='true' name='PB.editAxl' />
+	<br/>
+        <PushButton text='Notify' onclick='SystemNotifier.notify ( "Execution done<br/>xxxxxxxxxxxx")' />
+      </Container>
+      <br/>
+      <Table name='List' style='width:300px;bottom:-0px;right:-0px;'
+        sortable="true"
+        ondblclick='*.showAxl()'
+      >
+	      <Columns>
+		      <Column name='Name' />
+		      <Column name='Description' />
+	      </Columns>
+      </Table>
+    </Container>
+    <Splitbar/>
+    <Container style='bottom:-0px;right:-0px;' >
+      <Container name='EXEC_PARAMETER' style='height:250px;right:-0px;overflow:hidden;' />
+      <SplitbarHorizontal/>
+      <Container style='bottom:-0px;right:-0px;padding:0px;' >
+        <Multiform name='DISPLAY.MF' style='bottom:-0px;right:-0px;' >
+          <Container style='padding:0px;' name='DISPLAY.TABLE' >
+            <Container style='padding:0px;' name='SHOW_FILES_PARAMETER' >
+	      <Label text='Optional file pattern:' />
+	      <TextField name='PATTERN' action='*.showFiles()'  onkeyup='*.onkeyup_pattern()' />
+              <PushButton text='Show files' onclick='*.showFiles()' disabled='true' name='PB.showFiles' />
+            </Container>
+	    <br/>
+            <Table name="Files" style="left:0px;bottom:-0px;right:-0px;"
+              sortable="true"
+              ondblclick="*.filesTableDblClick()"
+            >
+              <PopupMenu name="MENU2" Xonopen="*.onopenTablePopup()" >
+                <MenuItem text="Download" onclick="*.downloadFileFromFilesTable()"/>
+                <MenuItem text="Delete"  onclick="*.deleteFileFromFilesTable()"/>
+              </PopupMenu>
+              <Columns>
+                <Column name="NAME"/>
+                <Column name="DATE" type="datetime" pre-sorted='down'/>
+                <Column name="KB" type="int"/>
+              </Columns>
+            </Table>
+          </Container>
+          <Container style='padding:0px;' >
+            <DisplayContainer name='DISPLAY' style='top:0px;left:0px;bottom:-0px;right:-0px;overflow:auto;' />
+          </Container>
+        </Multiform>
+      </Container>
+    </Container>
+  </Container>
+</Container>
+</xml>
+

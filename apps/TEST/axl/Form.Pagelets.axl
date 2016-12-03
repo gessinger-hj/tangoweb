@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Pagelets' name='X' style='top:10px;left:10px;background-repeat:repeat-x;'
+>
+
+<!-- ========================================================================== -->
+<Define tag='SilverBarButton' >
+  <CustomButton text='' style='top:0px;margin-right:0px;bottom:-0;'
+  estyle='{ normal: { image: { src:"web-2/yahoo/bar-button-0.png"
+                             , border: { top:1,left:1,bottom:1,right:1 }
+                             }
+                             , color: { foreground:"black" }
+                    }
+          , inside: { image: { src:"web-2/yahoo/bar-button-0-lighter.png"
+                             , border: { top:1,left:1,bottom:1,right:1 }
+                             }
+                             , color: { foreground:"black" }
+                    }
+          , pressed: { image: { src:"web-2/yahoo/bar-button-0-darker.png"
+                             , border: { top:1,left:1,bottom:1,right:1 }
+                             }
+                             , color: { foreground:"black" }
+                    }
+          , padding:{top:1,left:1,bottom:1,right:1 }
+          }' />
+</Define>
+<Define tag='SilverBar' >
+  <Container style='width:400px;height:38px;'
+decoration='{src:"web-2/yahoo/bar.png",type:"sliced",border:{top:7,left:45,bottom:10,right:9},padding:{top:0,left:45,bottom:4,right:9}}'
+  >
+  </Container>
+</Define>
+<!-- ========================================================================== -->
+  <SilverBar style='width:400px;height:38px;' >
+    <SilverBarButton text='Silver 1' style='left:0px' />
+    <SilverBarButton text='Silver 2' />
+    <SilverBarButton text='Silver 3' />
+  </SilverBar>
+<br/>
+<!-- ========================================================================== -->
+<Define tag='YellowButtonSquare' >
+<CustomButton text='' 
+estyle='{ normal: { image: { src:"web-2/yahoo/button-square-1.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , inside: { image: { src:"web-2/yahoo/button-square-0.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , pressed: { image: { src:"web-2/yahoo/button-square-2.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , disabled: { image: { src:"web-2/yahoo/button-square-4.png"
+                           , border: { top:10,left:10,bottom:10,right:10 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , padding:{top:10,left:10,bottom:10,right:10 }
+        }' />
+</Define>
+<Define tag='YellowButtonRound' >
+<CustomButton text='' 
+estyle='{ normal: { image: { src:"web-2/yahoo/button-round-1.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , inside: { image: { src:"web-2/yahoo/button-round-0.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , pressed: { image: { src:"web-2/yahoo/button-round-2.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , disabled: { image: { src:"web-2/yahoo/button-round-4.png"
+                           , border: { top:10,left:17,bottom:10,right:17 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , padding:{top:8,left:10,bottom:8,right:10 }
+        }' />
+</Define>
+<!-- ========================================================================== -->
+<YellowButtonSquare text='button-square 0' />
+<YellowButtonSquare text='button-square 1' />
+<YellowButtonRound text='button-round 0' />
+<YellowButtonRound text='button-round 1' />
+
+<!-- ========================================================================== -->
+<Define tag='BlueButton' >
+<CustomButton text='' 
+estyle='{ normal: { image: { src:"web-2/2/share-facebook-button-1.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , inside: { image: { src:"web-2/2/share-facebook-button-2.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"black" }
+                  }
+        , pressed: { image: { src:"web-2/2/share-facebook-button-3.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , disabled: { image: { src:"web-2/2/share-facebook-button-4.png"
+                           , border: { top:5,left:5,bottom:5,right:5 }
+                           }
+                           , color: { foreground:"white" }
+                  }
+        , padding:{top:5,left:5,bottom:5,right:5 }
+        }' />
+</Define>
+<BlueButton text="Blue Button" />
+<br/>
+<Define tag='PageletStandard'>
+  <PageletShadowBoxBlue />
+</Define>
+<PageletStandard style='width:200px;height:200px;' title='TTTTT' >
+	<Label>hallo</Label>
+</PageletStandard>
+<PageletStandard style='width:200px;height:200px;' title='TTTTT' />
+<PageletStandard style='width:200px;height:200px;' title='TTTTT' />
+<br/>
+  <PageletBlueGlareWhite style='width:250px;height:200px;' title='BlueGlareWhite' > </PageletBlueGlareWhite>
+  <PageletTagsSml style='width:250px;height:200px;' title='TagsSml' > </PageletTagsSml>
+  <PageletDefault style='width:250px;height:200px;' title='Default' > </PageletDefault>
+  <PageletBlackGlare style='width:250px;height:200px;' title="BlackGlare(dragable)" dragable='true'
+                      decoration-body='content'
+  >
+  </PageletBlackGlare>
+<br/>
+  <PageletLightGray style='width:250px;height:200px;' title='LightGray' > </PageletLightGray>
+  <PageletLightBlue style='width:250px;height:200px;' title='LightBlue' > </PageletLightBlue>
+  <PageletBlueGlare style='width:250px;height:200px;' title='BlueGlare' > </PageletBlueGlare>
+  <PageletOrangeGlare style='width:250px;height:200px;' title='OrangeGlare' ></PageletOrangeGlare>
+  <PageletOrangeGlare style='width:250px;height:200px;' title="OrangeGlare(dragable)" dragable='true'
+                      decoration-body='content'
+  >
+  </PageletOrangeGlare>
+<br/>
+  <PageletShadowBoxYellow style='width:250px;height:200px;' title='ShadowBoxYellow' > </PageletShadowBoxYellow>
+  <PageletShadowBoxBlue style='width:250px;height:200px;' title='ShadowBoxBlue' > </PageletShadowBoxBlue>
+  <PageletShadowBox style='width:250px;height:200px;' title='ShadowBox' > </PageletShadowBox>
+  <PageletKachel style='width:250px;height:200px;' title='Kachel' > </PageletKachel>
+  <PageletInfoBox style='width:250px;height:200px;' title="InfoBox" > </PageletInfoBox>
+</Container>
+</xml>
+

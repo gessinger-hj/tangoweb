@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+  <xml>
+    <DEBUG>true</DEBUG>
+    <LOG>true</LOG>
+    <Shortcuts>true</Shortcuts>
+    <MenuShortcuts>true</MenuShortcuts>
+    <StartAxl>Main</StartAxl>
+    <LogoutUrl>index.html</LogoutUrl>
+    <WorkAxl>Main</WorkAxl>
+    <XMinPageWidth>1024</XMinPageWidth>
+    <XMinPageHeight>750</XMinPageHeight>
+    <DefaultTheme>OX</DefaultTheme>
+    <StringName>Air</StringName>
+    <StringName>Netbook</StringName>
+    <StringName>Product</StringName>
+    <StringName>Web2.0a</StringName>
+    <StringName>Red</StringName>
+    <StringName>Raphsody</StringName>
+    <StringName>RessourcesII</StringName>
+    <t_identity_to_sp>true</t_identity_to_sp>
+    <XNAMESPACE-FUNCTION-EDITOR>ISDP_DEV</XNAMESPACE-FUNCTION-EDITOR>
+    <XNAMESPACE-REPORTER>ISDP_DEV</XNAMESPACE-REPORTER>
+    <Language></Language>
+    <Context>private</Context>
+    <AuthenticationRequired>false</AuthenticationRequired>
+    <FILE_EXPLORER_ROOT>/home/gess/public_html/webapps/swa/public</FILE_EXPLORER_ROOT>
+    <PeriodicalToucherTimeoutMillis>10000</PeriodicalToucherTimeoutMillis>
+    <SHOW_NATIVE_ERRORS>true</SHOW_NATIVE_ERRORS>
+    <GEPARD_WEBSOCKET_PORT>%GEPARD_WEBSOCKET_PORT%</GEPARD_WEBSOCKET_PORT>
+<UserHandler>org.gessinger.tango.servlet.RemoteUserHandler</UserHandler>
+<ForeignAuthentication enabled='true'>
+  <Script><![CDATA[
+function authenticate ( context )
+{
+  var uid = context.getParameter ( "uid" ) ;
+  var token = context.getParameter ( "token" ) ;
+  if ( ! uid || ! token )
+  {
+    if ( ! uid  ) println ( "Missing uid" ) ;
+    if ( ! token  ) println ( "Missing token" ) ;
+    return null ;
+  }
+
+  var url = new QCUrl ( "http://localhost:8080/test/Test?action=authenticate&token=" + token + "&uid=" + uid ) ;
+  var str = url.asString() ;
+  var rc = url.getResponseCode() ;
+  if ( rc != 200 ) return null ;
+  return new CoUser ( uid, null ) ;
+}
+  ]]></Script>
+</ForeignAuthentication>
+  </xml>

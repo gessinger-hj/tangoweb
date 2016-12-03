@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Add Variable' id="Dialog.Edit.ReportVariables.New" onclose='TGui.windowCancel()' >
+    <Container style='right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <ListLabel text='Name' /><tab name='T1' X='+3' /><TextField name='NAME' mandatory='true' style='width:200px;right:-0px;' />
+      <br />
+      <ListLabel text='Type' /><tab name='T1'/>
+        <Choice name='TYPE' style='width:200px;right:-0px;'
+	>
+	  <option value='F'>Number</option>
+	  <option value='D'>Date</option>
+	  <option value='S'>String</option>
+	  <option value='I'>Integer</option>
+	</Choice>
+      <br />
+      <ListLabel text='Value' /><tab name='T1'/>
+        <TextField name='VALUE' mandatory='true' style='width:200px;right:-0px;' />
+      <br />
+      <ListLabel text='Description' /><tab name='T1'/><TextField name='TEXT' mandatory='true' style='width:200px;right:-0px;'/>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton id='PB.Save' disabled=true img='save-16x16.gif' text='%Save%' onclick='*.addNewSave(event)' />
+        <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

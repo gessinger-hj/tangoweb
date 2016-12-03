@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Checkbox' name='X'
+>
+<Checkbox2 name='CHECKBOX-1' text="CHECKBOX-1" value='true' default='false' />
+<Checkbox2 name='CHECKBOX-2' text="CHECKBOX-2" checked='true' value='true' default='false' />
+<Checkbox2 name='CHECKBOX-3' text="CHECKBOX-3" value='true' disabled='true' default='false' />
+<Checkbox2 name='CHECKBOX-4' text="CHECKBOX-4" checked='true' value='true' disabled='true' default='false' />
+<br/>
+<Checkbox name='CHECKBOX-1' text="CHECKBOX-1" value='true' default='false' />
+<Checkbox name='CHECKBOX-2' text="CHECKBOX-2" checked='true' value='true' default='false' />
+<Checkbox name='CHECKBOX-3' text="CHECKBOX-3" value='true' disabled='true' default='false' />
+<Checkbox name='CHECKBOX-4' text="CHECKBOX-4" checked='true' value='true' disabled='true' default='false' />
+<br/>
+<Radio2 name='RADIO' text="RADIO-1" value='1' />
+<Radio2 name='RADIO' text="RADIO-2" checked='true' value='2' />
+<Radio2 name='RADIO' text="RADIO-3" value='3' />
+<Radio2 name='RADIO' text="RADIO-4" value='4' disabled='true' />
+<br/>
+<Radio name='RADIO1' text="RADIO1-1" value='1' />
+<Radio name='RADIO1' text="RADIO1-2" checked='true' value='2' />
+<Radio name='RADIO1' text="RADIO1-3" value='3' />
+<Radio name='RADIO1' text="RADIO1-4" value='4' disabled='true' />
+<br/>
+<PushButton text='Toggle CHECKBOX-1' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var cb = ev.getContainer().getComponent ( "CHECKBOX-1" ) ;
+  cb.setChecked ( ! cb.isChecked() ) ;
+}'
+/>
+<PushButton text='Toggle CHECKBOX-3' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var cb = ev.getContainer().getComponent ( "CHECKBOX-3" ) ;
+  cb.setChecked ( ! cb.isChecked() ) ;
+}'
+/>
+<br/>
+<PushButton text='Get' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+log ( ev.getValues() ) ;
+}'
+/>
+<PushButton text='Set' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var x = new TXml() ;
+  x.add ( "CHECKBOX-1", "true" ) ;
+  x.add ( "RADIO", "1" ) ;
+  ev.getContainer().setValues ( x ) ;
+}'
+/>
+<PushButton text='With arrow down' arrow='down' />
+</Container>
+</xml>
+

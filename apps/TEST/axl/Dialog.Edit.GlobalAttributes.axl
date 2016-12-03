@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal=true resizable='true' title='Edit Global Attributes' id="Dialog.Edit.GlobalAttributes" onclose='TGui.windowCancel()' >
+    <Container style='width:600px;height:300px;right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <Table name='T_GLOBAL_ATTRIBUTES' path='T_GLOBAL_ATTRIBUTES' style='right:-0;bottom:-0;attach-bottom:true;'
+            sortable=true
+            selectable=true
+            get-values-all=true
+            onchange='GlobalAttributes.onchangeTableItem(event)'
+            onclick='GlobalAttributes.onclickTableItem(event)'
+      >
+        <Columns>
+          <Column name="ATTRIBUTE_NAME" title="Name" />
+          <Column name="ATTRIBUTE_TYPE_ID" title="Type" >
+	  <Mappings>
+	    <option value='2'>Number</option>
+	    <option value='3'>Date</option>
+	    <option value='1'>String</option>
+	  </Mappings>
+	  </Column>
+          <Column name="ATTRIBUTE_VALUE" title="Value" editable='true' width='300' />
+          <Column name="ATTRIBUTE_DESCRIPTION" title="Description" />
+        </Columns>
+      </Table>
+      <br />
+      <Container bottom='0' right='0' >
+        <XPushButton img='printer-16x16.gif' text="Print" onclick='
+        {
+          execute: function ( event )
+          {
+            var ev = new TEvent ( event ) ;
+            var tab = ev.getContainer().getPeer ( "T_GLOBAL_ATTRIBUTES" ) ;
+/*
+            tab.print() ;
+*/
+log ( tab ) ;
+          }
+        }' />
+        <PushButton name='PB.Modify' disabled=true img='edit.png' text='%Modify%' onclick='GlobalAttributes.modify(event)' />
+        <PushButton name='PB.Remove' disabled=true img='edit_remove.png' text='%Remove%' onclick='GlobalAttributes.remove(event)' />
+        <PushButton name='PB.Add' img='edit_add.png' text='%Add%' onclick='GlobalAttributes.addNew(event)' />
+        <PushButton name='PB.Save' disabled=true img='save-16x16.gif' text='%Save%' onclick='GlobalAttributes.save(event)' />
+        <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.windowCancel(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

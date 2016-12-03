@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title="Select a Customer to Edit" id="ACSWindow.Select.Existing.Customer" >
+    <Container style='top:0px;left:0px;bottom:-0;right:-0;' name='X' onchange='handle:PB.Open'>
+      <Container style='bottom:-0;right:-0;' >
+      	<Table name='CUSTOMER.LIST' style='width:200px;height:200px;bottom:-0;right:-0;' ondblclick='*.openCustomer()' select-on-fill='0' autofocus='true'>
+      	<Columns>
+      		<Column name='CUSTOMERCODE' title='Name' />
+      	</Columns>
+      </Table>
+      </Container>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton text="Open" name='PB.Open' onclick='*.openCustomer()' disabled='true' />
+        <PushButton text="Cancel" onclick='TGui.closeWindow()' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+

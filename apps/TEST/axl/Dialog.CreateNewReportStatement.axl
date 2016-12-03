@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Dialog id='Dialog.CreateNewReportStatement' title='Create Statement...' onclick='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;' onchange='handle:PB.Save' >
+    <Hidden name='REPORT_ID' />
+    <DisplayContainer style='right:-0;bottom:-0;attach-bottom:true;width:600px;' >
+      <br/> <ListLabel text='Root Tag'/><tab name='T1'/><TextField name='ROOT_TAG' style='right:-0;' minlength='3' mandatory='true'/>
+      <br/> <ListLabel text='Context'/><tab name='T1'/><TextField name='CONTEXT' style='right:-0;' default='*'/>
+      <br/> <ListLabel text='Credential'/><tab name='T1'/><Choice default='false' name='CREDENTIAL_ID' style='right:-0;'/>
+      <br/> <ListLabel text='Type'/><tab name='T1'/><Label name='TYPE' style='right:-0;' text='SQL' />
+      <br/> <ListLabel text='Description:' /><tab name='T1' X='+10' /> <TextField name='DESCRIPTION' style='right:-0;' />
+      <br/> <TitleLabel text='DEFINITION' />
+      <br/> <TextArea name='DEFINITION' style='height:100px;bottom:-0px;right:-0;' minlength='20' mandatory='true' />
+    </DisplayContainer>
+    <br/>
+    <Container style='bottom:0px;right:0px;' >
+      <PushButton name='PB.Save' img='save-16x16.gif' disabled=true text='%Save%' onclick='*.createNewStatementSave(event)' />
+      <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Dialog>
+</xml>

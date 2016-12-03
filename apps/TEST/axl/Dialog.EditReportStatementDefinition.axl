@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Window id='Dialog.EditReportStatementDefinition' title='Edit Report Statement...' onclose='TGui.cancelWindow(event)' >
+  <Container style='right:-0;bottom:-0;'
+      onchange='handle:PB.Save'
+  >
+    <Hidden name='REPORT_STMT_ID' />
+    <Container style='right:-0px;'>
+      <Label text='Report Name:' /><tab name='T1'/><Label name='REPORT_NAME_AND_TAG' />
+      <br/>
+      <Label text='Statement ID:' /><tab name='T1'/><Label name='REPORT_STMT_ID' />
+    </Container>
+    <br/>
+    <DisplayContainer style='right:-0;bottom:-0;attach-bottom:true;width:600px;'
+    >
+      <TextArea name='DEFINITION' style='white-space:nowrap;top:0px;left:0px;bottom:-0px;right:-0;width:600px;height:600px;overflow:auto;' mandatory='true' />
+    </DisplayContainer>
+    <br/>
+    <Container style='bottom:0px;right:0px;' >
+      <XPushButton Ximg='save-16x16.gif' text='%Test%' onclick='*.testReportStatementDefinition(event)' />
+      <PushButton name='PB.Save' img='save-16x16.gif' disabled=true text='%Save%' onclick='*.editReportStatementDefinitionSave(event)' />
+      <PushButton img='Icon.RedCross.gif' text="%Close%" onclick='TGui.cancelWindow(event)' />
+    </Container>
+  </Container>
+</Window>
+</xml>

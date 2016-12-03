@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Dialog title='Modify Report Variable...' id="Dialog.Edit.ReportFunctions.Modify.Modify" onclose='TGui.cancelWindow()' >
+    <Container style='right:-4;bottom:-0;' name='Top' onchange='handle:PB.Save' >
+      <Hidden name='REPORT_FUNCTION_ID' />
+      <Hidden name='OLD_NAME' />
+      <ListLabel text='Name' /><tab name='T1' X='+3' /><TextField name='NAME' style='width:200px;right:-0px;' mandatory='true' />
+      <br />
+      <ListLabel text='Context' /><tab name='T1'/> <TextField name='CONTEXT' style='width:300px;right:-0px;' default='*' />
+      <br />
+      <ListLabel text='Description' /><tab name='T1'/><TextField name='DESCRIPTION' mandatory='true' style='width:200px;right:-0px;'/>
+      <br />
+      <Container bottom='0' right='0' >
+        <PushButton id='PB.Save' disabled=true img='save-16x16.gif' text='%Save%' onclick='*.modifySave(event)' />
+        <PushButton img='Icon.RedCross.gif' text="%Cancel%" onclick='TGui.cancelWindow(event)' />
+      </Container>
+    </Container>
+  </Dialog>
+</xml>
+
+
+

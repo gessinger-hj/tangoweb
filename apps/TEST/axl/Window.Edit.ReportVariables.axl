@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window title='Edit Report Variables...' id="Window.Edit.ReportVariables" onclose='*.editWindowClose()' >
+    <Container style='width:600px;height:300px;right:-4;bottom:-0;' name='Top' onchange='handle:PB.Modify PB.Remove' >
+      <Hidden name="REPORT_ID" />
+      <Container style='right:-0px;'>
+        <Label text='Name:' /><tab name='T1'/><Label name='REPORT_NAME' />
+	<br/>
+        <Label text='ID:' /><tab name='T1'/><Label name='REPORT_ID' />
+      </Container>
+      <br/>
+      <Table name='ACT_REPORT_VARIABLES' style='left:0px;right:-0;bottom:-0;attach-bottom:true;'
+            sortable=true
+            selectable=true
+            ondblclick='*.modify(event)'
+      >
+        <Columns>
+          <Column name="REPORT_VAR_ID" title="ID" />
+          <Column name="NAME" title="Name" />
+          <Column name="TYPE" title="Type" >
+	  <Mappings>
+	    <option value='F'>Number</option>
+	    <option value='D'>Date</option>
+	    <option value='S'>String</option>
+	    <option value='I'>Integer</option>
+	  </Mappings>
+	  </Column>
+          <Column name="VALUE" title="Value" />
+          <Column name="TEXT" title="Description" />
+        </Columns>
+      </Table>
+      <br />
+      <Container style='bottom:0px;right:0px;' >
+        <PushButton name='PB.Modify' disabled=true img='edit.png' text='%Modify%' onclick='*.modify(event)' />
+        <PushButton name='PB.Remove' disabled=true img='edit_remove.png' text='%Remove%' onclick='*.remove(event)' />
+        <PushButton name='PB.Add' img='edit_add.png' text='%Add%' onclick='*.addNew(event)' />
+        <PushButton img='Icon.RedCross.gif' text="%Close%" onclick='TGui.closeWindow(event)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>
+
+
+

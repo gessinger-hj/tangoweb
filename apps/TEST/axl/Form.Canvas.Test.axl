@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Canvas Test" id='Form.Canvas.Test' name='Form.Canvas.Test' >
+<PushButton text='Clear Plot Area' onclick='
+{
+  peer: null,
+  _initialize_: function()
+  {
+  },
+  execute: function ( event )
+  {
+    if ( ! this.peer )
+    {
+      this.peer = TGui.getPeerById ( "CANVAS.1" ) ;
+    }
+    if ( ! this.peer ) return ;
+    this.peer.clearPlotArea() ;
+  }
+}'
+/>
+<PushButton text='Next Data' onclick='
+{
+  peer: null,
+  count: 0.0,
+  _initialize_: function()
+  {
+  },
+  execute: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! this.peer )
+    {
+      this.peer = TGui.getPeerById ( "CANVAS.1" ) ;
+    }
+    if ( ! this.peer ) return ;
+    var v = Math.sin ( this.count ) ;
+    v = 5 + 2 * v ;
+    this.peer.nextValue ( v ) ;
+    this.count += 0.2 ;
+  }
+}'
+/>
+<PushButton text='Next Data' onclick='
+{
+  peer: null,
+  count: 0.0,
+  _initialize_: function()
+  {
+  },
+  execute: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! this.peer )
+    {
+      this.peer = TGui.getPeerById ( "CANVAS.2" ) ;
+    }
+    if ( ! this.peer ) return ;
+    var v = Math.sin ( this.count ) ;
+    v = 5 + 2 * v ;
+    this.peer.nextValue ( v ) ;
+    this.count += 0.2 ;
+  }
+}'
+/>
+<br/>
+  <Canvas width=400 height=200 id='CANVAS.1'  name='CANVAS' style='color:black;background-color:white;'
+    title='Calls Per Second' title-style='font:10pt bold;'
+    xtext='Number' xtext-style='font:10pt normal;'
+    ytic-style='font:8pt normal;'
+    ymax='1000'
+    peer='function ( x ) { return new CanvasRequestsPerSecond ( x ) ; }'
+  />
+  <Canvas width=400 height=200 id='CANVAS.2'  name='CANVAS' style='color:black;background-color:white;'
+    title='Steps Per Second' title-style='font:10pt bold;'
+    xtext='Number' xtext-style='font:10pt normal;'
+    ytic-style='font:8pt normal;'
+    ymin='0'
+    ymax='50'
+    peer='function ( x ) { return new CanvasStepsPerSecond ( x ) ; }'
+  />
+<br/>
+  <Canvas width=400 height=200 id='CANVAS.3'  name='CANVAS' style='color:black;background-color:white;'
+    title='Dependancy' title-style='font:10pt bold;'
+    xtext='Number' xtext-style='font:10pt normal;'
+    ytic-style='font:8pt normal;'
+    xmin='0'
+    xmax='500'
+    ymax='1100'
+    peer='function ( x )
+    {
+      var xy = new XYDiagram ( x ) ;
+      return xy ;
+    }'
+  />
+      <Container style='border:solid 1px black;width:300px;height:300px;' >
+        <Canvas width=300 height=300 id='CANVAS.3'  name='CANVAS'
+          style='background-color:white;color:black;right:-2px;'
+          graph-color='darkgreen'
+          title='Used Memory in kB' Xtitle-style='font:larger bold;'
+          xtext='Time, 10 Seconds per bin' xtext-style='font:small normal;'
+          ytic-style='font:smaller normal;'
+          ymin='0'
+          ymax='3000'
+          Xygrid='true'
+          ylog='true'
+          peer='function ( x )
+  { var c = new CanvasAverageMB ( x ) ;
+    a=[831,1164,944,944,944,944,944,1290,1290,1290,1290,1290,721,721,721,721,721,721,721,721,1067,1067,1385,1385,817,817,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    c.setData ( a ) ;
+    return c ;
+  }'
+        />
+      </Container>
+</Container>
+

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<Container id='Form.Table.Sort.Test' name='X'
+  onload='*.onload()'
+  pagelet='
+  {
+    xml: null,
+    container: null,
+    tab: null,
+		onload: function ( ev )
+		{
+  		this.xml = new TXml() ;
+      this.container = ev.getContainer() ;
+      this.xml = TSys.getPrivateXml ( "getListOfCustomer.xml" ) ;
+      this.container.setValues ( this.xml ) ;
+      this.tab = this.container.getPeer ( "CUSTOMER.LIST" ) ;
+      this.container.getComponent ( "Number.MAX_VALUE" ).setValue ( "" + Number.MAX_VALUE ) ;
+      this.container.getComponent ( "Number.MIN_VALUE" ).setValue ( "" + Number.MIN_VALUE ) ;
+		}
+	}'
+>
+<Label name='Number.MAX_VALUE' />
+<br/>
+<Label name='Number.MIN_VALUE' />
+<br/>
+    <Table name='CUSTOMER.LIST' style='width:200px;height:200px;bottom:-0;right:-0;' sortable='true' >
+    <Columns>
+      <Column name='CUSTOMERCODE' title='Name' pre-sorted='up' />
+      <Column name='DATE' title='Last Modified' type='datetime' />
+      <Column name='Scenario' title='Scenario' />
+      <Column name='Number' type='int' />
+    </Columns>
+  </Table>
+</Container>
+</xml>
+

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.UserAndGroups' style='left:0px;top:0px;' reset='false' name='X' >
+ <IDM.Notebook.All style='top:0px;left:0px;bottom:-0;right:-0;' />
+ <XIDM.Notebook style='top:0px;left:0px;bottom:-0;right:-0;' />
+ <XIDM.Form.UserManagement />
+ <XIDM.Form.GroupManagement />
+ <XIDM.Form.RoleToRight />
+ <XIDM.Form.IdentityToRole />
+ <XIDM.Form.IdentityTree />
+</Container>

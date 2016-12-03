@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.ReportEditor' style='left:0px;top:0px;' reset='false' name='X'
+ >
+    <Include src='Form.ReportEditorMain' />
+</Container>

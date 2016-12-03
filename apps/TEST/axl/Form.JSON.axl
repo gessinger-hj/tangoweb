@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.JSON'
+>
+  <Container name='X' style='bottom:-2px;right:-2px;' >
+  <PushButton text='XML'
+    onclick='function(event)
+    {
+var t = TSys.getText ( "apps/TEST/goggle.atom-min.xml" ) ;
+var T0 = new Date().getTime() ;
+for ( var i = 0 ; i < 10000 ; i++ )
+{
+var x = TSys.parseXml ( t ) ;
+}
+var T1 = new Date().getTime() ;
+var DT = T1 - T0 ;
+DT = DT / 1000 ;
+DT = DT.roundTo ( 3 ) ;
+log ( "XML - DT=" + DT ) ;
+/*
+*/
+/*
+var T0 = new Date().getTime() ;
+for ( var i = 0 ; i < 1000 ; i++ )
+{
+var x = TSys.getXml ( "apps/TEST/goggle.atom-min.xml" ) ;
+}
+var T1 = new Date().getTime() ;
+var DT = T1 - T0 ;
+DT = DT / 1000 ;
+DT = DT.roundTo ( 3 ) ;
+log ( "XML - DT=" + DT ) ;
+*/
+    }'
+  />
+  <PushButton text='JSON'
+    onclick='function(event)
+    {
+var t = TSys.getText ( "apps/TEST/goggle.atom.json" ) ;
+var T0 = new Date().getTime() ;
+for ( var i = 0 ; i < 1000 ; i++ )
+{
+var tt = JSON.parse ( t ) ;
+}
+var T1 = new Date().getTime() ;
+var DT = T1 - T0 ;
+DT = DT / 1000 ;
+DT = DT.roundTo ( 3 ) ;
+log ( "JSON - DT=" + DT ) ;
+/*
+*/
+/*
+var T0 = new Date().getTime() ;
+for ( var i = 0 ; i < 1000 ; i++ )
+{
+var t = TSys.getText ( "apps/TEST/goggle.atom.json" ) ;
+var tt = JSON.parse ( t ) ;
+}
+var T1 = new Date().getTime() ;
+var DT = T1 - T0 ;
+DT = DT / 1000 ;
+DT = DT.roundTo ( 3 ) ;
+log ( "JSON - DT=" + DT ) ;
+*/
+    }'
+  />
+  </Container>
+</Container>

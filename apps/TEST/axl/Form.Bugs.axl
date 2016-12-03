@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.Bugs' style=''
+onload='function(event)
+{
+}'
+>
+  <Xdefine property='CHOICE_IN_TABLE_REFDATA' />
+  <define property='RESET_=false_in_DATE' />
+  <Xdefine property='Optics Picture of the Day' />
+
+  <if property='Optics Picture of the Day' >
+    <Container name='XX' onload='*.onload()' >
+      <Script><![CDATA[
+      {
+        container: null,
+        IMAGE: null,
+        _initialize_: function(p)
+        {
+        },
+        onload: function ( ev )
+        {
+          this.container = ev.getContainer() ;
+          this.IMAGE = this.container.getComponent ( "IMAGE" ) ;
+log ( this.IMAGE ) ;
+        },
+    execute: function ( event )
+    {
+      var url = "http://www.atoptics.co.uk/opod.htm" ; // this.current ;
+      var u = new URLProxy ( url ) ;
+      var t = u.getText() ;
+log ( t ) ;
+      var pos0 = 0 ;
+      var pos1 = 0 ;
+      this.next = "" ;
+      this.previous = "" ;
+      this.wallpaper = "" ;
+
+    }
+      }
+      ]]></Script>
+      <Container>
+        <PushButton text='execute' onclick='*.execute()' />
+      </Container>
+      <Container>
+        <img name='IMAGE' />
+      </Container>
+    </Container>
+  </if>
+  <if property='RESET_=false_in_DATE' >
+    <Container name='XX' onload='*.onload()' >
+      <Script><![CDATA[
+      {
+        container: null,
+        _initialize_: function(p)
+        {
+        },
+        onload: function ( ev )
+        {
+          this.container = ev.getContainer() ;
+        },
+        reset: function ( event )
+        {
+          this.container.reset ( x ) ;
+        }
+      }
+      ]]></Script>
+      <Label text='From' /><Date name='DateFrom' default-date='today-8' reset='false'/>
+      <Label text='To' />
+      <Date name='DateTo' default-date='today' default-time='235959' />
+      <Container>
+        <PushButton text='reset' onclick='*.reset()' />
+      </Container>
+    </Container>
+  </if>
+  <if property='CHOICE_IN_TABLE_REFDATA' >
+    <Container name='XX' onload='*.onload()' >
+      <Script><![CDATA[
+      {
+        container: null,
+        _initialize_: function(p)
+        {
+        },
+        onload: function ( ev )
+        {
+          this.container = ev.getContainer() ;
+        },
+        _setRefData: function ( event )
+        {
+          var x = new TXml() ;
+          var xt = x.add ( "Scenario" ) ;
+          xt.add ( "option", "A" ) ; //.addAttribute ( "value", "A" ) ;
+          xt.add ( "option", "B" ) ; //.addAttribute ( "value", "B" ) ;
+          xt.add ( "option", "D" ) ; //.addAttribute ( "value", "D" ) ;
+          xt.add ( "option", "E" ) ; //.addAttribute ( "value", "E" ) ;
+          xt.add ( "option", "C" ) ; //.addAttribute ( "value", "C" ) ;
+          this.container.setRefData ( x ) ;
+        },
+        _setValues: function()
+        {
+          var x = new TXml() ;
+          x.add ( "Scenario", "D" ) ;
+          var xt = x.add ( "ACCOUNT_TYPE_TO_SCENARIO" ) ;
+          var r = xt.add ( "row" ) ;
+          r.add ( "ACCOUNT_TYPE", "airtime" ) ;
+          r.add ( "Scenario", "B" ) ;
+          this.container.setValues ( x ) ;
+        },
+        _addNew: function()
+        {
+          var r = new TXml ( "row" ) ;
+          r.add ( "ACCOUNT_TYPE", "airtime" ) ;
+          r.add ( "Scenario", "" ) ;
+          var tab = this.container.getPeer ( "ACCOUNT_TYPE_TO_SCENARIO" ) ;
+          tab.addRow ( r ) ;
+        }
+      }
+      ]]></Script>
+    <Container>
+      <ListLabel text='Scenario' /><tab name='T1'/>
+      <Choice name='Scenario' style='right:-0px;' mandatory='true' sorted='true' >
+      </Choice>
+      <br />
+      <Table name='ACCOUNT_TYPE_TO_SCENARIO' style='height:100px;right:-0px;' >
+      <Columns>
+          <Column name='ACCOUNT_TYPE' />
+          <Column name='Scenario' editable='choice' mandatory='true' sorted='true' />
+        </Columns>
+      </Table>
+      </Container>
+      <br/>
+      <Container>
+          <PushButton text='setRefData' onclick='*._setRefData()' />
+          <PushButton text='setValues' onclick='*._setValues()' />
+          <PushButton text='addNew' onclick='*._addNew()' />
+      </Container>
+    </Container>
+  </if>
+</Container>

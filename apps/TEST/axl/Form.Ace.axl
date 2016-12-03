@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.Ace'
+pagelet='
+{
+  editor: undefined,
+  modes: [],
+  clear: function()
+  {
+    this.editor1.setText ( "" ) ;
+  },
+  setMode: function ( mode, event )
+  {
+    this.editor1.setMode ( mode ) ;
+  },
+  onload: function ( ev )
+  {
+    var c  = ev.getContainer() ;
+    this.editor1 = c.getPeer ( "ED1" ) ;
+    this.TF_gotoLine = c.getComponent ( "TF_gotoLine" ) ;
+    this.TF_pattern = c.getComponent ( "TF_pattern" ) ;
+  this.editor1.addListener ( this, this._onDocumentChange, "change" ) ;
+  this.editor1.addListener ( this, this._onChangeAnnotation, "changeAnnotation" ) ;
+    this.TABLE_ERRORS = c.getPeer ( "TABLE_ERRORS" ) ;
+/*
+    this.editor1.getSession().addEventListener("change", this.$onDocumentChange);
+        this.$onDocumentChange = this.onDocumentChange.bind(this);
+        session.addEventListener("change", this.$onDocumentChange);
+
+
+    this.getMarkers = function(inFront) {
+    this.setScrollTopRow = function(scrollTopRow) {
+    this.gotoLine = function(lineNumber, column) {
+
+        options = options || {};
+    this.find = function(needle, options) {
+    this.findNext = function(options) {
+    this.findPrevious = function(options) {
+
+    this.undo = function() {
+    this.redo = function() {
+    this.destroy = function() {
+*/
+  },
+  gotoLine: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var n = parseInt ( this.TF_gotoLine.getText() ) ;
+    if ( isNaN ( n ) ) return ;
+    this.editor1.gotoLine ( this.TF_gotoLine.getText() ) ;
+    var cln = this.editor1.getCurrentLineNumber() ;
+    if ( n != cln )
+    {
+      this.TF_gotoLine.setText ( cln ) ;
+    }
+  },
+  gotoLineFromTable: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var ud = this.TABLE_ERRORS.getSelectedUserXml() ;
+    if ( ! ud ) return ;
+    var linn = ud.getInt ( "LINE" ) ;
+    this.editor1.gotoLine ( linn ) ;
+  },
+  find: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var n = parseInt ( this.TF_pattern.getText() ) ;
+    this.editor1.gotoLine ( 0 ) ;
+    this.editor1.find ( this.TF_pattern.getText() ) ;
+  },
+  findNext: function ( event )
+  {
+    this.editor1.findNext() ;
+  },
+  findPrevious: function ( event )
+  {
+    this.editor1.findPrevious() ;
+  },
+  marker: function()
+  {
+    var s = this.editor1.editor.getSession() ;
+    var m = s.getAnnotations() ;
+  },
+  _onDocumentChange: function ( ev )
+  {
+/*
+        var delta = e.data;
+        var range = delta.range;
+*/
+  },
+  _onChangeAnnotation: function ( ev )
+  {
+    var m = this.editor1.getAnnotations() ;
+    if ( ! m )
+    {
+      this.TABLE_ERRORS.clear() ;
+      return ;
+    }
+    var x = new TXml() ;
+    var xx  = x.add ( "TABLE_ERRORS" ) ;
+    for ( var key in m )
+    {
+      var r  = xx.add ( "row" ) ;
+      var text = "" ;
+      var list = m[key] ;
+      var desc = list[0] ;
+      var linn = desc.row + 1 ;
+      var coln = desc.column ;
+      var type = desc.type ;
+      for  ( var i = 0 ; i < list.length ; i++ )
+      {
+        var d = list[i] ;
+        if ( text ) text += " - " ;
+        text += d.text ;
+      }
+      r.add ( "LINE", linn  ) ;
+      r.add ( "COLUMN", coln  ) ;
+      r.add ( "TEXT", text  ) ;
+    }
+    this.TABLE_ERRORS.setValues ( x ) ;
+  },
+  getV: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var v = ev.getValues() ;
+log ( v ) ;
+  }
+}'
+onload='*.onload()'
+>
+  <Container style='top:0px;bottom:-0px;'>
+    <PushButton text='text' onclick='*.setMode ( "text" )' />
+    <PushButton text='javascript' onclick='*.setMode ( "javascript" )' />
+    <br/>
+    <PushButton text='c_cpp' onclick='*.setMode ( "c_cpp" )' />
+    <PushButton text='java' onclick='*.setMode ( "java" )' />
+    <br/>
+    <PushButton text='xml' onclick='*.setMode ( "xml" )' />
+    <PushButton text='clear' onclick='*.clear()' />
+    <br/>
+    <PushButton text='getValues' onclick='*.getV()' />
+    <PushButton text='setValues' onclick='function(event)
+{
+  var ev = new TEvent ( event ) ;
+  var v = new TXml() ;
+  var e = v.addCDATA ( "ED2", "OO = function(){};" ) ;
+  var c = ev.getContainer() ;
+  c.setValues ( v ) ;
+}' />
+    <br/>
+    <Label text='Goto Line:' /><TextField name="TF_gotoLine" type='int' action='*.gotoLine()' onkeyup='*.gotoLine()' />
+    <br/>
+    <Label text='find:' /><TextField name="TF_pattern" action='*.find()' onkeyup='*.find()' />
+    <br/>
+    <PushButton text='find next' onclick='*.findNext()' />
+    <PushButton text='find previous' onclick='*.findPrevious()' />
+    <br/>
+    <PushButton text='marker' onclick='*.marker()' />
+  </Container>
+<Splitbar/>
+  <Container style='top:0px;bottom:-0px;right:-0;'>
+    <AceEditor mode='javascript' id='ED1' name='ED1' style='background-color:white;top:0px;left:0px;height:500px;right:-0;font-size:small;'>
+<![CDATA[function foo(items) {
+    var i;
+    var t = "yy"
+          + "bb"
+          ;
+    for (i = 0; i < items.length; i++) {
+        alert("Ace Rocks " + items[i]);
+    }
+}]]>
+    </AceEditor>
+    <SplitbarHorizontal/>
+    <Table name='TABLE_ERRORS' style='width:400px;height:100px;bottom:-0px;right:-0px;'
+           onclick='*.gotoLineFromTable()'
+    >
+      <Columns>
+       <Column name='LINE' />
+       <Column name='COLUMN' />
+       <Column name='TEXT' />
+      </Columns>
+    </Table>
+  </Container>
+</Container>

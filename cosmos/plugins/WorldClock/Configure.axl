@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window Xmodal='false' Xresizable='true' dragable='true' title='No Title...' id="WorldClock.Configure" >
+    <Container onchange='handle:PB.APPLY' >
+      <CosmosTextField name='q' style='right:-0;'
+        icon='{ cosmos:"IconSearch" , name: "PB.SEARCH" }'
+        action='*.searchLocation() '
+      />
+      <br/>
+      <Table name='table.result' style='width:200px;height:200px;right:-0;'
+             sortable=true
+             ondblclick='*.actionTableResult()'
+      >
+        <Columns>
+          <Column name='dnam' title='%City%' />
+        </Columns>
+      </Table>
+      <br/>
+      <Container style='bottom:-2;right:-0;attach-bottom:true;' >
+        <Table name='table' style='width:200px;height:200px;bottom:-0;right:-0;'
+             sortable='true'
+             ondblclick='*.actionTable()'
+        >
+          <Columns>
+            <Column name='dnam' title='%City%' />
+            <Column name='zone' title='%Zone%' type='int' />
+          </Columns>
+        </Table>
+      </Container>
+      <br/>
+      <Container style='bottom:0;right:0' >
+        <CosmosButton disabled='true' name='PB.APPLY' text='Apply' onclick='*.actionTable(event,true)' />
+      </Container>
+    </Container>
+  </Window>
+</xml>

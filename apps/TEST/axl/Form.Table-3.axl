@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Table-3' name='X'
+onload='*.onload()'
+pagelet='
+{
+  container: null,
+  _initialize_: function ( ev )
+  {
+  },
+  onload: function ( ev )
+  {
+    this.container = ev.getContainer() ;
+  },
+  search: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var src = ev.getSource() ;
+    var pattern = src.value ;
+    if ( ! pattern ) return ;
+    var name = src.name.toUpperCase() ;
+    var Q = null ;
+if ( name == "BANKCODE" )
+{
+    Q = Database.createQuery ( "T_BANK",
+    [ "bank_id"
+    , "bankcode"
+    , "bic"
+    , "pan"
+    , "bankname"
+    , "banknameshort"
+    , "bankabbr"
+    , "bankzipcode"
+    , "bankcity"
+    , "deleted"
+    ],
+    name + "=&apos;" + pattern + "&apos;"
+    ) ;
+}
+else
+{
+    pattern = pattern.replace ( /\*/g, "%" ) ;
+    if ( pattern.indexOf ( "%" ) < 0 ) pattern = "%" + pattern + "%" ;
+    pattern = pattern.toUpperCase() ;
+    Q = Database.createQuery ( "T_BANK",
+    [ "bank_id"
+    , "bankcode"
+    , "bic"
+    , "pan"
+    , "bankname"
+    , "banknameshort"
+    , "bankabbr"
+    , "bankzipcode"
+    , "bankcity"
+    , "deleted"
+    ],
+    "upper(" + name + ") like &apos;" + pattern + "&apos;"
+    ) ;
+}
+    Q.setLimit ( 200 ) ;
+    var x = Q.execute() ;
+    this.container.setValues ( x ) ;
+  },
+  searchNames: function ( ev )
+  {
+    var src = ev.getSource() ;
+    var pattern = src.value ;
+    if ( ! pattern ) return ;
+    var name = src.name.toUpperCase() ;
+    var Q = null ;
+if ( name == "BANKCODE" )
+{
+    Q = Database.createQuery ( "T_BANK",
+    [ "bank_id"
+    , name
+    ],
+    name + "=&apos;" + pattern + "&apos;"
+    ) ;
+}
+else
+{
+    pattern = pattern.replace ( /\*/g, "%" ) ;
+    if ( pattern.indexOf ( "%" ) < 0 ) pattern = "%" + pattern + "%" ;
+    pattern = pattern.toUpperCase() ;
+    Q = Database.createQuery ( "T_BANK",
+    [ "bank_id"
+    , name
+    ],
+    "upper(" + name + ") like &apos;" + pattern + "&apos;"
+    ) ;
+}
+    Q.setLimit ( 10 ) ;
+    var x = Q.execute() ;
+    var en = x.getEnum ( "T_BANK/row" ) ;
+    var a = [] ;
+    while ( en.hasNext() )
+    {
+      var r = en.nextXml() ;
+      a.push ( r.getContent ( name ) ) ;
+    }
+    return a ;
+  }
+}'
+>
+  <Container>
+    <ListLabel text='bankcode' /><tab name='T1'/>
+    <TextField name='bankcode' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <ListLabel text='bic' /><tab name='T1'/>
+    <TextField name='bic' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <ListLabel text='bankname' /><tab name='T1'/>
+    <TextField name='bankname' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <ListLabel text='banknameshort' /><tab name='T1'/>
+    <TextField name='banknameshort' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <ListLabel text='bankabbr' /><tab name='T1'/>
+    <TextField name='bankabbr' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <ListLabel text='bankzipcode' /><tab name='T1'/>
+    <TextField name='bankzipcode' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <ListLabel text='bankcity' /><tab name='T1'/>
+    <TextField name='bankcity' style='width:300px;' default='*' action='*.search(event)' resultlist='*.searchNames()' resultlist-pattern-type='like' />
+    <br/>
+    <XPushButton text='%Search%' style='right:0px;' onclick='*.search(event)' />
+  </Container>
+  <br/>
+  <Table name='T_BANK' style='width:500px;height:250px;bottom:-0px;right:-0px;'
+	  selectable='true'
+  >
+    <Columns>
+      <Column name='bank_id' type='int' />
+      <Column name='bankcode' type='int' />
+      <Column name='bic' tooltip='Business Identifier Code'/>
+      <Column name='pan' type='int' />
+      <Column name='bankname' />
+      <Column name='banknameshort' />
+      <Column name='bankabbr' />
+      <Column name='bankzipcode' />
+      <Column name='bankcity' />
+      <Column name='deleted' />
+    </Columns>
+  </Table>
+</Container>
+

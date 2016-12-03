@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='X' id='Form.Gepard' style=''
+>
+  <Properties>
+    <Title>Gepard - Tail</Title>
+    <Favicon>img/gp-icon-16.ico</Favicon>
+  </Properties>
+
+<Container name='X' style='bottom:-0px;right:-0px;' onload='*.onload()' >
+  <Script><![CDATA[
+  {
+    wc: null,
+    port: null,
+    _initialize_: function()
+    {
+      this.port = TSys.getWebConfig().getValue ( "GEPARD_WEBSOCKET_PORT" ) ;
+      var thiz = this ;
+      try
+      {
+        this.wc = gepard.getWebClient ( this.port ) ;
+        thiz.wc.on ( "notification", function notification_event_listener_callback ( e )
+        {
+          thiz._displayNotifications ( e.body ) ;
+        }) ;
+        this.wc.on ( "open", function onopen()
+        {
+          var ne = new gepard.Event ( "getPendingNotifications" ) ;
+          ne.setResultRequested() ;
+          thiz.wc.fireEvent ( ne,
+            { result:function result(e)
+              {
+                var a = e.body ;
+                for ( var i = 0 ; i < a.length ; i++)
+                {
+                  thiz._displayNotifications ( a[i] ) ;
+                }
+              }
+            } ) ;
+        }) ;
+      }
+      catch ( exc )
+      {
+        log ( exc ) ;
+        console.log ( exc ) ;
+      }
+      TSys.addUnloadListener ( function unloadListener (e)
+      {
+        thiz.unsubscribe() ;
+      });
+    },
+    onload: function ( ev )
+    {
+      this.container      = ev.getContainer() ;
+      this.textDisplay    = this.container.getPeer ( "LOG" ) ;
+      this.textDisplay2   = this.container.getPeer ( "LOG2" ) ;
+      this.TAIL_FILE_NAME = this.container.getComponent ( "TAIL_FILE_NAME" ) ;
+    },
+    _displayTailData: function ( e )
+    {
+      var text = e.body.text ;
+      this.textDisplay2.add ( text, true, true ) ;
+    },
+    _displayNotifications: function ( p )
+    {
+      var text = "" ;
+/*
+[id]=wevli154:31014:/vol1/wevli154/home/twtk/mon/app/rating.guiding.rul.tmp
+[state]=start
+[name]=rating.guiding.rul.tmp
+[type]=progress
+[hostname]=wevli154
+[date]=Thu Jul 03 2014 18:42:10 GMT+0200
+[text]=MRT Sync started.
+*/
+      p.text = "<b>" + DateUtils.formatDate ( new Date ( p.date ), "HH:mm:ss" ) + p.hostname + "</b><br/>" + p.text ;
+      var id = p.id ;
+      var text = p.text ;
+      var state = p.state ;
+      var type = p.type ;
+      if ( state === "stop" )
+      {
+        SystemNotifier.remove ( id ) ;
+      }
+      else
+      if ( type === "progress" )
+      {
+        SystemNotifier.progress ( p ) ;
+      }
+      else
+      {
+        SystemNotifier.notify ( p ) ;
+        text = DateUtils.formatDate ( new Date ( p.date ), "HH:mm:ss" ) ;
+        text += " " ;
+        text += p.path ;
+        text += "/" ;
+        text += p.name ;
+        this.textDisplay.add ( text, true, true ) ;
+      }
+    },
+    _sendEvent: function ( name, type )
+    {
+      // var ne = new gepard.Event ( "DB:REQUEST" ) ;
+      var ne = new gepard.Event ( "message-test" ) ;
+      ne.setResultRequested() ;
+      this.wc.fireEvent ( ne,
+        { result:function result(e)
+          {
+            log ( e ) ;
+          }
+        } ) ;
+    },
+    _addEventListener: function ( eventName )
+    {
+      var thiz = this ;
+      this.wc.on ( [ "alarm" ], function alarm_event_listener_callback ( e )
+      {
+log ( e ) ;
+        e.control.status = { code:0 } ;
+        e.body = { result: "xxxxxxxxxxxxxxxxxxxxxx" } ;
+        thiz.wc.sendResult ( e ) ;
+      }) ;
+    },
+    _removeEventListener: function ( eventName )
+    {
+      this.wc.removeEventListener ( [ "alarm" ] ) ;
+    },
+    currentTailFileName: null, //"/home/gess/NGMD/Test/Converter.monitoring.log",
+    bound_subscribed_callback: null,
+    subscribe: function ( tailFileName )
+    {
+      if ( this.currentTailFileName )
+      {
+        this.unsubscribe() ;
+      }
+      this.currentTailFileName = tailFileName ;
+      this.TAIL_FILE_NAME.setText ( this.currentTailFileName ) ;
+      var thiz = this ;
+      var subscribed_callback = function(e)
+      {
+        this._displayTailData ( e ) ;
+      } ;
+      this.bound_subscribed_callback = subscribed_callback.bind ( this ) ;
+      this.textDisplay2.appendCode ( tailFileName, true, "color:blue;font-weight:bold;" )
+
+      this.wc.on ( "tail:" + this.currentTailFileName, this.bound_subscribed_callback ) ;
+      this.wc.request ( { name: "tail:subscribe", type: this.currentTailFileName }
+      , function result(e)
+        {
+          if ( e.isBad() )
+          {
+            log ( e.control.status, true ) ;
+            thiz.wc.removeEventListener ( this.bound_subscribed_callback ) ;
+            return ;
+          }
+        }
+      );
+    },
+    unsubscribe: function(event)
+    {
+      this.TAIL_FILE_NAME.setText ( "" ) ;
+      if ( ! this.bound_subscribed_callback || !this.currentTailFileName )
+      {
+        return ;
+      }
+      this.wc.removeEventListener ( this.bound_subscribed_callback ) ;
+      this.bound_subscribed_callback = null ;
+      this.wc.request ( { name: "tail:unsubscribe", type: this.currentTailFileName }
+      , function result(e)
+        {
+          if ( e.isBad() )
+          {
+            // log ( e.control.status, true ) ;
+            return ;
+          }
+        }
+      );
+    },
+    select_file_to_tail: function ( event )
+    {
+      var thiz = this ;
+      this.wc.request ( "tail:getFileList"
+                      , function result(e)
+                        {
+                          thiz.tailFileList = e.body.fileList ;
+                          thiz.showTailFileSelectDialog() ;
+                        }
+                      );
+    },
+    showTailFileSelectDialog: function()
+    {
+      var thiz = this ;
+      var xml = new TXml() ;
+      var list = xml.add ( "list" ) ;
+      for ( var i = 0 ; i < this.tailFileList.length ; i++ )
+      {
+        var row = list.add ( "row" ) ;
+        row.add ( "name", this.tailFileList[i] ) ;
+      }
+      var w = new TWindow ( "Window.Gepard.Tail.File.Select" ) ;
+      w.setPagelet ( {
+        apply: function ( event )
+        {
+          var ev = new TEvent ( event ) ;
+          var v = w.getValues() ;
+          thiz.subscribe ( v.getContent ( "list/row/name" ) ) ;
+          w.closeImediately() ;
+        }
+      }) ;
+      w.create() ;
+      w.setValues ( xml ) ;
+      w.show() ;
+    }
+  }
+  ]]></Script>
+  <Container>
+  <!--
+    <PushButton text='subscribe' onclick='*.subscribe(/home/gess/acronyl/test/apache-tomcat-7.0.34/logs/localhost.2014-11-28.log)' />
+  -->
+    <PushButton text='unsubscribe' onclick='*.unsubscribe()' />
+    <PushButton text='Select file to tail' onclick='*.select_file_to_tail()' />
+    <Label text='Current file:'/><Label name='TAIL_FILE_NAME' style='right:-0px;'/>
+<!--
+    <PushButton text='Send Event with Result' onclick='*._sendEvent()' />
+    <PushButton text='Add Listener' onclick='*._addEventListener()' />
+    <PushButton text='Remove Listener' onclick='*._removeEventListener()' />
+-->
+<!--
+    <PushButton text='Notify' onclick='function(e)
+    {
+      SystemNotifier.notify ( "333333333 33333333" ) ;
+    }' />
+    <PushButton text='Progress' onclick='function(e)
+    {
+      SystemNotifier.progress ( { text:"333333333 33333333", id:"A" } ) ;
+    }' />
+    <PushButton text='Remove last Entry' onclick='function(e)
+    {
+      SystemNotifier.removeLastEntry() ;
+    }' />
+    <PushButton text='Remove A' onclick='function(e)
+    {
+      SystemNotifier.remove ( "A" ) ;
+    }' />
+-->
+  </Container>
+  <br />
+  <Container style='bottom:-0px;right:-0px;attach-right:true;' >
+    <PushButton text='Clear' style='left:0px;'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var c = ev.getContainer() ;
+        var p = c.getPeer ( "LOG2" ) ;
+        p.clear() ;
+      }'
+    />
+    <br/>
+    <TextDisplay name='LOG2' style='left:0px;bottom:-0px;right:-0px;width:400px;height:200px;overflow:auto;' />
+  </Container>
+  <SplitbarHorizontal />
+  <Container style='bottom:-0px;right:-0px;' >
+    <PushButton text='Clear' style='left:0px;'
+      onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var c = ev.getContainer() ;
+        var p = c.getPeer ( "LOG" ) ;
+        p.clear() ;
+      }'
+    />
+    <br/>
+    <TextDisplay name='LOG' style='left:0px;bottom:-0px;right:-0px;width:400px;overflow:auto;' />
+  </Container>
+</Container>
+</Container>
