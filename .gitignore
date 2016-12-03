@@ -37,7 +37,26 @@
 /cosmos/*.jpg
 /cosmos/strings
 
-/cosmos/widgets
+/cosmos/widgets/Astropix
+/cosmos/widgets/Babelfish
+/cosmos/widgets/Calculator
+/cosmos/widgets/Comics
+/cosmos/widgets/DigitalBlue
+/cosmos/widgets/FreeDictionary
+/cosmos/widgets/FuzzyClock
+/cosmos/widgets/Google.Mail
+/cosmos/widgets/Google.Search
+/cosmos/widgets/GoogleTranslate
+/cosmos/widgets/Leo
+/cosmos/widgets/NationalGeographic
+/cosmos/widgets/PostIt
+/cosmos/widgets/Rss
+/cosmos/widgets/SatteliteImages
+#/cosmos/widgets/VisibleEarth
+/cosmos/widgets/Webcam
+/cosmos/widgets/WhatIsMyIpAddress
+/cosmos/widgets/Wikipedia
+
 /cosmos/plugins/AeroStation
 /cosmos/plugins/AirClock
 /cosmos/plugins/CairoClick

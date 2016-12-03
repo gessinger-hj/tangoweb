@@ -71,7 +71,7 @@
         this.parameter = this.src.getParameter ( cityNumber ) ;
         this.zone = this.parameter.zone ;
         this.dnam = this.parameter.dnam ;
-	if ( this.cityLabel ) this.cityLabel.innerHTML = this.dnam ; //+ "(" + this.zone + ")" ;
+	      if ( this.cityLabel ) this.cityLabel.innerHTML = this.dnam ; //+ "(" + this.zone + ")" ;
       } ;
       this.WorldClock.prototype.paint = function()
       {

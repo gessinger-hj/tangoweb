@@ -3228,10 +3228,11 @@ www_timeanddate_com.prototype.getParameter = function ( n )
   var u = new URLProxy ( url2 ) ;
   var t = u.getText() ;
 
-  pos0 = t.indexOf ( "strong id=ct " ) ;
+  pos0 = t.indexOf ( "span id=ct " ) ;
   pos0 = t.indexOf ( ">", pos0 ) ;
   pos1 = t.indexOf ( "<", pos0 ) ;
   str = t.substring ( pos0+1, pos1  ) ;
+
   var t0 = str.indexOf ( ":" ) ;
   t0 -= 4 ;
   t0 = str.indexOf ( " ", t0 ) + 1 ;
