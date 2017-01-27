@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Header>
+    <Type>Widget</Type>
+    <Title>Garfield Comics</Title>
+    <Description>Garfield Comics</Description>
+  </Header>
+  <Axl>
+    <Container>
+      <Container style='bottom:-0;right:-0;width:300px;height:100px;margin:0px;' name='CONTAINER' >
+        <ImageContainer name='IC' style='top:0px;left:0px;right:-0;bottom:-0'
+        />
+      </Container>
+    </Container>
+  </Axl>
+  <Script><![CDATA[
+{
+  widget: null,
+  container: null,
+  ic: null,
+  _constructor_: function ( widget )
+  {
+    this.widget = widget ;
+    this.resizable= true ;
+    this.closable= true ;
+  },
+  _initialize_: function ( widget )
+  {
+    this.container = new TContainer ( this.widget.getElementByName ( "CONTAINER" ) ) ;
+    this.ic = this.widget.getPeerByName ( "IC" ) ;
+    this.ic.addPropertyChangeListener ( this, this.imageLoaded ) ;
+  },
+  imageLoaded: function ( ev )
+  {
+/*
+    this.widget.unlock() ;
+*/
+  },
+  loadComic: function()
+  {
+/*
+http://www.collectedcurios.com/sequentialart.html
+http://www.earthshots.org/
+const char *cMainPageUrl = "http://antwrp.gsfc.nasa.gov/apod/astropix.html";
+const char *cPhotosWebsite = "http://antwrp.gsfc.nasa.gov/apod/image/";
+
+const char *cMainPageUrl = "http://ibpub.internetbrands.com/cgi-bin/mt/ib-potd-widget.cgi?render=full";
+const char *cPhotosWebsite = "http://www.steves-digicams.com/photo-of-the-day/pub/";
+const char *cPhotoTag = "<img src=\"http://www.steves-digicams.com/photo-of-the-day/pub/";
+*/
+/*
+    this.widget.lock() ;
+*/
+    var url = "http://www.gocomics.com/garfield-classics/" ;
+    var u = new URLProxy ( url ) ;
+    var str = u.getText() ;
+    var pos0 = str.indexOf ( 'item-comic-container' ) ;
+    pos0 = str.indexOf ( ' src=', pos0 ) ;
+    pos0 = str.indexOf ( '"', pos0 ) + 1 ;
+    var pos1 = str.indexOf ( '"', pos0 ) ;
+    str = str.substring ( pos0, pos1 ) ;
+    this.ic.setImage ( str ) ;
+  },
+  mouse: function ( event, what )
+  {
+  },
+  onOpen: function()
+  {
+    this.loadComic() ;
+  },
+  onClose: function ( ev )
+  {
+  },
+  onFocus: function ( state )
+  {
+  }
+/*
+  dragStart: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ev.getSource() === this.TEXT ) return false ;
+    return true;
+  }
+*/
+}
+  ]]></Script>
+</xml>
+
