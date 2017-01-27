@@ -3172,17 +3172,21 @@ www_timeanddate_com = function()
 };
 www_timeanddate_com.prototype.searchCity = function ( q )
 {
+log ( "q=" + q ) ;
   var xResult = new TXml() ;
   var xTab  = xResult.add ( "table.result" ) ;
   q = encodeURIComponent ( q ) ;
   var url = "http://www.timeanddate.com/worldclock/results.html?query=" + q ;
   var u = new URLProxy ( url ) ;
   var t = u.getText() ;
+log ( url ) ;
+// log ( t ) ;
   var n ;
   var xRow ;
 
-  if ( t.indexOf  ( 'Results of search' ) < 0 )
+  if ( t.indexOf  ( 'Results of Search' ) < 0 )
   {
+log ( "1 ---------------------------" ) ;
     xRow = xTab.add ( "row" ) ;
     var pos0 = t.indexOf ( "/city.html?n=" ) ;
     pos0 += "/city.html?n=".length ;
@@ -3198,6 +3202,7 @@ www_timeanddate_com.prototype.searchCity = function ( q )
   else
   if ( t.indexOf  ( "\"/worldclock/city.html?n=" ) > 0 )
   {
+log ( "2 ---------------------------" ) ;
     var pos = 0 ;
     pos = t.indexOf ( "\"/worldclock/city.html?n=", pos ) ;
     var i = 0 ;
@@ -3217,6 +3222,7 @@ www_timeanddate_com.prototype.searchCity = function ( q )
       pos = t.indexOf ( "\"/worldclock/city.html?n=", p1 ) ;
     }
   }
+log ( "3 ---------------------------" ) ;
   return xResult ;
 } ;
 www_timeanddate_com.prototype.getParameter = function ( n )
@@ -3264,50 +3270,35 @@ www_timeanddate_com.prototype.getParameter = function ( n )
   p.cityNumber = n  ;
   p.dMinutes = m - lm ;
   p.dUTCMinutes = m - utcm ;
-  pos0 = t.indexOf ( "Latitude:" ) ;
+  pos0 = t.indexOf ( "Lat/Long:" ) ;
   pos0 = t.indexOf ( ">", pos0 ) + 1 ;
   pos0 = t.indexOf ( ">", pos0 ) + 1 ;
   pos1 = t.indexOf ( "<", pos0 ) ;
 
-  t1 = t.substring ( pos0, pos1 ) ;
-  t1 = t1.replace ( /\&deg;/g, " " ).replace ( /\&nbsp;/g, " " ) ;
-  t1 = t1.substring ( 0, t1.length - 2 ).trim() ;
-  var degrees = parseInt  ( t1 ) ;
-  var seconds = parseInt  ( t1.substring ( t1.lastIndexOf ( " " ) + 1 ) ) ;
+  var latLon = t.substring ( pos0, pos1 ) ;
+// log ( "latLon=" + latLon ) ;
+  latLon = latLon.replace ( /°/g, " " ).replace ( /\&nbsp;/g, " " ) ;
+  var ll = latLon.split("/") ;
+  var lat = ll[0].trim() ;
+  var lon = ll[1].trim() ;
 
+  var degrees = parseInt  ( lat ) ;
+  var seconds = parseInt  ( lat.substring ( lat.indexOf ( " " ) + 1 ) ) ;
   seconds = seconds / 60 ;
   degrees += seconds ;
   p.latitude = degrees.roundTo ( 2 ) ;
-  pos0 = t.indexOf ( ">", pos1 ) + 1 ;
-  pos0 = t.indexOf ( ">", pos0 ) + 1 ;
-  pos1 = t.indexOf ( "<", pos0 ) ;
-  str = t.substring ( pos0, pos1 ) ;
-  var latSouth = str.indexOf ( "South" ) === 0 ;
-  if ( latSouth )
+  if ( lat.indexOf ( "'S" ) > 0 )
   {
     p.latitude = "-" + p.latitude ;
   }
 
-  pos0 = t.indexOf ( "Longitude:" ) ;
-  pos0 = t.indexOf ( ">", pos0 ) + 1 ;
-  pos0 = t.indexOf ( ">", pos0 ) + 1 ;
-  pos1 = t.indexOf ( "<", pos0 ) - 3 ;
-
-  t1 = t.substring ( pos0, pos1 ) ;
-  t1 = t1.replace ( /\&deg;/g, " " ).replace ( /\&nbsp;/g, " " ) ;
-  t1 = t1.substring ( 0, t1.length - 2 ).trim() ;
-  degrees = parseInt  ( t1 ) ;
-  seconds = parseInt  ( t1.substring ( t1.lastIndexOf ( " " ) + 1 ) ) ;
+  degrees = parseInt  ( lon ) ;
+  seconds = parseInt  ( lon.substring ( lon.lastIndexOf ( " " ) + 1 ) ) ;
 
   seconds = seconds / 60 ;
   degrees += seconds ;
   p.longitude = degrees.roundTo ( 2 ) ;
-  pos0 = t.indexOf ( ">", pos1 ) + 1 ;
-  pos0 = t.indexOf ( ">", pos0 ) + 1 ;
-  pos1 = t.indexOf ( "<", pos0 ) ;
-  str = t.substring ( pos0, pos1 ) ;
-  var longWest = str.indexOf ( "West" ) === 0 ;
-  if ( longWest )
+  if ( lon.indexOf ( "'W" ) > 0 )
   {
     p.longitude = "-" + p.longitude ;
   }
@@ -3315,5 +3306,6 @@ www_timeanddate_com.prototype.getParameter = function ( n )
   pos0 = t.indexOf ( ">", pos0 ) + 1 ;
   pos1 = t.indexOf ( ",", pos0 ) ;
   p.dnam  = t.substring  ( pos0, pos1 ) ;
+// log ( p, true ) ;
   return p ;
 } ;
