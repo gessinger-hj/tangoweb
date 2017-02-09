@@ -404,7 +404,7 @@ CosmosClass.prototype.startPlugin = function ( name )
     }
     catch ( exc )
     {
-      TSys.log ( "CosmosClass.prototype.startPlugin:\n" + exc ) ;
+      TSys.log ( exc ) ;
     }
   }
 };
@@ -3230,7 +3230,7 @@ www_timeanddate_com.prototype.getParameter = function ( n )
   var str ;
   var pos0 = 0 ;
   var pos1 = 0 ;
-  var url2 = "http://www.timeanddate.com/worldclock/city.html?n=" + n ;
+  var url2 = "https://www.timeanddate.com/worldclock/city.html?n=" + n ;
   var u = new URLProxy ( url2 ) ;
   var t = u.getText() ;
 
@@ -3276,7 +3276,6 @@ www_timeanddate_com.prototype.getParameter = function ( n )
   pos1 = t.indexOf ( "<", pos0 ) ;
 
   var latLon = t.substring ( pos0, pos1 ) ;
-// log ( "latLon=" + latLon ) ;
   latLon = latLon.replace ( /°/g, " " ).replace ( /\&nbsp;/g, " " ) ;
   var ll = latLon.split("/") ;
   var lat = ll[0].trim() ;
