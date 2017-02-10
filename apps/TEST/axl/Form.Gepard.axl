@@ -13,7 +13,11 @@
     port: null,
     _initialize_: function()
     {
-      this.port = TSys.getWebConfig().getValue ( "GEPARD_WEBSOCKET_PORT" ) ;
+      this.port = parseInt ( TSys.getWebConfig().getValue ( "GEPARD_WEBSOCKET_PORT" ) ) ;
+      if ( isNaN ( this.port ) )
+      {
+        this.port = 17502 ;
+      }
       var thiz = this ;
       try
       {

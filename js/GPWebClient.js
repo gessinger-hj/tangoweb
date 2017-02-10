@@ -2,36 +2,149 @@ if ( typeof gepard === 'undefined' ) gepard = {} ;
 
 gepard.counter = 0 ;
 gepard.port = 17502 ; // default port
-gepard.getWebClient = function ( port )
+gepard.clients = {} ;
+/**
+ * get an existing client or create a new one
+ * @param  {int} port port
+ * @param  {[string]} host host (optional)
+ * @return {WebClient}      the WebClient object
+ */
+gepard.getClient = function ( port, host )
 {
-  if ( ! port )
-  {
-    port = gepard.port ;
-  }
-  if ( gepard._WebClientInstance ) return gepard._WebClientInstance ;
-  return new gepard.WebClient ( port ) ;
+  return this.getWebClient ( port, host ) ;
 };
 /**
- * Description
- * @param {} port
+ * get an existing client or create a new one
+ * @param  {int} port port
+ * @param  {[string]} host host (optional)
+ * @return {WebClient}      the WebClient object
  */
-gepard.WebClient = function ( port )
+gepard.getWebClient = function ( port, host )
 {
-  this._port                       = port ;
-  this._socket                     = null ;
-  this._user                       = null ;
-  this._pendingEventList           = [] ;
-  this._pendingResultList          = {} ;
-  this._callbacks                  = {} ;
-  this._eventListenerFunctions     = new tangojs.MultiHash() ;
-  this._pendingEventListenerList   = [] ;
-  if ( window.location.protocol == 'http:')
+  var key = "" + port + host ;
+  if ( typeof port === "string" )
   {
-    this._url = "ws://" + document.domain + ":" + this._port ;
+    key = port ;
   }
   else
   {
-    this._url = "wss://" + document.domain + ":" + this._port ;
+    host = ! host ? "" : host ;
+    if ( ! port )
+    {
+      port = gepard.port ;
+    }
+    key = "" + port + host ;
+  }
+  var wc = gepard[key] ;
+  if ( wc ) return wc ;
+  return new gepard.WebClient ( port, host ) ;
+};
+gepard.hasStacks = false;
+try {
+  if ( typeof Error !== 'undefined' )
+  {
+    throw new Error();
+  }
+} catch (e) {
+    gepard.hasStacks = !!e.stack;
+};
+gepard.where = function ( str )
+{
+  var t = this._where ( str ) ;
+  if ( typeof t !== 'undefined' )
+  {
+    console.log ( t ) ;
+  }
+};
+gepard._where = function ( str )
+{
+  if ( ! gepard.hasStacks) {
+      return;
+  }
+  try
+  {
+    throw new Error();
+  }
+  catch (e)
+  {
+    var lines = e.stack.split ("\n") ;
+    var i = 0 ;
+    for ( i = 0 ; i < lines.length ; i++ )
+    {
+      if ( lines[i].indexOf ( "where" ) >= 0 )
+      {
+        break ;
+      }
+    }
+    for ( ; i < lines.length ; i++ )
+    {
+      if ( lines[i].indexOf ( "where" ) < 0 )
+      {
+        break ;
+      }
+    }
+    var firstLine = lines[i] ;
+    firstLine = firstLine.trim() ;
+    if ( firstLine.indexOf ( "at " ) === 0 ) firstLine = firstLine.substring ( 3 ) ;
+    if ( firstLine.indexOf ( "<anonymous function: " ) === 0 )
+    {
+      firstLine = firstLine.substring ( "<anonymous function: ".length ) ;
+    }
+    var p1 = firstLine.indexOf ( "http:" ) ;
+    if ( p1 > 0 )
+    {
+      var p2 = firstLine.lastIndexOf ( "/" ) ;
+      if ( p2 > 0 )
+      {
+        firstLine = firstLine.substring ( 0, p1 ) + firstLine.substring ( p2 + 1 ) ;
+      }
+    }
+    var p1 = firstLine.indexOf ( "?" ) ;
+    if ( p1 > 0 )
+    {
+      var p2 = firstLine.indexOf ( ":", p1 ) ;
+      if ( p2 > 0 )
+      {
+        firstLine = firstLine.substring ( 0, p1 ) + firstLine.substring ( p2 ) ;
+      }
+    }
+    if ( str )
+    {
+      return str + ": " + firstLine ;
+    }
+    return firstLine ;
+  }
+};
+
+/**
+ * WebClient class
+ * @param {int} port port of interest.
+ *                   Default: 17502
+ * @param {[string]} host host of interest
+ */
+gepard.WebClient = function ( port, host )
+{
+  this._port                     = port ;
+  this._socket                   = null ;
+  this._user                     = null ;
+  this._pendingEventList         = [] ;
+  this._pendingResultList        = {} ;
+  this._callbacks                = {} ;
+  this._eventListenerFunctions   = new tangojs.MultiHash() ;
+  this._pendingEventListenerList = [] ;
+  var domain                     = host ? host : document.domain ;
+  if ( typeof port === 'string' )
+  {
+    this._url = port ;
+  }
+  else
+  if ( window.location.protocol === 'https:')
+  {
+    this._url = "wss://" + domain + ":" + this._port ;
+  }
+  else
+  {
+    this._url = "ws://" + domain + ":" + this._port ;
   }
 
   this._proxyIdentifier             = null ;
@@ -42,21 +155,24 @@ gepard.WebClient = function ( port )
   this._acquiredSemaphores          = {} ;
   this._ownedSemaphores             = {} ;
   this._pendingAcquireSemaphoreList = [] ;
-
-  gepard._WebClientInstance = this ;
+  gepard.clients[""+port+host]      = this ;
+  this._reconnectIntervalMillis     = 5000 ;
+  this._reconnect                   = !! gepard.reconnect ;
+  // this.setChannel ( T.getProperty ( "gepard.channel" ) ) ; TODO
+  this._isReconnecting              = false ;
 };
 gepard.WebClient.prototype._initialize = function()
 {
 };
 /**
  * Description
- * @return BinaryExpression
+ * @return unique id
  */
 gepard.WebClient.prototype._createUniqueEventId = function()
 {
   return this._url + "_" + new Date().getTime() + "-" + this._proxyIdentifier + "-" + (gepard.counter++) ;
 };
-gepard.WebClient.prototype.emit = function ( p1, eventName )
+gepard.WebClient.prototype._emit = function ( p1, eventName )
 {
   var list = this._onCallbackFunctions.get ( eventName ) ;
   if ( list )
@@ -68,8 +184,38 @@ gepard.WebClient.prototype.emit = function ( p1, eventName )
   }
 };
 /**
- * Description
+ * close this client-connection.
  */
+gepard.WebClient.prototype.close = function()
+{
+  this._reconnect = false ;
+  if ( ! this._socket ) return ;
+  try
+  {
+    this._socket.close() ;
+    this._socket = null ;
+  }
+  catch ( exc )
+  {
+    
+  }
+}
+/**
+ * Sets the reconnect.
+ *
+ * @param      {boolean}  state   The state
+ * @return     {Object}  this
+ */
+gepard.WebClient.prototype.setReconnect = function ( state )
+{
+  state = !! state ;
+  this._reconnect = state ;
+  return this ;
+};
+gepard.WebClient.prototype._retryConnection = function()
+{
+  this.getSocket() ;
+};
 gepard.WebClient.prototype._connect = function()
 {
   var thiz = this ;
@@ -81,10 +227,48 @@ gepard.WebClient.prototype._connect = function()
    */
   this._socket.onerror = function(err)
   {
-    if ( ! thiz._socket ) return ;
-    thiz._socket.close() ;
+    if ( thiz._socket )
+    {
+      thiz._socket.close() ;
+      thiz._socket = null ;
+    }
+    thiz._emit ( err, "error" ) ;
+    if ( thiz._reconnect && ! thiz._isReconnecting )
+    {
+      thiz._isReconnecting = true ;
+      var keyList = thiz._eventListenerFunctions.getKeys() ;
+      if ( keyList.length && ! thiz._pendingEventListenerList.length )
+      {
+        var e = new gepard.Event ( "system", "addEventListener" ) ;
+        if ( thiz.user ) e.setUser ( thiz.user ) ;
+        e.body.eventNameList = keyList ;
+        thiz._pendingEventListenerList.push ( { e:e } ) ;
+      }
+      if ( thiz.intervalId ) clearInterval ( thiz.intervalId ) ;
+      console.log ( "Connection failed. Trying to reconnect." ) ;
+      thiz.intervalId = setInterval ( thiz._retryConnection.bind ( thiz ), thiz._reconnectIntervalMillis ) ;
+    }
+  } ;
+  this._socket.onclose = function onclose(e)
+  {
     thiz._socket = null ;
-    thiz.emit ( err, "error" ) ;
+    thiz._emit ( null, "close" ) ;
+    thiz._emit ( null, "end" ) ;
+    if ( thiz._reconnect && ! thiz._isReconnecting )
+    {
+      thiz._isReconnecting = true ;
+      var keyList = thiz._eventListenerFunctions.getKeys() ;
+      if ( keyList.length && ! thiz._pendingEventListenerList.length )
+      {
+        var e = new gepard.Event ( "system", "addEventListener" ) ;
+        if ( thiz.user ) e.setUser ( thiz.user ) ;
+        e.body.eventNameList = keyList ;
+        thiz._pendingEventListenerList.push ( { e:e } ) ;
+      }
+      if ( thiz.intervalId ) clearInterval ( thiz.intervalId ) ;
+      console.log ( "Connection closed. Trying to reconnect." ) ;
+      thiz.intervalId = setInterval ( thiz._retryConnection.bind ( thiz ), thiz._reconnectIntervalMillis ) ;
+    }
   } ;
   /**
    * Description
@@ -118,6 +302,7 @@ gepard.WebClient.prototype._connect = function()
       if ( m.charAt ( 0 ) === '{' )
       {
         var e = gepard.deserialize ( m ) ;
+        // e._Client = thiz ;
         var wid = e.getWebIdentifier() ;
         if ( e.isResult() )
         {
@@ -214,7 +399,16 @@ gepard.WebClient.prototype._connect = function()
           }
           for  ( j = 0 ; j < callbackList.length ; j++ )
           {
-            callbackList[j].call ( thiz, e ) ;
+            if ( e.isResultRequested() )
+            {
+              e._Client = thiz ;
+              callbackList[j].call ( thiz, e ) ;
+              break ;
+            }
+            else
+            {
+              callbackList[j].call ( thiz, e ) ;
+            }
           }
         }
       }
@@ -222,26 +416,30 @@ gepard.WebClient.prototype._connect = function()
   } ;
   /**
    * Description
-   * @param {} e
-   */
-  this._socket.onclose = function onclose(e)
-  {
-    if ( ! thiz._socket ) return ;
-    thiz._socket = null ;
-    thiz.emit ( null, "close" ) ;
-  } ;
-  /**
-   * Description
    */
   this._socket.onopen = function()
   {
+    var wasReconnecting
+    if ( thiz._isReconnecting )
+    {
+      thiz._isReconnecting = false ;
+      console.log ( "re-connect in progress." ) ;
+      thiz._emit ( null, "reconnect" ) ;
+    }
+    thiz._isReconnecting = false ;
+    if ( thiz.intervalId )
+    {
+      clearInterval ( thiz.intervalId ) ;
+      thiz.intervalId = null ;
+    }
     var einfo = new gepard.Event ( "system", "client_info" ) ;
     einfo.body.userAgent = navigator.userAgent ;
     einfo.body.connectionTime = new Date() ;
     einfo.body.domain = document.domain ;
     thiz._socket.send ( einfo.serialize() ) ;
 
-    thiz.emit ( null, "open" ) ;
+    thiz._emit ( null, "open" ) ;
+    thiz._emit ( null, "connect" ) ;
 
     var i ;
     if ( thiz._pendingEventList.length )
@@ -265,7 +463,6 @@ gepard.WebClient.prototype._connect = function()
       {
         var ctx = thiz._pendingEventListenerList[i] ;
         var e = ctx.e ;
-        var callback = ctx.callback ;
         e.setWebIdentifier ( uid ) ;
         thiz._socket.send ( e.serialize() ) ;
       }
@@ -295,6 +492,7 @@ gepard.WebClient.prototype._connect = function()
       }
       thiz._pendingAcquireSemaphoreList.length = 0 ;
     }
+    console.log ( "Connection opened." ) ;
   };
 };
 /**
@@ -431,6 +629,10 @@ gepard.WebClient.prototype.on = function ( eventNameList, callback )
     if (  eventNameList === "open"
        || eventNameList === "close"
        || eventNameList === "error"
+       || eventNameList === "shutdown"
+       || eventNameList === "end"
+       || eventNameList === "reconnect"
+       // || eventNameList === "disconnect"
        )
     {
       this._onCallbackFunctions.put ( eventNameList, callback ) ;
@@ -470,7 +672,7 @@ gepard.WebClient.prototype.addEventListener = function ( eventNameList, callback
   }
   if ( ! this._socket )
   {
-    this._pendingEventListenerList.push ( { e:e, callback:callback } ) ;
+    this._pendingEventListenerList.push ( { e:e, callback:callback } ) ; // TODO: callback ??
   }
   else
   if ( this._pendingEventListenerList.length )
