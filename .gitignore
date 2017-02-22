@@ -50,7 +50,7 @@
 /cosmos/widgets/Leo
 /cosmos/widgets/NationalGeographic
 /cosmos/widgets/PostIt
-/cosmos/widgets/Rss
+#/cosmos/widgets/Rss
 /cosmos/widgets/SatteliteImages
 #/cosmos/widgets/VisibleEarth
 /cosmos/widgets/Webcam

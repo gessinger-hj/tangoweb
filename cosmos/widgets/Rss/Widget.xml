@@ -1,0 +1,545 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Header>
+    <Type>Widget</Type>
+    <Title>Rss</Title>
+    <Description>News Reader</Description>
+  </Header>
+  <Axl>
+    <Container>
+      <Container style='padding:0px;' >
+        <CosmosButton img="${home}/edit_add.png" name='PB.ADD' style='bottom:0;' tooltip='Add a feed.' onclick='*.add()'/>
+        <CosmosButton img="${home}/edit.png" name='PB.EDIT' style='bottom:0;' disabled='true' tooltip='Edit the selected feed.' onclick='*.edit()'/>
+        <CosmosButton img="${home}/edit_remove.png" name='PB.REMOVE' style='bottom:0;' disabled='true' tooltip='Remove the selected feed.' onclick='*.remove()'/>
+        <CosmosButton img="${home}/sort.png" name='PB.SORT' tooltip='Sort entries.' style='bottom:0;'
+onclick='{
+tab:null,
+factor: -1,
+execute: function(event)
+{
+  if ( ! this.tab )
+  {
+    var ev = new TEvent ( event ) ;
+    this.tab = ev.getContainer().getPeer ( "TABLE" ) ;
+  }
+  this.factor = this.factor * -1 ;
+  this.tab.sortColumn ( 0, this.factor ) ;
+}
+}'
+        />
+        <CosmosButton text="Mark all as Read" onclick='*.markAllAsRead()' tooltip='Mark all entries as read.'/>
+        <CosmosButton text="Mark all as UnRead" onclick='*.markAllAsUnRead()' tooltip='Mark all entries as unread.'/>
+        <CosmosButton text="Hide read" onclick='*.hideRead()' tooltip='Hide all entries which are already read.'/>
+        <CosmosButton text="Unhide read" onclick='*.unhideRead()' tooltip='Show all entries read or unread.'/>
+      </Container>
+      <br/>
+      <Container style='bottom:-0px;right:-0px;left:0px;' >
+        <Table name='TABLE' style='bottom:-4;width:140px;height:500px;attach-bottom:true;' show-header='false' get-values='all'  >
+          <Columns>
+            <Column name='title' />
+          </Columns>
+        </Table>
+        <Container style='bottom:-0;right:-0;overflow:auto;width:300px;background-color:white;color:black;' name='RSS.CONTAINER' >
+        </Container>
+      </Container>
+    </Container>
+  </Axl>
+  <Script><![CDATA[
+{
+  readIsHidden: false,
+  widget: null,
+  rssContainer: null,
+  table: null,
+  isPagelet: function() { return true ; },
+  _constructor_: function ( widget )
+  {
+    this.widget = widget ;
+    this.resizable= true ;
+    this.closable= true ;
+  },
+  _initialize_: function ( widget )
+  {
+    this.rssContainer = new TContainer ( this.widget.getElementByName ( "RSS.CONTAINER" ) ) ;
+    this.table = this.widget.getPeerByName ( "TABLE" ) ;
+    this.table.addSelectionListener ( this, this.tableSelected ) ;
+    this.pbAdd = this.widget.getComponent ( 'PB.ADD' ) ;
+    this.pbEdit = this.widget.getComponent ( 'PB.EDIT' ) ;
+    this.pbRemove = this.widget.getComponent ( 'PB.REMOVE' ) ;
+    this.rssContainer.addEventListener ( "mousedown", this, this.rssContainerClicked ) ;
+  },
+  rssContainerClicked: function ( event )
+  {
+    var ev = $E ( event ) ;
+    var src = ev.getSource() ;
+    if ( src.nodeName == 'IMG' && src.parentNode.nodeName == 'A' )
+    {
+      src = src.parentNode ;
+    }
+    var p = null ;
+    var key = null ;
+    for ( p = src.parentNode ; p ; p = p.parentNode )
+    {
+      if ( p.id && p.id.indexOf ( "KEY:" ) === 0 )
+      {
+        key = p.id ;
+        break ;
+      }
+    }
+    if ( ! key ) return ;
+    if  ( src.nodeName == 'IMG' )
+    {
+      if ( src.name  == 'MARK_AS_READ')
+      {
+        this.markAsRead ( p, true ) ;
+        this.currentFeedHistoryHash[key] = 'x' ;
+      }
+      if ( src.name  == 'MARK_AS_UNREAD')
+      {
+        this.markAsRead ( p, false ) ;
+        delete this.currentFeedHistoryHash[key] ;
+      }
+      return ;
+    }
+    if  ( src.nodeName != 'A' )
+    {
+      return ;
+    }
+    this.markAsRead ( p, true, key ) ;
+  },
+  markAsRead: function ( div, state, key )
+  {
+    var cdiv = new TContainer ( div ) ;
+    var LINK = cdiv.getComponent ( "LINK" ) ;
+    if ( ! LINK.dom )
+    {
+      return ;
+    }
+    var MARK_AS_READ = cdiv.getComponent ( "MARK_AS_READ" ) ;
+    var MARK_AS_UNREAD = cdiv.getComponent ( "MARK_AS_UNREAD" ) ;
+    if ( state )
+    {
+      div.style.color = 'gray' ;
+      LINK.dom.style.color = 'magenta' ;
+      if ( MARK_AS_READ.dom ) MARK_AS_READ.dom.style.display = 'NONE' ;
+      if ( MARK_AS_UNREAD.dom ) MARK_AS_UNREAD.dom.style.display = '' ;
+      this.currentFeedHistoryHash[key] = 'x' ;
+      if ( this.readIsHidden ) div.style.display = 'none' ;
+    }
+    else
+    {
+      div.style.color = 'black' ;
+      LINK.dom.style.color = 'blue' ;
+      if ( MARK_AS_READ.dom ) MARK_AS_READ.dom.style.display = '' ;
+      if ( MARK_AS_UNREAD.dom ) MARK_AS_UNREAD.dom.style.display = 'NONE' ;
+      delete this.currentFeedHistoryHash[key] ;
+      div.style.display = '' ;
+    }
+  },
+  markAllAsRead: function()
+  {
+    var en = new TXml ( this.rssContainer.dom ).elements() ;
+    while ( en.hasNext() )
+    {
+      var div = en.next() ;
+      this.markAsRead ( div, true, div.id ) ;
+    }
+  },
+  markAllAsUnRead: function()
+  {
+    var en = new TXml ( this.rssContainer.dom ).elements() ;
+    while ( en.hasNext() )
+    {
+      var div = en.next() ;
+      this.markAsRead ( div, false, div.id ) ;
+    }
+  },
+  hideRead: function()
+  {
+    this.readIsHidden = true ;
+    var en = new TXml ( this.rssContainer.dom ).elements() ;
+    while ( en.hasNext() )
+    {
+      var div = en.next() ;
+      if ( this.currentFeedHistoryHash[div.id] )
+      {
+        div.style.display = 'none' ;
+      }
+    }
+  },
+  unhideRead: function()
+  {
+    this.readIsHidden = false ;
+    var en = new TXml ( this.rssContainer.dom ).elements() ;
+    while ( en.hasNext() )
+    {
+      var div = en.next() ;
+      if ( this.currentFeedHistoryHash[div.id] )
+      {
+        div.style.display = '' ;
+      }
+    }
+  },
+  add: function ( event )
+  {
+    var w = new CosmosWindow ( this.widget.getAxl ( "Configure" ) ) ;
+    w.create() ;
+    var b = w.getComponent ( 'PB.Rss.Configure.Apply' ) ;
+    b.addEventListener ( 'click', this, this.addApply ) ;
+    w.show() ;
+  },
+  addApply: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! ev.getComponent().isEnabled() ) return ;
+    var x = ev.getValues() ;
+    x.setName ( "row" ) ;
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    tab.addRow ( x  ) ;
+    ev.getWindow().close() ;
+  },
+  edit: function ( event )
+  {
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    var x = tab.getSelectedUserXml() ;
+    if ( ! x ) return ;
+    var w = new CosmosWindow ( this.widget.getAxl ( "Configure" ) ) ;
+    w.create() ;
+    w.setValues ( x ) ;
+    var b = w.getComponent ( 'PB.Rss.Configure.Apply' ) ;
+    b.addEventListener ( 'click', this, this.editApply ) ;
+    w.show() ;
+  },
+  editApply: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! ev.getComponent().isEnabled() ) return ;
+    var x = ev.getValues() ;
+    var r = this.table.getSelectedRow() ;
+    r.update ( x ) ;
+    ev.getWindow().close() ;
+  },
+  remove: function ( event )
+  {
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    var x = tab.getSelectedUserXml() ;
+    if ( ! x ) return ;
+    var t = x.getContent ( "title" ) ;
+    var d = new CosmosUserDialog ( "Really delete<br/><b>" + t + "?</b>" ) ;
+    d.callOnConfirmation ( this, this.removeApply ) ;
+    d.ask() ;
+  },
+  removeApply: function ( event )
+  {
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    var r = tab.getSelectedRow() ;
+    r.remove() ;
+  },
+  history: {},
+  currentFeedHistoryHash: {},
+  tableSelected: function ( ev )
+  {
+    this.pbEdit.setEnabled ( true ) ;
+    this.pbRemove.setEnabled ( true ) ;
+    var ud = this.table.getSelectedUserXml() ;
+    var url = ud.getContent ( "url" ) ;
+
+    this.currentFeedHistoryHash = this.history[url] ;
+    if ( ! this.currentFeedHistoryHash )
+    {
+      this.currentFeedHistoryHash = {} ;
+      this.history[url] = this.currentFeedHistoryHash ;
+    }
+    var oldCopy = {} ;
+    for ( var k in this.currentFeedHistoryHash )
+    {
+      if ( ! this.currentFeedHistoryHash.hasOwnProperty (k) ) continue ;
+      oldCopy[k] = this.currentFeedHistoryHash[k] ;
+    }
+// http://www.simonsfoundation.org/quanta-archive/feed/
+    var u = new URLProxy ( url ) ;
+    var xml = u.getXml() ;
+// log ( xml ) ;
+    // var xml = u.getText() ;
+    var xContent = xml.getXml ( "Content" ) ;
+    if ( ! xContent ) return ;
+    var rssSize = this.rssContainer.getSize() ;
+
+    var isRdfOrRss = false ;
+    var isAtom = false ;
+    var xRdfOrRss = xContent.xmlAt ( 0 ) ;
+    var xItemElement = null ;
+    if ( xRdfOrRss.getName() == 'rss' ) 
+    {
+      isRdfOrRss = true ;
+      xItemElement = xRdfOrRss.getXml ( "channel" ) ;
+    }
+    else
+    if ( xRdfOrRss.getName() == 'RDF' ) 
+    {
+      isRdfOrRss = true ;
+      xItemElement = xRdfOrRss ;
+    }
+    else
+    if ( xRdfOrRss.getName() == 'feed' ) 
+    {
+      isAtom = true ;
+      xItemElement = xRdfOrRss ;
+    }
+    var str = "" ;
+
+//log ( xRdfOrRss ) ;
+/*
+<pubDate>Sat, 09 Apr 2011 18:26:16 +0200</pubDate>
+published>2011-04-05T14:07:00+02:00</published>
+<updated>2011-04-05T14:41:32+02:00</updated>
+*/
+    if ( isRdfOrRss )
+    {
+//log ( xRdfOrRss ) ;
+      var headerTitle = xRdfOrRss.getContent ( "channel/title" ) ;
+      var headerDescription = xRdfOrRss.getContent ( "channel/description" ) ;
+
+      var en = xItemElement.getEnum ( "item" ) ;
+      while ( en.hasNext() )
+      {
+        var xItem = en.nextXml() ;
+        var title = xItem.getContent ( "title" ) ;
+        var link = xItem.getContent ( "link" ) ;
+        var description = xItem.getContent ( "description" ) ;
+        var content_encoded = xItem.getContent ( "encoded" ) ;
+        var pubDate = xItem.getContent ( "pubDate" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "updated" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "published" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "publicationDate" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "date" ) ;
+        if ( pubDate ) pubDate = DateUtils.parseDate ( pubDate ) ;
+        if ( pubDate ) pubDate = this.translateTimeOffsetOf ( pubDate ) ;
+        if ( ! pubDate ) pubDate = "" ;
+        description = Cosmos.adjustHref ( description, null, null ) ;
+        if ( content_encoded )
+        {
+          content_encoded = Cosmos.adjustHref ( content_encoded, null, null ) ;
+          description  = "<p>" + description + "</p>" + content_encoded ;
+          description  = content_encoded ;
+        }
+
+        var id = "KEY:" + link ;
+        var linkColor = 'blue' ;
+        var itemEntry = this.currentFeedHistoryHash[id] ;
+        str += "<div id='" + id + "' " ;
+        var MARK_AS_READ_display  = "" ;
+        var MARK_AS_UNREAD_display  = "display:none;" ;
+        if ( itemEntry )
+        {
+          linkColor  = 'magenta' ;
+          if ( this.readIsHidden )
+          {
+            str += " style='color:gray;display:none;' " ;
+          }
+          else
+          {
+            str += " style='color:gray;' " ;
+          }
+          
+          MARK_AS_READ_display  = "display:none;" ;
+          MARK_AS_UNREAD_display  = "" ;
+        }
+        str += ">" ;
+        delete oldCopy[id] ;
+        str += "<div style='font-weight:bold;width:98%;' >" ;
+        str += "<img name='MARK_AS_READ' title='Mark as read' src='${home}/apply.png' onmousedown='return false;' style='border-width:0px;" + MARK_AS_READ_display + "'/>" ;
+        str += "<img name='MARK_AS_UNREAD' title='Mark as unread' src='${home}/undo-gray.png' onmousedown='return false;' style='border-width:0px;" + MARK_AS_UNREAD_display + "'/>" ;
+        str += "&nbsp;<a name='LINK' style='color:"+linkColor+";' href='" + link + "' target='_blank'>" + title + "</a>" ;
+        str += "&nbsp;" + pubDate + "&nbsp;"
+        str += "</div>\n<br/>" ;
+        str += "<div style='width:98%;overflow:auto;'>" + description + "</div><br/>\n" ;
+        str += "</div>" ;
+      }
+    }
+    else
+    if ( isAtom )
+    {
+      var headerTitle = xRdfOrRss.getContent ( "title" ) ;
+      var headerDescription = xRdfOrRss.getContent ( "subtitle" ) ;
+
+      var en = xItemElement.getEnum ( "entry" ) ;
+      while ( en.hasNext() )
+      {
+        var xItem = en.nextXml() ;
+        var title = xItem.getContent ( "title" ) ;
+        var link = xItem.getContent ( "id" ) ;
+        if ( link.indexOf ( "http" ) !== 0 )
+        {
+          link = xItem.getContent ( "origLink" ) ;
+        }
+        var description = xItem.getContent ( "summary" ) ;
+        var content = xItem.getContent ( "content" ) ;
+        var pubDate = xItem.getContent ( "pubDate" ) ;
+        var pubDate = xItem.getContent ( "pubDate" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "updated" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "published" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "publicationDate" ) ;
+        if ( ! pubDate ) pubDate = xItem.getContent ( "date" ) ;
+        if ( pubDate ) pubDate = DateUtils.parseDate ( pubDate ) ;
+        if ( pubDate ) pubDate = this.translateTimeOffsetOf ( pubDate ) ;
+        if ( ! pubDate ) pubDate = "" ;
+        description = Cosmos.adjustHref ( description, null, null ) ;
+
+        var id = "KEY:" + link ;
+        var linkColor = 'blue' ;
+        var itemEntry = this.currentFeedHistoryHash[id] ;
+        str += "<div id='" + id + "' " ;
+        var MARK_AS_READ_display  = "" ;
+        var MARK_AS_UNREAD_display  = "display:none;" ;
+        if ( itemEntry )
+        {
+          linkColor = 'magenta' ;
+          str += " style='color:gray;' " ;
+          MARK_AS_READ_display  = "display:none;" ;
+          MARK_AS_UNREAD_display  = "" ;
+        }
+        str += ">" ;
+        delete oldCopy[id] ;
+        str += "<div style='font-weight:bold;width:98%;' >" ;
+        str += "<img name='MARK_AS_READ' src='${home}/apply.png' onmousedown='return false;' style='border-width:0px;" + MARK_AS_READ_display + "'/>" ;
+        str += "<img name='MARK_AS_UNREAD' src='${home}/undo-gray.png' onmousedown='return false;' style='border-width:0px;" + MARK_AS_UNREAD_display + "'/>" ;
+        str += "&nbsp;<a name='LINK' style='color:"+linkColor+";' href='" + link + "' target='_blank'>" + title + "</a>" ;
+        str += "&nbsp;" + pubDate + "&nbsp;"
+        str += "</div>\n<br/>" ;
+        str += "<div style='width:98%;overflow:auto;'>" + description + content + "</div><br/>\n" ;
+        str += "</div>" ;
+      }
+    }
+    for ( var k2 in oldCopy )
+    {
+      if ( ! oldCopy.hasOwnProperty (k2) ) continue ;
+      delete this.currentFeedHistoryHash[k2] ;
+    }
+    this.rssContainer.getDom().scrollTop = 0 ;
+    this.rssContainer.setText ( str ) ;
+  },
+  translateTimeOffsetOf: function ( D )
+  {
+    var NOW = new Date() ;
+    var diff = Math.floor ( ( NOW.getTime() - D.getTime() ) / 1000 ) ;
+    var daysec = 24 * 60 * 60 ;
+    var days = Math.floor ( diff / daysec ) ;
+    diff = diff % daysec ;
+    var hours = Math.floor ( diff / ( 60 * 60 ) ) ;
+    diff = diff % ( 60 * 60 ) ;
+    var minutes = Math.floor ( diff / 60 ) ;
+    diff = diff % 60 ;
+    var seconds = Math.floor ( diff ) ;
+    var str = "" ;
+    if ( days ) str = "" + days + " days, " + hours + " hours and " + minutes + " minutes ago." ;
+    else
+    if ( hours ) str = "" + hours + " hours and " + minutes + " minutes ago." ;
+    else
+    if ( minutes ) str = "" + minutes + " minutes and " + seconds + " seconds ago." ;
+    else
+    if ( seconds ) str = "" + seconds + " seconds ago." ;
+/*
+    if ( days ) str = "" + days + " days, " + hours + " hours, " + minutes + " and " + seconds + " seconds ago." ;
+    else
+    if ( hours ) str = "" + hours + " hours, " + minutes + " minutes and " + seconds + " seconds ago." ;
+    else
+    if ( minutes ) str = "" + minutes + " minutes and " + seconds + " seconds ago." ;
+    else
+    if ( seconds ) str = "" + seconds + " seconds ago." ;
+*/
+    return str ;
+  },
+  mouse: function ( event, what )
+  {
+/*
+    if ( what == "mouseover" ) this.pbClose.src = this.widget.getImageUrl ( "close_hover.png" ) ;
+    if ( what == "mouseout" ) this.pbClose.src = this.widget.getImageUrl ( "close.png" ) ;
+    if ( what == "mousedown" ) this.pbClose.src = this.widget.getImageUrl ( "close_active.png" ) ;
+*/
+  },
+  onOpen: function()
+  {
+    var xml = this.widget.getUserData() ;
+    var xTab = xml.getXml ( "TABLE" ) ;
+    if ( ! xTab )
+    {
+      xTab = xml.addXml ( "TABLE" ) ;
+      var r = null ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Heise" ) ;
+      r.addDom ( "url", "http://www.heise.de/security/news/news.rdf" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Wallpaperstock" ) ;
+      r.addDom ( "url", "http://wallpaperstock.net/rss.php" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Reuters" ) ;
+      r.addDom ( "url", "http://feeds.feedburner.com/reuters/topNews" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Tagesschau" ) ;
+      r.addDom ( "url", "http://www.tagesschau.de/newsticker.rdf" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Spiegel" ) ;
+      r.addDom ( "url", "http://www.spiegel.de/schlagzeilen/index.rss" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Interfacelift" ) ;
+      r.addDom ( "url", "http://interfacelift.com/wallpaper/rss/index.xml" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "KDE Look" ) ;
+      r.addDom ( "url", "http://www.kde.org/kde-look-content.rdf" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Planet KDE" ) ;
+      r.addDom ( "url", "http://planetkde.org/rss20.xml" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "GNOME Look" ) ;
+      r.addDom ( "url", "http://www.gnome-look.org/gnome-look-content.rdf" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Deviant Art" ) ;
+      r.addDom ( "url", "http://backend.deviantart.com/rss.xml?q=&type=deviation" ) ;
+/*
+      r.addDom ( "url", "http://backend.deviantart.com/rss.xml?q=boost:popular%20in:customization/wallpaper%20max_age:24h" ) ;
+*/
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Flickr Interesting" ) ;
+      r.addDom ( "url", "http://www.flourish.org/news/flickr-daily-interesting.xml" ) ;
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "Flickr Daily" ) ;
+      r.addDom ( "url", "http://www.flourish.org/news/flickr-daily-interesting-one.xml" ) ;
+/*
+      r = xTab.addXml ( "row" ) ;
+      r.addDom ( "title", "" ) ;
+      r.addDom ( "url", "" ) ;
+*/
+    }
+    else
+    {
+      var shist = xml.getContent ( "HISTORY" ) ;
+      this.history = JSON.parse ( shist ) ;
+      xml.remove ( "HISTORY" ) ;
+      this.readIsHidden = xml.getBool ( "readIsHidden", false ) ;
+    }
+    this.widget.setValues ( xml ) ;
+  },
+  onClose: function ( ev )
+  {
+    var xml = this.widget.getValues() ;
+    var shist = JSON.stringify ( this.history ) ;
+    xml.remove ( "HISTORY" ) ;
+    xml.addCDATA ( "HISTORY", shist ) ;
+    xml.ensureElement ( "readIsHidden" ).setContent ( "" + this.readIsHidden ) ;
+    this.widget.saveUserData ( xml ) ;
+  },
+  onFocus: function ( state )
+  {
+  }
+/*
+  dragStart: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ev.getSource() === this.TEXT ) return false ;
+    return true;
+  }
+*/
+}
+  ]]></Script>
+</xml>
+
