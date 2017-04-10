@@ -125,6 +125,10 @@ d.info() ;
   log ( x ) ;
       }' />
     </Container>
+    <TextArea name=TA >adfs gadf
+      g sdgf sdfg dsf g
+      dsfgsdfg
+    </TextArea>
   </Container>
 </xml>
 
