@@ -30,7 +30,8 @@
         {
           var ne = new gepard.Event ( "getPendingNotifications" ) ;
           ne.setResultRequested() ;
-          thiz.wc.fireEvent ( ne,
+          
+          thiz.wc.emit ( ne,
             { result:function result(e)
               {
                 var a = e.body ;
@@ -100,33 +101,6 @@
         text += p.name ;
         this.textDisplay.add ( text, true, true ) ;
       }
-    },
-    _sendEvent: function ( name, type )
-    {
-      // var ne = new gepard.Event ( "DB:REQUEST" ) ;
-      var ne = new gepard.Event ( "message-test" ) ;
-      ne.setResultRequested() ;
-      this.wc.fireEvent ( ne,
-        { result:function result(e)
-          {
-            log ( e ) ;
-          }
-        } ) ;
-    },
-    _addEventListener: function ( eventName )
-    {
-      var thiz = this ;
-      this.wc.on ( [ "alarm" ], function alarm_event_listener_callback ( e )
-      {
-log ( e ) ;
-        e.control.status = { code:0 } ;
-        e.body = { result: "xxxxxxxxxxxxxxxxxxxxxx" } ;
-        thiz.wc.sendResult ( e ) ;
-      }) ;
-    },
-    _removeEventListener: function ( eventName )
-    {
-      this.wc.removeEventListener ( [ "alarm" ] ) ;
     },
     currentTailFileName: null, //"/home/gess/NGMD/Test/Converter.monitoring.log",
     bound_subscribed_callback: null,
@@ -223,11 +197,6 @@ log ( e ) ;
     <PushButton text='unsubscribe' onclick='*.unsubscribe()' />
     <PushButton text='Select file to tail' onclick='*.select_file_to_tail()' />
     <Label text='Current file:'/><Label name='TAIL_FILE_NAME' style='right:-0px;'/>
-<!--
-    <PushButton text='Send Event with Result' onclick='*._sendEvent()' />
-    <PushButton text='Add Listener' onclick='*._addEventListener()' />
-    <PushButton text='Remove Listener' onclick='*._removeEventListener()' />
--->
 <!--
     <PushButton text='Notify' onclick='function(e)
     {
