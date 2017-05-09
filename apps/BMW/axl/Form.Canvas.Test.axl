@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Canvas Test" id='Form.Canvas.Test' name='Form.Canvas.Test' >
+<PushButton text='Clear Plot Area' onclick='
+{
+  peer: null,
+  _initialize_: function()
+  {
+  },
+  execute: function ( event )
+  {
+    if ( ! this.peer )
+    {
+      this.peer = TGui.getPeerById ( "CANVAS.1" ) ;
+    }
+    if ( ! this.peer ) return ;
+    this.peer.clearPlotArea() ;
+  }
+}'
+/>
+<PushButton text='Next Data' onclick='
+{
+  peer: null,
+  count: 0.0,
+  _initialize_: function()
+  {
+  },
+  execute: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! this.peer )
+    {
+      this.peer = TGui.getPeerById ( "CANVAS.1" ) ;
+    }
+    if ( ! this.peer ) return ;
+    this.count += 0.2 ;
+    this.peer.nextValue ( this.count ) ;
+  }
+}'
+/>
+<PushButton text='Next Data' onclick='
+{
+  peer: null,
+  count: 0.0,
+  _initialize_: function()
+  {
+  },
+  execute: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! this.peer )
+    {
+      this.peer = TGui.getPeerById ( "CANVAS.2" ) ;
+    }
+    if ( ! this.peer ) return ;
+    this.peer.nextValue ( this.count ) ;
+    this.count += 1 ;
+  }
+}'
+/>
+<br/>
+  <Canvas width=400 height=200 id='CANVAS.1'  name='CANVAS' style='background-color:white;'
+    title='Calls Per Second' title-style='font:12pt bold;'
+    xtext='Number' xtext-style='font:10pt normal;'
+    ytic-style='font:8pt normal;'
+    ymax='1000'
+    Xygrid='true'
+    Xylog='true'
+    peer='function ( x ) { return new CanvasRequestsPerSecond ( x ) ; }'
+  />
+  <Canvas width=400 height=200 id='CANVAS.2'  name='CANVAS' style='background-color:white;'
+    title='Steps Per Second' title-style='font:12pt bold;'
+    xtext='Number' xtext-style='font:10pt normal;'
+    ytic-style='font:8pt normal;'
+    ymin='0'
+    ymax='50'
+    Xygrid='true'
+    Xylog='true'
+    peer='function ( x ) { return new CanvasStepsPerSecond ( x ) ; }'
+  />
+</Container>
+

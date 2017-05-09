@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="TextDisplay Test" id='Form.TextDisplay.Test' name='Form.TextDisplay.Test' >
+    <PushButton text='Add 10' onclick='displayAddText10(event,"dfgvadf adfv adfv adf fd")' />
+    <PushButton text='Clear' onclick='displayClearText(event)' />
+<br/>
+    <PushButton text='print' onclick='displayAddText(event,true)' />
+    <PushButton text='println' onclick='displayAddText(event)' />
+    <PushButton text='newLine' onclick='displayNewLine(event)' />
+<br/>
+<TextDisplay id='Form.TextDisplay.Test.Display' style='bottom:-4;width:200px;height:600px;overflow:auto;' >
+</TextDisplay>
+<DisplayContainer id='Form.TextDisplay.Test.Display.2' style='bottom:-4;width:200px;height:600px;overflow:auto;' >
+</DisplayContainer>
+</Container>

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container name='Form.Fahrzeugsuche' label="Fahrzeugsuche" id="Form.Fahrzeugsuche">
+  <Container name='Form.Fahrzeugsuche.Parameter'
+             decoration='{ src: "img/deco-2.png", top: 4, left: 4, bottom: 4, right: 4 }'
+  >
+    <TitleLabel text='Fahrzeugsuche' />
+    <br/>
+    <Label text='Fahrgestellnummer' />
+    <tab x='+2' name=T1 />
+    <TextField name=FAHRGESTELLNUMMER right="-4"
+      mandatory='Geben Sie bitte eine Fahrgestellnummer ein.'
+      tooltip='mandatory'
+minlength=3
+      persistent=true
+      action='searchByFahrgestellNummer(event)' />
+    <br/>
+<!--
+    <PushButton text='Download epoch.zip' onclick='TSys.downloadDocument ("epoch.zip")' />
+-->
+    <PushButton text='<a class="PushButtonAnchor" href="epoch.zip" target=_blank><img style="vertical-align:middle;border-style:none;width:16px;height:16px;" src="img/Icon.RedCross.gif" />User Manual</a>' onclick='TSys.nop ()' />
+    <br/>
+    <Container right='-0' id='Form.Fahrzeugsuche.Test' onchange='handle:PB.Form.Fahrzeugsuche.Test.AskYesNo'
+    >
+      <PushButton onclick='reset(event)' text='Zur&uuml;cksetzen' img='img/Icon.RedCross.gif' />
+      <PushButton onclick='searchByFahrgestellNummer(event)' text='Suchen' img="img/Icon.SmallLens.gif" right='0' />
+      <br/>
+      <PushButton onclick='askYesNo(event)' text='Ask yes / no' id='PB.Form.Fahrzeugsuche.Test.AskYesNo' disabled=true />
+      <Choice name='CHOICE-TEST' right='-0' persistent=true >
+        <option>aaaaaaaaaaaaay</option>
+        <option>bbbbbbb</option>
+        <option>ccccccccccccccc</option>
+      </Choice>
+      <br/>
+      <PushButton onclick='enableDisable(event,"Form.Fahrzeugsuche.Test")' text='Enable / Disable' />
+      <br/>
+      <Radio name=RADIO_NAME value=1 text='EINS' />
+      <Radio name=RADIO_NAME value=12 text='ZW&Uuml;LF' />
+      <br/>
+      <Checkbox name=CBXO_NAME value=22 text='Zweiundzwanzig' />
+      <br/>
+      <TextField id='TF.SIGNED-INT' name='SIGNED-INT' type=sint mandatory='Bitte geben Sie eine Hausnummer ein.' /> <Checkbox name='KeineHausnummer' text='Keine Hausnummer' value='true' onchange='keineHausnummer(event)' />
+    </Container>
+  </Container>
+  <Container name='Form.Fahrzeug.Suchresultat' id='Form.Fahrzeug.Suchresultat' bottom='-0' right='-4' >
+    <TitleLabel name='Title.Fahrzeugdaten' text='Suchresultat' />
+    <br/>
+    <Label text='Leasing Gesellschaft:' />
+    <tab x='+2' name=T1 />
+    <Label name='LEASING_GESELLSCHAFT' text='' />
+    <br/>
+    <Label text='Vertragsnummer:' />
+    <tab x='+2' name=T1 />
+    <Label name='VERTRAGS_NUMMER' text='' />
+    <br/>
+    <Label text='Erlaubte Reifen:' />
+    <tab x='+2' name=T1 />
+    <Choice name='ERLAUBTE_REIFEN' style='width:150px;'
+      mandatory='Bitte w&auml;hlen Sie Reifen aus.'
+    />
+    <br/>
+    <Label text='Erlaubte Services:' />
+    <tab x='+2' name=T1 />
+    <Choice name='ERLAUBTE_SERVICES' style='width:150px;'
+      mandatory='Bitte w&auml;hlen Sie einen Service aus aus.'
+    />
+    <br/>
+    <Container right='0' >
+      <PushButton
+            onclick='auftragFreigeben(event)'
+            text='Auftrag freigeben'
+            img="img/Icon.GreenMark.gif"
+            id='PB_auftragFreigeben'
+            style='visibility:hidden;'
+      />
+    </Container>
+    <br/>
+    <Container id='Form.Fahrzeug.History' style='overflow:auto' bottom='-0' right='-4'
+    >
+    </Container>
+  </Container>
+</Container>

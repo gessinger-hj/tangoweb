@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window resizable='true' title='NoName...' id="Widget" background-color='transparent' dragable='false' >
+    <Container style='right:-0;bottom:-0;' >
+      <Container style='top:0px;left:0px;right:-20;bottom:-20;width:200px;height:200px;' decoration='{type:"sliced",src:"img/sticky_yellow.png",top:5,left:10,bottom:26,right:19}' >
+          <TextArea id='TAXX' style='top:10px;left:10px;bottom:-0;attach-bottom:true;right:-0;background-color:#FFFFbb;color:black;border-width:0px;overflow:hidden;' />
+<br/>
+      <Container style='right:0;bottom:0;' >
+        <PushButton text='Close' onclick='TGui.closeTopWindow()' />
+      </Container>
+    </Container>
+    </Container>
+  </Window>
+</xml>
+

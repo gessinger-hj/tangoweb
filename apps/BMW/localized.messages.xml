@@ -1,0 +1,404 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+  <xml>
+    <Close>
+      <en>Close</en>
+      <de>Schließen</de>
+      <fr>Fermer</fr>
+    </Close>
+    <Cancel>
+      <en>Cancel</en>
+      <de>Abbrechen</de>
+      <fr>Annuler</fr>
+    </Cancel>
+    <Apply>
+      <en>Apply</en>
+      <de>Anwenden</de>
+      <fr>Appliquer</fr>
+    </Apply>
+    <Help>
+      <en>Help</en>
+      <de>Hilfe</de>
+    </Help>
+    <AccountId>
+      <en>User ID</en>
+      <de>Benutzerkennung</de>
+      <fr>Identifiant</fr>
+      <ar>هوية المستخدم</ar>
+    </AccountId>
+    <Logout>
+      <en>Logout</en>
+      <de>Abmelden</de>
+      <fr>Déconnexion</fr>
+    </Logout>
+    <Login>
+      <en>Login</en>
+      <de>Anmelden</de>
+      <fr>Connexion</fr>
+      <ar>دخول</ar>
+    </Login>
+    <TheLogin>
+      <en>Login</en>
+      <de>Anmeldung</de>
+      <ar>تسجيل الدخول</ar>
+    </TheLogin>
+    <ExitApplication>
+      <en>Exit Application</en>
+      <de>Programm beenden</de>
+    </ExitApplication>
+    <Number>
+      <en>Number</en>
+      <de>Nummer</de>
+    </Number>
+    <City>
+    <en>City</en>
+    <de>Stadt</de>
+    </City>
+    <QuestionExitApplication>
+      <en>Do you really want to exit
+this Application?</en>
+      <de>Wollen Sie dieses
+Programm verlassen?</de>
+    </QuestionExitApplication>
+    <PleaseInputYourLoginData>
+      <en>Please input your login data</en>
+      <de>Bitte geben Sie ihre Anmeldedaten ein</de>
+      <fr>Entrez vos identifiants</fr>
+    </PleaseInputYourLoginData>
+    <Password>
+      <en>Password</en>
+      <de>Passwort</de>
+      <fr>Mot de passe</fr>
+      <ar>كلمة السر</ar>
+    </Password>
+    <ChangePassword>
+      <en>Change password</en>
+      <de>Passwort ändern</de>
+      <fr>Changer le mot de passe</fr>
+    </ChangePassword>
+    <MissingPassword>
+      <en>Missing password</en>
+      <de>Das Passwort fehlt</de>
+      <fr>Mot de passe absent</fr>
+    </MissingPassword>
+    <MissingAccountId>
+      <en>Missing user id</en>
+      <de>Die Benutzerkennung fehlt</de>
+      <fr>Identifiant absent</fr>
+    </MissingAccountId>
+    <ChangePassword>
+      <en>Change password</en>
+      <de>Passwort ändern</de>
+      <fr>Changer le mot de passe</fr>
+    </ChangePassword>
+    <OldPassword>
+      <en>Old Password</en>
+      <de>Altes Passwort</de>
+      <fr>Ancien mot de passe</fr>
+    </OldPassword>
+    <NewPassword>
+      <en>New Password</en>
+      <de>Neues Passwort</de>
+      <fr>Nouveau mot de passe</fr>
+    </NewPassword>
+    <PasswordVerification>
+      <en>Password - verification</en>
+      <de>Passwortbestätigung</de>
+      <fr>Vérification du mot de passe</fr>
+    </PasswordVerification>
+    <TheGivenPasswordsDoNotMatch>
+      <en>The given passwords do not match.</en>
+      <de>Passwortbestätigung ist falsch.</de>
+      <fr>Les mots de passe sont différents</fr>
+    </TheGivenPasswordsDoNotMatch>
+    <NewPasswortTooShort>
+      <en>The new password must contain at least 3 characters.</en>
+      <de>Das neue Passwort muss mindestens 3 Zeichen lang sein.</de>
+      <fr>Le nouveau mot de passe doit contenir au moins 3 caractères.</fr>
+    </NewPasswortTooShort>
+    <PasswordChangedSuccessfully>
+      <en>Password changed successfully.</en>
+      <de>Passwort wurde erfolgreich geändert.</de>
+      <fr>Le mot de passe a été changé.</fr>
+    </PasswordChangedSuccessfully>
+    <InvalidOldPassword>
+      <en>Invalid old password.</en>
+      <de>Das alte Passwort is falsch.</de>
+      <fr>Ancien mot de passe incorrect.</fr>
+    </InvalidOldPassword>
+    <InvalidCredentials>
+      <en>Invalid credentials.</en>
+      <de>Die Kombination Benutzerkennung/Passwort ist falsch.</de>
+    </InvalidCredentials>
+    <ThisServiceIsCurrentlyNotAvailable>
+      <en>This service is currently not available</en>
+      <de>Dieser Dienst steht im Augenblick leider nicht zur Verf&uuml;gung.</de>
+    </ThisServiceIsCurrentlyNotAvailable>
+    <YouMustHaveCookiesEnabled>
+      <en>This internet service requires cookies enabled.&lt;br/&gt;
+          You will find the appropriate item in a menu.</en>
+      <de>F&uuml;r diesen Internetdienst m&uuml;ssen Cookies vom Browser akzeptiert werden.&lt;br/&gt;
+          Die Einstellungen finden Sie im Ihrem Browser in einem entsprechenden Men&uuml;punkt.</de>
+    </YouMustHaveCookiesEnabled>
+    <General>
+      <en>General</en>
+      <de>Allgemein</de>
+      <fr>Général</fr>
+    </General>
+    <Description>
+      <en>Description</en>
+      <de>Beschreibung</de>
+      <fr>Description</fr>
+    </Description>
+    <Environments>
+      <en>Environments</en>
+      <de>Umgebungen</de>
+      <fr>Environnements</fr>
+    </Environments>
+    <Display>
+      <en>Display</en>
+      <de>Anzeige</de>
+      <fr>Affichage</fr>
+    </Display>
+    <Edit>
+      <en>Edit</en>
+      <de>Bearbeiten</de>
+      <fr>Editer</fr>
+    </Edit>
+    <Display>
+      <en>Display</en>
+      <de>Anzeige</de>
+      <fr>Affichage</fr>
+    </Display>
+    <Date>
+      <en>Date</en>
+      <de>Datum</de>
+      <fr>Date</fr>
+    </Date>
+    <Size>
+      <en>Size</en>
+      <de>Größe</de>
+      <fr>Taille</fr>
+    </Size>
+    <Refresh>
+      <en>Refresh</en>
+      <de>Auffrischen</de>
+      <fr>Actualiser</fr>
+    </Refresh>
+    <List>
+      <en>List</en>
+      <de>Auflisten</de>
+      <fr>Lister</fr>
+    </List>
+    <SelectionList>
+      <en>Selection list</en>
+      <de>Auswahlliste</de>
+      <fr>Liste</fr>
+    </SelectionList>
+    <Name>
+      <en>Name</en>
+      <de>Name</de>
+      <fr>Nom</fr>
+    </Name>
+    <DirectoryName>
+      <en>Directory name</en>
+      <de>Ordnername</de>
+      <fr>Nom du répertoire</fr>
+    </DirectoryName>
+    <CreateDirectory>
+      <en>Create directory</en>
+      <de>Ordner anlegen</de>
+      <fr>Créer un répertoire</fr>
+    </CreateDirectory>
+    <DeleteDirectory>
+      <en>Delete directory</en>
+      <de>Ordner löschen</de>
+      <fr>Détruire un répertoire</fr>
+    </DeleteDirectory>
+    <PleaseFirstSelectAnEntry>
+      <en>Please first select an entry in the list.</en>
+      <de>Bitte wählen Sie zuerst einen Eintrag in der Liste aus.</de>
+      <fr>Choississez un item dans la liste</fr>
+    </PleaseFirstSelectAnEntry>
+    <SearchPattern>
+      <en>Search pattern</en>
+      <de>Suchmuster</de>
+      <fr>Critère de recherche</fr>
+    </SearchPattern>
+    <BackToOverview>
+      <en>Back to overview</en>
+      <de>Zurück zur Übersicht</de>
+      <fr>Retour à la vue générale</fr>
+    </BackToOverview>
+    <ShowMessages>
+      <en>Show messages</en>
+      <de>Messages anzeigen</de>
+      <fr>Voir les messages</fr>
+    </ShowMessages>
+    <ShowStatistics>
+      <en>Show statistics</en>
+      <de>Statistik anzeigen</de>
+      <fr>Voir les statistiques</fr>
+    </ShowStatistics>
+    <StatisticsAsExcelDocument>
+      <en>Statistics as Excel document</en>
+      <de>Statistik als Excel Dokument</de>
+      <fr>Statistiques sous Excel</fr>
+    </StatisticsAsExcelDocument>
+    <CreateAnExcelDocument>
+      <en>Create an Excel document</en>
+      <de>Excel Dokument erzeugen</de>
+      <fr>Créer un document Excel</fr>
+    </CreateAnExcelDocument>
+    <TheFollowingFieldsAreMandatory>
+      <en>The following field(s) are mandatory</en>
+      <de>Folgende Felder sind Mussfelder</de>
+      <fr>Les champs suivants sont obligatoires</fr>
+    </TheFollowingFieldsAreMandatory>
+    <OnlyErrors>
+      <en>Only errors</en>
+      <de>Nur Fehler</de>
+      <fr>Erreurs seulement</fr>
+    </OnlyErrors>
+    <NotBefore>
+      <en>not before</en>
+      <de>Nicht vor</de>
+      <fr>Pas avant</fr>
+    </NotBefore>
+    <NotAfter>
+      <en>not after</en>
+      <de>Nicht nach</de>
+      <fr>Pas après</fr>
+    </NotAfter>
+    <Hours>
+      <en>Hour(s)</en>
+      <de>Stunde(n)</de>
+      <fr>Heure(s)</fr>
+    </Hours>
+    <SetDateToNow>
+      <en>Set to now</en>
+      <de>Datum auf jetzt</de>
+      <fr>Mettre à l'heure</fr>
+    </SetDateToNow>
+    <Options>
+      <en>Options</en>
+      <de>Optionen</de>
+      <fr>Options</fr>
+    </Options>
+    <Customize>
+      <en>Customize</en>
+      <de>Anpassen</de>
+      <fr>Configurer</fr>
+    </Customize>
+    <Save>
+      <en>Save</en>
+      <de>Sichern</de>
+      <fr>Sauvergarder</fr>
+    </Save>
+    <ShowDataInSingleWindow>
+      <en>Show the similar data in the same window</en>
+      <de>Für gleiche Daten dasselbe Fenster benutzen.</de>
+      <fr>Montrer les données dans une seule fenêtre</fr>
+    </ShowDataInSingleWindow>
+    <PleaseFirstDisplayTheTransactionsOfInterest>
+      <en>Please first display the transactions of a package.</en>
+      <de>Bitte zeigen Sie zuerst die Transaktionen eines Paketes an.</de>
+      <fr>Veuillez d'abord afficher les transactions liées au paquet.</fr>
+    </PleaseFirstDisplayTheTransactionsOfInterest>
+    <MinimumLevel>
+      <en>Minimum level</en>
+      <de>Minimum Level</de>
+      <fr>Niveau minimum</fr>
+    </MinimumLevel>
+    <CreateReport>
+      <en>Create report</en>
+      <de>Report erzeugen</de>
+      <fr>Créer un rapport</fr>
+    </CreateReport>
+    <File>
+      <en>File</en>
+      <de>Datei</de>
+      <fr>Fichier</fr>
+    </File>
+    <Files>
+      <en>Files</en>
+      <de>Dateien</de>
+      <fr>Fichiers</fr>
+    </Files>
+    <LogFiles>
+      <en>Logfiles</en>
+      <de>Log - Dateien</de>
+      <fr>Fichiers de log</fr>
+    </LogFiles>
+    <Database>
+      <en>Database</en>
+      <de>Datenbank</de>
+      <fr>Base de données</fr>
+    </Database>
+    <ChooseTheme>
+      <en>Choose your theme</en>
+      <de>Oberflächenstil auswählen</de>
+      <fr>Choississez votre thême</fr>
+    </ChooseTheme>
+    <FileNotFound>
+      <en>File not found</en>
+      <de>Datei nicht gefunden</de>
+      <fr>Fichier non trouvé</fr>
+    </FileNotFound>
+    <NoMatchingFilesFound>
+      <en>NoMatchingFilesFound</en>
+      <de>Keine passenden Dateien gefunden</de>
+      <fr>Aucun fichier correspondant trouvé</fr>
+    </NoMatchingFilesFound>
+    <InternalError>
+      <en>Internal error</en>
+      <de>Interner Fehler</de>
+      <fr>Erreur interne</fr>
+    </InternalError>
+    <Pattern>
+      <en>Pattern</en>
+      <de>Suchmuster</de>
+      <fr>Critère</fr>
+    </Pattern>
+    <MissingOrInvalidPatternToSearchFor>
+      <en>Missing or invalid pattern to search for ( minimum length: 3 )</en>
+      <de>Ungültiges Suchmuster. ( Minimale Länge: 3 )</de>
+      <fr>Critère manquant ou invalide pour la recherche (Long. Mini : 3)</fr>
+    </MissingOrInvalidPatternToSearchFor>
+    <FileExplorer>
+      <en>File Explorer</en>
+      <de>Datei Explorer</de>
+      <fr>File Explorer</fr>
+    </FileExplorer>
+    <DownloadFile>
+      <en>Download file</en>
+      <de>Datei herunterladen</de>
+      <fr>Download file</fr>
+    </DownloadFile>
+    <ShowFile>
+      <en>Show file</en>
+      <de>Datei anzeigen</de>
+      <fr>Show file</fr>
+    </ShowFile>
+    <QuestionDownloadFile>
+      <en>Download file?&lt;br/&gt;
+$0</en>
+      <de>Datei $0&lt;br/&gt;
+herunterladen?</de>
+    </QuestionDownloadFile>
+    <InvalidPassword>
+      <en>Invalid Password</en>
+      <de>Ung&uuml;ltiges Passwort</de>
+    </InvalidPassword>
+    <PasswordConstraintsAre>
+      <en>Password constraints are</en>
+      <de>Passwortanforderungen sind</de>
+    </PasswordConstraintsAre>
+    <BadWordsAre>
+      <en>Bad words are</en>
+      <de>Ung&uuml;ltige W&ouml;rter sind</de>
+    </BadWordsAre>
+    <MinimumLength>
+      <en>Minimum length</en>
+      <de>Minimale L&auml;nge</de>
+    </MinimumLength>
+  </xml>

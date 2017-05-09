@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container tooltip='Suche eines Auftrages' name='Form.Auftragssuche' label="Auftragssuche" id="Form.Auftragssuche">
+  <Container name='Form.Auftragssuche.Parameter' style='width:200px;' >
+    <TitleLabel text='Auftragssuche' />
+    <br/>
+    <Label text='Auftragsnummer:' id='Label.Auftragssuche.AUFTRAGSNUMMER' />
+    <br/>
+    <tab x='+2' name=T1 />
+    <TextField name=AUFTRAGSNUMMER right="-0" id='Auftragssuche.AUFTRAGSNUMMER'
+      mandatory='Geben Sie bitte eine Auftragsnummer ein.'
+      action='searchAuftraege(event)'
+    />
+    <br/>
+    <Container right='0' >
+      <PushButton
+            onclick='searchAuftraege(event)'
+            text='Suchen'
+            img="img/Icon.SmallLens.gif"
+            right='0'
+      />
+    </Container>
+  </Container>
+  <Container id='Form.Auftraege.Suchresultat' right='-4' >
+    <TitleLabel name='Title.Auftraege' text='Auftrags&uuml;bersicht' />
+    <br/>
+    <Container id='Form.Auftraege.History' right='-0' bottom='-0'
+    >
+    </Container>
+  </Container>
+</Container>

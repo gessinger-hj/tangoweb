@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Table" id='Form.Table.Dev' >
+  <Container style='bottom:-0;attach-bottom:true;' onchange='handle:PB.Form.Table.Dev.Misc PB.Form.Table.Dev.Remove PB.Form.Table.Dev.Move.1 PB.Form.Table.Dev.Move.2 PB.Form.Table.Dev.Move.3 PB.Form.Table.Dev.Move.4' >
+    <Table id='Table.Dev' name='TABLE.ORDER' style='bottom:-0;width:400px;attach-bottom:true;right:-4;'
+        reset=true show-header=true
+        multiple=true
+        dragsource="
+    {
+      getDragElement: function ( evt )
+      {
+        var src = evt.getSource() ;
+        var tr = null ;
+        if ( src.nodeName == 'TD' )
+        {
+          tr = src.parentNode ;
+        }
+        else
+        if ( src.nodeName == 'TR' )
+        {
+          tr = src ;
+        }
+        if ( tr ) return tr ;
+        return null ;
+      },
+      dragStart: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        if ( ! tab ) return ;
+        var x = tab.getSelectedUserXml() ;
+        if ( ! x ) return null ;
+        var src = evt.getSource() ;
+        var tr = null ;
+        if ( src.nodeName != 'TD' && src.nodeName != 'TR' )
+        {
+          return null ;
+        }
+        var t = new Transferable ( DnDDataFlavor.XML_ARRAY, function ( dataFlavor )
+        {
+          if ( dataFlavor == DnDDataFlavor.XML_ARRAY )
+          {
+            var t = tab ;
+            var a = tab.getSelectedItems() ;
+            for ( var i = 0 ; i < a.length ; i++ )
+            {
+              a[i] = new TXml ( a[i] ) ;
+            }
+            return a ;
+          }
+        } ) ;
+        t.setName ( tab.getName() ) ;
+        return t ;
+      },
+      dragDropEnd: function ( evt )
+      {
+        if ( ! evt.getDropSuccess() ) return ;
+        if ( evt.getDropAction() == DnDConstants.MOVE )
+        {
+          var tab = evt.getPeer() ;
+          var a = tab.getSelectedRows() ;
+          if ( a )
+          {
+            for ( var i = 0 ; i < a.length ; i++ )
+            {
+              a[i].remove() ;
+            }
+          }
+        }
+      }
+    }"
+      >
+        <Columns>
+          <Column name="NAME" title="1" />
+          <Column name="DESCRIPTION" title="2" />
+          <Column name="VALUE" title="3" />
+        </Columns>
+      </Table>
+  </Container>
+<Splitbar />
+  <Container style='bottom:-0;right:-0;' >
+    <Container style='bottom:-0;'
+    >
+      <PushButton text='Fill Table' onclick='fillTableDev(event)' />
+      <br/>
+      <PushButton text='Set Text' onclick='tableDevSetText(event)' disabled='true' id='PB.Form.Table.Dev.Misc' />
+      <br/>
+      <PushButton text='Add Row' onclick='tableDevAddRow(event,-1)' />
+      <br/>
+      <PushButton text='Insert Row(0)' onclick='tableDevAddRow(event,0)' />
+      <br/>
+      <PushButton text='Remove' onclick='tableDevRemoveRow(event)' disabled='true' id='PB.Form.Table.Dev.Remove' />
+      <br/>
+      <PushButton text='Move up' onclick='tableDevMoveRow(event,up)' disabled='true' id='PB.Form.Table.Dev.Move.1' />
+      <br/>
+      <PushButton text='Move down' onclick='tableDevMoveRow(event,down)' disabled='true' id='PB.Form.Table.Dev.Move.2' />
+      <br/>
+      <PushButton text='Move top' onclick='tableDevMoveRow(event,top)' disabled='true' id='PB.Form.Table.Dev.Move.3' />
+      <br/>
+      <PushButton text='Move bottom' onclick='tableDevMoveRow(event,bottom)' disabled='true' id='PB.Form.Table.Dev.Move.4' />
+      <br/>
+    </Container>
+    <Table id='Table.Dev.Copy' name='TABLE.ORDER.COPY' style='height:200px;width:400px;attach-bottom:true;right:-4;'
+        reset=true
+        sortable=true
+        droptarget="
+    {
+      dragEnter: function ( evt )
+      {
+        evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+      },
+      dragExit: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        tab.setRowHighlighted ( false ) ;
+      },
+      dragOver: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        var x = evt.getX() ;
+        var y = evt.getY() ;
+        var r = tab.getRowFromPosition ( x, y ) ;
+        var t = evt.getTransferable();
+        if ( t.getName() != 'TABLE.ORDER' )
+        {
+          evt.rejectDrag() ;
+          return ;
+        }
+        if ( ! r )
+        {
+          tab.setRowHighlighted ( false ) ;
+          evt.rejectDrag() ;
+        }
+        else
+        {
+          evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+          r.setHighlighted ( true ) ;
+        }
+      },
+      drop: function ( evt )
+      {
+        var action = evt.getDropAction() ;
+        var t = evt.getTransferable();
+        var tab = evt.getPeer() ;
+        tab.setRowHighlighted ( false ) ;
+        var x = evt.getX() ;
+        var y = evt.getY() ;
+        var r = tab.getRowFromPosition ( x, y ) ;
+        if (  t.getName() != 'TABLE.ORDER'
+           || ! t.isDataFlavorSupported ( DnDDataFlavor.XML_ARRAY )
+           || ! r
+           )
+        {
+          evt.rejectDrop() ;
+          return ;
+        }
+        evt.acceptDrop ( action) ;
+        var action = evt.getDropAction() ;
+
+        var index = r.getIndex() ;
+
+        var a = t.getData ( DnDDataFlavor.XML_ARRAY ) ;
+        for ( var i = a.length - 1 ; i >= 0 ; i-- )
+        {
+          tab.insertRowAt ( a[i], index ) ;
+/*
+          tab.addRow ( x ) ;
+          tab.insertRowAt ( x, r.getIndex() ) ;
+*/
+        }
+        evt.dropComplete ( true ) ;
+      }
+    }"
+      >
+        <Columns>
+          <Column name="NAME" title="1" />
+          <Column name="DESCRIPTION" title="2" />
+          <Column name="VALUE" title="3" />
+        </Columns>
+      </Table>
+  </Container>
+</Container>

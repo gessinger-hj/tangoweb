@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Deco Test" id='Form.Deco.Test' >
+  <Container style='top:30px;bottom:-4;' >
+    <PushButton text='Show Html Editor' onclick='showHtmlEditor(event)' />
+    <br/>
+    <PushButton text='Set Text' onclick='setHtmlEditorText("<b>xxxx</b>")' />
+    <br/>
+    <PushButton text='Show Upload Window' onclick='showUploadWindow(event)' />
+  </Container>
+</Container>

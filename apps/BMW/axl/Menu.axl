@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Menubar>
+  <MenuButton text='Allgemein'
+  >
+    <MenuItem text='%Customize%' onclick='TGui.preferencesCustomize(event)' />
+    <MenuItem text='Abmelden' onclick='logout(event)' />
+    <MenuItem text='Change password' onclick='TSys.changePassword(event)' />
+    <MenuItem name='' text='Wikipedia' onclick='TGui.createIframeWindow(http://en.wikipedia.org/wiki/Dolphin,Wikipedia,true)' />
+  </MenuButton>
+  <MenuButton text='Preferences' >
+    <MenuItem text='Choose Theme' onclick='TGui.chooseTheme()' />
+  </MenuButton>
+  <MenuButton text='Introspection' >
+    <MenuItem text='User Agent'
+              onclick='function()
+              {
+                log ( "User Agent: " + navigator.userAgent ) ;
+                log ( Tango.ua, true ) ;
+              }'
+    />
+    <MenuItem text='CSS'
+              onclick='function()
+              {
+                for ( var i = 0 ; i < document.styleSheets.length ; i++ )
+                {
+                  var sheet = document.styleSheets[i];
+                  log ( "" + i + ": " + sheet.href + ", disabled: " + sheet.disabled ) ;
+                }
+              }'
+    />
+    <MenuItem text='JS'
+              onclick='function()
+              {
+                var en = new TXEnum ( document.getElementsByTagName("head")[0], "script" ) ;
+                var i = 0 ;
+                while ( en.hasNext() )
+                {
+                  var d = en.next() ;
+                  log ( "" + i + ": " + d.src ) ;
+                  i++ ;
+                }
+              }'
+    />
+    <MenuItem text='Theme'
+              onclick='function()
+              {
+                log ( Tango.themeImageMappingXml ) ;
+              }'
+    />
+    <MenuItem text='WebConfig'
+              onclick='function()
+              {
+                var wc = TSys.getWebConfig() ;
+                log ( wc ) ;
+              }'
+    />
+  </MenuButton>
+</Menubar>

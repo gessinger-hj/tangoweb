@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+  <xml>
+    <StartAxl>Login</StartAxl>
+    <LogoutUrl>index.html</LogoutUrl>
+    <WorkAxl>Main</WorkAxl>
+    <DefaultTheme>XP</DefaultTheme>
+    <Language></Language>
+    <Context>private</Context>
+    <UseAxlCache>false</UseAxlCache>
+    <AuthenticationRequired>true</AuthenticationRequired>
+    <UserHandler>org.gessinger.tango.servlet.RemoteUserHandler</UserHandler>
+    <UserHandler>org.gessinger.tango.servlet.DbUserHandler</UserHandler>
+    <FILE_EXPLORER_ROOT>/home/gess/public_html/webapps/swa/public</FILE_EXPLORER_ROOT>
+    <StringName>Netbook</StringName>
+    <StringName>Air</StringName>
+    <StringName>RessourcesII</StringName>
+    <StringName>Product</StringName>
+    <StringName>Web2.0a</StringName>
+    <StringName>Red</StringName>
+    <StringName>Raphsody</StringName>
+    <NotAvailableHtml>
+      <![CDATA[
+<p style='font-weight:bold;font-size:20px;text-align:center;' >
+This webpage is not available.
+</p>
+<p style='text-align:center;' >
+The webpage at #DOCUMENT.LOCATION# might be temporarily down or it may have moved permanently to a new web address.
+</p>
+<p style='text-align:center;' >
+<a href='#DOCUMENT.LOCATION#' >Reload</a> this web page.
+</p>
+      ]]>
+    </NotAvailableHtml>
+    <Database private='true' >
+      <Uid>gess</Uid>
+      <Pwd>gess1997</Pwd>
+      <Url>jdbc:postgresql://localhost:5432/gess</Url>
+    </Database>
+  </xml>

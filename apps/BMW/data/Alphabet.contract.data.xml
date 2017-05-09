@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<xml>
+  <LEASING_GESELLSCHAFT>Alphabet</LEASING_GESELLSCHAFT>
+  <VERTRAGS_NUMMER>AL-X-123456</VERTRAGS_NUMMER>
+  <ERLAUBTE_REIFEN>
+    <option>145/80 R13 75Q</option>
+    <option>155/80 R13 79Q</option>
+    <option>175/70 R13 82T</option>
+  </ERLAUBTE_REIFEN>
+  <ERLAUBTE_SERVICES>
+    <option>Komplettmontage PKW</option>
+    <option>Einlagerung PKW</option>
+    <option>R&auml;derreinigung PKW</option>
+  </ERLAUBTE_SERVICES>
+</xml>

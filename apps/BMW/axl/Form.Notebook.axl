@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.Notebook' >
+ <Notebook id='NB' style='left:2px;' bottom='-0' right='-0' >
+   <Include src='Form.Table.Test' />
+      <Include src='Form.TextDisplay.Test' />
+      <Include src='Form.Deco.Test' />
+      <Include src='Form.Files' />
+      <Include src='Form.File.Explorer' />
+  </Notebook>
+</Container>

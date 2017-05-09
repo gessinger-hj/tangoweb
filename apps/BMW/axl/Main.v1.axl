@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<!--
+  <Include src='Tango.Main.Title.axl' />
+-->
+  <Menubar>
+    <MenuButton text='Allgemein'
+    >
+      <MenuItem text='%Customize%' onclick='TGui.preferencesCustomize(event)' />
+      <MenuItem text='Abmelden' onclick='logout(event)' />
+      <MenuItem text='Change password' onclick='TSys.changePassword(event)' />
+      <MenuItem name='' text='<a class="PushButtonAnchor" href="epoch.zip" target=_blank>User Manual</a>' />
+    </MenuButton>
+    <MenuButton text='Preferences'
+    >
+      <MenuItem text='Choose Theme' onclick='TGui.chooseTheme()' />
+    </MenuButton>
+    <MenuButton text='Options'
+    >
+      <MenuItem text='Option 1' />
+      <MenuItem text='Option 2' >
+        <MenuItem text='Option 2 1' />
+        <MenuItem text='Option 2 2' />
+        <MenuItem text='Option 2 3' />
+      </MenuItem>
+      <MenuItem text='Option 3' />
+    </MenuButton>
+  </Menubar>
+  <Main class=MainClass >
+    <Multiform id='MF' style='top:0px;left:0px;bottom:-0;right:-0;' >
+      <Container id='MF.HOME' >
+        <Container id='ID.POST-IT' style='width:200px;height:200px;' >
+          <Container style='padding:0px;top:0px;left:0px;width:10px;height:5px;'
+                     decoration='{ src:"img/sticky_yellow.png", top:5,left:10,bottom:26,right:19,part:"top-left"}'
+          />
+<!--
+          <Container style='padding:0px;top:0px;left:10px;width:100px;height:5px;right:-0;attach-right:true;'
+          >
+            <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=top'
+              style='top:0px;left:0px;width:100px;height:5px;right:-0;attach-right:true;'
+            />
+          </Container>
+-->
+          <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=top'
+               style='top:0px;left:300px;width:300px;height:5px;'
+          />
+          <Container style='padding:0px;top:0px;width:19px;height:5px;right:0;'
+                     decoration='{ src:"img/sticky_yellow.png", top:5,left:10,bottom:26,right:19,part:"top-right"}'
+          />
+          <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=left'
+               style='top:5px;left:0px;width:10px;height:100px;bottom:-0;attach-bottom:true;'
+          />
+<!--
+          <Container style='padding:0px;top:5px;left:10px;right:-0;attach-right:true;bottom:-0;attach-bottom:true;'
+          >
+            <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=middle'
+              style='top:0px;left:0px;width:100px;height:100px;bottom:-0;right:-0;'
+            />
+          </Container>
+-->
+          <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=middle'
+               style='top:5px;left:10px;width:100px;height:100px;bottom:-0;right:-0;attach-right:true;attach-bottom:true;'
+          />
+          <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=right'
+               style='top:5px;right:0px;width:19px;height:100px;bottom:-0;attach-bottom:true;'
+          />
+        <br/>
+          <Container style='padding:0px;bottom:0px;left:0px;width:10px;height:26px;'
+                     decoration='{ src:"img/sticky_yellow.png", top:5,left:10,bottom:26,right:19,part:"bottom-left"}'
+          />
+          <img src='ImageFactory/img/sticky_yellow.png?type=scaledImage&border-top=5&border-left=10&border-bottom=26&border-right=19&part=bottom'
+               style='left:10px;width:100px;height:26px;bottom:0;right:-0;attach-right:true;'
+          />
+          <Container style='padding:0px;bottom:0px;width:19px;height:26px;right:0;'
+                     decoration='{ src:"img/sticky_yellow.png", top:5,left:10,bottom:26,right:19,part:"bottom-right"}'
+          />
+<!--
+        <br/>
+<Container style='padding:0px;top:0px;left:0px;right:-0;bottom:-0;'
+>
+<TextArea style='top:10px;left:10px;bottom:-26;right:-20;background-color:#ffffbb;color:black;border-width:0px;overflow:hidden;' />
+</Container>
+-->
+        </Container>
+      </Container>
+      <Include src='Form.Table.Dev' />
+      <Include src='Form.Layout' />
+    </Multiform>
+<Dock icon-min='38' icon-max='96' >
+<!--
+  <div style='position:absolute;padding:0px;margin:0px;top:0px;left:0px;width:10px;height:5px;background-color:white;' >&nbsp;</div>
+  <div style='position:absolute;padding:0px;margin:0px;top:0px;left:10px;width:100px;height:5px;background-color:blue;' >&nbsp;</div>
+  <div style='position:absolute;padding:0px;top:0px;width:19px;height:5px;background-color:white;' />
+
+
+
+  <Insets top='12' left='12' bottom='2' right='0' />
+  <Insets top='16' left='12' bottom='2' right='12' />
+  <Insets top='82' left='32' bottom='2' right='32' />
+-->
+  <Item icon='Aero_Pack-Home.png' onclick='TGui.selectOrAddMultiform(MF,MF.HOME)' text='Home' />
+  <Item icon='Phuzion-Desktop.png' onclick='TGui.selectOrAddMultiform(MF,Form.Layout)' text='Home' />
+  <Item icon='Phuzion-System.png' onclick='TGui.selectOrAddMultiform(MF,Form.Notebook)' text='More ...' />
+  <Item icon='Phuzion-System.png' onclick='TGui.selectOrAddMultiform(MF,Form.Table.Dev)' text='Table Development' />
+  <Item icon='VistaICO-Folder_blue.png' onclick='displayFileExplorer(event)' text='File explorer' />
+  <Item icon='ToolbarUtilitiesFolderIcon.png' onclick='TGui.preferencesCustomize(event)' text='%Customize%' />
+  <Item icon='Aero_Pack-Config.png' onclick='TGui.chooseTheme()' text='Preferences' />
+  <Item icon='TrashIcon.png' Xonclick='' text='text 1' droptarget="
+{
+  element: null,
+  dock: null,
+  _initialize_:function()
+  {
+  },
+  dragEnter: function ( evt )
+  {
+    if ( ! this.element )
+    {
+      this.element = evt.getElement() ;
+      this.dock = this.element.parentNode.jsPeer ;
+    }
+    this.element.dndTarget.resized() ;
+    this.dock.onMouseMove ( evt.getEvent() ) ;
+    evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+  },
+  dragExit: function ( evt )
+  {
+    this.dock.resetIcons() ;
+    this.element.dndTarget.resized() ;
+  },
+  dragOver: function ( evt )
+  {
+    this.element.dndTarget.resized() ;
+    this.dock.onMouseMove ( evt.getEvent(), this.element ) ;
+    if ( evt.getDropAction() == DnDConstants.COPY )
+    {
+      evt.rejectDrag() ; return ;
+    }
+    evt.acceptDrag ( DnDConstants.MOVE ) ;
+  },
+  userActionChanged: function ( evt )
+  {
+    if ( evt.getDropAction() == DnDConstants.COPY )
+    {
+      evt.rejectDrag() ; return ;
+    }
+    evt.acceptDrag ( DnDConstants.MOVE ) ;
+  },
+  drop: function ( evt )
+  {
+    var action = evt.getDropAction() ;
+    if ( evt.getDropAction() != DnDConstants.MOVE )
+    {
+      evt.rejectDrop() ;
+      return ;
+    }
+    var t = evt.getTransferable();
+    if ( t.isDataFlavorSupported ( DnDDataFlavor.DOM_HTML ) )
+    {
+      evt.acceptDrop ( action) ;
+      var d = t.getData ( DnDDataFlavor.DOM_HTML ) ;
+      var w = new TUserDialog ( 'AreYouSureToRemoveSelectedItem', 'RemovalConfirmation' ) ;
+      w.callOnConfirmation ( function ( answer )
+      {
+        if ( d.parentNode ) d.parentNode.removeChild ( d ) ;
+      }) ;
+      w.askYesNo() ;
+      evt.dropComplete ( true ) ;
+    }
+    else
+    {
+      evt.rejectDrop() ;
+    }
+  }
+}"
+/>
+  <Item icon='Phuzion-Shutdown.png' Xicon='Vista-Shutdown.png' Xicon='VistaICO-Logout.png' onclick='logout(event)' text='Logout' />
+</Dock>
+  </Main>
+</xml>
+

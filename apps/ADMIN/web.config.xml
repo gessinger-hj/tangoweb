@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+  <xml>
+    <StartAxl>Main</StartAxl>
+    <LogoutUrl>index.html</LogoutUrl>
+    <WorkAxl>Main</WorkAxl>
+    <DefaultTheme>iFlex</DefaultTheme>
+    <Language></Language>
+    <Context>private</Context>
+    <Admin.Standalone>true</Admin.Standalone>
+    <AuthenticationRequired>false</AuthenticationRequired>
+    <AccessHook>
+      <Java><![CDATA[
+import org.gessinger.tango.servlet.* ;
+import org.gessinger.co.* ;
+public class Hook implements WebAccessHook
+{
+  public String getIndexHtml ( WebConfig wc, ServletRequestContext ctx )
+  throws Exception
+  {
+    String host = ctx.getParameter ( "host" ) ;
+    int port = ctx.getIntParameter ( "port", 0 ) ;
+    if ( host == null ) host = "localhost" ;
+
+    StringBuilder sb = new StringBuilder() ;
+    sb.append ( "<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'>\n" ) ;
+    sb.append ( "<html>\n" ) ;
+    sb.append ( "<head>\n" ) ;
+    sb.append ( "<link rel='stylesheet' type='text/css' href='Tango.css'>\n" ) ;
+    sb.append ( "<link rel='shortcut icon' href='/apps/ADMIN/favicon.ico' />\n" ) ;
+    sb.append ( "<script type='text/javascript' src='Tango.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TXml.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TComponents.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TSystem.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TTable.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TTagDefinitions.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TUtil.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TWindow.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='Geometry.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='TPlot.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='Admin.js' ></script>\n" ) ;
+    sb.append ( "<script type='text/javascript' src='AdminApp.js' ></script>\n" ) ;
+    sb.append ( "<title>Admin</title>\n" ) ;
+    sb.append ( "</head>\n" ) ;
+    sb.append ( "<body onload='initialize(\"" + host + "\"," + port + ")' >\n" ) ;
+    sb.append ( "</body >\n" ) ;
+    sb.append ( "</html>\n" ) ;
+    return sb.toString() ;
+  }
+  public boolean hasLogin ( WebConfig wc )
+  throws Exception
+  {
+    return true ;
+  }
+  public CoUser login ( ServletRequestContext ctx, CoUser userIn, WebConfig wc )
+  throws Exception
+  {
+    CoUser u = new CoUser ( "guest", "guest" ) ;
+    u.setIsWebuser ( true ) ;
+    u.setVerified ( true ) ;
+    return u ;
+  }
+}
+      ]]></Java>
+    </AccessHook>
+  </xml>

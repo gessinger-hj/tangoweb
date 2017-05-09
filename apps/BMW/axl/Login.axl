@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<!--
+  <Include src='Tango.Login.Title.axl' />
+-->
+  <Main Xstyle='background-image:url(img/Lower_by_ephimetheus.jpg);' >
+   <CosmosLogin >
+   </CosmosLogin>
+  </Main>
+</xml>
+

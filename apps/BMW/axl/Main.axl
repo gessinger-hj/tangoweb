@@ -1,0 +1,262 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+<!--
+  <Include src='Tango.Main.Title.axl' />
+-->
+  <Include src='Menu' />
+  <!-- <Main class=MainClass style='background-image:url(img/Not_in_the_Slightest_by_ephimetheus-1600x1200.jpg);background-size:100% 100%;' > -->
+  <Main class=MainClass Xstyle='background-image:url(img/lion-background.png);' >
+    <Multiform id='MF' style='top:0px;left:0px;bottom:-0;right:-0;' >
+      <Container id='MF.HOME' name='HOME' desktop='true'
+        droptarget="
+    {
+      dragEnter: function ( evt )
+      {
+        evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+      },
+      dragExit: function ( evt )
+      {
+      },
+      dragOver: function ( evt )
+      {
+        var t = evt.getTransferable();
+
+        var mx = evt.getX() ;
+        var my = evt.getY() ;
+        if (  ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
+           || t.getName() != 'COSMOS.ITEM'
+           )
+        {
+          evt.rejectDrag() ;
+          return ;
+        }
+        evt.acceptDrag ( DnDConstants.COPY ) ;
+      },
+      drop: function ( evt )
+      {
+        var action = evt.getDropAction() ;
+        var t = evt.getTransferable();
+        var mx = evt.getX() ;
+        var my = evt.getY() ;
+        if (  ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
+           || t.getName() != 'COSMOS.ITEM'
+           )
+        {
+          evt.rejectDrop() ;
+          return ;
+        }
+        evt.acceptDrop ( action) ;
+        var action = evt.getDropAction() ;
+
+        var x = t.getData ( DnDDataFlavor.XML ) ;
+        Cosmos.createDeskIcon ( x, mx, my ) ;
+        evt.dropComplete ( true ) ;
+      }
+    }"
+  onload='function(ev) { DeskIconFactory.onload ( ev ) ; }'
+>
+  <PopupMenu class='CosmosPopupMenu' name='MENU2' Xposition='CENTER' Xposition='over' trigger='mousedown' button='right' onclick='
+    function(ev)
+    {
+    var c = ev.getContainer() ;
+    var csize = c.getSize() ;
+    var a = DeskIconFactory.componentList ;
+    var x0 = 4 ;
+    var x = x0 ;
+    var y0 = 4 ;
+    var y = y0 ;
+    for ( var i = 0 ; i < a.length ; i++ )
+    {
+      var di = a[i] ;
+      di.setLocation ( x, y ) ;
+      var size = di.getSize() ;
+      if ( y + 2*size.height + 2 >= csize.height )
+      {
+        y = y0 ; x += size.width + 2 ;
+      }
+      else
+      {
+        y += size.height + 2 ;
+      }
+    }
+    }'>
+      <MenuItem name='MENU0' text='Arrange Icons' >
+      </MenuItem>
+      <MenuItem name='MENU1' text='Logout' tooltip='xxxxxxxxxxxxxxxxxxxxx' onclick='logout(event)'>
+      </MenuItem>
+    </PopupMenu>
+<XContainer style='right:-0;' >
+        <PushButton text='SVG' onclick='showSVG()' style='margin-right:0px;' />
+        <PushButton text='DB Functions' onclick='showDBFunctions()' style='margin-right:0px;' />
+<!--
+    <PushButton text='Show Upload Window' onclick='showUploadWindow(event)' />
+-->
+<!--
+        <PushButton text='markForLogout'
+                    onclick='function()
+                    {
+  var w = TSys.getWebToucher() ;
+  w.postMessage ( { cmd:"markForLogout" } ) ;
+                    }'
+        />
+-->
+        <PushButton text='Dialog'
+                    onclick='function()
+                    {
+                      var d = new CosmosUserDialog ( "Dies ist ein<br/>Test" ) ;
+                      d.info() ;
+                    }'
+        style='margin-right:0px;' />
+        <CosmosButton text='Window'
+                      onclick='function()
+                      {
+                        var w = new CosmosWindow ( "Cosmos.Dialog.Display" ) ;
+                        w.create() ;
+                        w.show() ;
+                      }'
+        style='margin-right:0px;' />
+estyle='{ normal: { image: { src:"cosmos/docks/Intrigue/IntrigueBottom_NS.png",
+                                         border: { top:5,left:5,bottom:10,right:10 }
+                                       },
+                                color: { foreground:"white" }
+                              },
+                      inside: { image: { src:"cosmos/docks/Intrigue/IntrigueBottom_S.png",
+                                         border: { top:5,left:5,bottom:10,right:10 }
+                                       },
+                                color: { foreground:"black" }
+                              },
+                      padding:{top:5,left:5,bottom:10,right:10 }
+                    }' />
+<PushButton Ximg='' text='Dialog' onclick='
+{
+  execute: function ( event )
+  {
+    var w = new TUserDialog ( "Infor for all" ) ;
+    w.info() ;
+  }
+}' />
+<!-- ---------------------------------------------------------------------- -->
+
+<br/>
+<br/>
+<!-- ---------------------------------------------------------------------- -->
+
+</XContainer>
+<br/>
+<!--
+        <DeskIcon tooltip='Webcam' src='cosmos/widgets/Webcam/icon.png' onclick='Cosmos.showWidget(Webcam)' />
+        <DeskIcon tooltip='Clock' src='cosmos/widgets/DigitalBlue/icon.png' onclick='Cosmos.showWidget(DigitalBlue)' />
+        <DeskIcon tooltip='Post It!!!' src='cosmos/widgets/PostIt/icon.png' action='Cosmos.showWidget(PostIt)' />
+        <DeskIcon tooltip='Rss' src='cosmos/widgets/Rss/icon.png' onclick='Cosmos.showWidget(Rss)' />
+        <DeskIcon tooltip='Free Dictionary' src='cosmos/widgets/FreeDictionary/icon.png' onclick='Cosmos.showWidget(FreeDictionary)' />
+        <DeskIcon tooltip='Fuzzy Clock' src='cosmos/widgets/FuzzyClock/icon.png' onclick='Cosmos.showWidget(FuzzyClock)' />
+        <DeskIcon tooltip='Weather' src='cosmos/plugins/Weather/icon.png' onclick='Cosmos.startPlugin ( Weather )' />
+        <DeskIcon tooltip='Leo' src='cosmos/widgets/Leo/icon.png' onclick='Cosmos.showWidget(Leo)' />
+        <DeskIcon tooltip='Google Translate' src='cosmos/widgets/GoogleTranslate/icon.png' onclick='Cosmos.showWidget(GoogleTranslate)' />
+-->
+        <DeskIcon tooltip='Form Notebook' src='Phuzion-System.png' action='TGui.selectOrAddMultiform(MF,Form.Notebook)' />
+        <DeskIcon tooltip='Table Test' src='lists.png' action='TGui.selectOrAddMultiform(MF,Form.Table.Test)' />
+        <DeskIcon src='Phuzion-Shutdown.png' action='logout(event)' tooltip='<span ><img src="img/Phuzion-Shutdown.png" style="width:24px;height:24px;" />Logout</span>' />
+        <DeskIcon tooltip='Admin' src='Network_Connection_Manager-2-64.png' action='TGui.selectOrAddMultiform(MF,Form.Admin)' />
+<!--
+        <DeskIcon tooltip='Desklets' src='cosmos/config/gnome-workspace.png' onclick='Cosmos.listPlugins ( Desklet )' />
+-->
+        <DeskIcon tooltip='Google Maps' src='Google-Maps-48.png' Xsrc='google-maps-icon-128.png' action='Cosmos.showGoogleMapSearch()' />
+      </Container>
+      <Include src='Form.Deco.Test' />
+      <Include src='Form.Table.Dev' />
+      <Include src='Form.Layout' />
+    </Multiform>
+<Dock icon-min='42' icon-max='48' >
+  <Item icon='Aero_Pack-Home.png' onclick='TGui.selectOrAddMultiform(MF,MF.HOME)' text='Home' />
+  <Item text='Rss' icon='cosmos/widgets/Rss/icon.png' onclick='Cosmos.showWidget(Rss)' />
+  <Item text='Webcam' icon='cosmos/widgets/Webcam/icon.png' onclick='Cosmos.showWidget(Webcam)' />
+  <Item icon='cosmos/config/gnome-workspace.png' onclick='Cosmos.listPlugins ( Desklet )' text='Desklets' />
+  <Item icon='Phuzion-Desktop.png' onclick='TGui.selectOrAddMultiform(MF,Form.Layout)' text='Home' />
+  <Item icon='Phuzion-System.png' onclick='TGui.selectOrAddMultiform(MF,Form.Notebook)' text='More ...' />
+  <Item icon='Phuzion-System.png' onclick='TGui.selectOrAddMultiform(MF,Form.Table.Dev)' text='Table Development' />
+  <Item icon='VistaICO-Folder_blue.png' onclick='displayFileExplorer(event)' text='File explorer' />
+  <Item icon='ToolbarUtilitiesFolderIcon.png' onclick='TGui.preferencesCustomize(event)' text='%Customize%' />
+  <Item icon='Aero_Pack-Config.png' onclick='TGui.chooseTheme()' text='Preferences' />
+  <Item icon='calculator-2-128.png' text='Calculator' onclick='function()
+    {
+    var w = new TWindow ( "Window.Calculator" ) ;
+    w.create() ;
+    w.show() ;
+    }'
+  />
+
+  <Item icon='TrashIcon.png' Xonclick='' text='text 1' droptarget="
+{
+  element: null,
+  dock: null,
+  _initialize_:function()
+  {
+  },
+  dragEnter: function ( evt )
+  {
+    if ( ! this.element )
+    {
+      this.element = evt.getElement() ;
+      this.dock = this.element.parentNode.jsPeer ;
+    }
+    this.element.dndTarget.resized() ;
+    this.dock.onMouseMove ( evt.getEvent() ) ;
+    evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+  },
+  dragExit: function ( evt )
+  {
+    this.dock.resetIcons() ;
+    this.element.dndTarget.resized() ;
+  },
+  dragOver: function ( evt )
+  {
+    this.element.dndTarget.resized() ;
+    this.dock.onMouseMove ( evt.getEvent(), this.element ) ;
+    if ( evt.getDropAction() == DnDConstants.COPY )
+    {
+      evt.rejectDrag() ; return ;
+    }
+    evt.acceptDrag ( DnDConstants.MOVE ) ;
+  },
+  userActionChanged: function ( evt )
+  {
+    if ( evt.getDropAction() == DnDConstants.COPY )
+    {
+      evt.rejectDrag() ; return ;
+    }
+    evt.acceptDrag ( DnDConstants.MOVE ) ;
+  },
+  drop: function ( evt )
+  {
+    var action = evt.getDropAction() ;
+    if ( evt.getDropAction() != DnDConstants.MOVE )
+    {
+      evt.rejectDrop() ;
+      return ;
+    }
+    var t = evt.getTransferable();
+    if ( t.isDataFlavorSupported ( DnDDataFlavor.DOM_HTML ) )
+    {
+      evt.acceptDrop ( action) ;
+      var d = t.getData ( DnDDataFlavor.DOM_HTML ) ;
+      var w = new TUserDialog ( 'AreYouSureToRemoveSelectedItem', 'RemovalConfirmation' ) ;
+      w.callOnConfirmation ( function ( answer )
+      {
+        if ( d.parentNode ) d.parentNode.removeChild ( d ) ;
+      }) ;
+      w.askYesNo() ;
+      evt.dropComplete ( true ) ;
+    }
+    else
+    {
+      evt.rejectDrop() ;
+    }
+  }
+}"
+/>
+  <Item icon='Phuzion-Shutdown.png' Xicon='Vista-Shutdown.png' Xicon='VistaICO-Logout.png' onclick='logout(event)' text='Logout' />
+</Dock>
+  </Main>
+</xml>
+

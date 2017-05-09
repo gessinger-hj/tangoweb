@@ -1,0 +1,19 @@
+<xml>
+  <Window resizable='true' title='Files' id="Window.Files" >
+  <Container style='left:0px;top:0px;' bottomAttachComponent=true bottom='-0' name='Form.Window.Files' right='-0' >
+    <Choice style='left:0px;top:0px;' size=10 name=CH right='-0' bottom='-0' >
+<option>1</option>
+<option>1</option>
+<option>1</option>
+<option>1</option>
+<option>1</option>
+<option>1</option>
+    </Choice>
+  </Container>
+  <br/>
+  <Container bottom='0' right='0' >
+    <PushButton right='4' img='img/Icon.RedCross.gif' text='Cancel' onclick='TGui.closeTopWindow(event)' />
+  </Container>
+  </Window>
+</xml>
+

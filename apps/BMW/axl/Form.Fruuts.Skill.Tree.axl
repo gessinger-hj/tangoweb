@@ -1,0 +1,361 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label='Fruuts Skills' id='Form.Skill.Tree' name='Form.Skill.Tree' >
+  <Container >
+    <PushButton text='soap' onclick='showSoapDataSkills()' />
+  </Container>
+  <br/>
+  <Container style='bottom:-2;right:-2;' >
+    <Container style='bottom:-0;' >
+<TitleLabel text='Groups' />
+<br/>
+      <Table name='TABLE.SKILL.GROUPS' style='width:400px;right:-0;bottom:-0;'
+             path='skillGroups'
+             row-name='skillGroup' sortable=true
+             Xondblclick='tableSkillGroupsDblClick()'
+             onclick='{
+                           execute: function ( event )
+                           {
+                             var ev = new TEvent ( event ) ;
+                             var p = ev.getPeer() ;
+                             var ud = p.getSelectedUserXml() ;
+                             var f = new TContainer ( "Form.Skill.Tree" ) ;
+                             var ff = f.getComponentByName ( "Form.Skill.Tree.Subgroups" ) ;
+                             ff.setValues ( ud ) ;
+                           }
+                         }'
+              droptarget='
+    {
+      _initialize_: function ( event )
+      {
+        var f = new TContainer ( "Form.Skill.Tree" ) ;
+        this.tab = f.getPeerByName ( "TABLE.SKILL.GROUPS" ) ;
+      },
+      dragEnter: function ( evt )
+      {
+        var t = evt.getTransferable();
+        if ( t.getName() != "TABLE.SKILL.SUBGROUPS" )
+        {
+          evt.rejectDrag() ;
+          return ;
+        }
+        evt.acceptDrag ( DnDConstants.MOVE ) ;
+      },
+      dragExit: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        tab.setRowHighlighted ( false ) ;
+      },
+      dragOver: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        var x = evt.getX() ;
+        var y = evt.getY() ;
+        var r = tab.getRowFromPosition ( x, y ) ;
+        var t = evt.getTransferable();
+        if ( t.getName() != "TABLE.SKILL.SUBGROUPS" )
+        {
+          evt.rejectDrag() ;
+          return ;
+        }
+        if ( ! r )
+        {
+          tab.setRowHighlighted ( false ) ;
+          evt.rejectDrag() ;
+        }
+        else
+        {
+          evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+          r.setHighlighted ( true ) ;
+        }
+      },
+      drop: function ( evt )
+      {
+        var action = evt.getDropAction() ;
+        var t = evt.getTransferable();
+        var tab = evt.getPeer() ;
+        tab.setRowHighlighted ( false ) ;
+        var x = evt.getX() ;
+        var y = evt.getY() ;
+        var rGroup = tab.getRowFromPosition ( x, y ) ;
+        if (  t.getName() != "TABLE.SKILL.SUBGROUPS"
+           || ! t.isDataFlavorSupported ( DnDDataFlavor.XML_ARRAY )
+           || ! rGroup
+           )
+        {
+          evt.rejectDrop() ;
+          return ;
+        }
+        evt.acceptDrop ( action) ;
+
+        var xGroup = rGroup.getXml() ;
+        var groupId = xGroup.getContent ( "skillGroupId" ) ;
+
+        var a = t.getData ( DnDDataFlavor.XML_ARRAY ) ;
+        for ( var i = 0 ; i < a.length ; i++ )
+        {
+          var xSubGroup = a[i] ;
+          xSubGroup.getXml ( "skillGroupId" ).setContent ( groupId ) ;
+          xSubGroup.remove() ;
+          xGroup.getDom().appendChild ( xSubGroup.getDom() ) ;
+        }
+        var f = new TContainer ( "Form.Skill.Tree" ) ;
+        var t = f.getPeerByName ( "TABLE.SKILL.SKILLS" ) ;
+        t.clear() ;
+        evt.dropComplete ( true ) ;
+      }
+    }'
+      >
+        <Columns>
+          <Column name="name" />
+          <Column name="status" />
+          <Column name="description" />
+        </Columns>
+      </Table>
+    </Container>
+    <Splitbar />
+    <Container style='bottom:-0;' name='Form.Skill.Tree.Subgroups' >
+      <TitleLabel text='Subgroups' />
+      <br/>
+      <Table name='TABLE.SKILL.SUBGROUPS' style='width:400px;right:-0;bottom:-0;'
+             row-name='subgroup' sortable=true
+             multiple=true
+             onclick='{
+                        execute: function ( event )
+                        {
+                          var ev = new TEvent ( event ) ;
+                          var p = ev.getPeer() ;
+                          var ud = p.getSelectedUserXml() ;
+                          var f = new TContainer ( "Form.Skill.Tree.Skills" ) ;
+                          f.setValues ( ud ) ;
+                          var f2 = f.getComponentByName ( "Form.Skill.Parameter" ) ;
+                          f2.reset() ;
+                        }
+                      }'
+             dragsource="
+{
+  getDragElement: function ( evt )
+  {
+    var src = evt.getSource() ;
+    var tr = null ;
+    if ( src.nodeName == 'TD' ) tr = src.parentNode ;
+    else
+    if ( src.nodeName == 'TR' ) tr = src ;
+    return tr ;
+  },
+  dragStart: function ( evt )
+  {
+    var tab = evt.getPeer() ;
+    if ( ! tab ) return ;
+    var x = tab.getSelectedUserXml() ;
+    if ( ! x ) return null ;
+    var elem = evt.getElement() ;
+    var src = evt.getSource() ;
+    if ( src === elem ) return ;
+    var t = new Transferable ( DnDDataFlavor.XML_ARRAY, function ( dataFlavor )
+    {
+      if ( dataFlavor == DnDDataFlavor.XML_ARRAY )
+      {
+        var t = tab ;
+        var a = tab.getSelectedItems() ;
+        for ( var i = 0 ; i < a.length ; i++ )
+        {
+          a[i] = new TXml ( a[i] ) ;
+        }
+        return a ;
+      }
+    }) ;
+    t.setName ( tab.getName() ) ;
+    return t ;
+  },
+  dragDropEnd: function ( evt )
+  {
+    if ( ! evt.getDropSuccess() ) return ;
+    var tab = evt.getPeer() ;
+    if ( evt.getDropAction() == DnDConstants.MOVE )
+    {
+      var a = tab.getSelectedRows() ;
+      if ( a )
+      {
+        for ( var i = 0 ; i < a.length ; i++ )
+        {
+          a[i].remove() ;
+        }
+      }
+    }
+  }
+}"
+              droptarget='
+    {
+      _initialize_: function ( event )
+      {
+        var f = new TContainer ( "Form.Skill.Tree" ) ;
+        this.tab = f.getPeerByName ( "TABLE.SKILL.SUBGROUPS" ) ;
+      },
+      dragEnter: function ( evt )
+      {
+        var t = evt.getTransferable();
+        if ( t.getName() != "TABLE.SKILL.SKLLS" )
+        {
+          evt.rejectDrag() ;
+          return ;
+        }
+        evt.acceptDrag ( DnDConstants.MOVE ) ;
+      },
+      dragExit: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        tab.setRowHighlighted ( false ) ;
+      },
+      dragOver: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        var x = evt.getX() ;
+        var y = evt.getY() ;
+        var r = tab.getRowFromPosition ( x, y ) ;
+        var t = evt.getTransferable();
+        if ( t.getName() != "TABLE.SKILL.SKILLS" )
+        {
+          evt.rejectDrag() ;
+          return ;
+        }
+        if ( ! r )
+        {
+          tab.setRowHighlighted ( false ) ;
+          evt.rejectDrag() ;
+        }
+        else
+        {
+          evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+          r.setHighlighted ( true ) ;
+        }
+      },
+      drop: function ( evt )
+      {
+        var action = evt.getDropAction() ;
+        var t = evt.getTransferable();
+        var tab = evt.getPeer() ;
+        tab.setRowHighlighted ( false ) ;
+        var x = evt.getX() ;
+        var y = evt.getY() ;
+        var rSubGroup = tab.getRowFromPosition ( x, y ) ;
+        if (  t.getName() != "TABLE.SKILL.SKILLS"
+           || ! t.isDataFlavorSupported ( DnDDataFlavor.XML_ARRAY )
+           || ! rSubGroup
+           )
+        {
+          evt.rejectDrop() ;
+          return ;
+        }
+        evt.acceptDrop ( action) ;
+
+        var xSubGroup = rSubGroup.getXml() ;
+        var subGroupId = xSubGroup.getContent ( "skillSubGroupId" ) ;
+
+        var a = t.getData ( DnDDataFlavor.XML_ARRAY ) ;
+        for ( var i = 0 ; i < a.length ; i++ )
+        {
+          var xSkill = a[i] ;
+          xSkill.getXml ( "skillSubGroupId" ).setContent ( subGroupId ) ;
+          xSkill.remove() ;
+          xSubGroup.getDom().appendChild ( xSkill.getDom() ) ;
+        }
+        evt.dropComplete ( true ) ;
+      }
+    }'
+             rows-plain=true
+      >
+        <Columns>
+          <Column name="name" />
+          <Column name="status" />
+          <Column name="description" />
+        </Columns>
+      </Table>
+    </Container>
+    <Splitbar />
+    <Container style='bottom:-0;right:-0;' id='Form.Skill.Tree.Skills' >
+      <TitleLabel name='name' text='Skills' />
+      <br/>
+      <DisplayContainer style='right:-0;' name='Form.Skill.Parameter' >
+        <ListLabel text='Description' /><tab name='T1' /><TextField name='description' mandatory=true' style='width:200px;right:-4;' />
+        <br/>
+        <ListLabel text='Status' /><tab name='T1' /><Checkbox name='status' default='DEACTIVE' value='ACTIVE' text='Activated' />
+      </DisplayContainer>
+      <br/>
+      <Table name='TABLE.SKILL.SKILLS' style='width:400px;right:-0;bottom:-0;'
+             row-name='skill' sortable=true
+             rows-plain=true
+             multiple=true
+             ondblclick='{
+                           execute: function ( event )
+                           {
+                             var ev = new TEvent ( event ) ;
+                             var p = ev.getPeer() ;
+                             var ud = p.getSelectedUserXml() ;
+                             var f = new TContainer ( "Form.Skill.Tree.Skills" ) ;
+                             var f2 = f.getComponentByName ( "Form.Skill.Parameter" ) ;
+                             f2.setValues ( ud ) ;
+                           }
+                         }'
+             dragsource="
+{
+  getDragElement: function ( evt )
+  {
+    var src = evt.getSource() ;
+    var tr = null ;
+    if ( src.nodeName == 'TD' ) tr = src.parentNode ;
+    else
+    if ( src.nodeName == 'TR' ) tr = src ;
+    return tr ;
+  },
+  dragStart: function ( evt )
+  {
+    var tab = evt.getPeer() ;
+    if ( ! tab ) return ;
+    var x = tab.getSelectedUserXml() ;
+    if ( ! x ) return null ;
+    var elem = evt.getElement() ;
+    var src = evt.getSource() ;
+    if ( src === elem ) return ;
+    var t = new Transferable ( DnDDataFlavor.XML_ARRAY, function ( dataFlavor )
+    {
+      if ( dataFlavor == DnDDataFlavor.XML_ARRAY )
+      {
+        var t = tab ;
+        var a = tab.getSelectedItems() ;
+        for ( var i = 0 ; i < a.length ; i++ )
+        {
+          a[i] = new TXml ( a[i] ) ;
+        }
+        return a ;
+      }
+    }) ;
+    t.setName ( tab.getName() ) ;
+    return t ;
+  },
+  dragDropEnd: function ( evt )
+  {
+    if ( ! evt.getDropSuccess() ) return ;
+    var tab = evt.getPeer() ;
+    if ( evt.getDropAction() == DnDConstants.MOVE )
+    {
+      var a = tab.getSelectedRows() ;
+      if ( a )
+      {
+        for ( var i = 0 ; i < a.length ; i++ )
+        {
+          a[i].remove() ;
+        }
+      }
+    }
+  }
+}"
+      >
+        <Columns>
+          <Column name="name" />
+          <Column name="status" />
+          <Column name="description" />
+        </Columns>
+      </Table>
+    </Container>
+  </Container>
+</Container>

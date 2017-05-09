@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label="Table Test" id='Form.Table.Test' name='Form.Table.Test' onchange='handle:PB.Form.Table.Test' >
+  <Container style='bottom:-0;attach-bottom:true;' >
+    <Container onload='
+{
+  execute: function ( event )
+  {
+    var x = new TXml() ;
+    var xx = x.addXml ( "TYPE" ) ;
+    var o = null ;
+    o = xx.addXml ( "option", "Ignore" ) ; o.addAttribute ( "value", "1" ) ;
+    o = xx.addXml ( "option", "Unit Price" ) ; o.addAttribute ( "value", "2" ) ;
+    o = xx.addXml ( "option", "Mark-Up" ) ; o.addAttribute ( "value", "3" ) ;
+    var form = new TContainer ( "Form.Table.Test" ) ;
+    form.setRefData ( x ) ;
+    var p = form.getPeerById ( "Table.Test" ) ;
+    p.addPropertyChangeListener ( this, this.pc ) ;
+  },
+  pc: function ( ev )
+  {
+var p = ev.getPeer() ;
+var selectedItem = p.getSelectedItem() ;
+selectedItem.firstChild.innerHTML = "1" ;
+  }
+}' >
+      <PushButton text='Fill Table' onclick='fillTableTest(event)' />
+      <PushButton text='Get Values' disabled=true onclick='getValuesTableTest(event)' id='PB.Form.Table.Test' />
+      <PushButton text='XML Test' onclick='xmlTest(event)' />
+      <PushButton text='Print' onclick='
+{
+  execute: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var c = ev.getContainer() ;
+    var tab = c.getPeer ( "TABLE.DATA" ) ;
+    tab.print() ;
+  }
+}' />
+    </Container>
+    <br/>
+    <Table id='Table.Test' path='data' name='TABLE.DATA' style='bottom:-0;width:400px;attach-bottom:true;'
+        reset=true sortable=true
+        multiple=true
+        XgetValuesAll=true
+        get-values=changed
+      >
+        <Columns>
+          <Column name="ICON" title=' ' type='img' />
+          <Column name="Name" title="%Name%" />
+          <Column name="DESCRIPTION" title="Description" editable=true />
+          <Column name="VALUE" title=Value type='float' width=60 editable=true mandatory=true />
+          <Column name="TYPE" title=Type Xwidth=80 editable=choice />
+        </Columns>
+      </Table>
+  </Container>
+  <Container style='bottom:-0;attach-bottom:true;' name='CONTAINER.CHECK' >
+    <PushButton text='Fill' onclick='function(event)
+{
+  var x = new TXml() ;
+  var xx = x.addXml ( "TABLE.CHECK" ) ;
+  var row = null ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 1 ) ; row.addDom ( "group", "g1" ) ; row.addDom ( "desc", "d1" ) ;
+  row.addDom ( "ACTION", "<img src=&apos;img/edit.png&apos; onclick=&apos;SWAApp.test(event,\"EDIT\")&apos; />" ) ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 0 ) ; row.addDom ( "group", "g2" ) ; row.addDom ( "desc", "d2" ) ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 1 ) ; row.addDom ( "group", "g3" ) ; row.addDom ( "desc", "d3" ) ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 0 ) ; row.addDom ( "group", "g4" ) ; row.addDom ( "desc", "d4" ) ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 1 ) ; row.addDom ( "group", "g5" ) ; row.addDom ( "desc", "d5" ) ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 0 ) ; row.addDom ( "group", "g6" ) ; row.addDom ( "desc", "d6" ) ;
+  row = xx.addXml ( "row" ) ;
+  row.addDom ( "active", 1 ) ; row.addDom ( "group", "g7" ) ; row.addDom ( "desc", "d7" ) ;
+  var ev = new TEvent ( event ) ;
+  ev.getContainer().setValues ( x ) ;
+}'
+    />
+    <PushButton text='Get Values' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        var vals = ev.getValues() ;
+        log ( vals ) ;
+      }'
+    />
+    <PushButton text='Set Radio' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        ev.getContainer().getPeer( "TABLE.CHECK" ).setColumnEditTypeRadio ( "active" ) ;
+      }'
+    />
+    <PushButton text='Set Checkbox' onclick='function(event)
+      {
+        var ev = new TEvent ( event ) ;
+        ev.getContainer().getPeer( "TABLE.CHECK" ).setColumnEditTypeCheckBox ( "active" ) ;
+      }'
+    />
+    <br/>
+    <Table name='TABLE.CHECK' style='width:400px;bottom:-0;'
+     get-values=changed
+    >
+      <Columns>
+        <Column name=active editable='check' >
+<Mappings>
+  <option value='1' default='0' />
+</Mappings>
+        </Column>
+        <Column name=group />
+        <Column name=desc />
+        <Column name="ACTION" title=ACTION />
+      </Columns>
+    </Table>
+  </Container>
+  <br/>
+  <Container style='bottom:4;width:400px;height:200px;' >
+    <Container>
+      <PushButton text='Get HTML' onclick='fillTableHtml(event)' />
+    </Container>
+    <br/>
+    <DisplayContainer id='Form.Table.Test.Html' style='right:-0;bottom:-0;overflow:auto;' >
+    </DisplayContainer>
+  </Container>
+</Container>

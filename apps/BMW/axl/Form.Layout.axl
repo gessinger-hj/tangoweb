@@ -1,0 +1,224 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container tooltip='Test eines Layouts' name='Form.Layout' label="Layout Test" id="Form.Layout" >
+  <Toolbar style='top:0px;left:0px;' >
+    <ToolbarButton
+          onclick='
+function displayFileChooser(event)
+{
+  var d = new TFileChooser() ;
+  d.setFileActionCommand ( displayFile ) ;
+  d.setModal ( false ) ;
+  d.show() ;
+}'
+          img='Tango/Folder.16/normal' 
+          text='Files...'
+          width=60
+          height=40
+          tooltip='Display a File Chooser Dialog'
+    />
+    <ToolbarButton
+          onclick='addTab(event)'
+          tooltip='Add a new Tab'
+          width=60
+          height=40
+          img='staffpicks_facebook20090206.png'
+          img-width=34
+    />
+    <ToolbarButton
+          onclick='displayFileExplorer(event)'
+          img='MS.FolderOpen-32.png' 
+          tooltip='Explorer'
+          width=60
+          height=40
+          img-width=32
+    />
+    <Group>
+    <ToolbarToggle
+          img='staffpicks_things20090206.png' 
+          tooltip='Monitor'
+          width=60
+          height=40
+          img-width=34
+    />
+    <ToolbarToggle
+          img='staffpicks_things20090206.png' 
+          tooltip='Reports'
+          width=60
+          height=40
+          img-width=34
+          img-height=34
+    />
+    </Group>
+  </Toolbar>
+  <br/>
+  <Container style='height:200px;bottom:-4;'
+    <Container style='width:200px;height:200px;'
+               decoration='{ src: "img/deco-2.png", top: 4, left: 4, bottom: 4, right: 4 }'
+               id='ID.DnD.Source.Form.Layout.1'
+               dragsource=true
+    ><![CDATA[Drag Source 1]]>
+    </Container>
+    <Container style='width:200px;height:200px;'
+               decoration='{ src: "img/deco-2.png", top: 4, left: 4, bottom: 4, right: 4 }'
+               id='ID.DnD.Source.Form.Layout.2'
+               dragsource=true
+    ><![CDATA[<div>Drag Source 2 <br/> sdf asdf </div><img src='img/ipyl_games2_20090120.png' onmousedown="return false;"/>]]>
+    </Container>
+    <br/>
+    <img src='TrashIcon.png' style='width:200px;height:200px;'
+         dragable=true
+         droptarget="
+    {
+      _initialize_: function()
+      {
+      },
+      dragEnter: function ( evt )
+      {
+        evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+      },
+      drop: function ( evt )
+      {
+        var action = evt.getDropAction() ;
+        var t = evt.getTransferable();
+        if ( t.isDataFlavorSupported ( DnDDataFlavor.DOM_HTML ) )
+        {
+          evt.acceptDrop ( action ) ;
+          var d = t.getData ( DnDDataFlavor.DOM_HTML ) ;
+          var w = new TUserDialog ( 'AreYouSureToRemoveSelectedItem', 'RemovalConfirmation' ) ;
+          w.callOnConfirmation ( function ( answer )
+          {
+            if ( d.parentNode ) d.parentNode.removeChild ( d ) ;
+          }) ;
+          w.askYesNo() ;
+          evt.dropComplete ( true ) ;
+        }
+        else
+        {
+          evt.rejectDrop() ;
+        }
+      }
+    }"
+    />
+    <Container style='width:200px;height:200px;'
+               Xdecoration='{ src: "img/deco-2.png", top: 4, left: 4, bottom: 4, right: 4 }'
+               decoration='{ src: "img/Default-2.png", top: 12, left: 12, bottom: 12, right: 12
+                           , type:"sliced"
+                           , padding: { top:6,left:6,bottom:6,right:6 }
+                           }'
+               id='ID.DnD.Target.Form.Layout.1'
+         dragable=true
+               droptarget=true
+               dragsource=true
+    ><![CDATA[Drop Target 1]]>
+    </Container>
+    <Container style='width:200px;height:200px;'
+               Xdecoration='{ src: "img/deco-2.png", top: 4, left: 4, bottom: 4, right: 4 }'
+               decoration='{ src: "img/Default-2.png", top: 12, left: 12, bottom: 12, right: 12
+                           , type:"sliced"
+                           , padding: { top:6,left:6,bottom:6,right:6 }
+                           }'
+               id='ID.DnD.Target.Form.Layout.2'
+               dragable=true
+               droptarget="
+    {
+      dragEnter: function ( evt )
+      {
+        var t = evt.getTransferable();
+        if ( t.getName() == 'FILE.RESSOURCE.RESULT' )
+        {
+          evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+          return ;
+        }
+        evt.rejectDrag() ;
+      },
+      drop: function ( evt )
+      {
+        var action = evt.getDropAction() ;
+        var t = evt.getTransferable();
+        if ( t.getName() != 'FILE.RESSOURCE.RESULT' )
+        {
+          evt.rejectDrop() ;
+        }
+        if ( t.isDataFlavorSupported ( DnDDataFlavor.TEXT_HTML ) )
+        {
+          evt.acceptDrop ( action) ;
+          var d = t.getData ( DnDDataFlavor.TEXT_HTML ) ;
+          var e = evt.getElement() ;
+          e.innerHTML = d ;
+          evt.dropComplete ( true ) ;
+        }
+        else
+        {
+          evt.rejectDrop() ;
+        }
+      }
+    }"
+    ><![CDATA[Drop Target 2 SDF FG ADFG FG GH SFGH FGH FGH FGH FGH FGfgh fgh fgh fgh ]]>
+    </Container>
+  </Container>
+
+  <Container >
+    <PushButton text="Get Images" onclick='getFileRessourceImages()' />
+  </Container>
+  <Container style='width:200px;height:200px;right:-4;bottom:-4;' >
+    <Table id='FILE.RESSOURCE.RESULT'
+           name='FILE.RESSOURCE.RESULT'
+           style='width:200px;height:200px;right:-4;bottom:-4;'
+          dragsource="
+    {
+      getDragElement: function ( evt )
+      {
+        var src = evt.getSource() ;
+        if ( src.nodeName == 'IMG' ) return src ;
+        var tr = null ;
+        if ( src.nodeName == 'TD' ) tr = src.parentNode ;
+        else
+        if ( src.nodeName == 'TR' ) tr = src ;
+        if ( tr ) return tr ;
+        return null ;
+      },
+      dragStart: function ( evt )
+      {
+        var tab = evt.getPeer() ;
+        if ( ! tab ) return ;
+        var x = tab.getSelectedUserXml() ;
+        if ( ! x ) return null ;
+        var elem = evt.getElement() ;
+        var src = evt.getSource() ;
+        if ( src === elem ) return ;
+        var a = [ DnDDataFlavor.XML, DnDDataFlavor.TEXT_HTML ] ;
+        if ( src.nodeName == 'IMG' ) a.push ( DnDDataFlavor.DOM_HTML ) ;
+        var t = new Transferable ( a, function ( dataFlavor )
+        {
+          if ( dataFlavor == DnDDataFlavor.XML ) return x ;
+          if ( dataFlavor == DnDDataFlavor.TEXT_HTML )
+          {
+            return new FileRessource().buildImgString ( x.getContent ( 'NAME' ) ) ;
+          }
+          if ( dataFlavor == DnDDataFlavor.DOM_HTML )
+          {
+            return src ;
+          }
+        }) ;
+        t.setName ( tab.getName() ) ;
+        return t ;
+      },
+      dragDropEnd: function ( evt )
+      {
+        if ( ! evt.getDropSuccess() ) return ;
+        if ( evt.getDropAction() == DnDConstants.MOVE )
+        {
+          var r = evt.getPeer().getSelectedRow() ;
+        }
+      }
+    }
+"
+    >
+      <Columns>
+        <Column name="NAME" title=Name />
+        <Column name="DATE" title="Date" type='date' />
+        <Column name="PREVIEW" title="Preview" />
+      </Columns>
+    </Table>
+  </Container>
+</Container>

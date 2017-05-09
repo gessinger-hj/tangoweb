@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container label='Fruuts Customer' id='Form.Fruuts.Customer.Module' name='Form.Customer.Module' >
+  <Container >
+    <PushButton text='soap' onclick='showSoapData()' />
+    <PushButton text='soap' onclick='showSoapDataSkills()' />
+  </Container>
+<br/>
+<Container style='bottom:-2;right:-2;' >
+  <Container style='bottom:-0;' >
+    <Table name='TABLE.CUSTOMER' style='width:600px;right:-0;bottom:-0;'
+           row-name='customer' sortable=true
+           ondblclick='tableCustomerDblClick()'
+    >
+      <Columns>
+        <Column name="companyName" />
+        <Column name="type" />
+        <Column name="state" />
+        <Column name="billCycleCode" />
+        <Column name="paymentType" />
+        <Column name="customerTariffId" />
+        <Column name="newsletterSubscribed" />
+        <Column name="TCAccepted" />
+        <Column name="advertisingAllowed" />
+        <Column name="dataPrivacyConfirmed" />
+        <Column name="taxLiability" />
+        <Column name="visible" />
+        <Column name="taxIdNumber" />
+<!--
+<Column name="registerDate >2008-11-20+01:00</registerDate>
+-->
+        <Column name="registerDate" />
+        <Column name="availableDate" />
+        <Column name="hourlyRate" />
+        <Column name="externalCustomerId" />
+      </Columns>
+    </Table>
+  </Container>
+<Splitbar />
+  <Container id='Form.Customer.Module.Left' style='bottom:-0;right:-0;' >
+    <Container path='person' style='right:-0;' >
+<ListLabel text='salutation' /><tab name='T1' /><Label name='salutation' style='right:-0;background-color:white;' />
+<br/>
+<ListLabel text='name' /><tab name='T1' /><Label name='name' style='right:-0;background-color:white;' />
+<br/>
+<ListLabel text='firstname' /><tab name='T1' /><Label name='firstname' style='right:-0;background-color:white;' />
+<br/>
+<ListLabel text='dateOfBirth' /><tab name='T1' /><Label name='dateOfBirth' style='right:-0;background-color:white;' />
+<br/>
+<ListLabel text='title' /><tab name='T1' /><Label name='title' style='right:-0;background-color:white;' />
+<br/>
+<ListLabel text='affix' /><tab name='T1' /><Label name='affix' style='right:-0;background-color:white;' />
+<br/>
+<ListLabel text='sex' /><tab name='T1' /><Label name='sex' style='right:-0;background-color:white;' />
+    </Container>
+<br/>
+    <Table name='reachability' path='reachability' style='height:100px;width:600px;right:-0;'
+           row-name='address' sortable=true
+           Xondblclick='tableCustomerDblClick()'
+    >
+      <Columns>
+        <Column name="type" />
+        <Column name="street" />
+        <Column name="houseNr" />
+        <Column name="affix" />
+        <Column name="zipCode" />
+        <Column name="city" />
+      </Columns>
+    </Table>
+<br/>
+    <Table name='reachability' path='reachability' style='height:100px;width:600px;right:-0;'
+           row-name='phone' sortable=true
+           Xondblclick='tableCustomerDblClick()'
+    >
+      <Columns>
+        <Column name="type" />
+        <Column name="phone" />
+      </Columns>
+    </Table>
+<br/>
+    <Table name='reachability' path='reachability' style='height:100px;width:600px;right:-0;'
+           row-name='eMail' sortable=true
+           Xondblclick='tableCustomerDblClick()'
+    >
+      <Columns>
+        <Column name="type" />
+        <Column name="eMail" />
+      </Columns>
+    </Table>
+<br/>
+    <Table name='TABLE.ATTRIBUTE' style='height:100px;width:600px;right:-0;'
+           row-name='attribute' sortable=true
+           rows-plain=true
+    >
+      <Columns>
+        <Column name="type" />
+        <Column name=VXC.value />
+      </Columns>
+    </Table>
+<br/>
+<TextDisplay name='DISPLAY.CUSTOMER.DETAILS' style='bottom:-0;right:-0;overflow:auto;' />
+  </Container>
+</Container>
+</Container>
