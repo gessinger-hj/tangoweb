@@ -139,11 +139,11 @@ TComponent.prototype.getPath = function() { return this.dom ? ( this.dom.path ? 
 /**
  *  @return {string}[empty string] the name of the wrapped html dom element
  */
-TComponent.prototype.setName = function ( name ) { if ( this.dom ) this.dom.name = name ; };
+TComponent.prototype.setName = function ( name ) { if ( this.dom ) this.dom.name = name ; return this ; };
 /**
  *  @param {string} the new className attribute of the wrapped html dom element
  */
-TComponent.prototype.setClassName = function(className) { if ( this.dom ) this.dom.className = className ; };
+TComponent.prototype.setClassName = function(className) { if ( this.dom ) this.dom.className = className ; return this ; };
 /**
  *  @return {string}[empty string] the className attribute of the wrapped html dom element
  */

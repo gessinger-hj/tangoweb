@@ -25,7 +25,7 @@
 /temp
 /themes
 /tinymce
-/tools
+#/tools
 /upload
 /user-data
 /user-preferences

@@ -2,6 +2,7 @@
  *  @constructor
  */
 Tango.include ( "FileSystem.js" ) ;
+Tango.include ( "Picture.js" ) ;
 LsResourceLocator = function ( lsp )
 {
   Tango.initSuper( this, File, lsp  );
@@ -118,28 +119,30 @@ Ls.prototype.showPlaces = function ( container )
 
   if ( ! this.initialized )
   {
-    this.initialized = true ;
-    var xRef = Calypso.getAvailableNameSpaces ( "Ls*", "nameSpace" ) ;
+    this.initialized    = true ;
+    var xRef            = Calypso.getAvailableNameSpaces ( "Ls*", "nameSpace" ) ;
     this.container.setRefData ( xRef ) ;
-    this.tableFiles = this.container.getPeer ( "Files" ) ;
-    var dsl = new this.DragSourceListener ( this ) ;
-    var dtl = new this.DropTargetListener ( this ) ;
+    this.tableFiles     = this.container.getPeer ( "Files" ) ;
+    var dsl             = new this.DragSourceListener ( this ) ;
+    var dtl             = new this.DropTargetListener ( this ) ;
     this.tableFiles.addDragSourceListener ( dsl ) ;
     this.tableFiles.addDropTargetListener ( dtl ) ;
-    this.MF = this.container.getPeer ( "MF" ) ;
-    this.c_content = this.container.getComponent ( "DocumentEditor" ) ;
+    this.MF             = this.container.getPeer ( "MF" ) ;
+    this.c_content      = this.container.getComponent ( "DocumentEditor" ) ;
     this.documentEditor = this.c_content.getPeer() ;
     this.documentEditor.addListener ( this, this.onCloseDocument, "close" ) ;
     this.documentEditor.addListener ( this, this.onSaveDocument, "save" ) ;
     this.documentEditor.addListener ( this, this.onOpenDocument, "open" ) ;
 
-    this.display = this.container.getComponent ( "DISPLAY" ) ;
-    this.tbFolderUp = this.container.getComponent ( "TB.FolderUp" ) ;
-    this.tbDownload = this.container.getComponent ( "TB.Download" ) ;
+    this.DISPLAY_TEXT  = this.container.getComponent ( "DISPLAY_TEXT" ) ;
+    this.DISPLAY_IMAGE = this.container.getComponent ( "DISPLAY_IMAGE" ) ;
+    this.TAB_IMAGE     = this.container.getComponent ( "TAB_IMAGE" ) ;
+    this.tbFolderUp    = this.container.getComponent ( "TB.FolderUp" ) ;
+    this.tbDownload    = this.container.getComponent ( "TB.Download" ) ;
     this.tbShowContent = this.container.getComponent ( "TB.ShowContent" ) ;
-    this.tbEdit = this.container.getComponent ( "TB.Edit" ) ;
-    this.tbFileRemove = this.container.getComponent ( "TB.FileRemove" ) ;
-    this.breadcrumb = this.container.getComponent ( "Breadcrumb" ) ;
+    this.tbEdit        = this.container.getComponent ( "TB.Edit" ) ;
+    this.tbFileRemove  = this.container.getComponent ( "TB.FileRemove" ) ;
+    this.breadcrumb    = this.container.getComponent ( "Breadcrumb" ) ;
     this.tableFiles.addKeyListener ( this, this.tableFilesKeyListener ) ;
   }
 };
@@ -173,8 +176,8 @@ Ls.prototype.setNameSpace = function ( nameSpace )
 {
   if ( this.rl.getNameSpace() == nameSpace ) return ;
   this.rl.setNameSpace ( nameSpace ) ;
-  this.display.setText ( "" ) ;
-  this.MF.select ( "C-DISPLAY" ) ;
+  this.DISPLAY_TEXT.setText ( "" ) ;
+  this.MF.select ( "DISPLAY_TEXT" ) ;
   this.showPlaces ( this.container ) ;
   this.showFileListOfPlace() ;
 };
@@ -210,7 +213,7 @@ Ls.prototype.onclickFiles = function ( event )
   }
   else
   {
-    if ( f.length() < 1000000 )
+    if ( f.length() < 10000000 )
     {
       this.tbDownload.setEnabled ( true ) ;
       this.tbEdit.setEnabled ( true ) ;
@@ -269,51 +272,85 @@ Ls.prototype.folderUp = function ( event )
   x.add ( "BreadcrumbOffset", offset ) ;
   this.container.setValues ( x ) ;
 };
+////////////////////
+// Image handling //
+////////////////////
+Ls.prototype.imageZoom100 = function(e)
+{
+  if ( !this.PICTURE ) return ;
+  this.PICTURE.zoom100() ;
+  this.displayZoomInPercent() ;
+};
+Ls.prototype.imageZoomMinus = function(e)
+{
+  if ( !this.PICTURE ) return ;
+  this.PICTURE.zoomMinus() ;
+  this.displayZoomInPercent() ;
+};
+Ls.prototype.imageZoomPlus = function(e)
+{
+  if ( !this.PICTURE ) return ;
+  this.PICTURE.zoomPlus() ;
+  this.displayZoomInPercent() ;
+};
+Ls.prototype.imageFitInWindow = function(e)
+{
+  if ( !this.PICTURE ) return ;
+  this.PICTURE.fitInParent() ;
+  this.displayZoomInPercent() ;
+};
+Ls.prototype.setImageZoom = function(e)
+{
+  if ( !this.PICTURE ) return ;
+  var percent = e.getComponent().getSelectedItem() ;
+  this.PICTURE.zoomPercent ( parseInt ( percent ) ) ;
+  this.displayZoomInPercent() ;
+};
+Ls.prototype.displayZoomInPercent = function()
+{
+  if ( !this.PICTURE ) return ;
+  var xml = new TXml();
+  xml.add ( "imageZoomInPercent", ""+this.PICTURE.getZoomInPercent() ) ;
+  this.TAB_IMAGE.setValues ( xml ) ;
+}
+Ls.prototype.onopen_fixedImageZoom = function(e)
+{
+  if ( !this.PICTURE ) return ;
+};
 Ls.prototype.showText = function ( f )
 {
+
   if ( f.isDirectory() ) return ;
   if ( f.isImage() )
   {
-    var url = f.createImageUrl() ;
-    // this.display.dom.innerHTML = "<span><img name='IMG' src='" + url + "'></img></span>" ;
-
-    TGui.flushAttributes ( this.display.dom ) ;
-    this.display.dom.innerHTML = "" ;
-
-    var espan = document.createElement ( "span" ) ;
-    this.display.dom.appendChild ( espan ) ;
-
-    var etxt = document.createElement ( "span" ) ;
-    espan.appendChild ( etxt ) ;
     var fn = f.getName() ;
+    var url = f.createImageUrl() ;
 
-    var ebr = document.createElement ( "br" ) ;
-    espan.appendChild ( ebr ) ;
-
-    var eimg = document.createElement ( "img" ) ;
-    espan.appendChild ( eimg ) ;
-    eimg.onload
-    TGui.addEventListener ( eimg, "load", function(e)
-    {
-      var t = fn + " (" + eimg.width + "x" + eimg.height + ")" ;
-// log ( eimg.width ) ;
-      etxt.innerHTML = t ;
-    } ) ;
-    eimg.src = url ;
-    this.MF.select ( "C-DISPLAY" ) ;
+    this.PICTURE = this.TAB_IMAGE.getPeer ( "PICTURE" ) ;
+    var xml = new TXml();
+    xml.add ( "PICTURE/src", url ) ;
+    this.TAB_IMAGE.setValues ( xml ) ;
+    var thiz = this ;
+    this.PICTURE.addEventListener ( "load", function (e) {
+      var xml = new TXml();
+      xml.add ( "imageName", fn ) ;
+      xml.add ( "imageSize", "" + this.PICTURE.dom.width + "x" + this.PICTURE.dom.height ) ;
+      thiz.TAB_IMAGE.setValues ( xml ) ;
+    });
+    this.MF.select ( "TAB_IMAGE" ) ;
     return ;
   }
   if ( f.isArchive() )
   {
     var t = f.getArchiveList() ;
-    this.display.setText ( "<span><pre>" + t + "</pre></span>" ) ;
-    this.MF.select ( "C-DISPLAY" ) ;
+    this.DISPLAY_TEXT.setText ( "<span><pre>" + t + "</pre></span>" ) ;
+    this.MF.select ( "TAB_TEXT" ) ;
     return ;
   }
   var str = f.getText() ;
   str = str.replace ( /\[##\]/g, "]]" ) ;
-  this.display.setText ( "<span><pre>" + str + "</pre></span>" ) ;
-  this.MF.select ( "C-DISPLAY" ) ;
+  this.DISPLAY_TEXT.setText ( "<span><pre>" + str + "</pre></span>" ) ;
+  this.MF.select ( "TAB_TEXT" ) ;
 };
 Ls.prototype.editFile = function ( event )
 {

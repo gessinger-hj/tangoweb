@@ -441,6 +441,7 @@ Calendar = function ( dt )
   this.jsClassName        = "Calendar" ;
   this.newYearsEveFactor  = 0.5 ;
   this.christmasEveFactor = 0.5 ;
+  this.hoursPerDay        = 8.0 ;
 };
 
 Calendar.prototype.AREAS                        = {} ;
@@ -608,6 +609,11 @@ Calendar.prototype.setNewYearsEveFactor = function ( factor )
     var aa = this._FixedFreedays[k] ;
     aa[11][30] = - this.newYearsEveFactor ;
   }
+};
+Calendar.prototype.setHoursPerDay = function ( hoursPerDay )
+{
+  this._initialize() ;
+  this.hoursPerDay = hoursPerDay ;
 };
 Calendar.prototype.getFixedFreedaysFor = function ( areaName )
 {
@@ -919,11 +925,11 @@ Calendar.prototype.getBeweglicheFeiertage = function ( year )
 
   return h ;
 };
-Calendar.prototype.numberOfWorkingHours = function ( start, end, areaName, hoursPerDay )
+Calendar.prototype.calculateNumberOfWorkingHours = function ( start, end, areaName, hoursPerDay )
 {
   if ( ! start ) return 0 ;
   if ( ! end ) return 0 ;
-  if ( ! hoursPerDay ) hoursPerDay = 8 ;
+  hoursPerDay = hoursPerDay ? hoursPerDay : this.hoursPerDay ;
 
   var start_time = start.getTime() / 1000 ;
   var end_time = end.getTime() / 1000 ;
@@ -1016,6 +1022,7 @@ CalendarApp = function()
   this._cal = new Calendar() ;
   this._cal.setChristmasEveFactor ( 1 ) ;
   this._cal.setNewYearsEveFactor ( 1 ) ;
+  this._cal.setHoursPerDay ( 8.5 ) ;
 };
 CalendarApp.prototype.getEasterDate = function ( year )
 {
@@ -1037,13 +1044,13 @@ log ( "month=" + month ) ;
 log ( "==============================" ) ;
 log ( x ) ;
 };
-CalendarApp.prototype.numberOfWorkingHours = function ( year, month )
+CalendarApp.prototype.calculateNumberOfWorkingHours = function ( year, month )
 {
   var start = new Date ( 2013, 11, 1 ) ;
   var end = new Date ( 2013, 11, 31 ) ;
 log ( "start=" + start ) ;
 log ( "end=" + end ) ;
-  var n = this._cal.numberOfWorkingHours ( start, end, null, 8 ) ;
+  var n = this._cal.calculateNumberOfWorkingHours ( start, end, null ) ;
 log ( "n=" + n ) ;
 };
 CalendarApp.prototype.calculateFromCalendars = function ( event )
@@ -1059,11 +1066,11 @@ CalendarApp.prototype.calculateFromCalendars = function ( event )
     end = start ;
     cEND.setTime ( end ) ;
   }
-  var n = this._cal.numberOfWorkingHours ( start, end, null, 8 ) ;
+  var n = this._cal.calculateNumberOfWorkingHours ( start, end, null ) ;
   var cNOWH = c.getComponent ( "NOWH" ) ;
   cNOWH.setText ( n ) ;
 
-  var n1 = this._cal.numberOfWorkingHours ( start, end, null, 1 ) ;
+  var n1 = this._cal.calculateNumberOfWorkingHours ( start, end, null, 1 ) ;
   var cNOWD = c.getComponent ( "NOWD" ) ;
   cNOWD.setText ( n1 ) ;
 };

@@ -12174,35 +12174,59 @@ TGlobalEventHandlerClass.prototype =
   ---------------------------------------------------------------------------------*/
   tryShortcut: function ( ev )
   {
-    if ( ev.isAlt() && ev.isCtrl() && ev.isShift() && ev.getCharCode() == "O" )
+    if ( ev.isAlt() && ev.isCtrl() && ev.isShift() )
     {
-      var bws = TGui.getBrowserWindowSize() ;
-      var s = "Browswer window size=" + bws.width + "x" + bws.height
-            + "\nScreensize        =" + window.screen.width + "x" + window.screen.height
-            + "\nAvailable size    =" + window.screen.availWidth + "x" + window.screen.availHeight
-            ;
-      log ( s ) ;
-      if ( TWM.getNumberOfWindows() )
+      if ( ev.getCharCode() == "V" )
       {
-        var n = TWM.getNumberOfWindows() ;
-        log ( "---------------- windows ---------------" ) ;
-        for ( var i = 0 ; i < n ; i++ )
+        var tw = TWM.getTopWindow() ;
+        var lw = TGui.getLogWindow() ;
+        if ( tw === lw )
         {
-          var w = TWM.windows[i] ;
-          log ( " [" + i + "]" + w.getName() ) ;
-          log ( "    " + w.getId() ) ;
-          log ( "    \"" + w.getTitle() + "\"" ) ;
-          log ( "    " + w.getBounds() ) ;
+          tw = null ;
+          if ( TWM.windows.length > 1 ) tw = TWM.windows[TWM.windows.length-2] ;
         }
+        var v ;
+        if ( tw )
+        {
+          v = tw.getValues() ;
+        }
+        else
+        {
+          v = ev.getValues() ;
+        }
+log(v);
       }
-      log ( "---------------- shortcuts -------------" ) ;
-      log ( this.shortcutHash ) ;
-      log ( "---------------- user ------------------" ) ;
-      log ( TSys.getUser() ) ;
-      var w = TGui.getLogWindow() ;
-      if ( w )
+      else
+      if ( ev.getCharCode() == "O" )
       {
-        w.scrollToTop() ;
+        var bws = TGui.getBrowserWindowSize() ;
+        var s = "Browswer window size=" + bws.width + "x" + bws.height
+              + "\nScreensize        =" + window.screen.width + "x" + window.screen.height
+              + "\nAvailable size    =" + window.screen.availWidth + "x" + window.screen.availHeight
+              ;
+        log ( s ) ;
+        if ( TWM.getNumberOfWindows() )
+        {
+          var n = TWM.getNumberOfWindows() ;
+          log ( "---------------- windows ---------------" ) ;
+          for ( var i = 0 ; i < n ; i++ )
+          {
+            var w = TWM.windows[i] ;
+            log ( " [" + i + "]" + w.getName() ) ;
+            log ( "    " + w.getId() ) ;
+            log ( "    \"" + w.getTitle() + "\"" ) ;
+            log ( "    " + w.getBounds() ) ;
+          }
+        }
+        log ( "---------------- shortcuts -------------" ) ;
+        log ( this.shortcutHash ) ;
+        log ( "---------------- user ------------------" ) ;
+        log ( TSys.getUser() ) ;
+        var w = TGui.getLogWindow() ;
+        if ( w )
+        {
+          w.scrollToTop() ;
+        }
       }
       return ;
     }

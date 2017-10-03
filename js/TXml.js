@@ -848,10 +848,14 @@ TXml.prototype =
       {
         if ( name == ch.attributes["xNodeName"].nodeName ) found = true ;
       }
-      if ( ! found && ch.getAttributeNode("xNodeName") )
+      if ( ! found && ch.getAttribute("xNodeName") )
       {
-        if ( name == ch.getAttributeNode("xNodeName").nodeValue ) found = true ;
+        if ( name === ch.getAttribute("xNodeName") ) found = true ;
       }
+      // if ( ! found && ch.getAttributeNode("xNodeName") )
+      // {
+      //   if ( name == ch.getAttributeNode("xNodeName").nodeValue ) found = true ;
+      // }
       if ( found )
       {
         lastFoundElement = ch ;
@@ -1329,8 +1333,10 @@ TXml.prototype =
     if ( this.domRoot.xNodeName ) return this.domRoot.xNodeName ;
     if ( this.domRoot.attributes["xNodeName"] )
       return this.domRoot.attributes["xNodeName"].nodeName ;
-    if ( this.domRoot.getAttributeNode("xNodeName") )
-      return this.domRoot.getAttributeNode("xNodeName").nodeValue ;
+    if ( this.domRoot.getAttribute("xNodeName") )
+      return this.domRoot.getAttribute("xNodeName") ;
+    // if ( this.domRoot.getAttributeNode("xNodeName") )
+    //   return this.domRoot.getAttributeNode("xNodeName").nodeValue ;
     return this.domRoot.nodeName ;
   }
 };

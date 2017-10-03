@@ -800,7 +800,7 @@ TangoClass.prototype._where = function ( str )
     }
     if ( str )
     {
-      return str + ": " + firstLine ;
+      return str + ": (" + firstLine + ")" ;
     }
     return firstLine ;
   }

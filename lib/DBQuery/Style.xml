@@ -81,10 +81,16 @@ DBQueryClass = function()
   this.dbuid = "" ;
   this.dbpwd = "" ;
   this.dburl = "" ;
- 
-	/*
+
+  this.dbuid = "postgres" ;
+  this.dbpwd = "luap1997" ;
+  this.dburl = "jdbc:postgresql://localhost:5432/postgres" ;
+/* 
   this.dbuid = "root" ;
-  this.dbpwd = "" ;
+  this.dbpwd = "luap1997" ;
+  this.dburl = "jdbc:mysql://localhost/sidds" ;
+*/
+  /*
   this.dburl = "jdbc:mysql://localhost:3306/cdcol"
 	*/
 	/*

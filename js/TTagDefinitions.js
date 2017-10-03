@@ -326,10 +326,10 @@ ImageContainer.prototype.resized = function()
     return ;
   }
   if ( ! this._eImage ) return ;
-  var containerSize = new TDimension ( this.dom.offsetWidth, this.dom.offsetHeight ) ;
-  var imgSize = new TDimension ( this._Image.width, this._Image.height ) ;
-  var resultSize = this.scaleX ( containerSize, imgSize ) ;
-  this._eImage.style.width = resultSize.width + "px" ;
+  var containerSize         = new TDimension ( this.dom.offsetWidth, this.dom.offsetHeight ) ;
+  var imgSize               = new TDimension ( this._Image.width, this._Image.height ) ;
+  var resultSize            = this.scaleX ( containerSize, imgSize ) ;
+  this._eImage.style.width  = resultSize.width + "px" ;
   this._eImage.style.height = resultSize.height + "px" ;
 }
 ImageContainer.prototype.imgOnLoad = function ( event )
@@ -407,14 +407,11 @@ ImageContainer.prototype.setImage = function ( url, force )
     var id = TSys.getTempId() ;
     this.dom.innerHTML = "<img id='" + id + "' src='' style='position:absolute;border-style:none;' onmousedown='return false;' />" ;
     this._eImage = document.getElementById ( id ) ;
-/*
-    this._eImage = document.createElement ( "img" ) ;
-    this.dom.appendChild ( this._eImage ) ;
-*/
     this._eImage.style.top = "0px" ;
     this._eImage.style.left = "0px" ;
   }
-  this._eImage.src= src ;
+  
+  this._eImage.src = src ;
 }
 ImageContainer.prototype.scaleX = function ( containerSize, imgSize )
 {

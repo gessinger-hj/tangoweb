@@ -18,7 +18,7 @@ decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,ri
 
 <XInclude src='Form.UserAndGroups' />
 <XInclude src='Form.Table.Sort.Test' />
-<Include src='Form.Misc' />
+<XInclude src='Form.Misc' />
 <XInclude src='Form.Upload' />
 
 <XInclude src='Form.Notebook' />
@@ -39,6 +39,7 @@ decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,ri
 <XInclude src='Form.Tree' />
 <XInclude src='Form.NB' />
 <XInclude src='Form.Canvas.Test' />
+<XInclude src='Form.Canvas' />
 <XInclude src='Form.Demo' />
 <XInclude src='Form.Grid' />
 <XInclude src='Form.Table' />
@@ -46,7 +47,7 @@ decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,ri
 <XInclude src='Form.Table.Focus' />
 <XInclude src='Form.Menu' />
 <XInclude src='FileExplorer' />
-<XInclude src='Ls.Form' />
+<Include src='Ls.Form' />
 <XInclude src='DocumentEditor' />
 <XInclude src='Form.Animations' />
 <XInclude src='Form.ReportEditor' />
