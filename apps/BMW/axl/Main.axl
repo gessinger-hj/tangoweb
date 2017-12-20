@@ -175,7 +175,8 @@ estyle='{ normal: { image: { src:"cosmos/docks/Intrigue/IntrigueBottom_NS.png",
   <Item icon='Phuzion-Desktop.png' onclick='TGui.selectOrAddMultiform(MF,Form.Layout)' text='Home' />
   <Item icon='Phuzion-System.png' onclick='TGui.selectOrAddMultiform(MF,Form.Notebook)' text='More ...' />
   <Item icon='Phuzion-System.png' onclick='TGui.selectOrAddMultiform(MF,Form.Table.Dev)' text='Table Development' />
-  <Item icon='VistaICO-Folder_blue.png' onclick='displayFileExplorer(event)' text='File explorer' />
+  <Item icon='System-documents-icon-512.png' onclick='displayFileExplorer(event)' text='File explorer' />
+  <Item icon='File-Explorer-icon-256.png' onclick='function(){new TWindow ( "Ls.Window" ).create().show()}' text='Files...' />
   <Item icon='ToolbarUtilitiesFolderIcon.png' onclick='TGui.preferencesCustomize(event)' text='%Customize%' />
   <Item icon='Aero_Pack-Config.png' onclick='TGui.chooseTheme()' text='Preferences' />
   <Item icon='calculator-2-128.png' text='Calculator' onclick='function()

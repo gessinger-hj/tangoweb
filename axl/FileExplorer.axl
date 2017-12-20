@@ -52,8 +52,23 @@
       </Table>
     </Container>
     <Splitbar id='Splitbar.5' />
+<!-- 
     <Container name='Display' reset='true' style='color:black;background-color:white;overflow:auto;right:-2;bottom:-2;'
                onload='*.onloadDisplay()'
     />
-  </Container>
+-->
+      <Container style='bottom:-0px;right:-0px;padding:0px;' onload='*.onloadDisplay()'>
+        <Multiform name='MF' style='bottom:-0px;right:-0px;' >
+          <Container name='TAB_TEXT'>
+            <DisplayContainer name='DISPLAY_TEXT' style='bottom:-0px;right:-0px;overflow:auto;'>
+            </DisplayContainer>
+          </Container>
+          <Container name='TAB_IMAGE'>
+            <Include src='Display.Picture.Container' pictureName='PICTURE' />
+          </Container>
+          <Include src='DocumentEditor'/>
+        </Multiform>
+      </Container>
+
+   </Container>
 </Container>

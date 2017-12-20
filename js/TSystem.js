@@ -8653,6 +8653,11 @@ TGuiClass.prototype.layoutConstraints = function ( htmlDom, layoutAll, depth )
         e.jsPeer.resized ( new TDimension ( e.offsetWidth, e.offsetHeight ) ) ;
       }
     }
+    else
+    if ( e.jsPeer && e.jsPeer.resized )
+    {
+      e.jsPeer.resized ( new TDimension ( e.offsetWidth, e.offsetHeight ) ) ;
+    }
     topMost = Math.min  ( topMost, ( e.offsetTop - e.xOuterTop ) ) ;
     pe = e ;
     e = e.previousSibling ;

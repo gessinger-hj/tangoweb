@@ -453,9 +453,13 @@ function addTab(event)
 }
 function displayFileExplorer(event)
 {
-  var d = new TWindow ( "TFileExplorer" ) ;
+  var d = new TWindow ( "TFileExplorerWindow" ) ;
   d.create() ;
   d.show() ;
+}
+function displayLs(event)
+{
+  new TWindow ( "Ls.Window" ).create().show() ;
 }
 function askYesNo ( event )
 {

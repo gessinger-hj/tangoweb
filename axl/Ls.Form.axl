@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<Container name='X' id='Ls.Form' pagelet='new Ls()' onload='*.onload()'>
+<Container name='X' id='Ls.Form' pagelet='new Ls()' onload='*.onload()' style='right:-0;bottom:-0;'>
   <Properties>
     <Title>Ls</Title>
     <Favicon>/axl/resources/favicons/blue-a-remote-folder-icone-9001-48.ico</Favicon>

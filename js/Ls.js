@@ -2,7 +2,6 @@
  *  @constructor
  */
 Tango.include ( "FileSystem.js" ) ;
-Tango.include ( "Picture.js" ) ;
 LsResourceLocator = function ( lsp )
 {
   Tango.initSuper( this, File, lsp  );
@@ -76,6 +75,15 @@ Ls.prototype.onload = function ( ev )
   this.showPlaces ( ev.getContainer() ) ;
   var currentResourceLocation = this.options.getContent ( "CurrentResourceLocation" ) ;
   this.setCurrentResourceLocation ( currentResourceLocation ) ;
+  var w = ev.getWindow();
+  var thiz = this ;
+  if ( w )
+  {
+    w.on ( "close", function w_onclose (e)
+    {
+      thiz.saveUserData() ;
+    });
+  }
 };
 Ls.prototype._setCurrentResourceLocation = function ( currentResourceLocation )
 {
@@ -275,68 +283,18 @@ Ls.prototype.folderUp = function ( event )
 ////////////////////
 // Image handling //
 ////////////////////
-Ls.prototype.imageZoom100 = function(e)
-{
-  if ( !this.PICTURE ) return ;
-  this.PICTURE.zoom100() ;
-  this.displayZoomInPercent() ;
-};
-Ls.prototype.imageZoomMinus = function(e)
-{
-  if ( !this.PICTURE ) return ;
-  this.PICTURE.zoomMinus() ;
-  this.displayZoomInPercent() ;
-};
-Ls.prototype.imageZoomPlus = function(e)
-{
-  if ( !this.PICTURE ) return ;
-  this.PICTURE.zoomPlus() ;
-  this.displayZoomInPercent() ;
-};
-Ls.prototype.imageFitInWindow = function(e)
-{
-  if ( !this.PICTURE ) return ;
-  this.PICTURE.fitInParent() ;
-  this.displayZoomInPercent() ;
-};
-Ls.prototype.setImageZoom = function(e)
-{
-  if ( !this.PICTURE ) return ;
-  var percent = e.getComponent().getSelectedItem() ;
-  this.PICTURE.zoomPercent ( parseInt ( percent ) ) ;
-  this.displayZoomInPercent() ;
-};
-Ls.prototype.displayZoomInPercent = function()
-{
-  if ( !this.PICTURE ) return ;
-  var xml = new TXml();
-  xml.add ( "imageZoomInPercent", ""+this.PICTURE.getZoomInPercent() ) ;
-  this.TAB_IMAGE.setValues ( xml ) ;
-}
-Ls.prototype.onopen_fixedImageZoom = function(e)
-{
-  if ( !this.PICTURE ) return ;
-};
 Ls.prototype.showText = function ( f )
 {
-
   if ( f.isDirectory() ) return ;
   if ( f.isImage() )
   {
     var fn = f.getName() ;
     var url = f.createImageUrl() ;
 
-    this.PICTURE = this.TAB_IMAGE.getPeer ( "PICTURE" ) ;
     var xml = new TXml();
+    xml.add ( "PICTURE/srcName", fn ) ;
     xml.add ( "PICTURE/src", url ) ;
     this.TAB_IMAGE.setValues ( xml ) ;
-    var thiz = this ;
-    this.PICTURE.addEventListener ( "load", function (e) {
-      var xml = new TXml();
-      xml.add ( "imageName", fn ) ;
-      xml.add ( "imageSize", "" + this.PICTURE.dom.width + "x" + this.PICTURE.dom.height ) ;
-      thiz.TAB_IMAGE.setValues ( xml ) ;
-    });
     this.MF.select ( "TAB_IMAGE" ) ;
     return ;
   }
@@ -521,7 +479,7 @@ Ls.prototype.getFileList = function ( offset, pattern, bcoffset )
 };
 Ls.prototype.showWindow = function()
 {
-  this.w = new TWindow ( "Ls.Window" ) ;
+  this.w = new TWindow ( "Ls.Window.Child" ) ;
   this.w.setPagelet ( this ) ;
   this.w.create() ;
 

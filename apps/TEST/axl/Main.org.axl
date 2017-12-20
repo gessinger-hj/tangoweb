@@ -10,6 +10,9 @@
 decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,right:4},type:"sliced"}'
 >
 -->
+<XInclude src='Form.html-object' />
+<Include src='Form.Misc' />
+
 <XInclude src='Form.Table-2' />
 <XInclude src='Form.NetEvents' />
 <XInclude src='image.handling/Form.New.Image.Handling.axl' />
@@ -18,7 +21,6 @@ decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,ri
 
 <XInclude src='Form.UserAndGroups' />
 <XInclude src='Form.Table.Sort.Test' />
-<XInclude src='Form.Misc' />
 <XInclude src='Form.Upload' />
 
 <XInclude src='Form.Notebook' />
@@ -47,7 +49,7 @@ decoration='{src:"img/expensive-background.jpg",border:{top:4,left:4,bottom:4,ri
 <XInclude src='Form.Table.Focus' />
 <XInclude src='Form.Menu' />
 <XInclude src='FileExplorer' />
-<Include src='Ls.Form' />
+<XInclude src='Ls.Form' />
 <XInclude src='DocumentEditor' />
 <XInclude src='Form.Animations' />
 <XInclude src='Form.ReportEditor' />

@@ -1,20 +1,12 @@
-//http://178.63.86.211/solute/cd/banner
-//http://www.mupads.de/solute/cd/banner
-//http://afe2.specificclick.net/adserve/
-//http://im.banner.t-online.de/addyn/3.0
-//http://im.banner.t-online.de/bind
 Tango.include ( "TSystem" ) ;
 Tango.include ( "TComponents" ) ;
 Tango.include ( "TTable" ) ;
 Tango.include ( "TWindow" ) ;
-//Tango.include ( "TSpecialWindows" ) ;
 Tango.include ( "TUtil" ) ;
 Tango.include ( "TDialogChangePassword" ) ;
 Tango.include ( "Calypso" ) ;
 Tango.include ( "TTagDefinitions" ) ;
 Tango.include ( "ReportEditor" ) ;
-Tango.include ( "TFileHandler" ) ;
-Tango.include ( "TFileExplorer" ) ;
 Tango.include ( "DragAndDrop" ) ;
 Tango.include ( "FileRessource" ) ;
 Tango.include ( "Net" ) ;

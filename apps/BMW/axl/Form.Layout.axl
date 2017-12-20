@@ -2,21 +2,6 @@
 <Container tooltip='Test eines Layouts' name='Form.Layout' label="Layout Test" id="Form.Layout" >
   <Toolbar style='top:0px;left:0px;' >
     <ToolbarButton
-          onclick='
-function displayFileChooser(event)
-{
-  var d = new TFileChooser() ;
-  d.setFileActionCommand ( displayFile ) ;
-  d.setModal ( false ) ;
-  d.show() ;
-}'
-          img='Tango/Folder.16/normal' 
-          text='Files...'
-          width=60
-          height=40
-          tooltip='Display a File Chooser Dialog'
-    />
-    <ToolbarButton
           onclick='addTab(event)'
           tooltip='Add a new Tab'
           width=60
@@ -28,6 +13,14 @@ function displayFileChooser(event)
           onclick='displayFileExplorer(event)'
           img='MS.FolderOpen-32.png' 
           tooltip='Explorer'
+          width=60
+          height=40
+          img-width=32
+    />
+    <ToolbarButton
+          onclick='function(){new TWindow ( "Ls.Window" ).create().show()}'
+          img='MS.FolderOpen-32.png' 
+          tooltip='Ls'
           width=60
           height=40
           img-width=32

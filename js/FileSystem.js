@@ -1,4 +1,5 @@
 Tango.include ( "Extensions" ) ;
+Tango.include ( "Picture" ) ;
 
 /**
  *  @constructor
@@ -11,7 +12,6 @@ Finder = function ( treeName )
   this.treeName = treeName ;
   this.lsProxy  = new LsProxy ( "" ) ;
   this.lsProxy.setKey ( "KEY0" ) ;
-  this.display ;
 };
 Finder.prototype.toString = function()
 {
@@ -26,7 +26,11 @@ Finder.prototype.onloadTable = function ( ev )
 };
 Finder.prototype.onloadDisplay = function ( ev )
 {
-  this.display = ev.getContainer() ;
+  this.display       = ev.getContainer() ;
+  this.MF            = this.display.getPeer ( "MF" ) ;
+  this.DISPLAY_TEXT  = this.display.getComponent ( "DISPLAY_TEXT" ) ;
+  this.DISPLAY_IMAGE = this.display.getComponent ( "DISPLAY_IMAGE" ) ;
+  this.TAB_IMAGE     = this.display.getComponent ( "TAB_IMAGE" ) ;
 };
 Finder.prototype.onloadTree = function ( ev )
 {
@@ -210,32 +214,53 @@ Finder.prototype.displayFile = function ( f )
   {
     var str = f.getText() ;
     str = str.replace ( /\[##\]/g, "]]" ) ;
-    this.display.setText ( "<span><pre>" + str + "</pre></span>" ) ;
+    this.DISPLAY_TEXT.setText ( "<span><pre>" + str + "</pre></span>" ) ;
+    this.MF.select ( "TAB_TEXT" ) ;
   }
   else
-  if ( f.isImage() || name.endsWith ( ".svg" ) )
+  if ( f.isImage() )
   {
     var url = f.createImageUrl() ;
-    this.display.dom.innerHTML = "<span><img src=\"" + url + "\"></img></span>" ;
+    var xml = new TXml();
+    xml.add ( "PICTURE/srcName", f.getName() ) ;
+    xml.add ( "PICTURE/src", url ) ;
+    this.TAB_IMAGE.setValues ( xml ) ;
+    this.MF.select ( "TAB_IMAGE" ) ;
+    return ;
+  }
+  else
+  if ( f.getName().endsWith ( ".svg" ) )
+  {
+    var url = f.createImageUrl() ;
+    this.DISPLAY_TEXT.dom.innerHTML = "<span><img src=\"" + url + "\"></img></span>" ;
+    this.MF.select ( "TAB_TEXT" ) ;
     return ;
   }
   if ( f.isArchive() )
   {
     var t = f.getArchiveList() ;
-    this.display.setText ( "<span><pre>" + t + "</pre></span>" ) ;
+    this.DISPLAY_TEXT.setText ( "<span><pre>" + t + "</pre></span>" ) ;
+    this.MF.select ( "TAB_TEXT" ) ;
     return ;
   }
 };
 Finder.prototype.onload = function ( ev )
 {
-  this.container = ev.getContainer() ;
-  this.tree = this.container.getPeer ( this.treeName ) ;
+  try
+  {
+    this.container = ev.getContainer() ;
+    this.tree = this.container.getPeer ( this.treeName ) ;
 
-  var xRef = Calypso.getAvailableNameSpaces ( "Ls*", "nameSpace" ) ;
-  this.container.setRefData ( xRef ) ;
+    var xRef = Calypso.getAvailableNameSpaces ( "Ls*", "nameSpace" ) ;
+    this.container.setRefData ( xRef ) ;
 
-  this.showPlaces() ;
-  this.showFileListOfPlace() ;
+    this.showPlaces() ;
+    this.showFileListOfPlace() ;
+  }
+  catch ( exc )
+  {
+    log(exc);
+  }
 };
 Finder.prototype.changeNameSpace = function ( ev )
 {
@@ -245,7 +270,7 @@ Finder.prototype.setNameSpace = function ( nameSpace )
 {
   if ( this.lsProxy.getNameSpace() == nameSpace ) return ;
   this.lsProxy.setNameSpace ( nameSpace ) ;
-  this.display.setText ( "" ) ;
+  // this.display.setText ( "" ) ;
   this.showPlaces ( this.container ) ;
   this.showFileListOfPlace() ;
 };

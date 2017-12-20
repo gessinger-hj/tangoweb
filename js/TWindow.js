@@ -1053,7 +1053,15 @@ if ( Tango.ua.mobile )
   this._created = true ;
   var xpd = TSys.getPersistentWindowData ( this.id ) ;
   if ( xpd ) new TXml ( this.dBody ).setValues ( xpd ) ;
-  ctx.executeOnLoad() ;
+  try
+  {
+    ctx.executeOnLoad() ;
+  }
+  catch ( exc )
+  {
+    log(exc);
+  }
+  return this;
 };
 TWindow.prototype._createWindowMenu = function ( position, button )
 {
@@ -1804,6 +1812,7 @@ TWindow.prototype.show = function ( animator )
       this._show() ;
     }
   }
+  return this;
 };
 TWindow.prototype._show = function()
 {

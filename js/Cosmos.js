@@ -7,10 +7,10 @@ CosmosClass = function()
 {
   this.rootName = "cosmos" ;
   this.loginDirectoryName = "login" ;
-  this.loginThemeName = "default" ;
-  this.loginThemeName = "LinuxPeace" ;
   this.loginThemeName = "Neon" ;
+  this.loginThemeName = "LinuxPeace" ;
   this.loginThemeName = "EPI-Night-Sky" ;
+  this.loginThemeName = "default" ;
   this.widgetDirectoryName = "widgets" ;
   this.dockDirectoryName = "docks" ;
   this.stringDirectoryName = "strings" ;
@@ -78,6 +78,7 @@ CosmosClass.prototype =
   loginEndListener: function ( event )
   {
     var e = TGui.getDesktopElement() ;
+console.log ( "=====================");
     if ( this.wallpaper && e )
     {
       e.style.backgroundImage = "url(" + this.wallpaper + ")" ;

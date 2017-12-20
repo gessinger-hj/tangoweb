@@ -70,8 +70,13 @@ var Picture = function ( idOrElementOrXml )
   }
   this.zoomFactor = 1.0 ;
   this._fitInParent = false ;
+  Tango.mixin ( EventMulticasterTrait, this ) ;
 };
 Picture.inherits( TComponent ) ;
+Picture.prototype.toString = function()
+{
+  return "(" + this.jsClassName + ")[name=" + this.getName() + "]" ;
+}
 Picture.prototype.layout = function ( dom, externalAttributes, radioGroups, layoutContext )
 {
   this.dom = dom ;
@@ -80,7 +85,8 @@ Picture.prototype.layout = function ( dom, externalAttributes, radioGroups, layo
 }
 Picture.prototype.resized = function()
 {
-  // log ( this.getSize() ) ;
+  if ( !this._fitInParent ) return ;
+  this.fitInParent();
 }
 Picture.prototype.setUrl = function ( url )
 {
@@ -102,6 +108,7 @@ Picture.prototype.setUrl = function ( url )
     {
       thiz.fitInParent() ;
     }
+    thiz.emit ( "load" ) ;
   });
   this.dom.jsPeer = this ;
   this.dom.src = url ;
