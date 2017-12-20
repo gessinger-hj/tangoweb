@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<Container id='Form.html-object' style='left:0px;top:0px;' reset='false' name='X'>
+	<Container name='Form' style='left:0px;top:0px;overflow:hidden;right:-0;bottom:-0;' >
+		<iframe src="https://www.skylinewebcams.com/en/webcam/italia/sicilia/messina/taormina.html"
+		 				style='margin:0px;border:0px;overflow:hidden;left:-24px;top:-310px;width:1000px;height:940px;'>
+			
+		</iframe>
+	</Container>
+</Container>
