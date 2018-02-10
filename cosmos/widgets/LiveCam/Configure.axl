@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Window modal='true' resizable='true' dragable='true' title='No Title...' id="Rss.Configure" >
+    <Container onchange='handle:PB.Rss.Configure.Apply' >
+      <Label text='Title' /> <TextField name='title' mandatory='true' style='right:-4' />
+      <br/>
+      <Label text='URL' /> <TextField name='url' mandatory='true' style='width:300px;right:-4' />
+      <br/>
+      <Container style='bottom:0;right:0' >
+        <CosmosButton id='PB.Rss.Configure.Apply' disabled='true' name='PB.APPLY' text='Apply' />
+      </Container>
+    </Container>
+  </Window>
+</xml>

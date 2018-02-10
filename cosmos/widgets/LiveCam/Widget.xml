@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<xml>
+  <Header>
+    <Type>Widget</Type>
+    <Title>Live Cams</Title>
+    <Description>Live Streaming Cams</Description>
+  </Header>
+  <Axl>
+    <Container>
+      <Container style='padding:0px;' >
+        <CosmosButton img="${home}/edit_add.png" name='PB.ADD' style='bottom:0;' tooltip='Add a feed.' onclick='*.add()'/>
+        <CosmosButton img="${home}/edit.png" name='PB.EDIT' style='bottom:0;' disabled='true' tooltip='Edit the selected feed.' onclick='*.edit()'/>
+        <CosmosButton img="${home}/edit_remove.png" name='PB.REMOVE' style='bottom:0;' disabled='true' tooltip='Remove the selected feed.' onclick='*.remove()'/>
+        <CosmosButton img="${home}/sort.png" name='PB.SORT' tooltip='Sort entries.' style='bottom:0;'
+											onclick='{
+												tab:null,
+												factor: -1,
+												execute: function(event)
+												{
+												  if ( ! this.tab )
+												  {
+												    var ev = new TEvent ( event ) ;
+												    this.tab = ev.getContainer().getPeer ( "TABLE" ) ;
+												  }
+												  this.factor = this.factor * -1 ;
+												  this.tab.sortColumn ( 0, this.factor ) ;
+												}
+												}'
+        />
+      </Container>
+      <br/>
+      <Container style='bottom:-0px;right:-0px;left:0px;overflow:hidden;' >
+        <Table name='TABLE' style='bottom:-4;width:140px;height:500px;attach-bottom:true;' show-header='false' get-values='all'  >
+          <Columns>
+            <Column name='title' />
+          </Columns>
+        </Table>
+        <Container style='overflow:hidden;width:1000px;height:940px;background-color:white;color:black;' name='LIVECAM.CONTAINER' >
+        </Container>
+      </Container>
+    </Container>
+  </Axl>
+  <Script><![CDATA[
+{
+  readIsHidden: false,
+  widget: null,
+  /*resizable: false,*/
+  liveCamContainer: null,
+  table: null,
+  isPagelet: function() { return true ; },
+  _constructor_: function ( widget )
+  {
+		this.widget    = widget ;
+		this.resizable = true ;
+		this.closable  = true ;
+  },
+  _initialize_: function ( widget )
+  {
+    this.liveCamContainer = new TContainer ( this.widget.getElementByName ( "LIVECAM.CONTAINER" ) ) ;
+    this.table = this.widget.getPeerByName ( "TABLE" ) ;
+    this.table.addSelectionListener ( this, this.tableSelected ) ;
+    this.pbAdd = this.widget.getComponent ( 'PB.ADD' ) ;
+    this.pbEdit = this.widget.getComponent ( 'PB.EDIT' ) ;
+    this.pbRemove = this.widget.getComponent ( 'PB.REMOVE' ) ;
+  },
+  liveCamContainerClicked: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    var src = ev.getSource() ;
+  },
+  add: function ( event )
+  {
+    var w = new CosmosWindow ( this.widget.getAxl ( "Configure" ) ) ;
+    w.create() ;
+    var b = w.getComponent ( 'PB.Rss.Configure.Apply' ) ;
+    b.addEventListener ( 'click', this, this.addApply ) ;
+    w.show() ;
+  },
+  addApply: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! ev.getComponent().isEnabled() ) return ;
+    var x = ev.getValues() ;
+    x.setName ( "row" ) ;
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    tab.addRow ( x  ) ;
+    ev.getWindow().close() ;
+  },
+  edit: function ( event )
+  {
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    var x = tab.getSelectedUserXml() ;
+    if ( ! x ) return ;
+    var w = new CosmosWindow ( this.widget.getAxl ( "Configure" ) ) ;
+    w.create() ;
+    w.setValues ( x ) ;
+    var b = w.getComponent ( 'PB.Rss.Configure.Apply' ) ;
+    b.addEventListener ( 'click', this, this.editApply ) ;
+    w.show() ;
+  },
+  editApply: function ( event )
+  {
+    var ev = new TEvent ( event ) ;
+    if ( ! ev.getComponent().isEnabled() ) return ;
+    var x = ev.getValues() ;
+    var r = this.table.getSelectedRow() ;
+    r.update ( x ) ;
+    ev.getWindow().close() ;
+  },
+  remove: function ( event )
+  {
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    var x = tab.getSelectedUserXml() ;
+    if ( ! x ) return ;
+    var t = x.getContent ( "title" ) ;
+    var d = new CosmosUserDialog ( "Really delete<br/><b>" + t + "?</b>" ) ;
+    d.callOnConfirmation ( this, this.removeApply ) ;
+    d.ask() ;
+  },
+  removeApply: function ( event )
+  {
+    var tab = this.widget.getPeer ( "TABLE" ) ;
+    var r = tab.getSelectedRow() ;
+    r.remove() ;
+  },
+  history: {},
+  currentFeedHistoryHash: {},
+  tableSelected: function ( ev )
+  {
+    this.pbEdit.setEnabled ( true ) ;
+    this.pbRemove.setEnabled ( true ) ;
+    var ud = this.table.getSelectedUserXml() ;
+    var url = ud.getContent ( "url" ) ;
+
+    var s = "<Container name='Form' style='left:0px;top:0px;overflow:hidden;right:-0;bottom:-0;' >\n"
+          + '<iframe src="' + url + '"\n'
+          + ' style="margin:0px;border:0px;overflow:hidden;left:-24px;top:-310px;width:1000px;height:940px;"></iframe>\n'
+          + '</Container>'
+          ;
+    try {
+        this.liveCamContainer.setAxl ( s ) ;
+    }
+    catch(e) {
+      log(e);
+    }
+  },
+  mouse: function ( event, what )
+  {
+/*
+    if ( what == "mouseover" ) this.pbClose.src = this.widget.getImageUrl ( "close_hover.png" ) ;
+    if ( what == "mouseout" ) this.pbClose.src = this.widget.getImageUrl ( "close.png" ) ;
+    if ( what == "mousedown" ) this.pbClose.src = this.widget.getImageUrl ( "close_active.png" ) ;
+*/
+  },
+  onOpen: function()
+  {
+    var xml = this.widget.getAxl ( "urls.xml" ) ;
+//    var vxml = this.widget.getAxl ( "bookmarks_21.12.17.xml" ) ;
+//log(vxml);
+    xml.get("TABLE").elements((row)=>{
+      let title = row.getContent("title");
+      if(title) return;
+      let url = row.getContent("url");
+      title = url.substr(url.lastIndexOf('/')+1);
+      let pos = title.lastIndexOf('.');
+      if(pos > 0) {
+        title = title.substr(0,title.lastIndexOf('.'));
+      }
+      row.ensureElement('title').setContent(title);
+    });
+    this.widget.setValues ( xml ) ;
+  },
+  onClose: function ( ev )
+  {
+    var xml = this.widget.getValues() ;
+    this.widget.saveUserData ( xml ) ;
+  },
+  onFocus: function ( state )
+  {
+  }
+}
+  ]]></Script>
+</xml>
+
