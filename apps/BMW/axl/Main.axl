@@ -8,7 +8,7 @@
   <Main class=MainClass Xstyle='background-image:url(img/lion-background.png);' >
     <Multiform id='MF' style='top:0px;left:0px;bottom:-0;right:-0;' >
       <Container id='MF.HOME' name='HOME' desktop='true'
-        droptarget="
+        Xdroptarget="
     {
       dragEnter: function ( evt )
       {
@@ -20,7 +20,6 @@
       dragOver: function ( evt )
       {
         var t = evt.getTransferable();
-
         var mx = evt.getX() ;
         var my = evt.getY() ;
         if (  ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
@@ -116,15 +115,17 @@
     }'
   />
 
-  <Item icon='TrashIcon.png' Xonclick='' text='text 1' droptarget="
+  <Item icon='TrashIcon.png' Xonclick='' text='text 1' Xdroptarget="
     {
       element: null,
       dock: null,
       _initialize_:function()
       {
+console.log('1 ------------------');
       },
       dragEnter: function ( evt )
       {
+console.log('1 ------------------');
         if ( ! this.element )
         {
           this.element = evt.getElement() ;

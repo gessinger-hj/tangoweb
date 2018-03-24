@@ -1964,6 +1964,7 @@ DockFactory.prototype =
   }
 };
 TGui.addTagDefinition ( "Dock", new DockFactory() ) ;
+
 /**
  *  @constructor
  */
@@ -2033,6 +2034,7 @@ Dock.prototype =
     TGui.addEventListener ( dock, "click", this.onMouseClick.bindAsEventListener ( this ) ) ;
     TGui.addEventListener ( dock, "mouseout", this.onMouseOut.bindAsEventListener ( this ) ) ;
     this.calculateGauss() ;
+    new DnDTarget ( this.dom, this ) ;
   },
   resized: function()
   {
@@ -2207,11 +2209,8 @@ Dock.prototype =
       x += fx ;
     }
 
-var bws = TGui.getBrowserWindowSize() ;
-var w = this.insets.left + this.insets.right + totalWidth ;
-//this.dom.style.width = w + "px" ;
-//this.dom.style.left = Math.floor ( ( bws.width - w ) / 2 ) + "px" ;
-//TGui.layoutConstraints ( this.dom ) ;
+    var bws = TGui.getBrowserWindowSize() ;
+    var w = this.insets.left + this.insets.right + totalWidth ;
     x = ( this.dom.offsetWidth - totalWidth ) / 2 ;
     if ( x < 0 ) x = Math.ceil ( x ) ;
     else         x = Math.floor ( x ) ;
@@ -2245,8 +2244,8 @@ var w = this.insets.left + this.insets.right + totalWidth ;
   },
   resetIcons: function()
   {
-this.dom.style.width = this.baseWidth + "px" ;
-TGui.layoutConstraints ( this.dom ) ;
+    this.dom.style.width = this.baseWidth + "px" ;
+    TGui.layoutConstraints ( this.dom ) ;
     var totalWidth = 0 ;
     var x = 0 ;
     var img ;
@@ -2304,6 +2303,50 @@ Dock.prototype.toString = function()
 {
   return "(" + this.jsClassName + ")" ;
 };
+Dock.prototype.dragEnter = function ( evt )
+{
+  evt.acceptDrag ( DnDConstants.COPY_OR_MOVE ) ;
+};
+Dock.prototype.dragExit = function ( evt )
+{
+};
+Dock.prototype.dragOver = function ( evt )
+{
+  var t = evt.getTransferable();
+  var mx = evt.getX() ;
+  var my = evt.getY() ;
+  if (  ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
+     || t.getName() != 'COSMOS.ITEM'
+     )
+  {
+    // evt.rejectDrag() ;
+    evt.acceptDrag ( DnDConstants.COPY ) ;
+    return ;
+  }
+  evt.acceptDrag ( DnDConstants.COPY ) ;
+};
+Dock.prototype.drop = function ( evt )
+{
+  var action = evt.getDropAction() ;
+log ( " action=" +   action ) ;
+  var t = evt.getTransferable();
+  var mx = evt.getX() ;
+  var my = evt.getY() ;
+  if (  ! t.isDataFlavorSupported ( DnDDataFlavor.XML )
+     || t.getName() != 'COSMOS.ITEM'
+     )
+  {
+      evt.rejectDrop() ;
+      return ;
+  }
+  evt.acceptDrop ( action) ;
+  var action = evt.getDropAction() ;
+  var x = t.getData ( DnDDataFlavor.XML ) ;
+log(x);
+  // Cosmos.createDeskIcon ( x, mx, my ) ;
+  evt.dropComplete ( true ) ;
+};
+
 /**
  *  @constructor
  *  @extends PopupMenu

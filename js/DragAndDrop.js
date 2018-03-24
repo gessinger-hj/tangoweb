@@ -191,6 +191,11 @@ Transferable.prototype.getName = function()
 {
   return this.name ;
 };
+Transferable.prototype.toString = function()
+{
+    var s = "(" + this.jsClassName + ")[" + this.dataFlavorList + "]";
+    return s;
+};
 Transferable.prototype.isDataFlavorSupported = function ( flavor )
 {
   for ( var i = 0 ; i < this.dataFlavorList.length ; i++ )
@@ -797,17 +802,17 @@ DnDSource.prototype.removeListener = function ( l )
  */
 var DnDTarget = function ( id, listener )
 {
-  this.jsClassName = "DnDTarget" ;
-  this._flushed = false ;
-  this.dom = null ;
-  this.id = null ;
-  this.shape = null ;
-  this.x = 0 ;
-  this.y = 0 ;
-  this.width = 0 ;
-  this.height = 0 ;
-  this._flushed = false ;
-  this._parentWindow = undefined;
+    this.jsClassName = "DnDTarget" ;
+    this._flushed = false ;
+    this.dom = null ;
+    this.id = null ;
+    this.shape = null ;
+    this.x = 0 ;
+    this.y = 0 ;
+    this.width = 0 ;
+    this.height = 0 ;
+    this._flushed = false ;
+    this._parentWindow = undefined;
 
   if ( typeof ( id ) == 'string' )
   {
@@ -843,6 +848,11 @@ var DnDTarget = function ( id, listener )
         }
       }
     }
+  }
+  else
+  if ( listener && typeof ( listener ) == 'object' )
+  {
+    this.listener.push ( listener ) ;
   }
 };
 DnDTarget.prototype.getParentWindow = function()

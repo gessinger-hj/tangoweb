@@ -34,11 +34,33 @@ execute: function(event)
       </Container>
       <br/>
       <Container style='bottom:-0px;right:-0px;left:0px;' >
-        <Table name='TABLE' style='bottom:-4;width:140px;height:500px;attach-bottom:true;' show-header='false' get-values='all'  >
-          <Columns>
-            <Column name='title' />
-          </Columns>
-        </Table>
+        <Container style='bottom:-0px;left:0px;' >
+          <TextField name='TFPattern' onkeyup='
+          {
+            table:null,
+            last_q:null,
+            execute: function ( event )
+            {
+              var ev = new TEvent ( event ) ;
+              if ( ! this.table )
+              {
+                this.table = ev.getContainer().getPeer ( "TABLE" ) ;
+              }
+              var src = ev.getSource() ;
+              var q = ev.getSource().value ;
+              if ( this.last_q == q ) return ;
+              this.last_q = q ;
+              var r = this.table.setVisibleRowsIf ( "title", q ) ;
+              if ( r ) r.setSelected ( true ) ;
+            }
+          }' />
+          <br/>
+          <Table name='TABLE' style='bottom:-4;width:140px;height:500px;attach-bottom:true;' show-header='false' get-values='all'  >
+            <Columns>
+              <Column name='title' />
+            </Columns>
+          </Table>
+        </Container>
         <Container style='bottom:-0;right:-0;overflow:auto;width:300px;background-color:white;color:black;' name='RSS.CONTAINER' >
         </Container>
       </Container>
@@ -60,11 +82,13 @@ execute: function(event)
   _initialize_: function ( widget )
   {
     this.rssContainer = new TContainer ( this.widget.getElementByName ( "RSS.CONTAINER" ) ) ;
-    this.table = this.widget.getPeerByName ( "TABLE" ) ;
+    this.table        = this.widget.getPeerByName ( "TABLE" ) ;
+    this.pbAdd        = this.widget.getComponent ( 'PB.ADD' ) ;
+    this.pbEdit       = this.widget.getComponent ( 'PB.EDIT' ) ;
+    this.pbRemove     = this.widget.getComponent ( 'PB.REMOVE' ) ;
+    this.TFPattern    =this.widget.getComponent("TFPattern");
+
     this.table.addSelectionListener ( this, this.tableSelected ) ;
-    this.pbAdd = this.widget.getComponent ( 'PB.ADD' ) ;
-    this.pbEdit = this.widget.getComponent ( 'PB.EDIT' ) ;
-    this.pbRemove = this.widget.getComponent ( 'PB.REMOVE' ) ;
     this.rssContainer.addEventListener ( "mousedown", this, this.rssContainerClicked ) ;
   },
   rssContainerClicked: function ( event )
