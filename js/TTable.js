@@ -4972,8 +4972,15 @@ TTableRow.prototype =
     }
     return -1 ;
   },
-  update: function ( xml )
+  update: function ( xml, optValue )
   {
+    if ( typeof xml == 'string' )
+    {
+      let name = xml ;
+      optValue = optValue ? optValue : "" ;
+      xml = new TXml ( this.TR.domRow ) ;
+      xml.add ( name, optValue ) ; 
+    }
     if ( ! xml ) xml = this.TR.domRow ;
     var domNew = xml ;
     if ( xml.jsClassName == "TXml" ) domNew = xml.getDom() ;

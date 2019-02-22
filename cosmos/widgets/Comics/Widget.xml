@@ -51,7 +51,7 @@ const char *cPhotoTag = "<img src=\"http://www.steves-digicams.com/photo-of-the-
 /*
     this.widget.lock() ;
 */
-    var url = "http://www.gocomics.com/garfield-classics/" ;
+    var url = "https://www.gocomics.com/garfield-classics/" ;
     var u = new URLProxy ( url ) ;
     var str = u.getText() ;
     var pos0 = str.indexOf ( 'item-comic-container' ) ;
