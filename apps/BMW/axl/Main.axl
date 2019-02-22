@@ -8,7 +8,7 @@
   <Main class=MainClass Xstyle='background-image:url(img/lion-background.png);' >
     <Multiform id='MF' style='top:0px;left:0px;bottom:-0;right:-0;' >
       <Container id='MF.HOME' name='HOME' desktop='true'
-        Xdroptarget="
+        droptarget="
     {
       dragEnter: function ( evt )
       {

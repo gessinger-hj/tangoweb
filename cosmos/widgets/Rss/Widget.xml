@@ -11,10 +11,26 @@
         <CosmosButton img="${home}/edit_add.png" name='PB.ADD' style='bottom:0;' tooltip='Add a feed.' onclick='*.add()'/>
         <CosmosButton img="${home}/edit.png" name='PB.EDIT' style='bottom:0;' disabled='true' tooltip='Edit the selected feed.' onclick='*.edit()'/>
         <CosmosButton img="${home}/edit_remove.png" name='PB.REMOVE' style='bottom:0;' disabled='true' tooltip='Remove the selected feed.' onclick='*.remove()'/>
-        <CosmosButton img="${home}/sort.png" name='PB.SORT' tooltip='Sort entries.' style='bottom:0;'
+        <CosmosButton img="${home}/sort.png" tooltip='Sort entries.' style='bottom:0;'
+onclick='{
+  tab: null,
+  factor: 1,
+  execute: function(event)
+  {
+    if ( ! this.tab )
+    {
+      var ev = new TEvent ( event ) ;
+      this.tab = ev.getContainer().getPeer ( "TABLE" ) ;
+    }
+    this.factor = this.factor * -1 ;
+    this.tab.sortColumn ( 0, this.factor ) ;
+  }
+}'
+        />
+        <CosmosButton img="${home}/favorites.png" tooltip='Sort favorites.' style='bottom:0;'
 onclick='{
 tab:null,
-factor: -1,
+factor: 1,
 execute: function(event)
 {
   if ( ! this.tab )
@@ -23,7 +39,7 @@ execute: function(event)
     this.tab = ev.getContainer().getPeer ( "TABLE" ) ;
   }
   this.factor = this.factor * -1 ;
-  this.tab.sortColumn ( 0, this.factor ) ;
+  this.tab.sortColumn ( 1, this.factor ) ;
 }
 }'
         />
@@ -35,7 +51,7 @@ execute: function(event)
       <br/>
       <Container style='bottom:-0px;right:-0px;left:0px;' >
         <Container style='bottom:-0px;left:0px;' >
-          <TextField name='TFPattern' onkeyup='
+          <TextField name='TFPattern' style='width:150px;right:-2px;' onkeyup='
           {
             table:null,
             last_q:null,
@@ -55,9 +71,10 @@ execute: function(event)
             }
           }' />
           <br/>
-          <Table name='TABLE' style='bottom:-4;width:140px;height:500px;attach-bottom:true;' show-header='false' get-values='all'  >
+          <Table name='TABLE' style='bottom:-4;width:150px;height:500px;attach-bottom:true;right:-2px;' show-header='true' get-values='all'  >
             <Columns>
               <Column name='title' />
+              <Column name='hits' visible='false'/>
             </Columns>
           </Table>
         </Container>
@@ -86,7 +103,7 @@ execute: function(event)
     this.pbAdd        = this.widget.getComponent ( 'PB.ADD' ) ;
     this.pbEdit       = this.widget.getComponent ( 'PB.EDIT' ) ;
     this.pbRemove     = this.widget.getComponent ( 'PB.REMOVE' ) ;
-    this.TFPattern    =this.widget.getComponent("TFPattern");
+    this.TFPattern    = this.widget.getComponent ( "TFPattern" ) ;
 
     this.table.addSelectionListener ( this, this.tableSelected ) ;
     this.rssContainer.addEventListener ( "mousedown", this, this.rssContainerClicked ) ;
@@ -266,6 +283,8 @@ execute: function(event)
     this.pbRemove.setEnabled ( true ) ;
     var ud = this.table.getSelectedUserXml() ;
     var url = ud.getContent ( "url" ) ;
+    var hits = ud.getInt ( "hits", 0 ) ;
+    this.table.getSelectedRow().update("hits", hits+1);
 
     this.currentFeedHistoryHash = this.history[url] ;
     if ( ! this.currentFeedHistoryHash )
@@ -279,10 +298,8 @@ execute: function(event)
       if ( ! this.currentFeedHistoryHash.hasOwnProperty (k) ) continue ;
       oldCopy[k] = this.currentFeedHistoryHash[k] ;
     }
-// http://www.simonsfoundation.org/quanta-archive/feed/
     var u = new URLProxy ( url ) ;
     var xml = u.getXml() ;
-// log ( xml ) ;
     // var xml = u.getText() ;
     var xContent = xml.getXml ( "Content" ) ;
     if ( ! xContent ) return ;
@@ -541,6 +558,13 @@ published>2011-04-05T14:07:00+02:00</published>
       xml.remove ( "HISTORY" ) ;
       this.readIsHidden = xml.getBool ( "readIsHidden", false ) ;
     }
+    xml.get("TABLE").elements(e => {
+      let hits = e.getInt("hits",-1);
+      if ( hits < 0 )
+      {
+        e.add ( "hits", 0 ) ;
+      }
+    });
     this.widget.setValues ( xml ) ;
   },
   onClose: function ( ev )
