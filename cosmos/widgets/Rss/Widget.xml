@@ -13,21 +13,21 @@
         <CosmosButton img="${home}/edit_remove.png" name='PB.REMOVE' style='bottom:0;' disabled='true' tooltip='Remove the selected feed.' onclick='*.remove()'/>
         <CosmosButton img="${home}/sort.png" tooltip='Sort entries.' style='bottom:0;'
 onclick='{
-tab:null,
-factor: 1,
-execute: function(event)
-{
-  if ( ! this.tab )
+  tab: null,
+  factor: 1,
+  execute: function(event)
   {
-    var ev = new TEvent ( event ) ;
-    this.tab = ev.getContainer().getPeer ( "TABLE" ) ;
+    if ( ! this.tab )
+    {
+      var ev = new TEvent ( event ) ;
+      this.tab = ev.getContainer().getPeer ( "TABLE" ) ;
+    }
+    this.factor = this.factor * -1 ;
+    this.tab.sortColumn ( 0, this.factor ) ;
   }
-  this.factor = this.factor * -1 ;
-  this.tab.sortColumn ( 0, this.factor ) ;
-}
 }'
         />
-        <CosmosButton img="${home}/iconfinder_favourites_61768-32.png" tooltip='Sort favorites.' style='bottom:0;'
+        <CosmosButton img="${home}/favorites.png" tooltip='Sort favorites.' style='bottom:0;'
 onclick='{
 tab:null,
 factor: 1,
