@@ -26,6 +26,7 @@ onclick='{
     this.tab.sortColumn ( 0, this.factor ) ;
   }
 }'
+
         />
         <CosmosButton img="${home}/favorites.png" tooltip='Sort favorites.' style='bottom:0;'
 onclick='{
@@ -42,6 +43,7 @@ execute: function(event)
   this.tab.sortColumn ( 1, this.factor ) ;
 }
 }'
+
         />
         <CosmosButton text="Mark all as Read" onclick='*.markAllAsRead()' tooltip='Mark all entries as read.'/>
         <CosmosButton text="Mark all as UnRead" onclick='*.markAllAsUnRead()' tooltip='Mark all entries as unread.'/>
