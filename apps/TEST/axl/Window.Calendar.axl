@@ -5,8 +5,8 @@
     <Container >
       <PushButton text='getEasterDate(2014)' onclick='*.getEasterDate(2014,event)' />
       <PushButton text='getBeweglicheFeiertage(2014)' onclick='*.getBeweglicheFeiertage(2014,event)' />
-      <PushButton text='getFreedays(2014,4)' onclick='*.getFreedays(2013,10,event)' />
-      <PushButton text='calculateNumberOfWorkingHours()' onclick='*.calculateNumberOfWorkingHours()' />
+      <!-- <PushButton text='getFreedays(2014,4)' onclick='*.getFreedays(2013,10,event)' /> -->
+      <!-- <PushButton text='calculateNumberOfWorkingHours()' onclick='*.calculateNumberOfWorkingHours()' /> -->
     </Container>
     <br/>
     <Container name='X' >
